@@ -1,2 +1,5 @@
-node_modules
-foody
+/node_modules
+/foody
+npm-debug.log
+.DS_Store
+/*.env
