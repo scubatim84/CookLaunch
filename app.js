@@ -69,6 +69,30 @@ app.route("/ingredients")
 
   });
 
+app.route("/ingredients/:ingredientName")
+  .get(function(req, res) {
+    Ingredient.find({name: req.params.ingredientName}, function(err, foundIngredient) {
+      if (!err) {
+        res.send(foundIngredient);
+      } else {
+        res.send(err);
+      }
+    });
+
+  })
+
+  .put(function(req, res) {
+
+  })
+
+  .patch(function(req, res) {
+
+  })
+  
+  .delete(function(req, res) {
+
+  });
+
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 3000;
