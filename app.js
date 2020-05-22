@@ -1,8 +1,11 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const ejs = require("ejs");
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(express.static(__dirname + "/public"));
 
@@ -29,6 +32,7 @@ app.route("/")
     res.render("home");
   });
 
+// REST API to perform CRUD operations on ingredients database
 app.route("/ingredients")
   .get(function(req, res) {
     Ingredient.find({}, function(err, foundIngredients) {
@@ -38,8 +42,10 @@ app.route("/ingredients")
       } else {
         if (!foundIngredients) {
           res.status(404);
+          res.send(err);
         } else {
           res.status(400);
+          res.send(err);
         }
       }
     });
@@ -47,7 +53,7 @@ app.route("/ingredients")
   })
   
   .post(function(req, res) {
-    let newIngredient = new Ingredient({
+    const newIngredient = new Ingredient({
       name: req.body.name
     });
 
@@ -56,13 +62,8 @@ app.route("/ingredients")
         res.status(201);
         res.send("Successfully created ingredient.");
       } else {
-        Ingredient.find({name: newIngredient.name}, function(err, foundIngredient) {
-          if (!foundIngredient) {
-            res.status(200);
-          } else {
-            res.status(204);
-          }
-        });
+        res.status(204);
+        res.send(err);
       }
     });
 
