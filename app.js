@@ -26,6 +26,8 @@ if (ingredientCluster == undefined || ingredientCluster == null) {
 
 const mongooseUri = "mongodb+srv://" + ingredientUserName + ":" + ingredientPassword + "@" + ingredientCluster;
 
+console.log(mongooseUri);
+
 mongoose.connect(mongooseUri, {useNewUrlParser: true, useUnifiedTopology: true });
 
 const ingredientSchema = { 
