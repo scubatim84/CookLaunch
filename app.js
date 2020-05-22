@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const ejs = require("ejs");
-const mongooseConfig = require('./config');
 
 const app = express();
 
@@ -10,23 +9,12 @@ app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 
 let ingredientUserName = process.env.ingredientUserName;
-if (ingredientUserName == undefined || ingredientUserName == null) {
-  ingredientUserName = mongooseConfig.username;
-}
 
 let ingredientPassword = process.env.ingredientPassword;
-if (ingredientPassword == undefined || ingredientPassword == null) {
-  ingredientPassword = mongooseConfig.password;
-}
 
 let ingredientCluster = process.env.ingredientCluster;
-if (ingredientCluster == undefined || ingredientCluster == null) {
-  ingredientCluster = mongooseConfig.cluster;
-}
 
 const mongooseUri = "mongodb+srv://" + ingredientUserName + ":" + ingredientPassword + "@" + ingredientCluster;
-
-console.log(mongooseUri);
 
 mongoose.connect(mongooseUri, {useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -86,6 +74,6 @@ if (port == null || port == "") {
 }
 
 app.listen(port, function() {
-  console.log("Server started running successfully.");
+  console.log("Server started running successfully on port " + port + ".");
 });
   
