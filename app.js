@@ -82,11 +82,7 @@ app.route("/ingredients/:ingredientName")
   })
 
   .put(function(req, res) {
-
-  })
-
-  .patch(function(req, res) {
-
+		
   })
   
   .delete(function(req, res) {
