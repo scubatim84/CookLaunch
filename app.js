@@ -22,7 +22,8 @@ const mongooseUri = "mongodb+srv://" + ingredientUserName + ":" + ingredientPass
 mongoose.connect(mongooseUri, {useNewUrlParser: true, useUnifiedTopology: true });
 
 const ingredientSchema = { 
-  name: String 
+	name: String,
+	userCreated: Boolean
 };
 
 const Ingredient = mongoose.model("Ingredient", ingredientSchema);
@@ -54,14 +55,18 @@ app.route("/ingredients")
   
   .post(function(req, res) {
     const newIngredient = new Ingredient({
-      name: req.body.name
-    });
+			name: req.body.name,
+			userCreated: req.body.userCreated
+		});
+		
+		console.log(newIngredient);
 
     newIngredient.save(function(err) {
       if(!err) {
         res.status(201);
         res.send("Successfully created ingredient.");
       } else {
+				console.log(err);
         res.status(204);
         res.send(err);
       }
@@ -82,10 +87,33 @@ app.route("/ingredients/:ingredientName")
   })
 
   .put(function(req, res) {
-		
+		const updateIngredient = {
+			name: req.body.name,
+			userCreated: req.body.userCreated
+		};
+
+		Ingredient.updateOne({name: req.params.ingredientName}, updateIngredient, {upsert: true}, function(err) {
+			if(!err) {
+        res.status(200);
+        res.send("Successfully updated the ingredient.");
+      } else {
+        res.status(204);
+        res.send(err);
+      }
+		});
+
   })
   
   .delete(function(req, res) {
+		Ingredient.deleteOne({name: req.params.ingredientName}, function(err) {
+			if(!err) {
+        res.status(200);
+        res.send("Successfully deleted the ingredient.");
+      } else {
+        res.status(204);
+        res.send(err);
+      }
+		});
 
   });
 
