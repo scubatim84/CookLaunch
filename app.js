@@ -59,14 +59,11 @@ app.route("/ingredients")
 			userCreated: req.body.userCreated
 		});
 		
-		console.log(newIngredient);
-
-    newIngredient.save(function(err) {
+    newIngredient.save(function(err, createIngredient) {
       if(!err) {
         res.status(201);
-        res.send("Successfully created ingredient.");
+        res.send(createIngredient);
       } else {
-				console.log(err);
         res.status(204);
         res.send(err);
       }
@@ -92,7 +89,7 @@ app.route("/ingredients/:ingredientName")
 			userCreated: req.body.userCreated
 		};
 
-		Ingredient.updateOne({name: req.params.ingredientName}, updateIngredient, {upsert: true}, function(err) {
+		Ingredient.updateOne({name: req.params.ingredientName}, updateIngredient, function(err) {
 			if(!err) {
         res.status(200);
         res.send("Successfully updated the ingredient.");
