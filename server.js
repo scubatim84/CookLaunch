@@ -1,6 +1,7 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+require("dotenv").config()
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 const app = express();
 
@@ -9,12 +10,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // DB Config
-const db = require('./config/keys').mongoURI;
+const db = process.env.MONGO_URI;
 
 // Connect to MongoDB
 mongoose
 	.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-	.then(() => console.log('MongoDB successfully connected.'))
+	.then(() => console.log("MongoDB successfully connected."))
 	.catch(err => console.log(err));
 
 const port = process.env.PORT || 5000;
