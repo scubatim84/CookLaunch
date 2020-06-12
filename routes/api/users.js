@@ -85,17 +85,15 @@ router.post("/login", (req, res) => {
 					{
 						expiresIn: 31556926 // 1 year in seconds
 					},
-					(err, token) => {
+					(err, jwtToken) => {
 						res.json({
 							success: true,
-							token: "Bearer " + token
+							token: "Bearer " + jwtToken
 						});
 					}
 				);
 			} else {
-				return res
-					.status(400)
-					.json({ passwordincorrect: "Password incorrect" });
+				return res.status(400).json({ passwordincorrect: "Password incorrect" });
 			}
 		});
 	});
