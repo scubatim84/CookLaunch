@@ -15,16 +15,16 @@ const User = require("../../models/User");
 // @access Public
 router.post("/register", (req, res) => {
 	// Form validation
-	const { errors, isValid } = validateRegisterInput(req.body);
+	const { error, isValid } = validateRegisterInput(req.body);
 
 	//Check validation
 	if (!isValid) {
-		return res.status(400).json(errors);
+		return res.status(400).json(error);
 	}
 
 	User.findOne({ email: req.body.email }).then(user => {
 		if (user) {
-			return res.status(400).json({ error: "Email already exists"});
+			return res.status(400).json("Email already exists");
 		} else {
 			const newUser = new User({
 				name: req.body.name,
@@ -65,7 +65,7 @@ router.post("/login", (req, res) => {
 	User.findOne({ email }).then(user => {
 		// Check if user exists
 		if (!user) {
-			return res.status(404).json({ emailnotfound: "Email not found" });
+			return res.status(404).json("Email not found" );
 		}
 
 		// Check password
@@ -93,7 +93,7 @@ router.post("/login", (req, res) => {
 					}
 				);
 			} else {
-				return res.status(400).json({ passwordincorrect: "Password incorrect" });
+				return res.status(400).json("Password incorrect" );
 			}
 		});
 	});

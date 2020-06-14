@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import isEmpty from "is-empty";
 
 function Register() {
 	const [registerUser, setRegisterUser] = useState({
@@ -8,7 +9,9 @@ function Register() {
 		email: "",
 		password: "",
 		password2: "",
-		errors: {}
+	});
+	const [error, setError] = useState({
+		errorMessage: ""
 	});
 
   const onChange = e => {
@@ -32,10 +35,33 @@ function Register() {
       password2: registerUser.password2
 		};
 
+		axios
+			.post("/api/users/register", newUser)
+			.then(res => {
+				if (isEmpty(error.errorMessage) && res.status === 200) {
+					console.log("User registered.");
+				}
+
+				setRegisterUser({
+					name: "",
+					email: "",
+					password: "",
+					password2: "",
+				});
+
+				setError({
+					errorMessage: ""
+				})
+			})
+			.catch(err => {
+				const newError = err.response.data;
+
+				setError({
+					errorMessage: newError
+				});
+			});
 	};
 	
-	const { errors } = registerUser;
-
 	return (
 		<div className="container">
 			<div className="row">
@@ -57,7 +83,7 @@ function Register() {
 							<input
 								onChange={onChange}
 								value={registerUser.name}
-								error={errors.name}
+								id="name"
 								name="name"
 								type="text"
 							/>
@@ -67,7 +93,7 @@ function Register() {
 							<input
 								onChange={onChange}
 								value={registerUser.email}
-								error={errors.email}
+								id="email"
 								name="email"
 								type="email"
 							/>
@@ -77,7 +103,7 @@ function Register() {
 							<input
 								onChange={onChange}
 								value={registerUser.password}
-								error={errors.password}
+								id="password"
 								name="password"
 								type="password"
 							/>
@@ -87,7 +113,7 @@ function Register() {
 							<input
 								onChange={onChange}
 								value={registerUser.password2}
-								error={errors.password2}
+								id="password2"
 								name="password2"
 								type="password"
 							/>
@@ -106,8 +132,12 @@ function Register() {
 							>
 								Sign up
 							</button>
+							<div>
+								{(!isEmpty(error.errorMessage) && <strong class="error">{error.errorMessage}</strong>)}
+							</div>
 						</div>
 					</form>
+					
 				</div>
 			</div>
 		</div>
