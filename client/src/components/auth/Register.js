@@ -35,9 +35,9 @@ function Register() {
       password2: newUser.password2
 		};
 
-		const requestError = await registerUser(newUserData);
+		const requestResponse = await registerUser(newUserData);
 
-		if (isEmpty(requestError)) {
+		if (requestResponse.authResponseType === "success") {
 			setNewUser({
 				name: "",
 				email: "",
@@ -50,7 +50,7 @@ function Register() {
 			});
 		} else {
 			setError({
-				errorMessage: requestError
+				errorMessage: requestResponse.authResponsePayload
 			});
 		}
 	};

@@ -38,7 +38,7 @@ router.post("/register", (req, res) => {
 					newUser.password = hash;
 					newUser
 						.save()
-						.then(user => res.json(user))
+						.then(user => res.status(201).json(user))
 						.catch(err => console.log(err));
 				});
 			});
@@ -51,11 +51,11 @@ router.post("/register", (req, res) => {
 // @access Public
 router.post("/login", (req, res) => {
 	// Form validation
-	const { errors, isValid } = validateLoginInput(req.body);
+	const { error, isValid } = validateLoginInput(req.body);
 	
 	// Check validation
   if (!isValid) {
-    return res.status(400).json(errors);
+    return res.status(400).json(error);
 	}
 	
 	const email = req.body.email;
@@ -86,7 +86,7 @@ router.post("/login", (req, res) => {
 						expiresIn: 31556926 // 1 year in seconds
 					},
 					(err, jwtToken) => {
-						res.json({
+						res.status(200).json({
 							success: true,
 							token: "Bearer " + jwtToken
 						});

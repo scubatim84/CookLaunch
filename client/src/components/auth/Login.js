@@ -30,7 +30,9 @@ function Login() {
       password: user.password
 		};
 		
-		loginUser(userData);
+		const requestResponse = await loginUser(userData);
+
+		
 	};
 	
 	return (
@@ -83,6 +85,9 @@ function Login() {
 							>
 								Login
 							</button>
+							<div>
+								{(!isEmpty(error.errorMessage) && <strong class="error">{error.errorMessage}</strong>)}
+							</div>
 						</div>
 					</form>
 				</div>

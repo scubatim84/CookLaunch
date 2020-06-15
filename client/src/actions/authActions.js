@@ -1,47 +1,65 @@
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
-import isEmpty from "is-empty";
 
 // Register User
 export const registerUser = async (userData, history) => {
-	let error = await axios
-		.post("/api/users/register", userData)
-		// .then(res => history.push("/login")) // re-direct to login on successful register
-		.then(res => {
-			if (res.status === 200) {
-				console.log("User registered.");
-			}
-		})
-		.catch(err => {
-			return err.response.data;
-		});
+	try {
+		const response = await axios.post("/api/users/register", userData);
 
-	// If an error occurs during registration, it will be returned
-	if (!isEmpty(error)) {
-		return error;
-	} 
+		if (response.status === 201) {
+			return { 
+				authResponseType: "success",
+				authResponsePayload: response.data
+			};
+		} else {
+			return {
+				authResponseType: "fail",
+				authResponsePayload: response.data
+			};
+		}
+	} catch (err) {
+		return {
+			authResponseType: "fail",
+			authResponsePayload: err.response.data
+		};
+	}
 };
 
 // Login - get user token
-export const loginUser = userData => {
-	axios
-		.post("/api/users/login", userData)
-		.then(res => {
-			// Save to localStorage
-			// Set token to localStorage
-			const { token } = res.data;
-			localStorage.setItem("jwtToken", token);
-			// Set token to Auth header
-			setAuthToken(token);
-			// Decode token to get user payload
-			const decoded = jwt_decode(token);
-			// Set current user
-			setCurrentUser(decoded);
-		})
-		.catch(err => {
-			// error = err.response.data;
-		});
+export const loginUser = async userData => {
+	try {
+		const response = await axios.post("/api/users/login", userData);
+
+		// Save to localStorage
+		// Set token to localStorage
+		const { token } = response.data;
+		localStorage.setItem("jwtToken", token);
+
+		// Set token to Auth header
+		setAuthToken(token);
+
+		// Decode token to get user payload
+		const decoded = jwt_decode(token);
+
+		// Set current user
+		const payload = setCurrentUser(decoded);
+
+		console.log(payload);
+		
+		// Return user payload
+		return {
+			authResponseType: "success",
+			authResponsePayload: payload
+		};
+	} catch (err) {
+		console.log(err.response.data);
+		
+		return {
+			authResponseType: "fail",
+			authResponsePayload: err.response.data
+		};
+	}
 };
 
 // Set logged in user
