@@ -10,11 +10,11 @@ function Login() {
 		errorMessage: ""
 	});
 
-	onChange = e => {
+	const onChange = e => {
     setRegisterUser({ [e.target.id]: e.target.value });
   };
 
-  onSubmit = e => {
+  const onSubmit = e => {
     e.preventDefault();
     
     const userData = {
