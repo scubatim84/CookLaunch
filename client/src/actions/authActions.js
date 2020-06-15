@@ -45,16 +45,12 @@ export const loginUser = async userData => {
 		// Set current user
 		const payload = setCurrentUser(decoded);
 
-		console.log(payload);
-		
 		// Return user payload
 		return {
 			authResponseType: "success",
 			authResponsePayload: payload
 		};
 	} catch (err) {
-		console.log(err.response.data);
-		
 		return {
 			authResponseType: "fail",
 			authResponsePayload: err.response.data

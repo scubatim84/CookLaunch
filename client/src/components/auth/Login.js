@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import isEmpty from "is-empty";
 import { loginUser } from "../../actions/authActions";
 
 function Login() {
@@ -22,7 +23,7 @@ function Login() {
 		});
   };
 
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
     
     const userData = {
@@ -32,7 +33,20 @@ function Login() {
 		
 		const requestResponse = await loginUser(userData);
 
-		
+		if (requestResponse.authResponseType === "success") {
+			setUser({
+				email: "",
+				password: "",
+			});
+
+			setError({
+				errorMessage: ""
+			});
+		} else {
+			setError({
+				errorMessage: requestResponse.authResponsePayload
+			});
+		}
 	};
 	
 	return (
@@ -86,7 +100,7 @@ function Login() {
 								Login
 							</button>
 							<div>
-								{(!isEmpty(error.errorMessage) && <strong class="error">{error.errorMessage}</strong>)}
+								{(!isEmpty(error.errorMessage) && <strong className="error">{error.errorMessage}</strong>)}
 							</div>
 						</div>
 					</form>
