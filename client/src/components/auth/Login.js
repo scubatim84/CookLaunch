@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import setAuthToken from "../../utils/setAuthToken";
+import jwt_decode from "jwt-decode";
 
 function Login() {
-	const [registerUser, setRegisterUser] = useState({
+	const [loginUser, setLoginUser] = useState({
 		email: "",
 		password: "",
 	});
@@ -11,16 +14,41 @@ function Login() {
 	});
 
 	const onChange = e => {
-    setRegisterUser({ [e.target.id]: e.target.value });
+		const { name, value } = e.target;
+
+    setLoginUser(prevValue => {
+			return {
+				...prevValue,
+				[name]: value
+			}
+		});
   };
 
   const onSubmit = e => {
     e.preventDefault();
     
     const userData = {
-      email: registerUser.email,
-      password: registerUser.password
-    };
+      email: loginUser.email,
+      password: loginUser.password
+		};
+		
+		axios
+			.post("/api/users/login", userData)
+			.then(res => {
+				// Save to localStorage
+	
+				// Set token to localStorage
+				const { token } = res.data;
+				localStorage.setItem("jwtToken", token);
+				// Set token to Auth header
+				setAuthToken(token);
+				// Decode token to get user payload
+				const payload = jwt_decode(token);
+				// Set current user
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	};
 	
 	return (
@@ -39,11 +67,11 @@ function Login() {
 							Don't have an account? <Link to="/register">Register</Link>
 						</p>
 					</div>
-					<form noValidate onSubmit={this.onSubmit}>
+					<form noValidate onSubmit={onSubmit}>
 						<div className="input-field col s12">
 							<input
-								onChange={this.onChange}
-								value={this.state.email}
+								onChange={onChange}
+								value={loginUser.email}
 								id="email"
 								name="email"
 								type="email"
@@ -52,8 +80,8 @@ function Login() {
 						</div>
 						<div className="input-field col s12">
 							<input
-								onChange={this.onChange}
-								value={this.state.password}
+								onChange={onChange}
+								value={loginUser.password}
 								id="password"
 								name="password"
 								type="password"
