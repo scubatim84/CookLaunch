@@ -4,23 +4,18 @@ import jwt_decode from "jwt-decode";
 import isEmpty from "is-empty";
 
 // Register User
-export const registerUser = (userData, history) => {
-	let error = "";
-
-	axios
+export const registerUser = async (userData, history) => {
+	let error = await axios
 		.post("/api/users/register", userData)
 		// .then(res => history.push("/login")) // re-direct to login on successful register
 		.then(res => {
-			if (isEmpty(error) && res.status === 200) {
+			if (res.status === 200) {
 				console.log("User registered.");
 			}
 		})
 		.catch(err => {
-			error = err.response.data;
-		}).bind(error);
-
-	console.log(error);
-	
+			return err.response.data;
+		});
 
 	// If an error occurs during registration, it will be returned
 	if (!isEmpty(error)) {

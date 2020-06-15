@@ -10,6 +10,9 @@ function Register() {
 		password: "",
 		password2: "",
 	});
+	const [error, setError] = useState({
+		errorMessage: ""
+	});
 
   const onChange = e => {
 		const { name, value } = e.target;
@@ -22,7 +25,7 @@ function Register() {
 		});
   };
 
-  const onSubmit = e => {
+  const onSubmit = async e => {
     e.preventDefault();
     
     const newUserData = {
@@ -32,19 +35,24 @@ function Register() {
       password2: newUser.password2
 		};
 
-		let test = registerUser(newUserData);
+		const requestError = await registerUser(newUserData);
 
-		console.log(test);
-		
+		if (isEmpty(requestError)) {
+			setNewUser({
+				name: "",
+				email: "",
+				password: "",
+				password2: "",
+			});
 
-		// if (isEmpty(error)) {
-		// 	setNewUser({
-		// 		name: "",
-		// 		email: "",
-		// 		password: "",
-		// 		password2: "",
-		// 	});
-		// }
+			setError({
+				errorMessage: ""
+			});
+		} else {
+			setError({
+				errorMessage: requestError
+			});
+		}
 	};
 	
 	return (
@@ -118,7 +126,7 @@ function Register() {
 								Sign up
 							</button>
 							<div>
-								{/* {(!isEmpty(error) && <strong class="error">{error}</strong>)} */}
+								{(!isEmpty(error.errorMessage) && <strong class="error">{error.errorMessage}</strong>)}
 							</div>
 						</div>
 					</form>
