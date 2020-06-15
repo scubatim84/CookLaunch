@@ -1,23 +1,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import isEmpty from "is-empty";
+import { registerUser } from "../../actions/authActions";
 
 function Register() {
-	const [registerUser, setRegisterUser] = useState({
+	const [newUser, setNewUser] = useState({
 		name: "",
 		email: "",
 		password: "",
 		password2: "",
 	});
-	const [error, setError] = useState({
-		errorMessage: ""
-	});
 
   const onChange = e => {
 		const { name, value } = e.target;
 
-    setRegisterUser(prevValue => {
+    setNewUser(prevValue => {
 			return {
 				...prevValue,
 				[name]: value
@@ -28,38 +25,26 @@ function Register() {
   const onSubmit = e => {
     e.preventDefault();
     
-    const newUser = {
-      name: registerUser.name,
-      email: registerUser.email,
-      password: registerUser.password,
-      password2: registerUser.password2
+    const newUserData = {
+      name: newUser.name,
+      email: newUser.email,
+      password: newUser.password,
+      password2: newUser.password2
 		};
 
-		axios
-			.post("/api/users/register", newUser)
-			.then(res => {
-				if (isEmpty(error.errorMessage) && res.status === 200) {
-					console.log("User registered.");
-				}
+		let test = registerUser(newUserData);
 
-				setRegisterUser({
-					name: "",
-					email: "",
-					password: "",
-					password2: "",
-				});
+		console.log(test);
+		
 
-				setError({
-					errorMessage: ""
-				})
-			})
-			.catch(err => {
-				const newError = err.response.data;
-
-				setError({
-					errorMessage: newError
-				});
-			});
+		// if (isEmpty(error)) {
+		// 	setNewUser({
+		// 		name: "",
+		// 		email: "",
+		// 		password: "",
+		// 		password2: "",
+		// 	});
+		// }
 	};
 	
 	return (
@@ -82,7 +67,7 @@ function Register() {
 						<div className="input-field col s12">
 							<input
 								onChange={onChange}
-								value={registerUser.name}
+								value={newUser.name}
 								id="name"
 								name="name"
 								type="text"
@@ -92,7 +77,7 @@ function Register() {
 						<div className="input-field col s12">
 							<input
 								onChange={onChange}
-								value={registerUser.email}
+								value={newUser.email}
 								id="email"
 								name="email"
 								type="email"
@@ -102,7 +87,7 @@ function Register() {
 						<div className="input-field col s12">
 							<input
 								onChange={onChange}
-								value={registerUser.password}
+								value={newUser.password}
 								id="password"
 								name="password"
 								type="password"
@@ -112,7 +97,7 @@ function Register() {
 						<div className="input-field col s12">
 							<input
 								onChange={onChange}
-								value={registerUser.password2}
+								value={newUser.password2}
 								id="password2"
 								name="password2"
 								type="password"
@@ -133,7 +118,7 @@ function Register() {
 								Sign up
 							</button>
 							<div>
-								{(!isEmpty(error.errorMessage) && <strong class="error">{error.errorMessage}</strong>)}
+								{/* {(!isEmpty(error) && <strong class="error">{error}</strong>)} */}
 							</div>
 						</div>
 					</form>

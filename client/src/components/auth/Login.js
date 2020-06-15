@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import setAuthToken from "../../utils/setAuthToken";
-import jwt_decode from "jwt-decode";
+import { loginUser } from "../../actions/authActions";
 
 function Login() {
-	const [loginUser, setLoginUser] = useState({
+	const [user, setUser] = useState({
 		email: "",
 		password: "",
 	});
@@ -16,7 +14,7 @@ function Login() {
 	const onChange = e => {
 		const { name, value } = e.target;
 
-    setLoginUser(prevValue => {
+    setUser(prevValue => {
 			return {
 				...prevValue,
 				[name]: value
@@ -28,27 +26,11 @@ function Login() {
     e.preventDefault();
     
     const userData = {
-      email: loginUser.email,
-      password: loginUser.password
+      email: user.email,
+      password: user.password
 		};
 		
-		axios
-			.post("/api/users/login", userData)
-			.then(res => {
-				// Save to localStorage
-	
-				// Set token to localStorage
-				const { token } = res.data;
-				localStorage.setItem("jwtToken", token);
-				// Set token to Auth header
-				setAuthToken(token);
-				// Decode token to get user payload
-				const payload = jwt_decode(token);
-				// Set current user
-			})
-			.catch(err => {
-				console.log(err);
-			});
+		loginUser(userData);
 	};
 	
 	return (
@@ -71,7 +53,7 @@ function Login() {
 						<div className="input-field col s12">
 							<input
 								onChange={onChange}
-								value={loginUser.email}
+								value={user.email}
 								id="email"
 								name="email"
 								type="email"
@@ -81,7 +63,7 @@ function Login() {
 						<div className="input-field col s12">
 							<input
 								onChange={onChange}
-								value={loginUser.password}
+								value={user.password}
 								id="password"
 								name="password"
 								type="password"
