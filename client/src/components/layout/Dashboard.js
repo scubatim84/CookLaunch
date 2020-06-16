@@ -1,16 +1,19 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { logoutUser } from "../../actions/authActions";
 
-function Dashboard() {
-	const [user, setUser] = useState({
-		email: "",
-		password: "",
-	});
+function Dashboard(props) {
+	const [userAuthenticated, setUserAuthenticated] = useState(props.userAuthenticated);
+	const history = useHistory();
+
+	if (!userAuthenticated) {
+		history.push("/");
+	}
 
   const onLogoutClick = e => {
 		e.preventDefault();
 		
-		logoutUser(user);
+		// logoutUser(user);
   };
 
 	return (
