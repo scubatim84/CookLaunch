@@ -16,10 +16,12 @@ app.use(bodyParser.json());
 const db = process.env.MONGO_URI;
 
 // Connect to MongoDB
-mongoose
-	.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
-	.then(() => console.log("MongoDB successfully connected."))
-	.catch(err => console.log(err));
+try {
+	mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true });
+	console.log("MongoDB successfully connected.");
+} catch(err) {
+	console.log(err);
+}
 
 // Passport middleware
 app.use(passport.initialize());
