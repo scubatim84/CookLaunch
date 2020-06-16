@@ -21,12 +21,6 @@ function App() {
 		});
 	}
 
-	const dashboardPage = () => {
-		return (
-			<Dashboard userAuthenticated={user.isAuthenticated} />
-		);
-	}
-
 	const registerPage = () => {
 		return (
 			<Register setUser={setCurrentUser} />
@@ -46,7 +40,7 @@ function App() {
 				<Route exact path="/" component={Landing} />
 				<Route exact path="/register" render={registerPage} />
 				<Route exact path="/login" render={loginPage} />
-				<Route exact path="/dashboard" render={dashboardPage} />
+				<Route exact path="/dashboard" component={Dashboard} />
 			</div>
 		</Router>
   );

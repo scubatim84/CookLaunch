@@ -1,21 +1,32 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { logoutUser } from "../../actions/authActions";
+import cookies from "js-cookie";
+import isEmpty from "is-empty";
 
-function Dashboard(props) {
-	const [userAuthenticated, setUserAuthenticated] = useState(props.userAuthenticated);
+import Landing from "../layout/Landing";
+
+function Dashboard() {
 	const history = useHistory();
+	const userCookie = cookies.get("user");
+	const userAuthenticated = !isEmpty(userCookie);
 
-	if (!userAuthenticated) {
+	const [user, setUser] = useState({
+		user: {}
+	});
+
+	if (userAuthenticated) {
+		setUser(userCookie);
+	}	 else {
 		history.push("/");
 	}
 
   const onLogoutClick = e => {
 		e.preventDefault();
-		
-		// logoutUser(user);
-  };
 
+		logoutUser();
+	};
+	
 	return (
 		<div style={{ height: "75vh" }} className="container valign-wrapper">
 			<div className="row">

@@ -1,7 +1,7 @@
 import axios from "axios";
-import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 import { REQUEST_SUCCESS, REQUEST_FAIL } from "./types";
+import cookies from "js-cookie";
 
 // Register User
 export const registerUser = async userData => {
@@ -27,18 +27,16 @@ export const registerUser = async userData => {
 	}
 };
 
-// Login - get user token
+// Login - get user token and set cookie
 export const loginUser = async userData => {
 	try {
 		const response = await axios.post("/api/users/login", userData);
 
-		// Save to localStorage
-		// Set token to localStorage
+		// Attempt to login user, and if successful, obtain token
 		const { token } = response.data;
-		localStorage.setItem("jwtToken", token);
 
-		// Set token to Auth header
-		setAuthToken(token);
+		// Set authentication cookie with token
+		cookies.set("user", token, { expires: 7 });
 
 		// Decode token to get user payload
 		const decoded = jwt_decode(token);
@@ -59,12 +57,8 @@ export const loginUser = async userData => {
 	}
 };
 
-// Log user out
-export const logoutUser = user => {
-  // Remove token from local storage
-  localStorage.removeItem("jwtToken");
-  // Remove auth header for future requests
-  setAuthToken(false);
-  // Set current user to empty object {} which will set isAuthenticated to false
-  // setCurrentUser({});
+// Log user out and remove cookie
+export const logoutUser = () => {
+	// Remove authentication cookie
+	cookies.remove("user");
 };
