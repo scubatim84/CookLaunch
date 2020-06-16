@@ -1,4 +1,3 @@
-import { useHistory } from "react-router-dom";
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
@@ -8,11 +7,8 @@ import { REQUEST_SUCCESS, REQUEST_FAIL } from "./types";
 export const registerUser = async userData => {
 	try {
 		const response = await axios.post("/api/users/register", userData);
-		const history = useHistory();
 
 		if (response.status === 201) {
-			history.push("/dashboard");
-
 			return { 
 				authResponseType: REQUEST_SUCCESS,
 				authResponsePayload: response.data

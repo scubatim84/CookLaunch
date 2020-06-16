@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import isEmpty from "is-empty";
 import { loginUser } from "../../actions/authActions";
 import { REQUEST_SUCCESS } from "../../actions/types";
 
 function Login(props) {
+	const history = useHistory();
+
 	const [user, setUser] = useState({
 		email: "",
 		password: "",
@@ -12,6 +14,10 @@ function Login(props) {
 	const [error, setError] = useState({
 		errorMessage: ""
 	});
+
+	const handleRedirect = () => {
+		history.push("/dashboard");
+	}
 
 	const handleChange = e => {
 		const { name, value } = e.target;
@@ -51,8 +57,10 @@ function Login(props) {
 				errorMessage: requestResponse.authResponsePayload
 			});
 		}
+
+		handleRedirect();
 	};
-	
+
 	return (
 		<div className="container">
 			<div style={{ marginTop: "4rem" }} className="row">

@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { logoutUser } from "../../actions/authActions";
 
-function Dashboard(props) {
+function Dashboard() {
 	const [user, setUser] = useState({
 		email: "",
 		password: "",
 	});
-
-	console.log(props);
 
   const onLogoutClick = e => {
 		e.preventDefault();
