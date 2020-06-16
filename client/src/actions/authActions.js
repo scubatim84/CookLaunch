@@ -2,6 +2,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { REQUEST_SUCCESS, REQUEST_FAIL } from "./types";
 import cookies from "js-cookie";
+import isEmpty from "is-empty";
 
 // Register User
 export const registerUser = async userData => {
@@ -39,9 +40,9 @@ export const loginUser = async userData => {
 		cookies.set("user", token, { expires: 7 });
 
 		// Decode token to get user payload
-		const decoded = jwt_decode(token);
+		const decoded = await jwt_decode(token);
 
-		// Set current user to be logged in
+		// Set current user to decoded payload
 		const payload = { payload: decoded }
 
 		// Return user payload
@@ -57,8 +58,28 @@ export const loginUser = async userData => {
 	}
 };
 
-// Log user out and remove cookie
-export const logoutUser = () => {
+// Log user out
+export const logoutUser = async () => {
 	// Remove authentication cookie
-	cookies.remove("user");
+  cookies.remove("user");
+
+  // Check authentication to ensure user logout was successful
+  const userAuthenticated = await authenticateUser();
+
+  if (!userAuthenticated) {
+    return REQUEST_SUCCESS;
+  } else {
+    return REQUEST_FAIL;
+  }
 };
+
+// Check if user is logged in
+export const authenticateUser = async () => {
+  const userCookie = cookies.get("user");
+
+  if (!isEmpty(userCookie)) {
+    return true;
+  } else {
+    return false;
+  }
+}
