@@ -21,6 +21,12 @@ function App() {
 		});
 	}
 
+	const registerPage = () => {
+		return (
+			<Register setUser={setCurrentUser} />
+		);
+	}
+
 	const loginPage = () => {
 		return (
 			<Login setUser={setCurrentUser} />
@@ -32,7 +38,7 @@ function App() {
 			<div className="App">
 				<Navbar />
 				<Route exact path="/" component={Landing} />
-				<Route exact path="/register" component={Register} />
+				<Route exact path="/register" render={registerPage} />
 				<Route exact path="/login" render={loginPage} />
 				<Route exact path="/dashboard" component={Dashboard} />
 			</div>

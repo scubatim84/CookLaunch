@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import isEmpty from "is-empty";
-import { registerUser } from "../../actions/authActions";
+import { registerUser, loginUser } from "../../actions/authActions";
 import { REQUEST_SUCCESS } from "../../actions/types";
 
-function Register() {
+function Register(props) {
+	const history = useHistory();
+
 	const [newUser, setNewUser] = useState({
 		name: "",
 		email: "",
@@ -14,6 +16,10 @@ function Register() {
 	const [error, setError] = useState({
 		errorMessage: ""
 	});
+
+	const handleRedirect = () => {
+		history.push("/dashboard");
+	}
 
   const onChange = e => {
 		const { name, value } = e.target;
@@ -39,16 +45,29 @@ function Register() {
 		const requestResponse = await registerUser(newUserData);
 
 		if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-			setNewUser({
-				name: "",
-				email: "",
-				password: "",
-				password2: "",
-			});
+			const requestResponse = await loginUser(newUserData);
 
-			setError({
-				errorMessage: ""
-			});
+			if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+
+				props.setUser(newUser);
+	
+				setNewUser({
+					name: "",
+					email: "",
+					password: "",
+					password2: "",
+				});
+	
+				setError({
+					errorMessage: ""
+				});
+			} else {
+				setError({
+					errorMessage: requestResponse.authResponsePayload
+				});
+			}
+
+			handleRedirect();
 		} else {
 			setError({
 				errorMessage: requestResponse.authResponsePayload
