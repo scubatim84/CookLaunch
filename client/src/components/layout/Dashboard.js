@@ -11,8 +11,8 @@ function Dashboard() {
   const [isLoggedin, setLoggedIn] = useState(!isEmpty(token));
   const [user, setUser] = useState({
     name: "",
-  });
-  
+	});
+	
   useEffect(() => {
     if (isLoggedin) {
       const getUserPayload = async () => {
@@ -26,7 +26,7 @@ function Dashboard() {
 
       getUserPayload();
     }
-  });
+  }, [isLoggedin, token]);
 
   const handleLogoutClick = async () => {
     const response = await logoutUser();
