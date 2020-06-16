@@ -1,16 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import { logoutUser } from "../../actions/authActions";
+import { getUserData, logoutUser } from "../../actions/authActions";
 import { REQUEST_SUCCESS } from "../../actions/types";
 import isEmpty from "is-empty";
 import cookies from "js-cookie";
 
 function Dashboard() {
-  const userCookie = cookies.get("user");
+  const token = cookies.get("user");
 
-  const [isLoggedin, setLoggedIn] = useState(!isEmpty(userCookie));
-	const [user, setUser] = useState({
-		user: {}
+  const [isLoggedin, setLoggedIn] = useState(!isEmpty(token));
+  const [user, setUser] = useState({
+    name: "",
+  });
+  
+  useEffect(() => {
+    if (isLoggedin) {
+      const getUserPayload = async () => {
+        const data = await getUserData(token);
+        const userPayload = await data.payload;
+
+        setUser({
+          name: userPayload.name
+        });
+      }
+
+      getUserPayload();
+    }
   });
 
   const handleLogoutClick = async () => {
@@ -27,7 +42,7 @@ function Dashboard() {
         <div className="row">
           <div className="col s12 center-align">
             <h4>
-              <b>Hey there,</b>
+              <b>Hello {!isEmpty(user.name) && user.name}</b>
               <p className="flow-text grey-text text-darken-1">
                 You are logged into a full-stack{" "}
                 <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏

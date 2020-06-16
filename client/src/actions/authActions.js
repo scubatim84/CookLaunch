@@ -39,16 +39,9 @@ export const loginUser = async userData => {
 		// Set authentication cookie with token
 		cookies.set("user", token, { expires: 7 });
 
-		// Decode token to get user payload
-		const decoded = await jwt_decode(token);
-
-		// Set current user to decoded payload
-		const payload = { payload: decoded }
-
-		// Return user payload
+		// Return response
 		return {
-			authResponseType: REQUEST_SUCCESS,
-			authResponsePayload: payload
+			authResponseType: REQUEST_SUCCESS
 		};
 	} catch (err) {
 		return {
@@ -82,4 +75,15 @@ export const authenticateUser = async () => {
   } else {
     return false;
   }
+}
+
+// Get user data from decoded JWT token
+export const getUserData = async token => {
+  // Decode token to get user payload
+  const decoded = await jwt_decode(token);
+
+  // Set current user to decoded payload
+  const payload = { payload: decoded }
+
+  return payload;
 }
