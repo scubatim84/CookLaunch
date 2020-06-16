@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import isEmpty from "is-empty";
 import { loginUser } from "../../actions/authActions";
+import { REQUEST_SUCCESS } from "../../actions/types";
 
-function Login() {
+function Login(props) {
 	const [user, setUser] = useState({
 		email: "",
 		password: "",
@@ -12,7 +13,7 @@ function Login() {
 		errorMessage: ""
 	});
 
-	const onChange = e => {
+	const handleChange = e => {
 		const { name, value } = e.target;
 
     setUser(prevValue => {
@@ -23,7 +24,7 @@ function Login() {
 		});
   };
 
-  const onSubmit = async e => {
+  const handleClick = async e => {
     e.preventDefault();
     
     const userData = {
@@ -33,7 +34,10 @@ function Login() {
 		
 		const requestResponse = await loginUser(userData);
 
-		if (requestResponse.authResponseType === "success") {
+		if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+
+			props.setUser(user);
+
 			setUser({
 				email: "",
 				password: "",
@@ -65,10 +69,10 @@ function Login() {
 							Don't have an account? <Link to="/register">Register</Link>
 						</p>
 					</div>
-					<form noValidate onSubmit={onSubmit}>
+					<form>
 						<div className="input-field col s12">
 							<input
-								onChange={onChange}
+								onChange={handleChange}
 								value={user.email}
 								id="email"
 								name="email"
@@ -78,7 +82,7 @@ function Login() {
 						</div>
 						<div className="input-field col s12">
 							<input
-								onChange={onChange}
+								onChange={handleChange}
 								value={user.password}
 								id="password"
 								name="password"
@@ -94,6 +98,7 @@ function Login() {
 									letterSpacing: "1.5px",
 									marginTop: "1rem"
 								}}
+								onClick={handleClick}
 								type="submit"
 								className="btn btn-large waves-effect waves-light hoverable blue accent-3"
 							>

@@ -1,13 +1,31 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import isEmpty from "is-empty";
 
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
+import Dashboard from "./components/layout/Dashboard"
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 
 function App() {
-	const [user, setUser] = useState(null); 
+	const [user, setUser] = useState({
+		user: {},
+		isAuthenticated: false
+	});
+
+	const setCurrentUser = userData => {
+		setUser({
+			user: userData,
+			isAuthenticated: !isEmpty(userData)
+		});
+	}
+
+	const loginPage = () => {
+		return (
+			<Login setUser={setCurrentUser} />
+		);
+	}
 
   return (
 		<Router>
@@ -15,7 +33,8 @@ function App() {
 				<Navbar />
 				<Route exact path="/" component={Landing} />
 				<Route exact path="/register" component={Register} />
-				<Route exact path="/login" component={Login} />
+				<Route exact path="/login" render={loginPage} />
+				<Route exact path="/dashboard" component={Dashboard} />
 			</div>
 		</Router>
   );

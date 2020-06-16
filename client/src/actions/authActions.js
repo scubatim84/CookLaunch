@@ -1,26 +1,31 @@
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
+import { REQUEST_SUCCESS, REQUEST_FAIL } from "./types";
 
 // Register User
-export const registerUser = async (userData, history) => {
+export const registerUser = async userData => {
 	try {
 		const response = await axios.post("/api/users/register", userData);
+		const history = useHistory();
 
 		if (response.status === 201) {
+			history.push("/dashboard");
+
 			return { 
-				authResponseType: "success",
+				authResponseType: REQUEST_SUCCESS,
 				authResponsePayload: response.data
 			};
 		} else {
 			return {
-				authResponseType: "fail",
+				authResponseType: REQUEST_FAIL,
 				authResponsePayload: response.data
 			};
 		}
 	} catch (err) {
 		return {
-			authResponseType: "fail",
+			authResponseType: REQUEST_FAIL,
 			authResponsePayload: err.response.data
 		};
 	}
@@ -42,33 +47,28 @@ export const loginUser = async userData => {
 		// Decode token to get user payload
 		const decoded = jwt_decode(token);
 
-		// Set current user
-		const payload = setCurrentUser(decoded);
+		// Set current user to be logged in
+		const payload = { payload: decoded }
 
 		// Return user payload
 		return {
-			authResponseType: "success",
+			authResponseType: REQUEST_SUCCESS,
 			authResponsePayload: payload
 		};
 	} catch (err) {
 		return {
-			authResponseType: "fail",
+			authResponseType: REQUEST_FAIL,
 			authResponsePayload: err.response.data
 		};
 	}
 };
 
-// Set logged in user
-export const setCurrentUser = decoded => {
-  return { payload: decoded };
-};
-
 // Log user out
-export const logoutUser = () => {
+export const logoutUser = user => {
   // Remove token from local storage
   localStorage.removeItem("jwtToken");
   // Remove auth header for future requests
   setAuthToken(false);
   // Set current user to empty object {} which will set isAuthenticated to false
-  setCurrentUser({});
+  // setCurrentUser({});
 };

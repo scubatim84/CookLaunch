@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import isEmpty from "is-empty";
 import { registerUser } from "../../actions/authActions";
+import { REQUEST_SUCCESS } from "../../actions/types";
 
 function Register() {
 	const [newUser, setNewUser] = useState({
@@ -37,7 +38,7 @@ function Register() {
 
 		const requestResponse = await registerUser(newUserData);
 
-		if (requestResponse.authResponseType === "success") {
+		if (requestResponse.authResponseType === REQUEST_SUCCESS) {
 			setNewUser({
 				name: "",
 				email: "",
