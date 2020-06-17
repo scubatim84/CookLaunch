@@ -138,7 +138,7 @@ function Register() {
                   Sign up
                 </button>
                 <div>
-                  {(!isEmpty(error.errorMessage) && <strong class="error">{error.errorMessage}</strong>)}
+                  {(!isEmpty(error.errorMessage) && <strong class="error-text">{error.errorMessage}</strong>)}
                 </div>
               </div>
             </form>

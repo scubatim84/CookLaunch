@@ -106,7 +106,7 @@ function Login() {
                   Login
                 </button>
                 <div>
-                  {(!isEmpty(error.errorMessage) && <strong className="error">{error.errorMessage}</strong>)}
+                  {(!isEmpty(error.errorMessage) && <strong className="error-text">{error.errorMessage}</strong>)}
                 </div>
               </div>
             </form>
