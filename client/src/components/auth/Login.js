@@ -1,10 +1,38 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
-import isEmpty from "is-empty";
+import { Redirect } from "react-router-dom";
 import { loginUser } from "../../actions/authActions";
+import isEmpty from "is-empty";
 import { REQUEST_SUCCESS } from "../../actions/types";
+import { makeStyles } from '@material-ui/core/styles';
+
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    margin: theme.spacing(2, 2, 2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(2),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+	},
+}));
 
 function Login() {
+  const classes = useStyles();
+
   const [isLoggedin, setLoggedIn] = useState(false);
 	const [user, setUser] = useState({
 		email: "",
@@ -55,64 +83,68 @@ function Login() {
 
 	return (
     isLoggedin ? <Redirect to="/dashboard" /> :
-      <div className="container">
-        <div style={{ marginTop: "4rem" }} className="row">
-          <div className="col s8 offset-s2">
-            <Link to="/" className="btn-flat waves-effect">
-              <i className="material-icons left">keyboard_backspace</i> Back to
-              home
-            </Link>
-            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-              <h4>
-                <b>Login</b> below
-              </h4>
-              <p className="grey-text text-darken-1">
-                Don't have an account? <Link to="/">Register</Link>
-              </p>
-            </div>
-            <form>
-              <div className="input-field col s12">
-                <input
-                  onChange={handleChange}
-                  value={user.email}
-                  id="email"
-                  name="email"
-                  type="email"
-                />
-                <label htmlFor="email">Email</label>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  onChange={handleChange}
-                  value={user.password}
-                  id="password"
-                  name="password"
-                  type="password"
-                />
-                <label htmlFor="password">Password</label>
-              </div>
-              <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                <button
-                  style={{
-                    width: "150px",
-                    borderRadius: "3px",
-                    letterSpacing: "1.5px",
-                    marginTop: "1rem"
-                  }}
-                  onClick={handleLoginClick}
-                  type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-                >
-                  Login
-                </button>
-                <div>
-                  {(!isEmpty(error.errorMessage) && <strong className="error-text">{error.errorMessage}</strong>)}
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
+
+    <Container component="main" maxWidth="xs">
+			<Card>
+				<CssBaseline />
+				<div className={classes.paper}>
+          <Typography component="h1" variant="h5">
+						Sign In Here
+					</Typography>
+					<form className={classes.form} noValidate>
+						<Grid container spacing={2}>
+							<Grid item xs={12}>
+								<TextField
+									onChange={handleChange}
+									value={user.email}
+									variant="outlined"
+									required
+									fullWidth
+									id="email"
+									label="Email Address"
+									name="email"
+									autoComplete="email"
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									onChange={handleChange}
+									value={user.password}
+									variant="outlined"
+									required
+									fullWidth
+									name="password"
+									label="Password"
+									type="password"
+									id="password"
+									autoComplete="password"
+								/>
+							</Grid>
+						</Grid>
+						<Button
+							onClick={handleLoginClick}
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={classes.submit}
+						>
+							Login
+						</Button>
+						<Grid container justify="flex-end">
+							<Grid item>
+								<Link href="/" variant="body2">
+								  Don't have an account? Register
+								</Link>
+							</Grid>
+						</Grid>
+						<div>
+							{(!isEmpty(error.errorMessage) && <strong class="error-text">{error.errorMessage}</strong>)}
+						</div>
+					</form>
+				</div>
+   		</Card>
+		</Container>
 	);
 }
 

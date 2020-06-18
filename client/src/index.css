@@ -23,10 +23,7 @@ code {
 	color: red;
 }
 
-.landing-background {
-  /* The image used */
-  background-image: url("./images/landing-bg.png");
-
+.background-image-full {
   /* Set rules to fill background */
   min-height: 100%;
   min-width: 1024px;
@@ -45,6 +42,14 @@ code {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+.landing-background {
+  background-image: url("./images/landing-bg.png");
+}
+
+.login-background {
+  background-image: url("./images/login-bg.png");
 }
 
 .navbar-brand {

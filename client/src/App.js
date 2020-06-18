@@ -3,9 +3,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import Landing from "./components/layout/Landing";
-import Dashboard from "./components/layout/Dashboard"
-import Register from "./components/auth/Register";
-import Login from "./components/auth/Login";
+import LoginPage from "./components/layout/LoginPage";
+import Dashboard from "./components/layout/Dashboard";
 
 const theme = createMuiTheme({
   palette: {
@@ -23,7 +22,7 @@ function App() {
 			<Router>
 				<div className="App">
 					<Route exact path="/" component={Landing} />
-					<Route exact path="/login" component={Login} />
+					<Route exact path="/login" component={LoginPage} />
 					<Route exact path="/dashboard" component={Dashboard} />
 				</div>
 			</Router>
