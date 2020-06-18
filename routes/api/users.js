@@ -30,7 +30,8 @@ router.post("/register", async (req, res) => {
 		return res.status(400).json("Email already exists");
 	} else {
 		const newUser = new User({
-			name: req.body.name,
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
 			email: req.body.email,
 		});
 

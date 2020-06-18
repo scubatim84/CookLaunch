@@ -1,13 +1,57 @@
 import React, { useState } from "react";
-import { Link, Redirect } from "react-router-dom";
-import isEmpty from "is-empty";
+import { Redirect } from "react-router-dom";
 import { registerUser, loginUser } from "../../actions/authActions";
+import isEmpty from "is-empty";
 import { REQUEST_SUCCESS } from "../../actions/types";
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Card from '@material-ui/core/Card';
+
+const useStyles = makeStyles((theme) => ({
+	root: {
+    minWidth: 275,
+  },
+  paper: {
+		marginLeft: theme.spacing(2),
+		marginRight: theme.spacing(2),
+		marginTop: theme.spacing(2),
+		marginBottom: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+	},
+	pos: {
+    marginBottom: 12,
+	},
+	title: {
+    fontSize: 14,
+  },
+}));
 
 function Register() {
+	const classes = useStyles();
+
   const [isLoggedin, setLoggedIn] = useState(false);
 	const [newUser, setNewUser] = useState({
-		name: "",
+		firstName: "",
+		lastName: "",
 		email: "",
 		password: "",
 		password2: "",
@@ -28,7 +72,7 @@ function Register() {
   };
 
   const handleSubmitClick = async e => {
-    e.preventDefault();
+		e.preventDefault();
     
 		const requestResponse = await registerUser(newUser);
 
@@ -39,7 +83,8 @@ function Register() {
 
         // If login is successful after registration, clear registration form
 				setNewUser({
-					name: "",
+					firstName: "",
+					lastName: "",
 					email: "",
 					password: "",
 					password2: "",
@@ -66,86 +111,107 @@ function Register() {
 	};
 	
 	return (
-    isLoggedin ? <Redirect to="/dashboard" /> :
-      <div className="container">
-        <div className="row">
-          <div className="col s8 offset-s2">
-            <Link to="/" className="btn-flat waves-effect">
-              <i className="material-icons left">keyboard_backspace</i> Back to
-              home
-            </Link>
-            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-              <h4>
-                <b>Register</b> below
-              </h4>
-              <p className="grey-text text-darken-1">
-                Already have an account? <Link to="/login">Log in</Link>
-              </p>
-            </div>
-            <form>
-              <div className="input-field col s12">
-                <input
-                  onChange={handleChange}
-                  value={newUser.name}
-                  id="name"
-                  name="name"
-                  type="text"
-                />
-                <label htmlFor="name">Name</label>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  onChange={handleChange}
-                  value={newUser.email}
-                  id="email"
-                  name="email"
-                  type="email"
-                />
-                <label htmlFor="email">Email</label>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  onChange={handleChange}
-                  value={newUser.password}
-                  id="password"
-                  name="password"
-                  type="password"
-                />
-                <label htmlFor="password">Password</label>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  onChange={handleChange}
-                  value={newUser.password2}
-                  id="password2"
-                  name="password2"
-                  type="password"
-                />
-                <label htmlFor="password2">Confirm Password</label>
-              </div>
-              <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                <button
-                  onClick={handleSubmitClick}
-                  style={{
-                    width: "150px",
-                    borderRadius: "3px",
-                    letterSpacing: "1.5px",
-                    marginTop: "1rem"
-                  }}
-                  type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-                >
-                  Sign up
-                </button>
-                <div>
-                  {(!isEmpty(error.errorMessage) && <strong class="error-text">{error.errorMessage}</strong>)}
-                </div>
-              </div>
-            </form>
-            
-          </div>
-        </div>
-      </div>
+		isLoggedin ? <Redirect to="/dashboard" /> :
+		
+		<Container component="main" maxWidth="xs">
+			<Card className={classes.root}>
+				<CssBaseline />
+				<div className={classes.paper}>
+					<Typography component="h1" variant="h5">
+						Start The Oven
+					</Typography>
+					<form className={classes.form} noValidate>
+						<Grid container spacing={2}>
+							<Grid item xs={12} sm={6}>
+							<TextField
+									onChange={handleChange}
+									value={newUser.firstName}
+									required
+									fullWidth
+									id="firstName"
+									label="First Name"
+									name="firstName"
+									autoComplete="fname"
+								/>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<TextField
+									onChange={handleChange}
+									value={newUser.lastName}
+									required
+									fullWidth
+									id="lastName"
+									label="Last Name"
+									name="lastName"
+									autoComplete="lname"
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									onChange={handleChange}
+									value={newUser.email}
+									variant="outlined"
+									required
+									fullWidth
+									id="email"
+									label="Email Address"
+									name="email"
+									autoComplete="email"
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									onChange={handleChange}
+									value={newUser.password}
+									variant="outlined"
+									required
+									fullWidth
+									name="password"
+									label="Password"
+									type="password"
+									id="password"
+									autoComplete="current-password"
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField
+									onChange={handleChange}
+									value={newUser.password2}
+									variant="outlined"
+									required
+									fullWidth
+									name="password2"
+									label="Confirm password"
+									type="password"
+									id="password2"
+									autoComplete="confirm-password"
+								/>
+							</Grid>
+						</Grid>
+						<Button
+							onClick={handleSubmitClick}
+							type="submit"
+							fullWidth
+							variant="contained"
+							color="primary"
+							className={classes.submit}
+						>
+							Sign Up
+						</Button>
+						<Grid container justify="flex-end">
+							<Grid item>
+								<Link href="/login" variant="body2">
+									Already have an account? Sign in
+								</Link>
+							</Grid>
+						</Grid>
+						<div>
+							{(!isEmpty(error.errorMessage) && <strong class="error-text">{error.errorMessage}</strong>)}
+						</div>
+					</form>
+				</div>
+   		</Card>
+		</Container>
 	);
 }
 
