@@ -1,6 +1,5 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import { AppBar, Toolbar } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
@@ -16,7 +15,7 @@ function LandingNavBar() {
   return (
     <div>
       <ThemeProvider theme={theme}>
-        <AppBar className="landing-navbar" position="static">
+        <AppBar position="static">
           <Toolbar>
             <span className="navbar-brand">Cook Launch</span>
           </Toolbar>

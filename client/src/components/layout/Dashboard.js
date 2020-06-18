@@ -12,15 +12,16 @@ function Dashboard() {
 
   const [isLoggedIn, setLoggedIn] = useState(!isEmpty(token));
   const [user, setUser] = useState({
-    name: "",
+		firstName: "",
+		lastName: "",
 	});
 	
   useEffect(() => {
     if (isLoggedIn) {
       const getUserPayload = async () => {
         const data = await getUserData(token);
-        const userPayload = await data.payload;
-
+				const userPayload = await data.payload;
+				
         setUser({
 					firstName: userPayload.firstName,
 					lastName: userPayload.lastName
@@ -31,7 +32,7 @@ function Dashboard() {
     }
 	}, [isLoggedIn, token]);
 	
-	const handleLoggedIn = () => async stillLoggedIn => {
+	const handleLoggedIn = async stillLoggedIn => {
 		if (stillLoggedIn) {
 			setLoggedIn(true);
 		} else {
@@ -42,8 +43,8 @@ function Dashboard() {
 	return (
 		!isLoggedIn ? <Redirect to="/login" /> : 
 		<div>
-			<DashboardNavbar />
-			<DashboardBody userData={user} changeLoggedIn={handleLoggedIn} />
+			<DashboardNavbar changeLoggedIn={handleLoggedIn} />
+			<DashboardBody userData={user}  />
 		</div>
 	);
 }
