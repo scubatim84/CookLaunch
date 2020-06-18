@@ -26,23 +26,13 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
+    marginTop: theme.spacing(2),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
 	},
-	pos: {
-    marginBottom: 12,
-	},
-	title: {
-    fontSize: 14,
-  },
 }));
 
 function Register() {
@@ -123,9 +113,10 @@ function Register() {
 					<form className={classes.form} noValidate>
 						<Grid container spacing={2}>
 							<Grid item xs={12} sm={6}>
-							<TextField
+								<TextField
 									onChange={handleChange}
 									value={newUser.firstName}
+									variant="outlined"
 									required
 									fullWidth
 									id="firstName"
@@ -138,6 +129,7 @@ function Register() {
 								<TextField
 									onChange={handleChange}
 									value={newUser.lastName}
+									variant="outlined"
 									required
 									fullWidth
 									id="lastName"

@@ -67,7 +67,7 @@ function Login() {
                 <b>Login</b> below
               </h4>
               <p className="grey-text text-darken-1">
-                Don't have an account? <Link to="/register">Register</Link>
+                Don't have an account? <Link to="/">Register</Link>
               </p>
             </div>
             <form>
