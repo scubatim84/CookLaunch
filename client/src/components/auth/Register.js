@@ -3,25 +3,20 @@ import { Redirect } from "react-router-dom";
 import { registerUser, loginUser } from "../../actions/authActions";
 import isEmpty from "is-empty";
 import { REQUEST_SUCCESS } from "../../actions/types";
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
+import Container from '@material-ui/core/Container';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
-	root: {
-    minWidth: 275,
-  },
   paper: {
-		marginLeft: theme.spacing(2),
-		marginRight: theme.spacing(2),
-		marginTop: theme.spacing(2),
-		marginBottom: theme.spacing(2),
+    margin: theme.spacing(2, 2, 2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -104,7 +99,7 @@ function Register() {
 		isLoggedin ? <Redirect to="/dashboard" /> :
 		
 		<Container component="main" maxWidth="xs">
-			<Card className={classes.root}>
+			<Card>
 				<CssBaseline />
 				<div className={classes.paper}>
 					<Typography component="h1" variant="h5">

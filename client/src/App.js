@@ -10,10 +10,9 @@ import Login from "./components/auth/Login";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#003d00"
-		},
-		secondary: {
-			main: "#33691e"
+      dark: "#003d00",
+      main: "#33691e",
+      light: "#629749"
 		}
   }
 });
