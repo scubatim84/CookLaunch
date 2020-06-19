@@ -1,13 +1,28 @@
 import React from "react";
+import RegisterForm from "../auth/RegisterForm";
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
 
-import Navbar from "./Navbar";
-import LandingBody from "./LandingBody";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  position: {
+		padding: '125px 0px 100px 20px',
+		marginLeft: '0px'
+  },
+}));
 
-function Landing() {
+function Landing(props) {
+  const classes = useStyles();
+
 	return (
-    <div>
-      <Navbar />
-      <LandingBody />
+    <div className="landing-background background-image-full">
+			<div className={classes.root}>
+				<Grid className={classes.position} item xs={4}>
+					<RegisterForm handleLoggedIn={props.handleLoggedIn} isLoggedIn={props.isLoggedIn} />
+				</Grid>
+  	  </div>
     </div>
 	);
 }

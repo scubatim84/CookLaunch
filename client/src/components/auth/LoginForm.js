@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { loginUser } from "../../actions/authActions";
 import isEmpty from "is-empty";
@@ -30,10 +30,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function LoginForm() {
+function LoginForm(props) {
   const classes = useStyles();
 
-  const [isLoggedin, setLoggedIn] = useState(false);
+  const [isLoggedin, setLoggedIn] = useState(props.isLoggedin);
 	const [user, setUser] = useState({
 		email: "",
 		password: "",
@@ -41,6 +41,10 @@ function LoginForm() {
 	const [error, setError] = useState({
     errorMessage: ""
   });
+
+  useEffect(() => {
+    setLoggedIn(props.isLoggedIn);
+	}, [props.isLoggedIn]);
 
 	const handleChange = async e => {
 		const { name, value } = e.target;
@@ -72,7 +76,7 @@ function LoginForm() {
       });
 
       // Set user as logged in
-      setLoggedIn(true);
+      props.handleLoggedIn(true);
 
 		} else {
 			setError({

@@ -53,7 +53,7 @@ function NavBar(props) {
     const response = await logoutUser();
 
     if (response === REQUEST_SUCCESS) {
-      props.changeLoggedIn(false);
+      props.handleLoggedIn(false);
 		}
 		
 		handleClose();
@@ -68,7 +68,7 @@ function NavBar(props) {
 							(<Grid
 								justify="space-between"
 								container 
-								spacing={24}
+								spacing={10}
 							>
 								<Grid item>
 									<Brand />
@@ -98,19 +98,21 @@ function NavBar(props) {
 										open={open}
 										onClose={handleClose}
 									>
-										<MenuItem onCLick={handleClose}>Profile</MenuItem>
+										<MenuItem onClick={handleClose}>Profile</MenuItem>
 										<MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
 									</Menu>
 								</Grid>
 							</Grid>)
 							: 
 							(<Grid
-								justify="right"
+								justify="space-between"
 								container 
-								spacing={24}
+								spacing={10}
 							>
 								<Grid item>
 									<Brand />
+								</Grid>
+                <Grid item>
 								</Grid>
 							</Grid>)}
           </Toolbar>

@@ -2,24 +2,24 @@ import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { getUserData } from "../../actions/authActions";
 import isEmpty from "is-empty";
-import cookies from "js-cookie";
 
-import Navbar from "./Navbar";
-import DashboardBody from "./DashboardBody";
+import { Typography } from '@material-ui/core';
 
-function Dashboard() {
-  const token = cookies.get("user");
-
-  const [isLoggedIn, setLoggedIn] = useState(!isEmpty(token));
+function Dashboard(props) {
+  const [isLoggedIn, setLoggedIn] = useState(props.isLoggedIn);
   const [user, setUser] = useState({
 		firstName: "",
 		lastName: "",
-	});
+  });
+  
+  useEffect(() => {
+    setLoggedIn(props.isLoggedIn);
+	}, [props.isLoggedIn]);
 	
   useEffect(() => {
     if (isLoggedIn) {
       const getUserPayload = async () => {
-        const data = await getUserData(token);
+        const data = await getUserData();
 				const userPayload = await data.payload;
 				
         setUser({
@@ -30,22 +30,14 @@ function Dashboard() {
 
       getUserPayload();
     }
-	}, [isLoggedIn, token]);
+	}, [isLoggedIn]);
 	
-	const handleLoggedIn = async stillLoggedIn => {
-		if (stillLoggedIn) {
-			setLoggedIn(true);
-		} else {
-			setLoggedIn(false);
-		}
-	}
-
 	return (
-		!isLoggedIn ? <Redirect to="/login" /> : 
-		<div>
-			<Navbar changeLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />
-			<DashboardBody userData={user}  />
-		</div>
+    !isLoggedIn ? <Redirect to="/login" /> : 
+    
+		<Typography>
+			Welcome {!isEmpty(user.firstName) && user.firstName}
+		</Typography>
 	);
 }
 
