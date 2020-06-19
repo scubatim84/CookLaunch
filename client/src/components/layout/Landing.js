@@ -1,57 +1,30 @@
 import React from "react";
+import RegisterForm from "../auth/RegisterForm";
 
-import LandingNavbar from "./LandingNavbar";
-import LandingBody from "./LandingBody";
+import { Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-function Landing() {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  position: {
+		padding: '125px 0px 100px 20px',
+		marginLeft: '0px'
+  },
+}));
+
+function Landing(props) {
+  const classes = useStyles();
+
 	return (
-    <div>
-      <LandingNavbar />
-      <LandingBody />
+    <div className="landing-background background-image-full">
+			<div className={classes.root}>
+				<Grid className={classes.position} item xs={4}>
+					<RegisterForm handleLoggedIn={props.handleLoggedIn} isLoggedIn={props.isLoggedIn} />
+				</Grid>
+  	  </div>
     </div>
-    
-		// <div style={{ height: "75vh" }} className="container valign-wrapper">
-		// 	<div className="row">
-		// 		<div className="col s12 center-align">
-		// 			<h4>
-		// 				<b>Build</b> a login/auth app with the{" "}
-		// 				<span style={{ fontFamily: "monospace" }}>MERN</span> stack from
-		// 				scratch
-		// 			</h4>
-		// 			<p className="flow-text grey-text text-darken-1">
-		// 				Create a (minimal) full-stack app with user authentication via
-		// 				passport and JWTs
-		// 			</p>
-		// 			<br />
-		// 			<div className="col s6">
-		// 				<Link
-		// 					to="/register"
-		// 					style={{
-		// 						width: "140px",
-		// 						borderRadius: "3px",
-		// 						letterSpacing: "1.5px"
-		// 					}}
-		// 					className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-		// 				>
-		// 					Register
-		// 				</Link>
-		// 			</div>
-		// 			<div className="col s6">
-		// 				<Link
-		// 					to="/login"
-		// 					style={{
-		// 						width: "140px",
-		// 						borderRadius: "3px",
-		// 						letterSpacing: "1.5px"
-		// 					}}
-		// 					className="btn btn-large btn-flat waves-effect white black-text"
-		// 				>
-		// 					Log In
-		// 				</Link>
-		// 			</div>
-		// 		</div>
-		// 	</div>
-		// </div>
 	);
 }
 

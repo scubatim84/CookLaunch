@@ -78,7 +78,10 @@ export const authenticateUser = async () => {
 }
 
 // Get user data from decoded JWT token
-export const getUserData = async token => {
+export const getUserData = async () => {
+  // Retrieve token
+  const token = cookies.get("user");
+
   // Decode token to get user payload
   const decoded = await jwt_decode(token);
 

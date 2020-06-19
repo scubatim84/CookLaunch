@@ -30,7 +30,8 @@ router.post("/register", async (req, res) => {
 		return res.status(400).json("Email already exists");
 	} else {
 		const newUser = new User({
-			name: req.body.name,
+			firstName: req.body.firstName,
+			lastName: req.body.lastName,
 			email: req.body.email,
 		});
 
@@ -83,7 +84,8 @@ router.post("/login", async (req, res) => {
 		// Create JWT Payload
 		const payload = {
 			id: foundUser.id,
-			name: foundUser.name
+			firstName: foundUser.firstName,
+			lastName: foundUser.lastName,
 		};
 
 		//Sign token
