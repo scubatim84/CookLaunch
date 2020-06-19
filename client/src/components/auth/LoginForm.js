@@ -7,6 +7,8 @@ import { REQUEST_SUCCESS } from "../../actions/types";
 import { Button, Card, Container, CssBaseline, Grid, Link, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
+import Error from "../layout/Error";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     margin: theme.spacing(2, 2, 2),
@@ -135,9 +137,9 @@ function LoginForm(props) {
 								</Link>
 							</Grid>
 						</Grid>
-						<div>
-							{(!isEmpty(error.errorMessage) && <strong class="error-text">{error.errorMessage}</strong>)}
-						</div>
+						<Grid item xs={12}>
+							{(!isEmpty(error.errorMessage) && <Error errorMessage={error.errorMessage} />)}
+						</Grid>
 					</form>
 				</div>
    		</Card>
