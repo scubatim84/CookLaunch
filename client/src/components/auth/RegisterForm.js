@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function Register() {
+function RegisterForm() {
 	const classes = useStyles();
 
   const [isLoggedin, setLoggedIn] = useState(false);
@@ -202,4 +202,4 @@ function Register() {
 	);
 }
 
-export default Register;
+export default RegisterForm;

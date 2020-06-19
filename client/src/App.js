@@ -5,7 +5,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 import Dashboard from "./components/layout/Dashboard";
 import Landing from "./components/layout/Landing";
-import LoginPage from "./components/layout/LoginPage";
+import Login from "./components/layout/Login";
 
 const theme = createMuiTheme({
   palette: {
@@ -23,7 +23,7 @@ function App() {
 			<Router>
 				<div className="App">
 					<Route exact path="/" component={Landing} />
-					<Route exact path="/login" component={LoginPage} />
+					<Route exact path="/login" component={Login} />
 					<Route exact path="/dashboard" component={Dashboard} />
 				</div>
 			</Router>

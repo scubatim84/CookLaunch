@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-function Login() {
+function LoginForm() {
   const classes = useStyles();
 
   const [isLoggedin, setLoggedIn] = useState(false);
@@ -148,4 +148,4 @@ function Login() {
 	);
 }
 
-export default Login;
+export default LoginForm;

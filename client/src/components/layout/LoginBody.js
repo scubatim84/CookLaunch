@@ -1,5 +1,5 @@
 import React from "react";
-import Login from "../auth/Login";
+import LoginForm from "../auth/LoginForm";
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
@@ -23,7 +23,7 @@ function LoginBody() {
         style={{ minHeight: "100vh" }}
       >
         <Grid className={classes.position} item xs={6}>
-					<Login />
+					<LoginForm />
 				</Grid>
       </Grid>
   	  </div>

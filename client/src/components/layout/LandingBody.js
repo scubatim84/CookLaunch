@@ -1,5 +1,5 @@
 import React from "react";
-import Register from "../auth/Register";
+import RegisterForm from "../auth/RegisterForm";
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
@@ -20,7 +20,7 @@ function LandingBody() {
     <div className="landing-background background-image-full">
 			<div className={classes.root}>
 				<Grid className={classes.position} item xs={4}>
-					<Register />
+					<RegisterForm />
 				</Grid>
   	  </div>
     </div>
