@@ -17,6 +17,9 @@ const theme = createMuiTheme({
 			primary: '#003d00',
 		},
 	},
+	typography: {
+		fontFamily: 'Cambria',
+	},
 });
 
 const useStyles = makeStyles((theme) => ({
