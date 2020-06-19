@@ -33,20 +33,13 @@ const useStyles = makeStyles((theme) => ({
 
 function NavBar(props) {
 	const classes = useStyles();
-
 	const [anchorEl, setAnchorEl] = useState(null);
-	const [isLoggedIn, setLoggedIn] = useState(props.loggedIn);
-	const [user, setUser] = useState(props.userData);
-
+	const [isLoggedIn, setIsLoggedIn] = useState(props.isLoggedIn);
 	const open = Boolean(anchorEl);
 	
-  useEffect(() => {
-    setUser(props.userData)
-	}, [props.userData]);
-
 	useEffect(() => {
-		setLoggedIn(props.loggedIn);
-	}, [props.loggedIn]);
+    setIsLoggedIn(props.isLoggedIn);
+	}, [props.isLoggedIn]);
 
 	const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -60,7 +53,7 @@ function NavBar(props) {
     const response = await logoutUser();
 
     if (response === REQUEST_SUCCESS) {
-			props.changeLoggedIn(false);
+      props.changeLoggedIn(false);
 		}
 		
 		handleClose();
