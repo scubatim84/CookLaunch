@@ -1,12 +1,12 @@
 import React from "react";
 
-import LandingNavbar from "./LandingNavbar";
+import Navbar from "./Navbar";
 import LandingBody from "./LandingBody";
 
 function Landing() {
 	return (
     <div>
-      <LandingNavbar />
+      <Navbar />
       <LandingBody />
     </div>
 	);

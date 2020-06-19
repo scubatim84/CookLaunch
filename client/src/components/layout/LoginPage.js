@@ -1,12 +1,12 @@
 import React from "react";
 
-import LandingNavbar from "./LandingNavbar";
+import Navbar from "./Navbar";
 import LoginBody from "./LoginBody";
 
 function LoginPage() {
 	return (
     <div>
-      <LandingNavbar />
+      <Navbar />
       <LoginBody />
     </div>
 	);

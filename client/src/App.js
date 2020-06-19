@@ -1,10 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
+import Dashboard from "./components/layout/Dashboard";
 import Landing from "./components/layout/Landing";
 import LoginPage from "./components/layout/LoginPage";
-import Dashboard from "./components/layout/Dashboard";
 
 const theme = createMuiTheme({
   palette: {
@@ -12,7 +13,7 @@ const theme = createMuiTheme({
       dark: "#003d00",
       main: "#33691e",
       light: "#629749"
-		}
+		},
   }
 });
 

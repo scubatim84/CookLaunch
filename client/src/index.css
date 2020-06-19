@@ -51,8 +51,3 @@ code {
 .login-background {
   background-image: url("./images/login-bg.png");
 }
-
-.navbar-brand {
-  color: var(--dark);
-  font-size: xx-large;
-}

@@ -4,7 +4,7 @@ import { getUserData } from "../../actions/authActions";
 import isEmpty from "is-empty";
 import cookies from "js-cookie";
 
-import DashboardNavbar from "./DashboardNavbar";
+import Navbar from "./Navbar";
 import DashboardBody from "./DashboardBody";
 
 function Dashboard() {
@@ -43,7 +43,7 @@ function Dashboard() {
 	return (
 		!isLoggedIn ? <Redirect to="/login" /> : 
 		<div>
-			<DashboardNavbar changeLoggedIn={handleLoggedIn} />
+			<Navbar changeLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />
 			<DashboardBody userData={user}  />
 		</div>
 	);
