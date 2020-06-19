@@ -3,16 +3,9 @@ import { Redirect } from "react-router-dom";
 import { registerUser, loginUser } from "../../actions/authActions";
 import isEmpty from "is-empty";
 import { REQUEST_SUCCESS } from "../../actions/types";
-import { makeStyles } from '@material-ui/core/styles';
 
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import Container from '@material-ui/core/Container';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import { Button, Card, Container, CssBaseline, Grid, Link, TextField, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
