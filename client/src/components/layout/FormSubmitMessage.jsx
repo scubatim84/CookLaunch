@@ -4,7 +4,7 @@ import {Typography} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  errorMessage: {
+  submitMessage: {
     fontSize: '1rem',
     color: '#ff0000',
     margin: theme.spacing(2, 1, 1),
@@ -13,14 +13,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Error(props) {
+function FormSubmitMessage(props) {
   const classes = useStyles();
 
   return (
-    <Typography className={classes.errorMessage}>
-      {props.errorMessage}
+    <Typography className={classes.submitMessage}>
+      {props.submitMessage}
     </Typography>
   );
 }
 
-export default Error;
+export default FormSubmitMessage;
