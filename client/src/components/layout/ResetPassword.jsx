@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ForgotPasswordForm from '../auth/ForgotPasswordForm';
+import ResetPasswordForm from '../auth/ResetPasswordForm';
 
 import Grid from '@material-ui/core/Grid';
 import {makeStyles} from '@material-ui/core/styles';
@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ForgotPassword() {
+function ResetPassword() {
   const classes = useStyles();
 
   return (
@@ -25,7 +25,7 @@ function ForgotPassword() {
           style={{minHeight: '100vh'}}
         >
           <Grid className={classes.position} item xs={6}>
-            <ForgotPasswordForm />
+            <ResetPasswordForm />
           </Grid>
         </Grid>
       </div>
@@ -33,4 +33,4 @@ function ForgotPassword() {
   );
 }
 
-export default ForgotPassword;
+export default ResetPassword;

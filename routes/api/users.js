@@ -128,10 +128,9 @@ router.post('/forgotpassword', async (req, res) => {
     res.status(404).json('email not found');
   } else {
     // Add reset password token to user account and set to expire in 1 hour
-    foundUser.update({
-      resetPasswordToken: token,
-      resetPasswordExpires: Date.now() + 360000,
-    });
+    foundUser.resetPasswordToken = token;
+    foundUser.resetPasswordExpires = Date.now() + 360000;
+    foundUser.save();
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',

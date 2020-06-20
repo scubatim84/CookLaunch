@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
+import {useParams} from 'react-router-dom';
 import FormSubmitMessage from '../layout/FormSubmitMessage';
-import {sendPasswordResetEmail} from '../../actions/authActions';
+import {resetPassword} from '../../actions/authActions';
 import {REQUEST_SUCCESS, EMAIL_NOT_FOUND} from '../../actions/types';
 
 import {
@@ -30,11 +31,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ForgotPasswordForm() {
+function ResetPasswordForm() {
   const classes = useStyles();
+
+  let token = useParams().token;
 
   const [user, setUser] = useState({
     email: '',
+    password: '',
+    password2: '',
   });
   const [submitStatus, setSubmitStatus] = useState({
     isSubmitted: false,
@@ -42,12 +47,6 @@ function ForgotPasswordForm() {
   });
 
   const handleChange = async (e) => {
-    // If user starts changing email, reset submission status and message
-    setSubmitStatus({
-      isSubmitted: false,
-      submitMessage: '',
-    });
-
     const {name, value} = e.target;
 
     setUser((prevValue) => {
@@ -59,31 +58,7 @@ function ForgotPasswordForm() {
   };
 
   const handleClick = async (e) => {
-    e.preventDefault();
-
-    const email = user.email;
-
-    const requestResponse = await sendPasswordResetEmail(email);
-
-    console.log(requestResponse.authResponsePayload);
-
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      setSubmitStatus({
-        isSubmitted: true,
-        submitMessage:
-          'A link has been sent to that email to reset your password.',
-      });
-    } else if (requestResponse.authResponsePayload === EMAIL_NOT_FOUND) {
-      setSubmitStatus({
-        isSubmitted: true,
-        submitMessage: 'This email address is not registered.',
-      });
-    } else {
-      setSubmitStatus({
-        isSubmitted: true,
-        submitMessage: requestResponse.authResponsePayload,
-      });
-    }
+    // Placeholder
   };
 
   return (
@@ -92,21 +67,36 @@ function ForgotPasswordForm() {
         <CssBaseline />
         <div className={classes.paper}>
           <Typography component='h1' variant='h5'>
-            Retrieve Password
+            Reset Your Password
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
-                  value={user.email}
+                  value={user.password}
                   variant='outlined'
                   required
                   fullWidth
-                  id='email'
-                  label='Email Address'
-                  name='email'
-                  autoComplete='email'
+                  name='password'
+                  label='Password'
+                  type='password'
+                  id='password'
+                  autoComplete='current-password'
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  onChange={handleChange}
+                  value={user.password2}
+                  variant='outlined'
+                  required
+                  fullWidth
+                  name='password2'
+                  label='Confirm password'
+                  type='password'
+                  id='password2'
+                  autoComplete='confirm-password'
                 />
               </Grid>
             </Grid>
@@ -132,4 +122,4 @@ function ForgotPasswordForm() {
   );
 }
 
-export default ForgotPasswordForm;
+export default ResetPasswordForm;

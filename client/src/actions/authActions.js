@@ -97,8 +97,8 @@ export const getUserData = async () => {
   return payload;
 };
 
-// Reset password if user forgot it
-export const resetPassword = async (userEmail) => {
+// Send password reset E-mail from forgot password form
+export const sendPasswordResetEmail = async (userEmail) => {
   let error;
 
   // Check to see if email submitted is empty, and if so, convert to empty string
@@ -141,5 +141,52 @@ export const resetPassword = async (userEmail) => {
           : err.response.data,
       };
     }
+  }
+};
+
+// Reset password using token from forgot password email
+export const resetPasswordByEmail = async (token) => {
+  let error;
+
+  // Check to see if token is empty, and if so, convert to empty string
+  token = !isEmpty(token) ? token : '';
+
+  // Token check
+  if (isEmpty(token)) {
+    error = 'An error has occurred. Please try again.';
+  }
+
+  if (!isEmpty(error)) {
+    return {
+      authResponseType: REQUEST_FAIL,
+      authResponsePayload: error,
+    };
+  }
+
+  try {
+    const response = await axios.get('/api/users/resetpasswordbyemail', {
+      params: {
+        resetPasswordToken: token,
+      },
+    });
+
+    if (response.data.message === REQUEST_SUCCESS) {
+      return {
+        authResponseType: REQUEST_SUCCESS,
+        authResponsePayload: response.data,
+      };
+    } else {
+      return {
+        authResponseType: REQUEST_FAIL,
+        authResponsePayload: response.data.message,
+      };
+    }
+  } catch (err) {
+    return {
+      authResponseType: REQUEST_FAIL,
+      authResponsePayload: isEmpty(err.response.data.message)
+        ? 'An error has occurred. Please try again.'
+        : err.response.data.message,
+    };
   }
 };
