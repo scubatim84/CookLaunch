@@ -1,10 +1,10 @@
 require('dotenv').config();
 
 module.exports = async function getForgotPasswordEmail(userEmail, token) {
-  resetUrl = '/reset/' + token;
+  resetUrl = 'http://localhost:3000/reset/' + token;
 
   return {
-    from: process.env.EMAIL_ADDRESS,
+    from: `Cook Launch <${process.env.EMAIL_ADDRESS}>`,
     to: userEmail,
     subject: 'Link to Reset Password',
     text:
