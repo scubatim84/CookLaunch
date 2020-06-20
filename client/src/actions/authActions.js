@@ -97,8 +97,8 @@ export const getUserData = async () => {
   return payload;
 };
 
-// Retrieve password by sending E-mail reset post to backend
-export const retrievePassword = async (userEmail) => {
+// Reset password if user forgot it
+export const resetPassword = async (userEmail) => {
   let error;
 
   // Check to see if email submitted is empty, and if so, convert to empty string
@@ -134,11 +134,11 @@ export const retrievePassword = async (userEmail) => {
         };
       }
     } catch (err) {
-      console.log(err);
-
       return {
         authResponseType: REQUEST_FAIL,
-        authResponsePayload: 'An error has occurred. Please try again.',
+        authResponsePayload: isEmpty(err.response.data)
+          ? 'An error has occurred. Please try again.'
+          : err.response.data,
       };
     }
   }

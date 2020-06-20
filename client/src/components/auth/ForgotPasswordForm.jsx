@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import FormSubmitMessage from '../layout/FormSubmitMessage';
-import {retrievePassword} from '../../actions/authActions';
-import {REQUEST_SUCCESS} from '../../actions/types';
+import {resetPassword} from '../../actions/authActions';
+import {REQUEST_SUCCESS, EMAIL_NOT_FOUND} from '../../actions/types';
 
 import {
   Button,
@@ -63,13 +63,20 @@ function ForgotPasswordForm(props) {
 
     const email = user.email;
 
-    const requestResponse = await retrievePassword(email);
+    const requestResponse = await resetPassword(email);
+
+    console.log(requestResponse.authResponsePayload);
 
     if (requestResponse.authResponseType === REQUEST_SUCCESS) {
       setSubmitStatus({
         isSubmitted: true,
         submitMessage:
           'A link has been sent to that email to reset your password.',
+      });
+    } else if (requestResponse.authResponsePayload === EMAIL_NOT_FOUND) {
+      setSubmitStatus({
+        isSubmitted: true,
+        submitMessage: 'This email address is not registered.',
       });
     } else {
       setSubmitStatus({
