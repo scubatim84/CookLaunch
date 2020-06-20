@@ -29,18 +29,18 @@
     "passport-jwt": "^4.0.0",
     "prettier": "^2.0.5",
     "validator": "^13.1.0"
-	},
-	"lint-staged": {
-		"/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-			"prettier --write"
-		]
-	},
+  },
+  "lint-staged": {
+    "./**/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
+  },
   "devDependencies": {
     "nodemon": "^2.0.4"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	}
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
 }

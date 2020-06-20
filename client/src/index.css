@@ -20,7 +20,7 @@ code {
 }
 
 .error-text {
-	color: red;
+  color: red;
 }
 
 .background-image-full {
@@ -45,9 +45,9 @@ code {
 }
 
 .landing-background {
-  background-image: url("./images/landing-bg.png");
+  background-image: url('./images/landing-bg.png');
 }
 
 .login-background {
-  background-image: url("./images/login-bg.png");
+  background-image: url('./images/login-bg.png');
 }
