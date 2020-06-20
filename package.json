@@ -20,14 +20,27 @@
     "concurrently": "^5.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "husky": "^4.2.5",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
+    "lint-staged": "^10.2.11",
     "mongoose": "^5.9.18",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
+    "prettier": "^2.0.5",
     "validator": "^13.1.0"
+  },
+  "lint-staged": {
+    "./**/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

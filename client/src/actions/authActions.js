@@ -1,60 +1,60 @@
-import axios from "axios";
-import jwt_decode from "jwt-decode";
-import { REQUEST_SUCCESS, REQUEST_FAIL } from "./types";
-import cookies from "js-cookie";
-import isEmpty from "is-empty";
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
+import cookies from 'js-cookie';
+import isEmpty from 'is-empty';
 
 // Register User
-export const registerUser = async userData => {
-	try {
-		const response = await axios.post("/api/users/register", userData);
+export const registerUser = async (userData) => {
+  try {
+    const response = await axios.post('/api/users/register', userData);
 
-		if (response.status === 201) {
-			return { 
-				authResponseType: REQUEST_SUCCESS,
-				authResponsePayload: response.data
-			};
-		} else {
-			return {
-				authResponseType: REQUEST_FAIL,
-				authResponsePayload: response.data
-			};
-		}
-	} catch (err) {
-		return {
-			authResponseType: REQUEST_FAIL,
-			authResponsePayload: err.response.data
-		};
-	}
+    if (response.status === 201) {
+      return {
+        authResponseType: REQUEST_SUCCESS,
+        authResponsePayload: response.data,
+      };
+    } else {
+      return {
+        authResponseType: REQUEST_FAIL,
+        authResponsePayload: response.data,
+      };
+    }
+  } catch (err) {
+    return {
+      authResponseType: REQUEST_FAIL,
+      authResponsePayload: err.response.data,
+    };
+  }
 };
 
 // Login - get user token and set cookie
-export const loginUser = async userData => {
-	try {
-		const response = await axios.post("/api/users/login", userData);
+export const loginUser = async (userData) => {
+  try {
+    const response = await axios.post('/api/users/login', userData);
 
-		// Attempt to login user, and if successful, obtain token
-		const { token } = response.data;
+    // Attempt to login user, and if successful, obtain token
+    const {token} = response.data;
 
-		// Set authentication cookie with token
-		cookies.set("user", token, { expires: 7 });
+    // Set authentication cookie with token
+    cookies.set('user', token, {expires: 7});
 
-		// Return response
-		return {
-			authResponseType: REQUEST_SUCCESS
-		};
-	} catch (err) {
-		return {
-			authResponseType: REQUEST_FAIL,
-			authResponsePayload: err.response.data
-		};
-	}
+    // Return response
+    return {
+      authResponseType: REQUEST_SUCCESS,
+    };
+  } catch (err) {
+    return {
+      authResponseType: REQUEST_FAIL,
+      authResponsePayload: err.response.data,
+    };
+  }
 };
 
 // Log user out
 export const logoutUser = async () => {
-	// Remove authentication cookie
-  cookies.remove("user");
+  // Remove authentication cookie
+  cookies.remove('user');
 
   // Check authentication to ensure user logout was successful
   const userAuthenticated = await authenticateUser();
@@ -68,25 +68,25 @@ export const logoutUser = async () => {
 
 // Check if user is logged in
 export const authenticateUser = async () => {
-  const userCookie = cookies.get("user");
+  const userCookie = cookies.get('user');
 
   if (!isEmpty(userCookie)) {
     return true;
   } else {
     return false;
   }
-}
+};
 
 // Get user data from decoded JWT token
 export const getUserData = async () => {
   // Retrieve token
-  const token = cookies.get("user");
+  const token = cookies.get('user');
 
   // Decode token to get user payload
   const decoded = await jwt_decode(token);
 
   // Set current user to decoded payload
-  const payload = { payload: decoded }
+  const payload = {payload: decoded};
 
   return payload;
-}
+};
