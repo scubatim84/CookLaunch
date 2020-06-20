@@ -137,7 +137,12 @@ function LoginForm(props) {
             >
               Login
             </Button>
-            <Grid container justify='flex-end'>
+            <Grid container justify='space-between'>
+              <Grid item>
+                <Link href='/forgotpassword' variant='body2'>
+                  Forgot Password?
+                </Link>
+              </Grid>
               <Grid item>
                 <Link href='/' variant='body2'>
                   Don't have an account? Register

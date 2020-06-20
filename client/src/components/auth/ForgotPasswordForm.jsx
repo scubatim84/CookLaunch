@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-
 import FormSubmitMessage from '../layout/FormSubmitMessage';
+import {retrievePassword} from '../../actions/authActions';
+import {REQUEST_SUCCESS} from '../../actions/types';
 
 import {
   Button,
@@ -41,6 +42,12 @@ function ForgotPasswordForm(props) {
   });
 
   const handleChange = async (e) => {
+    // If user starts changing email, reset submission status and message
+    setSubmitStatus({
+      isSubmitted: false,
+      submitMessage: '',
+    });
+
     const {name, value} = e.target;
 
     setUser((prevValue) => {
@@ -54,11 +61,22 @@ function ForgotPasswordForm(props) {
   const handleClick = async (e) => {
     e.preventDefault();
 
-    setSubmitStatus({
-      isSubmitted: true,
-      submitMessage:
-        'A link has been sent to that email to reset your password.',
-    });
+    const email = user.email;
+
+    const requestResponse = await retrievePassword(email);
+
+    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+      setSubmitStatus({
+        isSubmitted: true,
+        submitMessage:
+          'A link has been sent to that email to reset your password.',
+      });
+    } else {
+      setSubmitStatus({
+        isSubmitted: true,
+        submitMessage: requestResponse.authResponsePayload,
+      });
+    }
   };
 
   return (

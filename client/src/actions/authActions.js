@@ -1,8 +1,14 @@
 import axios from 'axios';
-import jwt_decode from 'jwt-decode';
-import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
+import jwtDecode from 'jwt-decode';
+import {
+  REQUEST_SUCCESS,
+  REQUEST_FAIL,
+  EMAIL_NOT_FOUND,
+  RECOVERY_EMAIL_SENT,
+} from './types';
 import cookies from 'js-cookie';
 import isEmpty from 'is-empty';
+import validator from 'validator';
 
 // Register User
 export const registerUser = async (userData) => {
@@ -83,10 +89,57 @@ export const getUserData = async () => {
   const token = cookies.get('user');
 
   // Decode token to get user payload
-  const decoded = await jwt_decode(token);
+  const decoded = await jwtDecode(token);
 
   // Set current user to decoded payload
   const payload = {payload: decoded};
 
   return payload;
+};
+
+// Retrieve password by sending E-mail reset post to backend
+export const retrievePassword = async (userEmail) => {
+  let error;
+
+  // Check to see if email submitted is empty, and if so, convert to empty string
+  userEmail = !isEmpty(userEmail) ? userEmail : '';
+
+  // Email check
+  if (validator.isEmpty(userEmail)) {
+    error = 'Email field is required';
+  } else if (!validator.isEmail(userEmail)) {
+    error = 'Email is invalid';
+  }
+
+  if (!isEmpty(error)) {
+    return {
+      authResponseType: REQUEST_FAIL,
+      authResponsePayload: error,
+    };
+  } else {
+    try {
+      const response = await axios.post('/api/users/forgotpassword', {
+        email: userEmail,
+      });
+
+      if (response.data === EMAIL_NOT_FOUND) {
+        return {
+          authResponseType: REQUEST_FAIL,
+          authResponsePayload: EMAIL_NOT_FOUND,
+        };
+      } else if (response.data === RECOVERY_EMAIL_SENT) {
+        return {
+          authResponseType: REQUEST_SUCCESS,
+          authResponsePayload: RECOVERY_EMAIL_SENT,
+        };
+      }
+    } catch (err) {
+      console.log(err);
+
+      return {
+        authResponseType: REQUEST_FAIL,
+        authResponsePayload: 'An error has occurred. Please try again.',
+      };
+    }
+  }
 };
