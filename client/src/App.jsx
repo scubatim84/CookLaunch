@@ -5,6 +5,7 @@ import cookies from 'js-cookie';
 import theme from './Theme';
 
 import {ThemeProvider} from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Dashboard from './components/layout/Dashboard';
 import Landing from './components/layout/Landing';
@@ -47,6 +48,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Navbar handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />
       <Router>
         <div className='App'>
