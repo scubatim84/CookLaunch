@@ -64,7 +64,9 @@ function RegisterForm(props) {
     });
   };
 
-  const handleSubmitClick = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const requestResponse = await registerUser(newUser);
 
     if (requestResponse.authResponseType === REQUEST_SUCCESS) {
@@ -180,8 +182,9 @@ function RegisterForm(props) {
               </Grid>
             </Grid>
             <Button
-              onClick={handleSubmitClick}
+              onClick={handleSubmit}
               fullWidth
+              type='submit'
               variant='contained'
               color='primary'
               className={classes.submit}

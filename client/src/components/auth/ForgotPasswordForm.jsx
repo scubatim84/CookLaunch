@@ -58,7 +58,9 @@ function ForgotPasswordForm() {
     });
   };
 
-  const handleClick = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const email = user.email;
 
     const requestResponse = await sendPasswordResetEmail(email);
@@ -107,7 +109,8 @@ function ForgotPasswordForm() {
               </Grid>
             </Grid>
             <Button
-              onClick={handleClick}
+              onClick={handleSubmit}
+              type='submit'
               fullWidth
               variant='contained'
               color='primary'

@@ -67,7 +67,9 @@ function ResetPasswordForm(props) {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const passwordCheck = await validatePassword(user.password, user.password2);
 
     if (passwordCheck.isValid) {
@@ -165,6 +167,7 @@ function ResetPasswordForm(props) {
             <Button
               onClick={handleSubmit}
               fullWidth
+              type='submit'
               variant='contained'
               color='primary'
               className={classes.submit}

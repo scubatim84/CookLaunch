@@ -61,7 +61,9 @@ function LoginForm(props) {
     });
   };
 
-  const handleLoginClick = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const requestResponse = await loginUser(user);
 
     if (requestResponse.authResponseType === REQUEST_SUCCESS) {
@@ -126,8 +128,9 @@ function LoginForm(props) {
               </Grid>
             </Grid>
             <Button
-              onClick={handleLoginClick}
+              onClick={handleSubmit}
               fullWidth
+              type='submit'
               variant='contained'
               color='primary'
               className={classes.submit}
