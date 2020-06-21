@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {
-  resetPasswordByEmail,
+  checkResetPasswordToken,
   validatePassword,
+  resetPasswordByEmail,
 } from '../../actions/authActions';
 import isEmpty from 'is-empty';
 
@@ -18,6 +19,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
+import {REQUEST_SUCCESS} from '../../actions/types';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -63,22 +65,40 @@ function ResetPasswordForm() {
     const passwordCheck = await validatePassword(user.password, user.password2);
 
     if (passwordCheck.isValid) {
-      const response = await resetPasswordByEmail(token);
+      const tokenResponse = await checkResetPasswordToken(token);
 
-      /* Placeholder, once password is validated, need to add PUT/PATCH to change
-			password for user in DB. Once that is done, and verified, add code to
-			redirect user to dashboard */
+      if (tokenResponse.authResponseType === REQUEST_SUCCESS) {
+        const userEmail = tokenResponse.authResponsePayload.email;
+        const userPassword = user.password;
 
-      // If password reset is successful, clear password reset form
-      setUser({
-        password: '',
-        password2: '',
-      });
+        const changeResponse = await resetPasswordByEmail(
+          userEmail,
+          userPassword
+        );
 
-      // If password reset is successful, clear old errors from state
-      setError({
-        errorMessage: '',
-      });
+        console.log(changeResponse);
+
+        /* Placeholder, once password is validated, need to add PUT/PATCH to change
+				password for user in DB. Once that is done, and verified, add code to
+				redirect user to dashboard. Response should include email, so for PUT/PATCH,
+				send user email and password as parameters. This way the same function can
+				be used for regular password changes inside user profile. */
+
+        // If password reset is successful, clear password reset form
+        setUser({
+          password: '',
+          password2: '',
+        });
+
+        // If password reset is successful, clear old errors from state
+        setError({
+          errorMessage: '',
+        });
+      } else {
+        setError({
+          errorMessage: tokenResponse.authResponsePayload,
+        });
+      }
     } else {
       setError({
         errorMessage: passwordCheck.error,

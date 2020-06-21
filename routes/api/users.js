@@ -155,10 +155,10 @@ router.post('/forgotpassword', async (req, res) => {
   }
 });
 
-// @route GET api/users/resetpasswordbyemail
-// @desc Reset password with token emailed to user
+// @route GET api/users/validateresetpasswordtoken
+// @desc Validate token for resetting password that was emailed to user
 // @access Private to user
-router.get('/resetpasswordbyemail', async (req, res) => {
+router.get('/validateresetpasswordtoken', async (req, res) => {
   const foundUser = await User.findOne({
     resetPasswordToken: req.query.resetPasswordToken,
   });
@@ -168,7 +168,10 @@ router.get('/resetpasswordbyemail', async (req, res) => {
   if (isEmpty(foundUser)) {
     res.status(404).send('fail');
   } else if (foundUser.resetPasswordExpires >= currentTime) {
-    res.status(200).send('success');
+    res.status(200).send({
+      message: 'success',
+      email: foundUser.email,
+    });
   } else {
     res.status(403).send('fail');
   }

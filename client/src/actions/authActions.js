@@ -144,8 +144,8 @@ export const sendPasswordResetEmail = async (userEmail) => {
   }
 };
 
-// Reset password using token from forgot password email
-export const resetPasswordByEmail = async (token) => {
+// Validate reset password token from forgot password email
+export const checkResetPasswordToken = async (token) => {
   let error;
 
   // Check to see if token is empty, and if so, convert to empty string
@@ -164,13 +164,13 @@ export const resetPasswordByEmail = async (token) => {
   }
 
   try {
-    const response = await axios.get('/api/users/resetpasswordbyemail', {
+    const response = await axios.get('/api/users/validateresetpasswordtoken', {
       params: {
         resetPasswordToken: token,
       },
     });
 
-    if (response.data === REQUEST_SUCCESS) {
+    if (response.data.message === REQUEST_SUCCESS) {
       return {
         authResponseType: REQUEST_SUCCESS,
         authResponsePayload: response.data,
@@ -186,6 +186,60 @@ export const resetPasswordByEmail = async (token) => {
       authResponseType: REQUEST_FAIL,
       authResponsePayload:
         'The password link has expired or is invalid. Please try again.',
+    };
+  }
+};
+
+// Reset password using email retrieved from backend and new password
+export const resetPasswordByEmail = async (email, password) => {
+  let error;
+
+  // Check to see if parameters are empty, and if so, convert to empty string
+  email = !isEmpty(email) ? email : '';
+  password = !isEmpty(password) ? password : '';
+
+  // Email checks
+  if (validator.isEmpty(data.email)) {
+    error = 'Email field is required';
+  } else if (!validator.isEmail(data.email)) {
+    error = 'Email is invalid';
+  }
+
+  // Password checks
+  if (validator.isEmpty(data.password)) {
+    error = 'Password field is required';
+  }
+
+  if (!isEmpty(error)) {
+    return {
+      authResponseType: REQUEST_FAIL,
+      authResponsePayload: error,
+    };
+  }
+
+  try {
+    const response = await axios.put('/api/users/resetpasswordbyemail', {
+      email: email,
+      password: password,
+    });
+
+    if (response.data.message === REQUEST_SUCCESS) {
+      return {
+        authResponseType: REQUEST_SUCCESS,
+        authResponsePayload: response.data,
+      };
+    } else {
+      return {
+        authResponseType: REQUEST_FAIL,
+        authResponsePayload: response.data,
+      };
+    }
+  } catch (err) {
+    return {
+      authResponseType: REQUEST_FAIL,
+      authResponsePayload: isEmpty(err.response.data)
+        ? 'An error has occurred. Please try again.'
+        : err.response.data,
     };
   }
 };
