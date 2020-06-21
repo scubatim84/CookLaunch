@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ResetPassword() {
+function ResetPassword(props) {
   const classes = useStyles();
 
   return (
@@ -25,7 +25,10 @@ function ResetPassword() {
           style={{minHeight: '100vh'}}
         >
           <Grid className={classes.position} item xs={6}>
-            <ResetPasswordForm />
+            <ResetPasswordForm
+              handleLoggedIn={props.handleLoggedIn}
+              isLoggedIn={props.isLoggedIn}
+            />
           </Grid>
         </Grid>
       </div>

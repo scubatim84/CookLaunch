@@ -157,7 +157,7 @@ router.post('/forgotpassword', async (req, res) => {
 
 // @route GET api/users/validateresetpasswordtoken
 // @desc Validate token for resetting password that was emailed to user
-// @access Private to user
+// @access Private
 router.get('/validateresetpasswordtoken', async (req, res) => {
   const foundUser = await User.findOne({
     resetPasswordToken: req.query.resetPasswordToken,
@@ -174,6 +174,40 @@ router.get('/validateresetpasswordtoken', async (req, res) => {
     });
   } else {
     res.status(403).send('fail');
+  }
+});
+
+// @route PUT api/users/resetpassword
+// @desc Reset user password
+// @access Private
+router.put('/resetpassword', async (req, res) => {
+  // Find user with email passed in from front end
+  const foundUser = await User.findOne({email: req.body.email});
+
+  // Once user is found, hash password, reset token, then save in database
+  if (foundUser) {
+    try {
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(req.body.password, salt, (err, hash) => {
+          if (err) throw err;
+
+          foundUser.password = hash;
+          foundUser.resetPasswordToken = null;
+          foundUser.resetPasswordExpires = null;
+          foundUser.save();
+
+          try {
+            res.status(200).send('success');
+          } catch (err) {
+            console.log(err);
+          }
+        });
+      });
+    } catch (err) {
+      res.status(400).send('An error has occurred. ' + err);
+    }
+  } else {
+    res.status(404).send('No user found in database.');
   }
 });
 

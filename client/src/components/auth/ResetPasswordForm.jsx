@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
-import {useParams} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Redirect, useParams} from 'react-router-dom';
 import {
   checkResetPasswordToken,
+  loginUser,
   validatePassword,
-  resetPasswordByEmail,
+  resetPassword,
 } from '../../actions/authActions';
 import isEmpty from 'is-empty';
 
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ResetPasswordForm() {
+function ResetPasswordForm(props) {
   const classes = useStyles();
 
   const token = useParams().token;
@@ -46,9 +47,14 @@ function ResetPasswordForm() {
     password: '',
     password2: '',
   });
+  const [isLoggedin, setLoggedIn] = useState(props.isLoggedIn);
   const [error, setError] = useState({
     errorMessage: '',
   });
+
+  useEffect(() => {
+    setLoggedIn(props.isLoggedIn);
+  }, [props.isLoggedIn]);
 
   const handleChange = async (e) => {
     const {name, value} = e.target;
@@ -61,39 +67,48 @@ function ResetPasswordForm() {
     });
   };
 
-  const handleClick = async () => {
+  const handleSubmit = async () => {
     const passwordCheck = await validatePassword(user.password, user.password2);
 
     if (passwordCheck.isValid) {
       const tokenResponse = await checkResetPasswordToken(token);
 
       if (tokenResponse.authResponseType === REQUEST_SUCCESS) {
-        const userEmail = tokenResponse.authResponsePayload.email;
-        const userPassword = user.password;
+        const userData = {
+          email: tokenResponse.authResponsePayload.email,
+          password: user.password,
+        };
 
-        const changeResponse = await resetPasswordByEmail(
-          userEmail,
-          userPassword
-        );
+        const changeResponse = await resetPassword(userData);
 
-        console.log(changeResponse);
+        if (changeResponse.authResponseType === REQUEST_SUCCESS) {
+          const loginResponse = await loginUser(userData);
 
-        /* Placeholder, once password is validated, need to add PUT/PATCH to change
-				password for user in DB. Once that is done, and verified, add code to
-				redirect user to dashboard. Response should include email, so for PUT/PATCH,
-				send user email and password as parameters. This way the same function can
-				be used for regular password changes inside user profile. */
+          if (loginResponse.authResponseType === REQUEST_SUCCESS) {
+            // Set user as logged in
+            props.handleLoggedIn(true);
 
-        // If password reset is successful, clear password reset form
-        setUser({
-          password: '',
-          password2: '',
-        });
+            // If password reset and login are successful, clear password reset form
+            setUser({
+              email: '',
+              password: '',
+              password2: '',
+            });
 
-        // If password reset is successful, clear old errors from state
-        setError({
-          errorMessage: '',
-        });
+            // If password reset and login are successful, clear old errors from state
+            setError({
+              errorMessage: '',
+            });
+          } else {
+            setError({
+              errorMessage: changeResponse.authResponsePayload,
+            });
+          }
+        } else {
+          setError({
+            errorMessage: changeResponse.authResponsePayload,
+          });
+        }
       } else {
         setError({
           errorMessage: tokenResponse.authResponsePayload,
@@ -106,7 +121,9 @@ function ResetPasswordForm() {
     }
   };
 
-  return (
+  return isLoggedin ? (
+    <Redirect to='/dashboard' />
+  ) : (
     <Container component='main' maxWidth='xs'>
       <Card>
         <CssBaseline />
@@ -146,7 +163,7 @@ function ResetPasswordForm() {
               </Grid>
             </Grid>
             <Button
-              onClick={handleClick}
+              onClick={handleSubmit}
               fullWidth
               variant='contained'
               color='primary'

@@ -184,29 +184,28 @@ export const checkResetPasswordToken = async (token) => {
   } catch (err) {
     return {
       authResponseType: REQUEST_FAIL,
-      authResponsePayload:
-        'The password link has expired or is invalid. Please try again.',
+      authResponsePayload: 'The password link has expired or is invalid.',
     };
   }
 };
 
-// Reset password using email retrieved from backend and new password
-export const resetPasswordByEmail = async (email, password) => {
+// Reset password using email to look up user and new password
+export const resetPassword = async (userData) => {
   let error;
 
   // Check to see if parameters are empty, and if so, convert to empty string
-  email = !isEmpty(email) ? email : '';
-  password = !isEmpty(password) ? password : '';
+  userData.email = !isEmpty(userData.email) ? userData.email : '';
+  userData.password = !isEmpty(userData.password) ? userData.password : '';
 
   // Email checks
-  if (validator.isEmpty(data.email)) {
+  if (validator.isEmpty(userData.email)) {
     error = 'Email field is required';
-  } else if (!validator.isEmail(data.email)) {
+  } else if (!validator.isEmail(userData.email)) {
     error = 'Email is invalid';
   }
 
   // Password checks
-  if (validator.isEmpty(data.password)) {
+  if (validator.isEmpty(userData.password)) {
     error = 'Password field is required';
   }
 
@@ -218,12 +217,9 @@ export const resetPasswordByEmail = async (email, password) => {
   }
 
   try {
-    const response = await axios.put('/api/users/resetpasswordbyemail', {
-      email: email,
-      password: password,
-    });
+    const response = await axios.put('/api/users/resetpassword', userData);
 
-    if (response.data.message === REQUEST_SUCCESS) {
+    if (response.data === REQUEST_SUCCESS) {
       return {
         authResponseType: REQUEST_SUCCESS,
         authResponsePayload: response.data,

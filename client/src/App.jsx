@@ -39,6 +39,12 @@ function App() {
     return <Login handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
   };
 
+  const renderResetPassword = () => {
+    return (
+      <ResetPassword handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />
+    );
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Navbar handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />
@@ -48,7 +54,7 @@ function App() {
           <Route exact path='/login' render={renderLogin} />
           <Route exact path='/dashboard' render={renderDashboard} />
           <Route exact path='/forgotpassword' component={ForgotPassword} />
-          <Route path='/reset/:token' component={ResetPassword} />
+          <Route path='/reset/:token' render={renderResetPassword} />
         </div>
       </Router>
     </ThemeProvider>
