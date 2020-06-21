@@ -10,6 +10,8 @@ import Dashboard from './components/layout/Dashboard';
 import Landing from './components/layout/Landing';
 import Login from './components/layout/Login';
 import Navbar from './components/layout/Navbar';
+import ForgotPassword from './components/layout/ForgotPassword';
+import ResetPassword from './components/layout/ResetPassword';
 
 function App() {
   // Initial check to see if user is logged in
@@ -37,6 +39,12 @@ function App() {
     return <Login handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
   };
 
+  const renderResetPassword = () => {
+    return (
+      <ResetPassword handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />
+    );
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <Navbar handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />
@@ -45,6 +53,8 @@ function App() {
           <Route exact path='/' render={renderLanding} />
           <Route exact path='/login' render={renderLogin} />
           <Route exact path='/dashboard' render={renderDashboard} />
+          <Route exact path='/forgotpassword' component={ForgotPassword} />
+          <Route path='/reset/:token' render={renderResetPassword} />
         </div>
       </Router>
     </ThemeProvider>

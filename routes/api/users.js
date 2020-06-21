@@ -1,11 +1,18 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const isEmpty = require('is-empty');
+const addHours = require('date-fns/addHours');
+const formatISO9075 = require('date-fns/formatISO9075');
 
 // Load input validation
 const validateRegisterInput = require('../../validation/register');
 const validateLoginInput = require('../../validation/login');
+const getForgotPasswordEmail = require('../../templates/emails');
 
 // Load User model
 const User = require('../../models/User');
@@ -104,6 +111,103 @@ router.post('/login', async (req, res) => {
     );
   } else {
     return res.status(400).json('Password incorrect');
+  }
+});
+
+// @route POST api/users/forgotpassword
+// @desc Reset password by sending E-mail to user
+// @access Public
+router.post('/forgotpassword', async (req, res) => {
+  const email = req.body.email;
+
+  // Create reset password token
+  const token = crypto.randomBytes(20).toString('hex');
+
+  // Find user by email
+  const foundUser = await User.findOne({email});
+
+  if (isEmpty(foundUser)) {
+    res.status(404).json('email not found');
+  } else {
+    // Add reset password token to user account and set to expire in 1 hour
+    foundUser.resetPasswordToken = token;
+    foundUser.resetPasswordExpires = addHours(new Date(), 1);
+    foundUser.save();
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_ADDRESS,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    const mailOptions = await getForgotPasswordEmail(foundUser.email, token);
+
+    transporter.sendMail(mailOptions, (err, response) => {
+      if (err) {
+        console.log('There was an error. ' + err);
+      } else {
+        console.log('here is the res: ' + response);
+        res.status(200).send('recovery email sent');
+      }
+    });
+  }
+});
+
+// @route GET api/users/validateresetpasswordtoken
+// @desc Validate token for resetting password that was emailed to user
+// @access Private
+router.get('/validateresetpasswordtoken', async (req, res) => {
+  const foundUser = await User.findOne({
+    resetPasswordToken: req.query.resetPasswordToken,
+  });
+
+  const currentTime = new Date();
+
+  if (isEmpty(foundUser)) {
+    res.status(404).send('fail');
+  } else if (foundUser.resetPasswordExpires >= currentTime) {
+    res.status(200).send({
+      message: 'success',
+      email: foundUser.email,
+    });
+  } else {
+    res.status(403).send('fail');
+  }
+});
+
+// @route PUT api/users/resetpassword
+// @desc Reset user password
+// @access Private
+router.put('/resetpassword', async (req, res) => {
+  // Find user with email passed in from front end
+  const foundUser = await User.findOne({email: req.body.email});
+
+  // Once user is found, hash password, reset token, then save in database
+  if (foundUser) {
+    try {
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(req.body.password, salt, (err, hash) => {
+          if (err) throw err;
+
+          foundUser.password = hash;
+          foundUser.resetPasswordToken = null;
+          foundUser.resetPasswordExpires = null;
+          foundUser.save();
+
+          try {
+            res.status(200).send('success');
+          } catch (err) {
+            console.log(err);
+          }
+        });
+      });
+    } catch (err) {
+      res.status(400).send('An error has occurred. ' + err);
+    }
+  } else {
+    res.status(404).send('No user found in database.');
   }
 });
 

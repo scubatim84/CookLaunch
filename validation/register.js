@@ -1,4 +1,4 @@
-const Validator = require('validator');
+const validator = require('validator');
 const isEmpty = require('is-empty');
 
 module.exports = async function validateRegisterInput(data) {
@@ -12,34 +12,34 @@ module.exports = async function validateRegisterInput(data) {
   data.password2 = !isEmpty(data.password2) ? data.password2 : '';
 
   // Name checks
-  if (Validator.isEmpty(data.firstName)) {
+  if (validator.isEmpty(data.firstName)) {
     error = 'First name field is required';
   }
-  if (Validator.isEmpty(data.lastName)) {
+  if (validator.isEmpty(data.lastName)) {
     error = 'Last name field is required';
   }
 
   //Email checks
-  if (Validator.isEmpty(data.email)) {
+  if (validator.isEmpty(data.email)) {
     error = 'Email field is required';
-  } else if (!Validator.isEmail(data.email)) {
+  } else if (!validator.isEmail(data.email)) {
     error = 'Email is invalid';
   }
 
   // Password checks
-  if (Validator.isEmpty(data.password)) {
+  if (validator.isEmpty(data.password)) {
     error = 'Password field is required';
   }
 
-  if (Validator.isEmpty(data.password2)) {
+  if (validator.isEmpty(data.password2)) {
     error = 'Confirm password field is required';
   }
 
-  if (!Validator.isLength(data.password, {min: 6, max: 30})) {
+  if (!validator.isLength(data.password, {min: 6, max: 30})) {
     error = 'Password must be at least 6 characters';
   }
 
-  if (!Validator.equals(data.password, data.password2)) {
+  if (!validator.equals(data.password, data.password2)) {
     error = 'Passwords must match';
   }
 

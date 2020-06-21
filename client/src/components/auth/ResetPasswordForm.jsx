@@ -1,8 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {Redirect} from 'react-router-dom';
-import {loginUser} from '../../actions/authActions';
+import {Redirect, useParams} from 'react-router-dom';
+import {
+  checkResetPasswordToken,
+  loginUser,
+  validatePassword,
+  resetPassword,
+} from '../../actions/authActions';
 import isEmpty from 'is-empty';
-import {REQUEST_SUCCESS} from '../../actions/types';
+
+import FormSubmitMessage from '../layout/FormSubmitMessage';
 
 import {
   Button,
@@ -10,13 +16,11 @@ import {
   Container,
   CssBaseline,
   Grid,
-  Link,
   TextField,
   Typography,
 } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
-
-import FormSubmitMessage from '../layout/FormSubmitMessage';
+import {REQUEST_SUCCESS} from '../../actions/types';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,14 +38,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LoginForm(props) {
+function ResetPasswordForm(props) {
   const classes = useStyles();
 
-  const [isLoggedin, setLoggedIn] = useState(props.isLoggedin);
+  const token = useParams().token;
+
   const [user, setUser] = useState({
-    email: '',
     password: '',
+    password2: '',
   });
+  const [isLoggedin, setLoggedIn] = useState(props.isLoggedIn);
   const [error, setError] = useState({
     errorMessage: '',
   });
@@ -64,25 +70,55 @@ function LoginForm(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await loginUser(user);
+    const passwordCheck = await validatePassword(user.password, user.password2);
 
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      // If login request is successful, clear login form
-      setUser({
-        email: '',
-        password: '',
-      });
+    if (passwordCheck.isValid) {
+      const tokenResponse = await checkResetPasswordToken(token);
 
-      // If login request is successful, clear old errors from state
-      setError({
-        errorMessage: '',
-      });
+      if (tokenResponse.authResponseType === REQUEST_SUCCESS) {
+        const userData = {
+          email: tokenResponse.authResponsePayload.email,
+          password: user.password,
+        };
 
-      // Set user as logged in
-      props.handleLoggedIn(true);
+        const changeResponse = await resetPassword(userData);
+
+        if (changeResponse.authResponseType === REQUEST_SUCCESS) {
+          const loginResponse = await loginUser(userData);
+
+          if (loginResponse.authResponseType === REQUEST_SUCCESS) {
+            // Set user as logged in
+            props.handleLoggedIn(true);
+
+            // If password reset and login are successful, clear password reset form
+            setUser({
+              email: '',
+              password: '',
+              password2: '',
+            });
+
+            // If password reset and login are successful, clear old errors from state
+            setError({
+              errorMessage: '',
+            });
+          } else {
+            setError({
+              errorMessage: changeResponse.authResponsePayload,
+            });
+          }
+        } else {
+          setError({
+            errorMessage: changeResponse.authResponsePayload,
+          });
+        }
+      } else {
+        setError({
+          errorMessage: tokenResponse.authResponsePayload,
+        });
+      }
     } else {
       setError({
-        errorMessage: requestResponse.authResponsePayload,
+        errorMessage: passwordCheck.error,
       });
     }
   };
@@ -95,23 +131,10 @@ function LoginForm(props) {
         <CssBaseline />
         <div className={classes.paper}>
           <Typography component='h1' variant='h5'>
-            Sign In Here
+            Reset Your Password
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  onChange={handleChange}
-                  value={user.email}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  id='email'
-                  label='Email Address'
-                  name='email'
-                  autoComplete='email'
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
@@ -123,7 +146,21 @@ function LoginForm(props) {
                   label='Password'
                   type='password'
                   id='password'
-                  autoComplete='password'
+                  autoComplete='current-password'
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  onChange={handleChange}
+                  value={user.password2}
+                  variant='outlined'
+                  required
+                  fullWidth
+                  name='password2'
+                  label='Confirm password'
+                  type='password'
+                  id='password2'
+                  autoComplete='confirm-password'
                 />
               </Grid>
             </Grid>
@@ -135,20 +172,8 @@ function LoginForm(props) {
               color='primary'
               className={classes.submit}
             >
-              Login
+              Submit
             </Button>
-            <Grid container justify='space-between'>
-              <Grid item>
-                <Link href='/forgotpassword' variant='body2'>
-                  Forgot Password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href='/' variant='body2'>
-                  Don't have an account? Register
-                </Link>
-              </Grid>
-            </Grid>
             <Grid item xs={12}>
               {!isEmpty(error.errorMessage) && (
                 <FormSubmitMessage submitMessage={error.errorMessage} />
@@ -161,4 +186,4 @@ function LoginForm(props) {
   );
 }
 
-export default LoginForm;
+export default ResetPasswordForm;

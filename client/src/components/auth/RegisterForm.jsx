@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 
-import Error from '../layout/Error';
+import FormSubmitMessage from '../layout/FormSubmitMessage';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -64,7 +64,7 @@ function RegisterForm(props) {
     });
   };
 
-  const handleSubmitClick = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const requestResponse = await registerUser(newUser);
@@ -182,9 +182,9 @@ function RegisterForm(props) {
               </Grid>
             </Grid>
             <Button
-              onClick={handleSubmitClick}
-              type='submit'
+              onClick={handleSubmit}
               fullWidth
+              type='submit'
               variant='contained'
               color='primary'
               className={classes.submit}
@@ -200,7 +200,7 @@ function RegisterForm(props) {
             </Grid>
             <Grid item xs={12}>
               {!isEmpty(error.errorMessage) && (
-                <Error errorMessage={error.errorMessage} />
+                <FormSubmitMessage submitMessage={error.errorMessage} />
               )}
             </Grid>
           </form>
