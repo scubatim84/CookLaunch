@@ -58,14 +58,10 @@ function ForgotPasswordForm() {
     });
   };
 
-  const handleClick = async (e) => {
-    e.preventDefault();
-
+  const handleClick = async () => {
     const email = user.email;
 
     const requestResponse = await sendPasswordResetEmail(email);
-
-    console.log(requestResponse.authResponsePayload);
 
     if (requestResponse.authResponseType === REQUEST_SUCCESS) {
       setSubmitStatus({
@@ -112,7 +108,6 @@ function ForgotPasswordForm() {
             </Grid>
             <Button
               onClick={handleClick}
-              type='submit'
               fullWidth
               variant='contained'
               color='primary'

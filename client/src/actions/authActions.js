@@ -170,7 +170,7 @@ export const resetPasswordByEmail = async (token) => {
       },
     });
 
-    if (response.data.message === REQUEST_SUCCESS) {
+    if (response.data === REQUEST_SUCCESS) {
       return {
         authResponseType: REQUEST_SUCCESS,
         authResponsePayload: response.data,
@@ -178,15 +178,44 @@ export const resetPasswordByEmail = async (token) => {
     } else {
       return {
         authResponseType: REQUEST_FAIL,
-        authResponsePayload: response.data.message,
+        authResponsePayload: response.data,
       };
     }
   } catch (err) {
     return {
       authResponseType: REQUEST_FAIL,
-      authResponsePayload: isEmpty(err.response.data.message)
-        ? 'An error has occurred. Please try again.'
-        : err.response.data.message,
+      authResponsePayload:
+        'The password link has expired or is invalid. Please try again.',
     };
   }
+};
+
+// Check password against confirm password to verify if same or not
+export const validatePassword = async (password, password2) => {
+  let error;
+
+  password = !isEmpty(password) ? password : '';
+  password2 = !isEmpty(password2) ? password2 : '';
+
+  // Password checks
+  if (validator.isEmpty(password)) {
+    error = 'Password field is required';
+  }
+
+  if (validator.isEmpty(password2)) {
+    error = 'Confirm password field is required';
+  }
+
+  if (!validator.isLength(password, {min: 6, max: 30})) {
+    error = 'Password must be at least 6 characters';
+  }
+
+  if (!validator.equals(password, password2)) {
+    error = 'Passwords must match';
+  }
+
+  return {
+    error,
+    isValid: isEmpty(error),
+  };
 };

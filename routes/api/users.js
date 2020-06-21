@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const isEmpty = require('is-empty');
+const addHours = require('date-fns/addHours');
+const formatISO9075 = require('date-fns/formatISO9075');
 
 // Load input validation
 const validateRegisterInput = require('../../validation/register');
@@ -129,7 +131,7 @@ router.post('/forgotpassword', async (req, res) => {
   } else {
     // Add reset password token to user account and set to expire in 1 hour
     foundUser.resetPasswordToken = token;
-    foundUser.resetPasswordExpires = Date.now() + 360000;
+    foundUser.resetPasswordExpires = addHours(new Date(), 1);
     foundUser.save();
 
     const transporter = nodemailer.createTransport({
@@ -150,6 +152,25 @@ router.post('/forgotpassword', async (req, res) => {
         res.status(200).send('recovery email sent');
       }
     });
+  }
+});
+
+// @route GET api/users/resetpasswordbyemail
+// @desc Reset password with token emailed to user
+// @access Private to user
+router.get('/resetpasswordbyemail', async (req, res) => {
+  const foundUser = await User.findOne({
+    resetPasswordToken: req.query.resetPasswordToken,
+  });
+
+  const currentTime = new Date();
+
+  if (isEmpty(foundUser)) {
+    res.status(404).send('fail');
+  } else if (foundUser.resetPasswordExpires >= currentTime) {
+    res.status(200).send('success');
+  } else {
+    res.status(403).send('fail');
   }
 });
 

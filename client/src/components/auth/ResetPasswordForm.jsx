@@ -1,8 +1,12 @@
 import React, {useState} from 'react';
 import {useParams} from 'react-router-dom';
+import {
+  resetPasswordByEmail,
+  validatePassword,
+} from '../../actions/authActions';
+import isEmpty from 'is-empty';
+
 import FormSubmitMessage from '../layout/FormSubmitMessage';
-import {resetPassword} from '../../actions/authActions';
-import {REQUEST_SUCCESS, EMAIL_NOT_FOUND} from '../../actions/types';
 
 import {
   Button,
@@ -34,16 +38,14 @@ const useStyles = makeStyles((theme) => ({
 function ResetPasswordForm() {
   const classes = useStyles();
 
-  let token = useParams().token;
+  const token = useParams().token;
 
   const [user, setUser] = useState({
-    email: '',
     password: '',
     password2: '',
   });
-  const [submitStatus, setSubmitStatus] = useState({
-    isSubmitted: false,
-    submitMessage: '',
+  const [error, setError] = useState({
+    errorMessage: '',
   });
 
   const handleChange = async (e) => {
@@ -57,8 +59,31 @@ function ResetPasswordForm() {
     });
   };
 
-  const handleClick = async (e) => {
-    // Placeholder
+  const handleClick = async () => {
+    const passwordCheck = await validatePassword(user.password, user.password2);
+
+    if (passwordCheck.isValid) {
+      const response = await resetPasswordByEmail(token);
+
+      /* Placeholder, once password is validated, need to add PUT/PATCH to change
+			password for user in DB. Once that is done, and verified, add code to
+			redirect user to dashboard */
+
+      // If password reset is successful, clear password reset form
+      setUser({
+        password: '',
+        password2: '',
+      });
+
+      // If password reset is successful, clear old errors from state
+      setError({
+        errorMessage: '',
+      });
+    } else {
+      setError({
+        errorMessage: passwordCheck.error,
+      });
+    }
   };
 
   return (
@@ -102,7 +127,6 @@ function ResetPasswordForm() {
             </Grid>
             <Button
               onClick={handleClick}
-              type='submit'
               fullWidth
               variant='contained'
               color='primary'
@@ -111,8 +135,8 @@ function ResetPasswordForm() {
               Submit
             </Button>
             <Grid item xs={12}>
-              {submitStatus.isSubmitted && (
-                <FormSubmitMessage submitMessage={submitStatus.submitMessage} />
+              {!isEmpty(error.errorMessage) && (
+                <FormSubmitMessage submitMessage={error.errorMessage} />
               )}
             </Grid>
           </form>
