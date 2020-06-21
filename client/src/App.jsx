@@ -8,6 +8,7 @@ import {ThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Dashboard from './components/layout/Dashboard';
+import Profile from './components/layout/Profile';
 import Landing from './components/layout/Landing';
 import Login from './components/layout/Login';
 import Navbar from './components/layout/Navbar';
@@ -46,6 +47,10 @@ function App() {
     );
   };
 
+  const renderProfile = () => {
+    return <Profile handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -56,6 +61,7 @@ function App() {
           <Route exact path='/login' render={renderLogin} />
           <Route exact path='/dashboard' render={renderDashboard} />
           <Route exact path='/forgotpassword' component={ForgotPassword} />
+          <Route exact path='/profile' render={renderProfile} />
           <Route path='/reset/:token' render={renderResetPassword} />
         </div>
       </Router>
