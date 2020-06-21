@@ -13,7 +13,7 @@ import Landing from './components/layout/Landing';
 import Login from './components/layout/Login';
 import Navbar from './components/layout/Navbar';
 import ForgotPassword from './components/layout/ForgotPassword';
-import ResetPassword from './components/layout/ResetPassword';
+import ResetPasswordByEmail from './components/layout/ResetPasswordByEmail';
 
 function App() {
   // Initial check to see if user is logged in
@@ -43,7 +43,10 @@ function App() {
 
   const renderResetPassword = () => {
     return (
-      <ResetPassword handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />
+      <ResetPasswordByEmail
+        handleLoggedIn={handleLoggedIn}
+        isLoggedIn={isLoggedIn}
+      />
     );
   };
 
