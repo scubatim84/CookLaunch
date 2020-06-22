@@ -8,16 +8,16 @@ opts.secretOrKey = process.env.SECRET_OR_KEY;
 
 module.exports = async (passport) => {
   const findUser = await passport.use(
-    new JwtStrategy(opts, (jwtPayload, done) => {
+    new JwtStrategy(opts, (jwtPayload) => {
       User.findById(jwtPayload.id);
     })
   );
 
   try {
     if (findUser) {
-      return done(null, findUser);
+      return findUser;
     } else {
-      return done(null, false);
+      return null;
     }
   } catch (err) {
     console.log(err);
