@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import FormSubmitMessage from '../layout/FormSubmitMessage';
 import {sendPasswordResetEmail} from '../../actions/authActions';
 import {REQUEST_SUCCESS, EMAIL_NOT_FOUND} from '../../actions/types';
+import {themeMain} from '../../Theme';
+import {useStylesForm} from '../../Styles';
 
 import {
   Button,
@@ -12,26 +14,9 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    margin: theme.spacing(2, 2, 2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(2),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
 
 function ForgotPasswordForm() {
-  const classes = useStyles();
+  const classes = useStylesForm(themeMain);
 
   const [user, setUser] = useState({
     email: '',

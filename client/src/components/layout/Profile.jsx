@@ -1,40 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
 import {getUserData} from '../../actions/authActions';
+import {themeMain} from '../../Theme';
+import {useStylesProfile} from '../../Styles';
 
 import {Button, CssBaseline, Card, Grid, Typography} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    margin: theme.spacing(2, 2, 2),
-  },
-  title: {
-    marginBottom: theme.spacing(2),
-    fontSize: 24,
-    fontWeight: 800,
-  },
-  textLabel: {
-    fontSize: 16,
-    fontWeight: 800,
-  },
-  textContent: {
-    fontSize: 16,
-    fontWeight: 400,
-  },
-  paper: {
-    margin: theme.spacing(2, 2, 2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  submit: {
-    margin: theme.spacing(0, 0, 2),
-  },
-}));
 
 function Profile(props) {
-  const classes = useStyles();
+  const classes = useStylesProfile(themeMain);
 
   const [isLoggedIn, setLoggedIn] = useState(props.isLoggedIn);
   const [user, setUser] = useState({
@@ -78,7 +51,7 @@ function Profile(props) {
           Edit Profile
         </Button>
       </Grid>
-      <Grid xs={4} md={2}>
+      <Grid xs={4}>
         <Card>
           <CssBaseline />
           <div className={classes.paper}>
