@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import {Redirect} from 'react-router-dom';
 import {logoutUser} from '../../actions/authActions';
 import {REQUEST_SUCCESS} from '../../actions/types';
 
@@ -6,6 +7,7 @@ import {
   AppBar,
   Grid,
   IconButton,
+  Link,
   Menu,
   MenuItem,
   Toolbar,
@@ -63,7 +65,13 @@ function NavBar(props) {
     setAnchorEl(null);
   };
 
-  const handleLogoutClick = async () => {
+  const handleProfile = () => {
+    handleClose();
+
+    return <Redirect to='/profile' />;
+  };
+
+  const handleLogout = async () => {
     const response = await logoutUser();
 
     if (response === REQUEST_SUCCESS) {
@@ -108,8 +116,14 @@ function NavBar(props) {
                     open={open}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+                    <Link
+                      href='/profile'
+                      color='textPrimary'
+                      style={{textDecoration: 'none'}}
+                    >
+                      <MenuItem>Profile</MenuItem>
+                    </Link>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </Menu>
                 </Grid>
               </Grid>

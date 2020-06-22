@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ResetPasswordForm(props) {
+function ResetPasswordByEmailForm(props) {
   const classes = useStyles();
 
   const token = useParams().token;
@@ -186,4 +186,4 @@ function ResetPasswordForm(props) {
   );
 }
 
-export default ResetPasswordForm;
+export default ResetPasswordByEmailForm;
