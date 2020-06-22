@@ -7,7 +7,6 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const isEmpty = require('is-empty');
 const addHours = require('date-fns/addHours');
-const formatISO9075 = require('date-fns/formatISO9075');
 
 // Load input validation
 const validateRegisterInput = require('../../validation/register');
@@ -16,6 +15,15 @@ const getForgotPasswordEmail = require('../../templates/emails');
 
 // Load User model
 const User = require('../../models/User');
+
+// Use bcrypt to hash passwords and return for later use
+async function hashPassword(password) {
+  try {
+    return await bcrypt.hash(password, 10);
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 // @route POST api/users/register
 // @desc Register user
@@ -43,20 +51,14 @@ router.post('/register', async (req, res) => {
     });
 
     // Hash password before saving in database
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(req.body.password, salt, (err, hash) => {
-        if (err) throw err;
+    newUser.password = await hashPassword(req.body.password);
+    newUser.save();
 
-        newUser.password = hash;
-        newUser.save();
-
-        try {
-          res.status(201).json(newUser);
-        } catch (err) {
-          console.log(err);
-        }
-      });
-    });
+    try {
+      res.status(201).json(newUser);
+    } catch (err) {
+      console.log(err);
+    }
   }
 });
 
@@ -187,22 +189,16 @@ router.put('/resetpassword', async (req, res) => {
   // Once user is found, hash password, reset token, then save in database
   if (foundUser) {
     try {
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(req.body.password, salt, (err, hash) => {
-          if (err) throw err;
+      foundUser.password = await hashPassword(req.body.password);
+      foundUser.resetPasswordToken = null;
+      foundUser.resetPasswordExpires = null;
+      foundUser.save();
 
-          foundUser.password = hash;
-          foundUser.resetPasswordToken = null;
-          foundUser.resetPasswordExpires = null;
-          foundUser.save();
-
-          try {
-            res.status(200).send('success');
-          } catch (err) {
-            console.log(err);
-          }
-        });
-      });
+      try {
+        res.status(200).send('success');
+      } catch (err) {
+        console.log(err);
+      }
     } catch (err) {
       res.status(400).send('An error has occurred. ' + err);
     }
