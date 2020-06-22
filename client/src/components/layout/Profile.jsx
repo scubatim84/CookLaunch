@@ -11,6 +11,8 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     marginBottom: theme.spacing(2),
+    fontSize: 24,
+    fontWeight: 800,
   },
   textLabel: {
     fontSize: 16,
@@ -36,6 +38,7 @@ function Profile(props) {
 
   const [isLoggedIn, setLoggedIn] = useState(props.isLoggedIn);
   const [user, setUser] = useState({
+    email: '',
     firstName: '',
     lastName: '',
   });
@@ -51,6 +54,7 @@ function Profile(props) {
         const userPayload = await data.payload;
 
         setUser({
+          email: userPayload.email,
           firstName: userPayload.firstName,
           lastName: userPayload.lastName,
         });
@@ -74,14 +78,20 @@ function Profile(props) {
           Edit Profile
         </Button>
       </Grid>
-      <Grid xs={4}>
+      <Grid xs={4} md={2}>
         <Card>
           <CssBaseline />
           <div className={classes.paper}>
-            <Typography component='h1' variant='h5' className={classes.title}>
-              My Profile
-            </Typography>
+            <Typography className={classes.title}>My Profile</Typography>
             <Grid container spacing={2} justify='space-between'>
+              <Grid item xs={12} sm={6}>
+                <Typography className={classes.textLabel}>Email</Typography>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Typography className={classes.textContent}>
+                  {user.email}
+                </Typography>
+              </Grid>
               <Grid item xs={12} sm={6}>
                 <Typography className={classes.textLabel}>
                   First Name

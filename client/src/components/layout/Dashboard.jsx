@@ -8,6 +8,7 @@ import {Typography} from '@material-ui/core';
 function Dashboard(props) {
   const [isLoggedIn, setLoggedIn] = useState(props.isLoggedIn);
   const [user, setUser] = useState({
+    email: '',
     firstName: '',
     lastName: '',
   });
@@ -23,6 +24,7 @@ function Dashboard(props) {
         const userPayload = await data.payload;
 
         setUser({
+          email: userPayload.email,
           firstName: userPayload.firstName,
           lastName: userPayload.lastName,
         });
