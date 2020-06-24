@@ -1,6 +1,6 @@
 import {createMuiTheme} from '@material-ui/core/styles';
 
-export const themeMain = createMuiTheme({
+const theme = createMuiTheme({
   palette: {
     primary: {
       dark: '#003d00',
@@ -11,9 +11,6 @@ export const themeMain = createMuiTheme({
       primary: '#003d00',
     },
   },
-  root: {
-    flexGrow: 1,
-  },
   typography: {
     fontFamily: 'Helvetica',
     h5: {
@@ -22,16 +19,4 @@ export const themeMain = createMuiTheme({
   },
 });
 
-export const themeNavbar = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#ffffff',
-    },
-    text: {
-      primary: '#003d00',
-    },
-  },
-  typography: {
-    fontFamily: 'Cambria',
-  },
-});
+export default theme;

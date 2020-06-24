@@ -7,9 +7,6 @@ import {
   resetPassword,
 } from '../../actions/authActions';
 import isEmpty from 'is-empty';
-import {REQUEST_SUCCESS} from '../../actions/types';
-import {themeMain} from '../../Theme';
-import {useStylesForm} from '../../Styles';
 
 import FormSubmitMessage from '../layout/FormSubmitMessage';
 
@@ -22,9 +19,27 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import {REQUEST_SUCCESS} from '../../actions/types';
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    margin: theme.spacing(2, 2, 2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(2),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 function ResetPasswordByEmailForm(props) {
-  const classes = useStylesForm(themeMain);
+  const classes = useStyles();
 
   const token = useParams().token;
 

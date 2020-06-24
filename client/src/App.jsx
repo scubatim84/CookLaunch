@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
-import {themeMain} from './Theme';
+import theme from './Theme';
 
 import {ThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -55,7 +55,7 @@ function App() {
   };
 
   return (
-    <ThemeProvider theme={themeMain}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Navbar handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />
       <Router>
