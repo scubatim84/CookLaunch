@@ -34,10 +34,14 @@ function Ingredients(props) {
   });
   const [ingredients, setIngredients] = useState({});
 
-  useEffect(async () => {
-    const ingredientData = await getIngredients();
+  const getIngredientData = async () => {
+    const response = await getIngredients();
 
-    setIngredients(ingredientData.authResponsePayload);
+    setIngredients(response.authResponsePayload);
+  };
+
+  useEffect(() => {
+    getIngredientData();
   }, []);
 
   useEffect(() => {
