@@ -31,6 +31,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   const ingredientName = _.lowerCase(req.body.name);
   const ingredientQuantityType = _.lowerCase(req.body.quantityType);
+  const createdByEmail = req.body.email;
 
   const foundIngredient = await Ingredient.findOne({name: ingredientName});
 
@@ -41,7 +42,7 @@ router.post('/', async (req, res) => {
   const newIngredient = new Ingredient({
     name: ingredientName,
     quantityType: ingredientQuantityType,
-    userCreated: req.body.userCreated,
+    createdBy: createdByEmail,
   });
 
   try {

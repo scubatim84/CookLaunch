@@ -11,8 +11,8 @@ const IngredientSchema = new Schema({
     type: String,
     required: true,
   },
-  userCreated: {
-    type: Boolean,
+  createdBy: {
+    type: String,
     required: true,
   },
 });
