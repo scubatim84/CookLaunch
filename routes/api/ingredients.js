@@ -14,7 +14,10 @@ router.get('/', async (req, res) => {
     const foundIngredients = await Ingredient.find({});
 
     if (foundIngredients) {
-      res.status(200).json(foundIngredients);
+      res.status(200).json({
+        message: 'success',
+        payload: foundIngredients,
+      });
     }
   } catch (err) {
     if (!foundIngredients) {
