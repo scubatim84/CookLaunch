@@ -1,8 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
+import {REQUEST_SUCCESS} from '../../actions/types';
 import {getUserData} from '../../actions/authActions';
-import {getIngredients} from '../../actions/ingredientActions';
+import {
+  addIngredientToDatabase,
+  getIngredients,
+} from '../../actions/ingredientActions';
 
 import FormSubmitMessage from '../layout/FormSubmitMessage';
 
@@ -11,10 +15,14 @@ import {
   Card,
   Container,
   CssBaseline,
+  FormControl,
   Grid,
+  InputLabel,
   List,
   ListItem,
   ListItemText,
+  MenuItem,
+  Select,
   TextField,
   Typography,
 } from '@material-ui/core';
@@ -28,8 +36,21 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     margin: theme.spacing(2),
   },
+  formControl: {
+    margin: theme.spacing(1),
+    width: '100%',
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
   list: {
-    margin: theme.spacing(0, 0, 0),
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+    position: 'relative',
+    overflow: 'auto',
+    maxHeight: 250,
+    margin: theme.spacing(1, 0, 2),
   },
   paper: {
     margin: theme.spacing(2, 2, 2),
@@ -90,6 +111,13 @@ function Ingredients(props) {
           firstName: userPayload.firstName,
           lastName: userPayload.lastName,
         });
+
+        setAddIngredient((prevValue) => {
+          return {
+            ...prevValue,
+            createdBy: userPayload.email,
+          };
+        });
       };
 
       getUserPayload();
@@ -98,7 +126,7 @@ function Ingredients(props) {
 
   const ingredientList = ingredients.map((ingredient, index) => {
     return (
-      <ListItem key={index} id={index}>
+      <ListItem dense={true} alignItems='flex-start' key={index} id={index}>
         <ListItemText primary={ingredient.name} />
       </ListItem>
     );
@@ -107,7 +135,7 @@ function Ingredients(props) {
   const handleChange = async (e) => {
     const {name, value} = e.target;
 
-    setUser((prevValue) => {
+    setAddIngredient((prevValue) => {
       return {
         ...prevValue,
         [name]: value,
@@ -115,10 +143,42 @@ function Ingredients(props) {
     });
   };
 
+  const handleSelect = async (e) => {
+    const value = e.target.value;
+
+    setAddIngredient((prevValue) => {
+      return {
+        ...prevValue,
+        quantityType: value,
+      };
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Placeholder
+    const requestResponse = await addIngredientToDatabase(addIngredient);
+
+    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+      // If adding ingredient is successful, clear form
+      setAddIngredient({
+        name: '',
+        quantityType: '',
+        createdBy: user.email,
+      });
+
+      // If adding ingredient is successful, clear old errors
+      setError({
+        errorMessage: '',
+      });
+
+      // Update ingredient list
+      getIngredientData();
+    } else {
+      setError({
+        errorMessage: requestResponse.authResponsePayload,
+      });
+    }
   };
 
   return !isLoggedIn ? (
@@ -129,7 +189,7 @@ function Ingredients(props) {
         <CssBaseline />
         <div className={classes.paper}>
           <Typography component='h1' variant='h5'>
-            Ingredients
+            Ingredients For Recipes
           </Typography>
           <List className={classes.list}>{ingredientList}</List>
           <form className={classes.form} noValidate>
@@ -148,17 +208,21 @@ function Ingredients(props) {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  onChange={handleChange}
-                  value={user.password}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  name='quantityType'
-                  label='Quantity Type'
-                  id='quantityType'
-                  autoComplete='quantityType'
-                />
+                <FormControl className={classes.formControl}>
+                  <InputLabel id='quantityTypeLabel'>Quantity Type</InputLabel>
+                  <Select
+                    labelId='quantityType'
+                    id='quantityType'
+                    required
+                    fullWidth
+                    value={addIngredient.quantityType}
+                    onChange={handleSelect}
+                  >
+                    <MenuItem value={'Ounces'}>Ounces</MenuItem>
+                    <MenuItem value={'Grams'}>Grams</MenuItem>
+                    <MenuItem value={'Liters'}>Liters</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
             <Button

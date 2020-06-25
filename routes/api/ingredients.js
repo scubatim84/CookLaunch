@@ -6,7 +6,7 @@ const _ = require('lodash');
 // Load Ingredient model
 const Ingredient = require('../../models/Ingredient');
 
-// @route GET api/users/ingredients
+// @route GET api/ingredients
 // @desc Get all ingredients
 // @access Public
 router.get('/', async (req, res) => {
@@ -28,13 +28,13 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route POST api/users/ingredients
+// @route POST api/ingredients
 // @desc Add new ingredient
 // @access Public
 router.post('/', async (req, res) => {
   const ingredientName = _.lowerCase(req.body.name);
   const ingredientQuantityType = _.lowerCase(req.body.quantityType);
-  const createdByEmail = req.body.email;
+  const createdByEmail = req.body.createdBy;
 
   const foundIngredient = await Ingredient.findOne({name: ingredientName});
 
@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @route GET api/users/ingredients/:ingredientName
+// @route GET api/ingredients/:ingredientName
 // @desc Get one ingredient by name
 // @access Public
 router.get('/:name', async (req, res) => {
@@ -74,7 +74,7 @@ router.get('/:name', async (req, res) => {
   }
 });
 
-// @route PUT api/users/ingredients/:ingredientName
+// @route PUT api/ingredients/:ingredientName
 // @desc Update one ingredient by name
 // @access Public
 router.put('/:name', async (req, res) => {
@@ -101,7 +101,7 @@ router.put('/:name', async (req, res) => {
   }
 });
 
-// @route DELETE api/users/ingredients/:ingredientName
+// @route DELETE api/ingredients/:ingredientName
 // @desc Delete one ingredient by name
 // @access Public
 router.delete('/:name', async (req, res) => {
