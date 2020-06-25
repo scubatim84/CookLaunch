@@ -25,6 +25,7 @@
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^10.2.11",
+    "lodash": "^4.17.15",
     "mongoose": "^5.9.18",
     "nodemailer": "^6.4.10",
     "passport": "^0.4.1",

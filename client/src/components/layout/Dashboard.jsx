@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
 import {getUserData} from '../../actions/authActions';
-import isEmpty from 'is-empty';
 
-import {Typography} from '@material-ui/core';
+import Ingredients from './Ingredients';
+
+import {Grid} from '@material-ui/core';
 
 function Dashboard(props) {
   const [isLoggedIn, setLoggedIn] = useState(props.isLoggedIn);
@@ -37,9 +38,14 @@ function Dashboard(props) {
   return !isLoggedIn ? (
     <Redirect to='/login' />
   ) : (
-    <Typography>
-      Welcome {!isEmpty(user.firstName) && user.firstName}
-    </Typography>
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={4}>
+        <Ingredients
+          handleLoggedIn={props.handleLoggedIn}
+          isLoggedIn={props.isLoggedIn}
+        />
+      </Grid>
+    </Grid>
   );
 }
 
