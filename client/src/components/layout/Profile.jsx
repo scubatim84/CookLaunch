@@ -78,7 +78,7 @@ function Profile(props) {
           Edit Profile
         </Button>
       </Grid>
-      <Grid xs={4} md={2}>
+      <Grid xs={12} sm={4}>
         <Card>
           <CssBaseline />
           <div className={classes.paper}>

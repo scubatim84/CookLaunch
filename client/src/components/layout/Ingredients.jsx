@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
+import _ from 'lodash';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {getUserData} from '../../actions/authActions';
 import {
@@ -125,9 +126,11 @@ function Ingredients(props) {
   }, [isLoggedIn]);
 
   const ingredientList = ingredients.map((ingredient, index) => {
+    const formatName = _.startCase(_.toLower(ingredient.name));
+
     return (
       <ListItem dense={true} alignItems='flex-start' key={index} id={index}>
-        <ListItemText primary={ingredient.name} />
+        <ListItemText primary={formatName} />
       </ListItem>
     );
   });
