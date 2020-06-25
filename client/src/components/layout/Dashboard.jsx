@@ -4,6 +4,8 @@ import {getUserData} from '../../actions/authActions';
 
 import Ingredients from './Ingredients';
 
+import {Grid} from '@material-ui/core';
+
 function Dashboard(props) {
   const [isLoggedIn, setLoggedIn] = useState(props.isLoggedIn);
   const [user, setUser] = useState({
@@ -36,10 +38,14 @@ function Dashboard(props) {
   return !isLoggedIn ? (
     <Redirect to='/login' />
   ) : (
-    <Ingredients
-      handleLoggedIn={props.handleLoggedIn}
-      isLoggedIn={props.isLoggedIn}
-    />
+    <Grid container spacing={2}>
+      <Grid item xs={12} sm={4}>
+        <Ingredients
+          handleLoggedIn={props.handleLoggedIn}
+          isLoggedIn={props.isLoggedIn}
+        />
+      </Grid>
+    </Grid>
   );
 }
 
