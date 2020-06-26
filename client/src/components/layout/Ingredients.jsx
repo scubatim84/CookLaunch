@@ -8,6 +8,8 @@ import {
   addIngredientToDatabase,
   getIngredients,
 } from '../../actions/ingredientActions';
+import {useStylesIngredients} from '../../Styles';
+import theme from '../../Theme';
 
 import FormSubmitMessage from '../layout/FormSubmitMessage';
 
@@ -28,48 +30,8 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import {makeStyles} from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-    margin: theme.spacing(2),
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    width: '100%',
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  list: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: 250,
-    margin: theme.spacing(1, 0, 2),
-  },
-  paper: {
-    margin: theme.spacing(2, 2, 2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: theme.spacing(2),
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 1),
-  },
-}));
-
 function Ingredients(props) {
-  const classes = useStyles();
+  const classes = useStylesIngredients(theme);
 
   const [isLoggedIn, setLoggedIn] = useState(props.isLoggedIn);
   const [user, setUser] = useState({
@@ -95,7 +57,7 @@ function Ingredients(props) {
 
   useEffect(() => {
     getIngredientData();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     setLoggedIn(props.isLoggedIn);
@@ -211,7 +173,7 @@ function Ingredients(props) {
                 />
               </Grid>
               <Grid item xs={12}>
-                <FormControl className={classes.formControl}>
+                <FormControl className={classes.form}>
                   <InputLabel id='quantityTypeLabel'>Quantity Type</InputLabel>
                   <Select
                     labelId='quantityType'
@@ -227,17 +189,19 @@ function Ingredients(props) {
                   </Select>
                 </FormControl>
               </Grid>
+              <Grid item xs={12}>
+                <Button
+                  onClick={handleSubmit}
+                  fullWidth
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                  className={classes.form}
+                >
+                  Add Ingredient
+                </Button>
+              </Grid>
             </Grid>
-            <Button
-              onClick={handleSubmit}
-              fullWidth
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.submit}
-            >
-              Add Ingredient
-            </Button>
             <Grid item xs={12}>
               {!isEmpty(error.errorMessage) && (
                 <FormSubmitMessage submitMessage={error.errorMessage} />

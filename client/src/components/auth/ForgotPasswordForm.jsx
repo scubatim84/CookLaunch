@@ -3,6 +3,7 @@ import FormSubmitMessage from '../layout/FormSubmitMessage';
 import {sendPasswordResetEmail} from '../../actions/authActions';
 import {REQUEST_SUCCESS, EMAIL_NOT_FOUND} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
+import theme from '../../Theme';
 
 import {
   Button,
@@ -15,7 +16,7 @@ import {
 } from '@material-ui/core';
 
 function ForgotPasswordForm() {
-  const classes = useStylesForm();
+  const classes = useStylesForm(theme);
 
   const [user, setUser] = useState({
     email: '',
@@ -91,21 +92,25 @@ function ForgotPasswordForm() {
                   autoComplete='email'
                 />
               </Grid>
-            </Grid>
-            <Button
-              onClick={handleSubmit}
-              type='submit'
-              fullWidth
-              variant='contained'
-              color='primary'
-              className={classes.submit}
-            >
-              Submit
-            </Button>
-            <Grid item xs={12}>
-              {submitStatus.isSubmitted && (
-                <FormSubmitMessage submitMessage={submitStatus.submitMessage} />
-              )}
+              <Grid item xs={12}>
+                <Button
+                  onClick={handleSubmit}
+                  type='submit'
+                  fullWidth
+                  variant='contained'
+                  color='primary'
+                  className={classes.submit}
+                >
+                  Submit
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                {submitStatus.isSubmitted && (
+                  <FormSubmitMessage
+                    submitMessage={submitStatus.submitMessage}
+                  />
+                )}
+              </Grid>
             </Grid>
           </form>
         </div>
