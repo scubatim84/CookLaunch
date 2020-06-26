@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import {logoutUser} from '../../actions/authActions';
 import {REQUEST_SUCCESS} from '../../actions/types';
+import {themeNavbar} from '../../Theme';
+import {useStylesNavbar} from '../../Styles';
 
 import {
   AppBar,
@@ -13,42 +15,12 @@ import {
   Toolbar,
 } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import {
-  createMuiTheme,
-  makeStyles,
-  ThemeProvider,
-} from '@material-ui/core/styles';
+import {ThemeProvider} from '@material-ui/core/styles';
 
 import Brand from './Brand';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#ffffff',
-    },
-    text: {
-      primary: '#003d00',
-    },
-  },
-  typography: {
-    fontFamily: 'Cambria',
-  },
-});
-
-const useStyles = makeStyles((theme) => ({
-  menuButton: {
-    marginRight: theme.spacing(5),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
-
 function NavBar(props) {
-  const classes = useStyles();
+  const classes = useStylesNavbar(themeNavbar);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(props.isLoggedIn);
   const open = Boolean(anchorEl);
@@ -83,7 +55,7 @@ function NavBar(props) {
 
   return (
     <div className={classes.root}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={themeNavbar}>
         <AppBar position='static'>
           <Toolbar>
             {isLoggedIn ? (

@@ -8,8 +8,8 @@ import {
   addIngredientToDatabase,
   getIngredients,
 } from '../../actions/ingredientActions';
-import {useStylesIngredients} from '../../Styles';
-import theme from '../../Theme';
+import {useStylesForm} from '../../Styles';
+import {themeMain} from '../../Theme';
 
 import FormSubmitMessage from '../layout/FormSubmitMessage';
 
@@ -31,7 +31,7 @@ import {
 } from '@material-ui/core';
 
 function Ingredients(props) {
-  const classes = useStylesIngredients(theme);
+  const classes = useStylesForm(themeMain);
 
   const [isLoggedIn, setLoggedIn] = useState(props.isLoggedIn);
   const [user, setUser] = useState({
@@ -158,7 +158,7 @@ function Ingredients(props) {
           </Typography>
           <List className={classes.list}>{ingredientList}</List>
           <form className={classes.form} noValidate>
-            <Grid container spacing={2}>
+            <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
@@ -196,7 +196,7 @@ function Ingredients(props) {
                   type='submit'
                   variant='contained'
                   color='primary'
-                  className={classes.form}
+                  className={classes.submit}
                 >
                   Add Ingredient
                 </Button>

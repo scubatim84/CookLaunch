@@ -3,7 +3,7 @@ import FormSubmitMessage from '../layout/FormSubmitMessage';
 import {sendPasswordResetEmail} from '../../actions/authActions';
 import {REQUEST_SUCCESS, EMAIL_NOT_FOUND} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
-import theme from '../../Theme';
+import {themeMain} from '../../Theme';
 
 import {
   Button,
@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 
 function ForgotPasswordForm() {
-  const classes = useStylesForm(theme);
+  const classes = useStylesForm(themeMain);
 
   const [user, setUser] = useState({
     email: '',

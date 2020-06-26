@@ -4,7 +4,7 @@ import {registerUser, loginUser} from '../../actions/authActions';
 import isEmpty from 'is-empty';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
-import theme from '../../Theme';
+import {themeMain} from '../../Theme';
 
 import {
   Button,
@@ -20,7 +20,7 @@ import {
 import FormSubmitMessage from '../layout/FormSubmitMessage';
 
 function RegisterForm(props) {
-  const classes = useStylesForm(theme);
+  const classes = useStylesForm(themeMain);
 
   const [isLoggedin, setLoggedIn] = useState(props.isLoggedin);
   const [newUser, setNewUser] = useState({
