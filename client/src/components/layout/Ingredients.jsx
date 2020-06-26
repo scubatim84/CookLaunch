@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import _ from 'lodash';
-import {REQUEST_SUCCESS} from '../../actions/types';
+import {ingredientQuantityTypes, REQUEST_SUCCESS} from '../../actions/types';
 import {getUserData} from '../../actions/authActions';
 import {
   addIngredientToDatabase,
@@ -89,10 +89,12 @@ function Ingredients(props) {
 
   const ingredientList = ingredients.map((ingredient, index) => {
     const formatName = _.startCase(_.toLower(ingredient.name));
+    const formatQuantityType = _.startCase(_.toLower(ingredient.quantityType));
+    const displayName = `${formatName} (${formatQuantityType})`;
 
     return (
       <ListItem dense={true} alignItems='flex-start' key={index} id={index}>
-        <ListItemText primary={formatName} />
+        <ListItemText primary={displayName} />
       </ListItem>
     );
   });
@@ -183,9 +185,17 @@ function Ingredients(props) {
                     value={addIngredient.quantityType}
                     onChange={handleSelect}
                   >
-                    <MenuItem value={'Ounces'}>Ounces</MenuItem>
-                    <MenuItem value={'Grams'}>Grams</MenuItem>
-                    <MenuItem value={'Liters'}>Liters</MenuItem>
+                    {ingredientQuantityTypes.map((quantityType, index) => {
+                      const formatQuantityType = _.startCase(
+                        _.toLower(quantityType)
+                      );
+
+                      return (
+                        <MenuItem value={quantityType}>
+                          {formatQuantityType}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Grid>

@@ -36,10 +36,13 @@ router.post('/', async (req, res) => {
   const ingredientQuantityType = _.lowerCase(req.body.quantityType);
   const createdByEmail = req.body.createdBy;
 
-  const foundIngredient = await Ingredient.findOne({name: ingredientName});
+  const foundIngredient = await Ingredient.findOne({
+    name: ingredientName,
+    quantityType: ingredientQuantityType,
+  });
 
   if (foundIngredient) {
-    res.status(400).json('that ingredient already exists');
+    res.status(400).json('That ingredient already exists.');
   }
 
   const newIngredient = new Ingredient({
