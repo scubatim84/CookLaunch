@@ -16,6 +16,7 @@ const getForgotPasswordEmail = require('../../templates/emails');
 
 // Load User model
 const User = require('../../models/User');
+const {update} = require('lodash');
 
 // Use bcrypt to hash passwords and return for later use
 async function hashPassword(password) {
@@ -235,7 +236,7 @@ router.post('/pantry', async (req, res) => {
   // Find user with email passed in from front end
   const foundUser = await User.findOne({email: req.body.email});
 
-  // Once user is found, add ingredient to user's pantry
+  // Once user is found, add ingredients to user's pantry
   // To greatly reduce number of API calls, req.body.ingredients is an array of ingredients
   if (foundUser) {
     try {
@@ -247,6 +248,67 @@ router.post('/pantry', async (req, res) => {
       foundUser.save();
 
       res.status(200).send(foundUser.pantry);
+    } catch (err) {
+      res.status(400).send('An error has occurred. ' + err);
+    }
+  } else {
+    res.status(404).send('No user found in database.');
+  }
+});
+
+// @route PUT api/users/pantry
+// @desc Update ingredients in user's pantry
+// @access Private
+router.put('/pantry', async (req, res) => {
+  // Find user with email passed in from front end
+  const foundUser = await User.findOne({email: req.body.email});
+
+  // Once user is found, update ingredients in user's pantry
+  // To greatly reduce number of API calls, req.body.ingredients is an array of ingredients
+  if (foundUser) {
+    try {
+      ingredientsToUpdate = req.body.ingredients;
+
+      ingredientsToUpdate.forEach((updatedIngredient) => {
+        let currentIngredient = foundUser.pantry.id(updatedIngredient._id);
+
+        if (!isEmpty(updatedIngredient.quantity)) {
+          currentIngredient.quantity = updatedIngredient.quantity;
+        } else {
+          throw err;
+        }
+      });
+
+      foundUser.save();
+
+      res.status(200).send(foundUser.pantry);
+    } catch (err) {
+      res.status(400).send('An error has occurred. ' + err);
+    }
+  } else {
+    res.status(404).send('No user found in database.');
+  }
+});
+
+// @route DELETE api/users/pantry
+// @desc Delete ingredients from user's pantry
+// @access Private
+router.delete('/pantry', async (req, res) => {
+  // Find user with email passed in from front end
+  const foundUser = await User.findOne({email: req.body.email});
+
+  // Once user is found, delete ingredients from user's pantry
+  // To greatly reduce number of API calls, req.body.ingredients is an array of ingredients
+  if (foundUser) {
+    try {
+      ingredientsToDelete = req.body.ingredients;
+      ingredientsToDelete.forEach((ingredient) => {
+        foundUser.pantry.remove(ingredient._id);
+      });
+
+      foundUser.save();
+
+      res.status(200).send('success');
     } catch (err) {
       res.status(400).send('An error has occurred. ' + err);
     }
