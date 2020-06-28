@@ -7,6 +7,7 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const isEmpty = require('is-empty');
 const addHours = require('date-fns/addHours');
+const _ = require('lodash');
 
 // Load input validation
 const validateRegisterInput = require('../../validation/register');
@@ -200,6 +201,52 @@ router.put('/resetpassword', async (req, res) => {
       } catch (err) {
         console.log(err);
       }
+    } catch (err) {
+      res.status(400).send('An error has occurred. ' + err);
+    }
+  } else {
+    res.status(404).send('No user found in database.');
+  }
+});
+
+// @route GET api/users/pantry
+// @desc Obtain ingredients in user's pantry
+// @access Private
+router.get('/pantry', async (req, res) => {
+  // Find user with email passed in from front end
+  const foundUser = await User.findOne({email: req.body.email});
+
+  // Once user is found, send contents of user's pantry
+  if (foundUser) {
+    try {
+      res.status(200).send(foundUser.pantry);
+    } catch (err) {
+      res.status(400).send('An error has occurred. ' + err);
+    }
+  } else {
+    res.status(404).send('No user found in database.');
+  }
+});
+
+// @route POST api/users/pantry
+// @desc Add ingredients to user's pantry
+// @access Private
+router.post('/pantry', async (req, res) => {
+  // Find user with email passed in from front end
+  const foundUser = await User.findOne({email: req.body.email});
+
+  // Once user is found, add ingredient to user's pantry
+  // To greatly reduce number of API calls, req.body.ingredients is an array of ingredients
+  if (foundUser) {
+    try {
+      ingredientsToAdd = req.body.ingredients;
+      ingredientsToAdd.forEach((ingredient) => {
+        foundUser.pantry.push(ingredient);
+      });
+
+      foundUser.save();
+
+      res.status(200).send(foundUser.pantry);
     } catch (err) {
       res.status(400).send('An error has occurred. ' + err);
     }

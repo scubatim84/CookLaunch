@@ -62,7 +62,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @route GET api/ingredients/:ingredientName
+// @route GET api/ingredients/:name
 // @desc Get one ingredient by name
 // @access Private
 router.get('/:name', async (req, res) => {
@@ -77,7 +77,7 @@ router.get('/:name', async (req, res) => {
   }
 });
 
-// @route PUT api/ingredients/:ingredientName
+// @route PUT api/ingredients/:name
 // @desc Update one ingredient by name
 // @access Private
 router.put('/:name', async (req, res) => {
@@ -104,7 +104,7 @@ router.put('/:name', async (req, res) => {
   }
 });
 
-// @route DELETE api/ingredients/:ingredientName
+// @route DELETE api/ingredients/:name
 // @desc Delete one ingredient by name
 // @access Private
 router.delete('/:name', async (req, res) => {
