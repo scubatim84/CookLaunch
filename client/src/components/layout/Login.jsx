@@ -1,17 +1,11 @@
 import React from 'react';
 import LoginForm from '../auth/LoginForm';
+import {useStylesLanding} from '../../Styles';
 
 import Grid from '@material-ui/core/Grid';
-import {makeStyles} from '@material-ui/core/styles';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-}));
 
 function Login(props) {
-  const classes = useStyles();
+  const classes = useStylesLanding();
 
   return (
     <div className='login-background background-image-full'>
@@ -23,7 +17,7 @@ function Login(props) {
           justify='center'
           style={{minHeight: '100vh'}}
         >
-          <Grid className={classes.position} item xs={6}>
+          <Grid item xs={6}>
             <LoginForm
               handleLoggedIn={props.handleLoggedIn}
               isLoggedIn={props.isLoggedIn}

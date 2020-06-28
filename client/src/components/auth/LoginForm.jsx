@@ -4,6 +4,7 @@ import {loginUser} from '../../actions/authActions';
 import isEmpty from 'is-empty';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
+import {themeMain} from '../../Theme';
 
 import {
   Button,
@@ -19,7 +20,7 @@ import {
 import FormSubmitMessage from '../layout/FormSubmitMessage';
 
 function LoginForm(props) {
-  const classes = useStylesForm();
+  const classes = useStylesForm(themeMain);
 
   const [isLoggedin, setLoggedIn] = useState(props.isLoggedin);
   const [user, setUser] = useState({
@@ -110,18 +111,20 @@ function LoginForm(props) {
                   autoComplete='password'
                 />
               </Grid>
+              <Grid item xs={12}>
+                <Button
+                  onClick={handleSubmit}
+                  fullWidth
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                  className={classes.submit}
+                >
+                  Login
+                </Button>
+              </Grid>
             </Grid>
-            <Button
-              onClick={handleSubmit}
-              fullWidth
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.submit}
-            >
-              Login
-            </Button>
-            <Grid container justify='space-between'>
+            <Grid container justify='space-between' className={classes.form}>
               <Grid item>
                 <Link href='/forgotpassword' variant='body2'>
                   Forgot Password?

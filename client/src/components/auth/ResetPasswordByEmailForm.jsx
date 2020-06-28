@@ -9,6 +9,7 @@ import {
 import isEmpty from 'is-empty';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
+import {themeMain} from '../../Theme';
 
 import FormSubmitMessage from '../layout/FormSubmitMessage';
 
@@ -23,7 +24,7 @@ import {
 } from '@material-ui/core';
 
 function ResetPasswordByEmailForm(props) {
-  const classes = useStylesForm();
+  const classes = useStylesForm(themeMain);
 
   const token = useParams().token;
 

@@ -4,6 +4,7 @@ import {registerUser, loginUser} from '../../actions/authActions';
 import isEmpty from 'is-empty';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
+import {themeMain} from '../../Theme';
 
 import {
   Button,
@@ -19,7 +20,7 @@ import {
 import FormSubmitMessage from '../layout/FormSubmitMessage';
 
 function RegisterForm(props) {
-  const classes = useStylesForm();
+  const classes = useStylesForm(themeMain);
 
   const [isLoggedin, setLoggedIn] = useState(props.isLoggedin);
   const [newUser, setNewUser] = useState({
@@ -164,18 +165,20 @@ function RegisterForm(props) {
                   autoComplete='confirm-password'
                 />
               </Grid>
+              <Grid item xs={12}>
+                <Button
+                  onClick={handleSubmit}
+                  fullWidth
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                  className={classes.submit}
+                >
+                  Sign Up
+                </Button>
+              </Grid>
             </Grid>
-            <Button
-              onClick={handleSubmit}
-              fullWidth
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.submit}
-            >
-              Sign Up
-            </Button>
-            <Grid container justify='flex-end'>
+            <Grid container justify='flex-end' className={classes.form}>
               <Grid item>
                 <Link href='/login' variant='body2'>
                   Already have an account? Sign in

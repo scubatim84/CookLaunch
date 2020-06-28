@@ -8,7 +8,7 @@ const Ingredient = require('../../models/Ingredient');
 
 // @route GET api/ingredients
 // @desc Get all ingredients
-// @access Public
+// @access Private
 router.get('/', async (req, res) => {
   try {
     const foundIngredients = await Ingredient.find({});
@@ -30,16 +30,19 @@ router.get('/', async (req, res) => {
 
 // @route POST api/ingredients
 // @desc Add new ingredient
-// @access Public
+// @access Private
 router.post('/', async (req, res) => {
   const ingredientName = _.lowerCase(req.body.name);
   const ingredientQuantityType = _.lowerCase(req.body.quantityType);
   const createdByEmail = req.body.createdBy;
 
-  const foundIngredient = await Ingredient.findOne({name: ingredientName});
+  const foundIngredient = await Ingredient.findOne({
+    name: ingredientName,
+    quantityType: ingredientQuantityType,
+  });
 
   if (foundIngredient) {
-    res.status(400).json('that ingredient already exists');
+    res.status(400).json('That ingredient already exists.');
   }
 
   const newIngredient = new Ingredient({
@@ -61,7 +64,7 @@ router.post('/', async (req, res) => {
 
 // @route GET api/ingredients/:ingredientName
 // @desc Get one ingredient by name
-// @access Public
+// @access Private
 router.get('/:name', async (req, res) => {
   const ingredientName = _.lowerCase(req.params.name);
 
@@ -76,7 +79,7 @@ router.get('/:name', async (req, res) => {
 
 // @route PUT api/ingredients/:ingredientName
 // @desc Update one ingredient by name
-// @access Public
+// @access Private
 router.put('/:name', async (req, res) => {
   try {
     const ingredientName = _.lowerCase(req.params.name);
@@ -103,7 +106,7 @@ router.put('/:name', async (req, res) => {
 
 // @route DELETE api/ingredients/:ingredientName
 // @desc Delete one ingredient by name
-// @access Public
+// @access Private
 router.delete('/:name', async (req, res) => {
   try {
     const ingredientName = _.lowerCase(req.params.name);
