@@ -1,4 +1,4 @@
-const IngredientSchema = require('./Ingredient');
+const {IngredientSchema} = require('./Ingredient');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
