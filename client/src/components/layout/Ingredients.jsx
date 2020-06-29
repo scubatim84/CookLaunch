@@ -38,7 +38,7 @@ function Ingredients(props) {
   const [error, setError] = useState({
     errorMessage: '',
   });
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState({data: []});
   const [addIngredient, setAddIngredient] = useState({
     name: '',
     createdBy: user.email,
@@ -47,7 +47,7 @@ function Ingredients(props) {
   const getIngredientData = async () => {
     const response = await getIngredients();
 
-    setIngredients(response.authResponsePayload);
+    setIngredients({data: response.authResponsePayload});
   };
 
   useEffect(() => {
@@ -82,7 +82,7 @@ function Ingredients(props) {
     }
   }, [isLoggedIn]);
 
-  const ingredientList = ingredients.map((ingredient, index) => {
+  const ingredientList = ingredients.data.map((ingredient, index) => {
     const formatName = _.startCase(_.toLower(ingredient.name));
 
     return (
