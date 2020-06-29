@@ -12,7 +12,6 @@ const IngredientSchema = new Schema({
   },
   quantityType: {
     type: String,
-    required: true,
   },
   createdBy: {
     type: String,

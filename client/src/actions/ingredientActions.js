@@ -32,12 +32,10 @@ export const addIngredientToDatabase = async (ingredientData) => {
   let error;
 
   let name = ingredientData.name;
-  let quantityType = ingredientData.quantityType;
   let createdBy = ingredientData.createdBy;
 
-  // Check to see if createdBy value is empty, and if so, convert to empty string
+  // Check to see if values are empty, and if so, convert them to empty strings
   name = !isEmpty(name) ? name : '';
-  quantityType = !isEmpty(quantityType) ? quantityType : '';
   createdBy = !isEmpty(createdBy) ? createdBy : '';
 
   // CreatedBy check for valid E-mail
@@ -50,11 +48,6 @@ export const addIngredientToDatabase = async (ingredientData) => {
   // Check for valid ingredient name
   if (isEmpty(name)) {
     error = 'Please enter an ingredient name.';
-  }
-
-  // Check for valid quantity type
-  if (isEmpty(quantityType)) {
-    error = 'Please select a quantity type.';
   }
 
   if (!isEmpty(error)) {

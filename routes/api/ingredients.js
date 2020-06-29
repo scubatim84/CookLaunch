@@ -32,13 +32,9 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const ingredientName = _.lowerCase(req.body.name);
-    const ingredientQuantityType = _.lowerCase(req.body.quantityType);
     const createdByEmail = req.body.createdBy;
 
-    const foundIngredient = await Ingredient.findOne({
-      name: ingredientName,
-      quantityType: ingredientQuantityType,
-    });
+    const foundIngredient = await Ingredient.findOne({name: ingredientName});
 
     if (foundIngredient) {
       res.status(400).json('That ingredient already exists.');
@@ -46,7 +42,6 @@ router.post('/', async (req, res) => {
 
     const newIngredient = new Ingredient({
       name: ingredientName,
-      quantityType: ingredientQuantityType,
       createdBy: createdByEmail,
     });
 
@@ -89,11 +84,6 @@ router.put('/:name', async (req, res) => {
       const newName = _.lowerCase(req.body.name);
 
       foundIngredient.name = newName;
-    }
-    if (!isEmpty(req.body.quantityType)) {
-      const newQuantityType = _.lowerCase(req.body.quantityType);
-
-      foundIngredient.quantityType = newQuantityType;
     }
 
     await foundIngredient.save();

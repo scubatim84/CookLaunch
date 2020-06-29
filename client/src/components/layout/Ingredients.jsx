@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import _ from 'lodash';
-import {ingredientQuantityTypes, REQUEST_SUCCESS} from '../../actions/types';
+import {REQUEST_SUCCESS} from '../../actions/types';
 import {getUserData} from '../../actions/authActions';
 import {
   addIngredientToDatabase,
@@ -18,14 +18,10 @@ import {
   Card,
   Container,
   CssBaseline,
-  FormControl,
   Grid,
-  InputLabel,
   List,
   ListItem,
   ListItemText,
-  MenuItem,
-  Select,
   TextField,
   Typography,
 } from '@material-ui/core';
@@ -45,7 +41,6 @@ function Ingredients(props) {
   const [ingredients, setIngredients] = useState([]);
   const [addIngredient, setAddIngredient] = useState({
     name: '',
-    quantityType: '',
     createdBy: user.email,
   });
 
@@ -89,12 +84,10 @@ function Ingredients(props) {
 
   const ingredientList = ingredients.map((ingredient, index) => {
     const formatName = _.startCase(_.toLower(ingredient.name));
-    const formatQuantityType = _.startCase(_.toLower(ingredient.quantityType));
-    const displayName = `${formatName} (${formatQuantityType})`;
 
     return (
       <ListItem dense={true} alignItems='flex-start' key={index} id={index}>
-        <ListItemText primary={displayName} />
+        <ListItemText primary={formatName} />
       </ListItem>
     );
   });
@@ -110,17 +103,6 @@ function Ingredients(props) {
     });
   };
 
-  const handleSelect = async (e) => {
-    const value = e.target.value;
-
-    setAddIngredient((prevValue) => {
-      return {
-        ...prevValue,
-        quantityType: value,
-      };
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -130,7 +112,6 @@ function Ingredients(props) {
       // If adding ingredient is successful, clear form
       setAddIngredient({
         name: '',
-        quantityType: '',
         createdBy: user.email,
       });
 
@@ -173,31 +154,6 @@ function Ingredients(props) {
                   name='name'
                   autoComplete='name'
                 />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControl className={classes.form}>
-                  <InputLabel id='quantityTypeLabel'>Quantity Type</InputLabel>
-                  <Select
-                    labelId='quantityType'
-                    id='quantityType'
-                    required
-                    fullWidth
-                    value={addIngredient.quantityType}
-                    onChange={handleSelect}
-                  >
-                    {ingredientQuantityTypes.map((quantityType, index) => {
-                      const formatQuantityType = _.startCase(
-                        _.toLower(quantityType)
-                      );
-
-                      return (
-                        <MenuItem value={quantityType}>
-                          {formatQuantityType}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <Button
