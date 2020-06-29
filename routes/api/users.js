@@ -98,6 +98,7 @@ router.post('/login', async (req, res) => {
       email: foundUser.email,
       firstName: foundUser.firstName,
       lastName: foundUser.lastName,
+      pantry: foundUser.pantry,
     };
 
     //Sign token
@@ -220,7 +221,10 @@ router.get('/pantry', async (req, res) => {
   // Once user is found, send contents of user's pantry
   if (foundUser) {
     try {
-      res.status(200).send(foundUser.pantry);
+      res.status(200).send({
+        message: 'success',
+        payload: foundUser.pantry,
+      });
     } catch (err) {
       res.status(400).send('An error has occurred. ' + err);
     }
@@ -245,9 +249,12 @@ router.post('/pantry', async (req, res) => {
         foundUser.pantry.push(ingredient);
       });
 
-      foundUser.save();
+      await foundUser.save();
 
-      res.status(200).send(foundUser.pantry);
+      res.status(200).send({
+        message: 'success',
+        payload: foundUser.pantry,
+      });
     } catch (err) {
       res.status(400).send('An error has occurred. ' + err);
     }
@@ -281,7 +288,10 @@ router.put('/pantry', async (req, res) => {
 
       foundUser.save();
 
-      res.status(200).send(foundUser.pantry);
+      res.status(200).send({
+        message: 'success',
+        payload: foundUser.pantry,
+      });
     } catch (err) {
       res.status(400).send('An error has occurred. ' + err);
     }

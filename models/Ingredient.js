@@ -15,7 +15,6 @@ const IngredientSchema = new Schema({
   },
   createdBy: {
     type: String,
-    required: true,
   },
 });
 

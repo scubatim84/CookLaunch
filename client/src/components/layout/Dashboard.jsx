@@ -3,6 +3,7 @@ import {Redirect} from 'react-router-dom';
 import {getUserData} from '../../actions/authActions';
 
 import Ingredients from './Ingredients';
+import Pantry from './Pantry';
 
 import {Grid} from '@material-ui/core';
 
@@ -41,6 +42,12 @@ function Dashboard(props) {
     <Grid container spacing={2}>
       <Grid item xs={12} sm={4}>
         <Ingredients
+          handleLoggedIn={props.handleLoggedIn}
+          isLoggedIn={props.isLoggedIn}
+        />
+      </Grid>
+      <Grid item xs={12} sm={4}>
+        <Pantry
           handleLoggedIn={props.handleLoggedIn}
           isLoggedIn={props.isLoggedIn}
         />
