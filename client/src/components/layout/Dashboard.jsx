@@ -46,12 +46,6 @@ function Dashboard(props) {
           isLoggedIn={props.isLoggedIn}
         />
       </Grid>
-      <Grid item xs={12} sm={4}>
-        <Pantry
-          handleLoggedIn={props.handleLoggedIn}
-          isLoggedIn={props.isLoggedIn}
-        />
-      </Grid>
     </Grid>
   );
 }

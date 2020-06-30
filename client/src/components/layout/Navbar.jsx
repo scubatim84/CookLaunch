@@ -95,6 +95,13 @@ function NavBar(props) {
                     >
                       <MenuItem>Profile</MenuItem>
                     </Link>
+                    <Link
+                      href='/dashboard/pantry'
+                      color='textPrimary'
+                      style={{textDecoration: 'none'}}
+                    >
+                      <MenuItem>Pantry</MenuItem>
+                    </Link>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </Menu>
                 </Grid>

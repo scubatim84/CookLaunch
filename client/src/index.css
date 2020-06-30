@@ -33,3 +33,7 @@
 .login-background {
   background-image: url('./images/login-bg.png');
 }
+
+.icon:hover {
+  color: var(--light);
+}

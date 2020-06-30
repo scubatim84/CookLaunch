@@ -131,9 +131,9 @@ function Pantry(props) {
         <CssBaseline />
         <div className={classes.paper}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid item xs={12} align='center'>
               <Typography component='h1' variant='h5'>
-                Pantry
+                {user.firstName}'s Pantry
               </Typography>
             </Grid>
             <Grid item xs={12}>
