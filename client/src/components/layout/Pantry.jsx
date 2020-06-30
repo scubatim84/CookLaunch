@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
-import isEmpty from 'is-empty';
 import _ from 'lodash';
+import isEmpty from 'is-empty';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {getUserData} from '../../actions/authActions';
 import {addIngredientToPantry, getPantry} from '../../actions/pantryActions';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
 
+import PantryItem from '../layout/PantryItem';
 import FormSubmitMessage from '../layout/FormSubmitMessage';
 
 import {
@@ -15,13 +16,6 @@ import {
   Container,
   CssBaseline,
   Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
 } from '@material-ui/core';
 
@@ -132,41 +126,22 @@ function Pantry(props) {
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <TableContainer>
-                <Table aria-label='pantry ingredients'>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Name</TableCell>
-                      <TableCell align='left'>Quantity Type</TableCell>
-                      <TableCell align='left'>Quantity</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {pantry.data.map((ingredient, index) => {
-                      const formatName = _.startCase(
-                        _.toLower(ingredient.name)
-                      );
-                      const formatQuantityType = _.startCase(
-                        _.toLower(ingredient.quantityType)
-                      );
+              {pantry.data.map((ingredient, index) => {
+                const formatName = _.startCase(_.toLower(ingredient.name));
+                const formatQuantityType = _.startCase(
+                  _.toLower(ingredient.quantityType)
+                );
 
-                      return (
-                        <TableRow key={formatName}>
-                          <TableCell component='th' scope='row'>
-                            {formatName}
-                          </TableCell>
-                          <TableCell align='left'>
-                            {formatQuantityType}
-                          </TableCell>
-                          <TableCell align='left'>
-                            {ingredient.quantity}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                return (
+                  <PantryItem
+                    key={index}
+                    id={index}
+                    name={formatName}
+                    quantityType={formatQuantityType}
+                    quantity={ingredient.quantity}
+                  />
+                );
+              })}
             </Grid>
             <Grid item xs={12}>
               {!isEmpty(error.errorMessage) && (
