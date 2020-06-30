@@ -3,7 +3,6 @@ import {Redirect} from 'react-router-dom';
 import {getUserData} from '../../actions/authActions';
 
 import Ingredients from './Ingredients';
-import Pantry from './Pantry';
 
 import {Grid} from '@material-ui/core';
 

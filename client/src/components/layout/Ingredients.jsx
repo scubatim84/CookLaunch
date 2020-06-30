@@ -121,7 +121,7 @@ function Ingredients(props) {
       });
 
       // Update ingredient list
-      getIngredientData();
+      await getIngredientData();
     } else {
       setError({
         errorMessage: requestResponse.authResponsePayload,

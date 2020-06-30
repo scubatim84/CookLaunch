@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {Redirect} from 'react-router-dom';
 import {logoutUser} from '../../actions/authActions';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {themeNavbar} from '../../Theme';
@@ -35,12 +34,6 @@ function NavBar(props) {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleProfile = () => {
-    handleClose();
-
-    return <Redirect to='/profile' />;
   };
 
   const handleLogout = async () => {
