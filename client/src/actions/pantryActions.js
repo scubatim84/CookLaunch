@@ -4,9 +4,9 @@ import validator from 'validator';
 import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
 
 // Get pantry from back end
-export const getPantry = async () => {
+export const getPantry = async (userEmail) => {
   try {
-    const response = await axios.get('/api/users/pantry');
+    const response = await axios.get(`/api/users/pantry?email=${userEmail}`);
 
     if (response.data.message === REQUEST_SUCCESS) {
       return {
@@ -72,6 +72,62 @@ export const addIngredientToPantry = async (ingredientData) => {
   } else {
     try {
       const response = await axios.post('/api/users/pantry', ingredientData);
+
+      if (response.status === 201) {
+        return {
+          authResponseType: REQUEST_SUCCESS,
+          authResponsePayload: response.data,
+        };
+      } else {
+        return {
+          authResponseType: REQUEST_FAIL,
+          authResponsePayload: response.data,
+        };
+      }
+    } catch (err) {
+      return {
+        authResponseType: REQUEST_FAIL,
+        authResponsePayload: isEmpty(err.response.data)
+          ? 'An error has occurred. Please try again.'
+          : err.response.data,
+      };
+    }
+  }
+};
+
+// Delete ingredient from pantry
+export const deleteIngredientFromPantry = async (userEmail, ingredientId) => {
+  let error;
+
+  // Check to see if values are empty, and if so, convert them to empty strings
+  userEmail = !isEmpty(userEmail) ? userEmail : '';
+  ingredientId = !isEmpty(ingredientId) ? ingredientId : '';
+
+  // CreatedBy check for valid E-mail
+  if (isEmpty(userEmail)) {
+    error = 'An error has occurred. Please try again.';
+  } else if (!validator.isEmail(userEmail)) {
+    error = 'An error has occurred. Please try again.';
+  }
+
+  // Check for valid ingredient ID
+  if (isEmpty(ingredientId)) {
+    error = 'An error has occurred. Please try again.';
+  }
+
+  if (!isEmpty(error)) {
+    return {
+      authResponseType: REQUEST_FAIL,
+      authResponsePayload: error,
+    };
+  } else {
+    try {
+      const payload = {
+        email: userEmail,
+        id: ingredientId,
+      };
+
+      const response = await axios.delete('/api/users/pantry', {data: payload});
 
       if (response.status === 201) {
         return {

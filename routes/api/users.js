@@ -216,7 +216,7 @@ router.put('/resetpassword', async (req, res) => {
 // @access Private
 router.get('/pantry', async (req, res) => {
   // Find user with email passed in from front end
-  const foundUser = await User.findOne({email: req.body.email});
+  const foundUser = await User.findOne({email: req.query.email});
 
   // Once user is found, send contents of user's pantry
   if (foundUser) {
@@ -308,14 +308,9 @@ router.delete('/pantry', async (req, res) => {
   const foundUser = await User.findOne({email: req.body.email});
 
   // Once user is found, delete ingredients from user's pantry
-  // To greatly reduce number of API calls, req.body.ingredients is an array of ingredients
   if (foundUser) {
     try {
-      ingredientsToDelete = req.body.ingredients;
-      ingredientsToDelete.forEach((ingredient) => {
-        foundUser.pantry.remove(ingredient._id);
-      });
-
+      foundUser.pantry.remove(req.body.id);
       foundUser.save();
 
       res.status(200).send('success');

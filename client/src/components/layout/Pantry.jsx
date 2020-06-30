@@ -4,7 +4,11 @@ import _ from 'lodash';
 import isEmpty from 'is-empty';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {getUserData} from '../../actions/authActions';
-import {addIngredientToPantry, getPantry} from '../../actions/pantryActions';
+import {
+  addIngredientToPantry,
+  getPantry,
+  deleteIngredientFromPantry,
+} from '../../actions/pantryActions';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
 
@@ -39,7 +43,7 @@ function Pantry(props) {
   });
 
   const getPantryData = async () => {
-    const response = await getPantry();
+    const response = await getPantry(user.email);
 
     if (response.authResponseType === REQUEST_SUCCESS) {
       setPantry({data: response.authResponsePayload});
@@ -47,7 +51,7 @@ function Pantry(props) {
   };
 
   useEffect(() => {
-    getPantryData();
+    getPantryData(user.email);
   }, [user]);
 
   useEffect(() => {
@@ -112,6 +116,13 @@ function Pantry(props) {
     }
   };
 
+  const handleDelete = async (userEmail, ingredientId) => {
+    await deleteIngredientFromPantry(userEmail, ingredientId);
+
+    // Update pantry data to re-render
+    await getPantryData();
+  };
+
   return !isLoggedIn ? (
     <Redirect to='/login' />
   ) : (
@@ -135,10 +146,12 @@ function Pantry(props) {
                 return (
                   <PantryItem
                     key={index}
-                    id={index}
+                    id={ingredient._id}
                     name={formatName}
+                    userEmail={user.email}
                     quantityType={formatQuantityType}
                     quantity={ingredient.quantity}
+                    handleDelete={handleDelete}
                   />
                 );
               })}

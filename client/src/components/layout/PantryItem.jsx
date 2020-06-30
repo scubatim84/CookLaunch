@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
 
@@ -9,22 +9,26 @@ import {Edit, Delete} from '@material-ui/icons';
 function PantryItem(props) {
   const classes = useStylesForm(themeMain);
 
+  const handleDelete = () => {
+    props.handleDelete(props.userEmail, props.id);
+  };
+
   return (
-    <Grid container>
-      <Grid xs={6}>
+    <Grid container className={classes.form}>
+      <Grid item xs={6}>
         <Typography>{props.name}</Typography>
       </Grid>
-      <Grid xs={1}>
+      <Grid item xs={1}>
         <Typography>{props.quantity}</Typography>
       </Grid>
-      <Grid xs={3}>
+      <Grid item xs={3}>
         <Typography>{props.quantityType}</Typography>
       </Grid>
-      <Grid xs={1}>
+      <Grid item xs={1}>
         <Edit />
       </Grid>
-      <Grid xs={1}>
-        <Delete />
+      <Grid item xs={1}>
+        <Delete onClick={handleDelete} />
       </Grid>
     </Grid>
   );
