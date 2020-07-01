@@ -81,9 +81,7 @@ router.put('/:name', async (req, res) => {
     const foundIngredient = await Ingredient.findOne({name: ingredientName});
 
     if (!isEmpty(req.body.name)) {
-      const newName = _.lowerCase(req.body.name);
-
-      foundIngredient.name = newName;
+      foundIngredient.name = _.lowerCase(req.body.name);
     }
 
     await foundIngredient.save();

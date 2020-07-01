@@ -1,10 +1,10 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import {
-  REQUEST_SUCCESS,
-  REQUEST_FAIL,
   EMAIL_NOT_FOUND,
   RECOVERY_EMAIL_SENT,
+  REQUEST_FAIL,
+  REQUEST_SUCCESS,
 } from './types';
 import cookies from 'js-cookie';
 import isEmpty from 'is-empty';
@@ -76,11 +76,7 @@ export const logoutUser = async () => {
 export const authenticateUser = async () => {
   const userCookie = cookies.get('user');
 
-  if (!isEmpty(userCookie)) {
-    return true;
-  } else {
-    return false;
-  }
+  return !isEmpty(userCookie);
 };
 
 // Get user data from decoded JWT token
@@ -91,10 +87,8 @@ export const getUserData = async () => {
   // Decode token to get user payload
   const decoded = await jwtDecode(token);
 
-  // Set current user to decoded payload
-  const payload = {payload: decoded};
-
-  return payload;
+  // Return decoded payload
+  return {payload: decoded};
 };
 
 // Send password reset E-mail from forgot password form

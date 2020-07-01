@@ -1,6 +1,7 @@
 const validator = require('validator');
 const isEmpty = require('is-empty');
 
+// noinspection DuplicatedCode
 module.exports = async function validateLoginInput(data) {
   let error;
 

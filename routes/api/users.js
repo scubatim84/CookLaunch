@@ -7,7 +7,6 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const isEmpty = require('is-empty');
 const addHours = require('date-fns/addHours');
-const _ = require('lodash');
 
 // Load input validation
 const validateRegisterInput = require('../../validation/register');
@@ -16,7 +15,6 @@ const getForgotPasswordEmail = require('../../templates/emails');
 
 // Load User model
 const User = require('../../models/User');
-const {update} = require('lodash');
 
 // Use bcrypt to hash passwords and return for later use
 async function hashPassword(password) {
@@ -150,7 +148,7 @@ router.post('/forgotpassword', async (req, res) => {
 
     const mailOptions = await getForgotPasswordEmail(foundUser.email, token);
 
-    transporter.sendMail(mailOptions, (err, response) => {
+    await transporter.sendMail(mailOptions, (err, response) => {
       if (err) {
         console.log('There was an error. ' + err);
       } else {
@@ -244,7 +242,7 @@ router.post('/pantry', async (req, res) => {
   // To greatly reduce number of API calls, req.body.ingredients is an array of ingredients
   if (foundUser) {
     try {
-      ingredientsToAdd = req.body.ingredients;
+      const ingredientsToAdd = req.body.ingredients;
       ingredientsToAdd.forEach((ingredient) => {
         foundUser.pantry.push(ingredient);
       });
@@ -269,22 +267,24 @@ router.post('/pantry', async (req, res) => {
 router.put('/pantry', async (req, res) => {
   // Find user with email passed in from front end
   const foundUser = await User.findOne({email: req.body.email});
+  const updatedIngredient = req.body.ingredient;
 
   // Once user is found, update ingredients in user's pantry
-  // To greatly reduce number of API calls, req.body.ingredients is an array of ingredients
   if (foundUser) {
     try {
-      ingredientsToUpdate = req.body.ingredients;
+      const currentIngredient = foundUser.pantry.id(updatedIngredient.id);
 
-      ingredientsToUpdate.forEach((updatedIngredient) => {
-        let currentIngredient = foundUser.pantry.id(updatedIngredient._id);
+      if (!isEmpty(updatedIngredient.name)) {
+        currentIngredient.name = updatedIngredient.name;
+      }
 
-        if (!isEmpty(updatedIngredient.quantity)) {
-          currentIngredient.quantity = updatedIngredient.quantity;
-        } else {
-          throw err;
-        }
-      });
+      if (!isEmpty(updatedIngredient.quantity)) {
+        currentIngredient.quantity = updatedIngredient.quantity;
+      }
+
+      if (!isEmpty(updatedIngredient.quantityType)) {
+        currentIngredient.quantityType = updatedIngredient.quantityType;
+      }
 
       foundUser.save();
 

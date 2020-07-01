@@ -108,7 +108,7 @@ function Pantry(props) {
       });
 
       // Update ingredient list
-      getPantryData();
+      await getPantryData();
     } else {
       setError({
         errorMessage: requestResponse.authResponsePayload,
