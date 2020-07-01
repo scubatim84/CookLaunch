@@ -107,3 +107,10 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+/.idea/codeStyles/codeStyleConfig.xml
+/.idea/CookLaunch.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/codeStyles/Project.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
