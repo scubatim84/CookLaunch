@@ -267,22 +267,24 @@ router.post('/pantry', async (req, res) => {
 router.put('/pantry', async (req, res) => {
   // Find user with email passed in from front end
   const foundUser = await User.findOne({email: req.body.email});
+  const updatedIngredient = req.body.ingredient;
 
   // Once user is found, update ingredients in user's pantry
-  // To greatly reduce number of API calls, req.body.ingredients is an array of ingredients
   if (foundUser) {
     try {
-      const ingredientsToUpdate = req.body.ingredients;
+      const currentIngredient = foundUser.pantry.id(updatedIngredient.id);
 
-      ingredientsToUpdate.forEach((updatedIngredient) => {
-        let currentIngredient = foundUser.pantry.id(updatedIngredient._id);
+      if (!isEmpty(updatedIngredient.name)) {
+        currentIngredient.name = updatedIngredient.name;
+      }
 
-        if (!isEmpty(updatedIngredient.quantity)) {
-          currentIngredient.quantity = updatedIngredient.quantity;
-        } else {
-          throw err;
-        }
-      });
+      if (!isEmpty(updatedIngredient.quantity)) {
+        currentIngredient.quantity = updatedIngredient.quantity;
+      }
+
+      if (!isEmpty(updatedIngredient.quantityType)) {
+        currentIngredient.quantityType = updatedIngredient.quantityType;
+      }
 
       foundUser.save();
 
