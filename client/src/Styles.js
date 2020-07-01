@@ -3,7 +3,6 @@ import {makeStyles} from '@material-ui/core/styles';
 export const useStylesForm = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
     margin: theme.spacing(2),
   },
@@ -12,15 +11,6 @@ export const useStylesForm = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  list: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: 250,
-    margin: theme.spacing(2),
   },
   form: {
     width: '100%', // Fix IE 11 issue.

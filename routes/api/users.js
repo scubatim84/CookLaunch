@@ -274,10 +274,6 @@ router.put('/pantry', async (req, res) => {
     try {
       const currentIngredient = foundUser.pantry.id(updatedIngredient.id);
 
-      if (!isEmpty(updatedIngredient.name)) {
-        currentIngredient.name = updatedIngredient.name;
-      }
-
       if (!isEmpty(updatedIngredient.quantity)) {
         currentIngredient.quantity = updatedIngredient.quantity;
       }

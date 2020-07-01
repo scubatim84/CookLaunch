@@ -126,7 +126,7 @@ function Pantry(props) {
   return !isLoggedIn ? (
     <Redirect to='/login' />
   ) : (
-    <Container component='main' maxWidth='xs'>
+    <Container component='main' maxWidth='sm'>
       <Card className={classes.root}>
         <CssBaseline />
         <div className={classes.paper}>
@@ -152,6 +152,7 @@ function Pantry(props) {
                     quantityType={formatQuantityType}
                     quantity={ingredient.quantity}
                     handleDelete={handleDelete}
+                    updatePantry={getPantryData}
                   />
                 );
               })}

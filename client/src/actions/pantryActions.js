@@ -99,12 +99,10 @@ export const addIngredientToPantry = async (ingredientData) => {
 export const updateIngredientInPantry = async (userEmail, ingredientData) => {
   let error;
 
-  let name = ingredientData.name;
   let quantity = ingredientData.quantity;
   let quantityType = ingredientData.quantityType;
 
   // Check to see if values are empty, and if so, convert them to empty strings
-  name = !isEmpty(name) ? name : '';
   quantity = !isEmpty(quantity) ? quantity : '';
   quantityType = !isEmpty(quantityType) ? quantityType : '';
   userEmail = !isEmpty(userEmail) ? userEmail : '';
@@ -114,11 +112,6 @@ export const updateIngredientInPantry = async (userEmail, ingredientData) => {
     error = 'An error has occurred. Please try again.';
   } else if (!validator.isEmail(userEmail)) {
     error = 'An error has occurred. Please try again.';
-  }
-
-  // Check for valid ingredient name
-  if (isEmpty(name)) {
-    error = 'Please enter an ingredient name.';
   }
 
   // Check for valid quantity
