@@ -242,10 +242,7 @@ router.post('/pantry', async (req, res) => {
   // To greatly reduce number of API calls, req.body.ingredients is an array of ingredients
   if (foundUser) {
     try {
-      const ingredientsToAdd = req.body.ingredients;
-      ingredientsToAdd.forEach((ingredient) => {
-        foundUser.pantry.push(ingredient);
-      });
+      foundUser.pantry.push(req.body.ingredient);
 
       await foundUser.save();
 

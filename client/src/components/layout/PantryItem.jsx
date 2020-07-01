@@ -115,7 +115,6 @@ function PantryItem(props) {
           onChange={handleChange}
           variant='outlined'
           required
-          padding='30px'
           placeholder={editIngredient.quantity}
           value={editIngredient.quantity}
           id='quantity'

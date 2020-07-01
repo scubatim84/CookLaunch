@@ -28,24 +28,23 @@ export const getPantry = async (userEmail) => {
 };
 
 // Add ingredient to pantry
-export const addIngredientToPantry = async (ingredientData) => {
+export const addIngredientToPantry = async (userEmail, ingredientData) => {
   let error;
 
   let name = ingredientData.name;
   let quantity = ingredientData.quantity;
   let quantityType = ingredientData.quantityType;
-  let createdBy = ingredientData.createdBy;
 
   // Check to see if values are empty, and if so, convert them to empty strings
   name = !isEmpty(name) ? name : '';
   quantity = !isEmpty(quantity) ? quantity : '';
   quantityType = !isEmpty(quantityType) ? quantityType : '';
-  createdBy = !isEmpty(createdBy) ? createdBy : '';
+  userEmail = !isEmpty(userEmail) ? userEmail : '';
 
   // CreatedBy check for valid E-mail
-  if (isEmpty(createdBy)) {
+  if (isEmpty(userEmail)) {
     error = 'An error has occurred. Please try again.';
-  } else if (!validator.isEmail(createdBy)) {
+  } else if (!validator.isEmail(userEmail)) {
     error = 'An error has occurred. Please try again.';
   }
 
@@ -70,8 +69,13 @@ export const addIngredientToPantry = async (ingredientData) => {
       authResponsePayload: error,
     };
   } else {
+    const payload = {
+      email: userEmail,
+      ingredient: ingredientData,
+    };
+
     try {
-      const response = await axios.post('/api/users/pantry', ingredientData);
+      const response = await axios.post('/api/users/pantry', payload);
 
       if (response.status === 201) {
         return {

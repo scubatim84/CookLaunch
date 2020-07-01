@@ -11,7 +11,7 @@ import {
 } from '../../actions/pantryActions';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-
+import PantryAdd from '../layout/PantryAdd';
 import PantryItem from '../layout/PantryItem';
 import FormSubmitMessage from '../layout/FormSubmitMessage';
 
@@ -36,11 +36,6 @@ function Pantry(props) {
     errorMessage: '',
   });
   const [pantry, setPantry] = useState({data: [{name: 'None'}]});
-  const [addIngredient, setAddIngredient] = useState({
-    name: '',
-    quantity: '',
-    quantityType: '',
-  });
 
   const getPantryData = async () => {
     const response = await getPantry(user.email);
