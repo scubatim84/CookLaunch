@@ -246,7 +246,7 @@ router.post('/pantry', async (req, res) => {
 
       await foundUser.save();
 
-      res.status(200).send({
+      res.status(201).send({
         message: 'success',
         payload: foundUser.pantry,
       });

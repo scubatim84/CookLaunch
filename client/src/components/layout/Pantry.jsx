@@ -5,7 +5,6 @@ import isEmpty from 'is-empty';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {getUserData} from '../../actions/authActions';
 import {
-  addIngredientToPantry,
   getPantry,
   deleteIngredientFromPantry,
 } from '../../actions/pantryActions';
@@ -74,43 +73,6 @@ function Pantry(props) {
     }
   }, [isLoggedIn]);
 
-  const handleChange = async (e) => {
-    const {name, value} = e.target;
-
-    setAddIngredient((prevValue) => {
-      return {
-        ...prevValue,
-        [name]: value,
-      };
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const requestResponse = await addIngredientToPantry(addIngredient);
-
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      // If adding ingredient is successful, clear form
-      setAddIngredient({
-        name: '',
-        createdBy: user.email,
-      });
-
-      // If adding ingredient is successful, clear old errors
-      setError({
-        errorMessage: '',
-      });
-
-      // Update ingredient list
-      await getPantryData();
-    } else {
-      setError({
-        errorMessage: requestResponse.authResponsePayload,
-      });
-    }
-  };
-
   const handleDelete = async (userEmail, ingredientId) => {
     await deleteIngredientFromPantry(userEmail, ingredientId);
 
@@ -158,6 +120,12 @@ function Pantry(props) {
               )}
             </Grid>
           </Grid>
+        </div>
+      </Card>
+      <Card className={classes.root}>
+        <CssBaseline />
+        <div className={classes.paper}>
+          <PantryAdd userEmail={user.email} updatePantry={getPantryData} />
         </div>
       </Card>
     </Container>

@@ -106,7 +106,7 @@ function PantryItem(props) {
   };
 
   return editMode ? (
-    <Grid container className={classes.root}>
+    <Grid container spacing={3} className={classes.root}>
       <Grid item xs={12} sm={5}>
         <Typography>{props.name}</Typography>
       </Grid>
