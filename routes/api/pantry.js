@@ -6,7 +6,7 @@ const isEmpty = require('is-empty');
 // Load User model
 const User = require('../../models/User');
 
-// @route GET api/users/pantry
+// @route GET api/pantry
 // @desc Obtain ingredients in user's pantry
 // @access Private
 router.get('/', async (req, res) => {
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route POST api/users/pantry
+// @route POST api/pantry
 // @desc Add ingredients to user's pantry
 // @access Private
 router.post('/', async (req, res) => {
@@ -55,7 +55,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @route PUT api/users/pantry
+// @route PUT api/pantry
 // @desc Update ingredients in user's pantry
 // @access Private
 router.put('/', async (req, res) => {
@@ -90,7 +90,7 @@ router.put('/', async (req, res) => {
   }
 });
 
-// @route DELETE api/users/pantry
+// @route DELETE api/pantry
 // @desc Delete ingredients from user's pantry
 // @access Private
 router.delete('/', async (req, res) => {
