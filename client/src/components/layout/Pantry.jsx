@@ -12,7 +12,6 @@ import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
 import PantryAdd from '../layout/PantryAdd';
 import PantryItem from '../layout/PantryItem';
-import FormSubmitMessage from '../layout/FormSubmitMessage';
 
 import {
   Card,
@@ -31,16 +30,15 @@ function Pantry(props) {
     firstName: '',
     lastName: '',
   });
-  const [error, setError] = useState({
-    errorMessage: '',
-  });
   const [pantry, setPantry] = useState({data: [{name: 'None'}]});
 
   const getPantryData = async () => {
-    const response = await getPantry(user.email);
+    if (!isEmpty(user.email)) {
+      const response = await getPantry(user.email);
 
-    if (response.authResponseType === REQUEST_SUCCESS) {
-      setPantry({data: response.authResponsePayload});
+      if (response.authResponseType === REQUEST_SUCCESS) {
+        setPantry({data: response.authResponsePayload});
+      }
     }
   };
 
@@ -83,7 +81,7 @@ function Pantry(props) {
   return !isLoggedIn ? (
     <Redirect to='/login' />
   ) : (
-    <Container component='main' maxWidth='sm'>
+    <Container component='main' maxWidth='md'>
       <Card className={classes.root}>
         <CssBaseline />
         <div className={classes.paper}>
@@ -114,20 +112,10 @@ function Pantry(props) {
                 );
               })}
             </Grid>
-            <Grid item xs={12}>
-              {!isEmpty(error.errorMessage) && (
-                <FormSubmitMessage submitMessage={error.errorMessage} />
-              )}
-            </Grid>
           </Grid>
         </div>
       </Card>
-      <Card className={classes.root}>
-        <CssBaseline />
-        <div className={classes.paper}>
-          <PantryAdd userEmail={user.email} updatePantry={getPantryData} />
-        </div>
-      </Card>
+      <PantryAdd userEmail={user.email} updatePantry={getPantryData} />
     </Container>
   );
 }
