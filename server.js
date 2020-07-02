@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 
 const userRoutes = require('./routes/api/users');
+const pantryRoutes = require('./routes/api/pantry');
 const ingredientRoutes = require('./routes/api/ingredients');
 
 const app = express();
@@ -32,6 +33,7 @@ require('./config/passport')(passport);
 
 // Routes
 app.use('/api/users', userRoutes);
+app.use('/api/pantry', pantryRoutes);
 app.use('/api/ingredients', ingredientRoutes);
 
 if (process.env.NODE_ENV === 'production') {

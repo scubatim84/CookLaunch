@@ -6,20 +6,20 @@ const opts = {};
 opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = process.env.SECRET_OR_KEY;
 
-module.exports = async (passport) => {
-  const findUser = await passport.use(
-    new JwtStrategy(opts, (jwtPayload) => {
-      User.findById(jwtPayload.id);
+module.exports = (passport) => {
+  passport.use(
+    new JwtStrategy(opts, async (jwt_payload, done) => {
+      try {
+        const foundUser = await User.findById(jwt_payload.id);
+
+        if (foundUser) {
+          return done(null, foundUser);
+        } else {
+          return done(null, false);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     })
   );
-
-  try {
-    if (findUser) {
-      return findUser;
-    } else {
-      return null;
-    }
-  } catch (err) {
-    console.log(err);
-  }
 };

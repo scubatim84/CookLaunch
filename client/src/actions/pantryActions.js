@@ -6,7 +6,7 @@ import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
 // Get pantry from back end
 export const getPantry = async (userEmail) => {
   try {
-    const response = await axios.get(`/api/users/pantry?email=${userEmail}`);
+    const response = await axios.get(`/api/pantry?email=${userEmail}`);
 
     if (response.data.message === REQUEST_SUCCESS) {
       return {
@@ -75,7 +75,7 @@ export const addIngredientToPantry = async (userEmail, ingredientData) => {
     };
 
     try {
-      const response = await axios.post('/api/users/pantry', payload);
+      const response = await axios.post('/api/pantry', payload);
 
       if (response.status === 201) {
         return {
@@ -139,7 +139,7 @@ export const updateIngredientInPantry = async (userEmail, ingredientData) => {
         email: userEmail,
         ingredient: ingredientData,
       };
-      const response = await axios.put('/api/users/pantry', payload);
+      const response = await axios.put('/api/pantry', payload);
 
       if (response.status === 200) {
         return {
@@ -195,7 +195,7 @@ export const deleteIngredientFromPantry = async (userEmail, ingredientId) => {
         id: ingredientId,
       };
 
-      const response = await axios.delete('/api/users/pantry', {data: payload});
+      const response = await axios.delete('/api/pantry', {data: payload});
 
       if (response.status === 201) {
         return {
