@@ -71,8 +71,8 @@ function Pantry(props) {
     }
   }, [isLoggedIn]);
 
-  const handleDelete = async (userEmail, ingredientId) => {
-    await deleteIngredientFromPantry(userEmail, ingredientId);
+  const handleDelete = async (ingredientId) => {
+    await deleteIngredientFromPantry(ingredientId);
 
     // Update pantry data to re-render
     await getPantryData();

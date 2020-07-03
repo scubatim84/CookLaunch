@@ -1,12 +1,17 @@
 import axios from 'axios';
 import isEmpty from 'is-empty';
-import validator from 'validator';
+import cookies from 'js-cookie';
 import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
 
 // Get pantry from back end
-export const getPantry = async (userEmail) => {
+export const getPantry = async () => {
   try {
-    const response = await axios.get(`/api/pantry?email=${userEmail}`);
+    const token = cookies.get('user');
+    const response = await axios.get('/api/pantry', {
+      headers: {
+        Authorization: token,
+      },
+    });
 
     if (response.data.message === REQUEST_SUCCESS) {
       return {
@@ -28,7 +33,7 @@ export const getPantry = async (userEmail) => {
 };
 
 // Add ingredient to pantry
-export const addIngredientToPantry = async (userEmail, ingredientData) => {
+export const addIngredientToPantry = async (ingredientData) => {
   let error;
 
   let name = ingredientData.name;
@@ -39,14 +44,6 @@ export const addIngredientToPantry = async (userEmail, ingredientData) => {
   name = !isEmpty(name) ? name : '';
   quantity = !isEmpty(quantity) ? quantity : '';
   quantityType = !isEmpty(quantityType) ? quantityType : '';
-  userEmail = !isEmpty(userEmail) ? userEmail : '';
-
-  // CreatedBy check for valid E-mail
-  if (isEmpty(userEmail)) {
-    error = 'An error has occurred. Please try again.';
-  } else if (!validator.isEmail(userEmail)) {
-    error = 'An error has occurred. Please try again.';
-  }
 
   // Check for valid ingredient name
   if (isEmpty(name)) {
@@ -69,13 +66,20 @@ export const addIngredientToPantry = async (userEmail, ingredientData) => {
       authResponsePayload: error,
     };
   } else {
-    const payload = {
-      email: userEmail,
-      ingredient: ingredientData,
-    };
-
     try {
-      const response = await axios.post('/api/pantry', payload);
+      // Create payload
+      const payload = {
+        name: name,
+        quantity: quantity,
+        quantityType: quantityType,
+      };
+
+      const token = cookies.get('user');
+      const response = await axios.post('/api/pantry', payload, {
+        headers: {
+          Authorization: token,
+        },
+      });
 
       if (response.status === 201) {
         return {
@@ -100,7 +104,7 @@ export const addIngredientToPantry = async (userEmail, ingredientData) => {
 };
 
 // Update ingredient in pantry
-export const updateIngredientInPantry = async (userEmail, ingredientData) => {
+export const updateIngredientInPantry = async (ingredientData) => {
   let error;
 
   let quantity = ingredientData.quantity;
@@ -109,14 +113,6 @@ export const updateIngredientInPantry = async (userEmail, ingredientData) => {
   // Check to see if values are empty, and if so, convert them to empty strings
   quantity = !isEmpty(quantity) ? quantity : '';
   quantityType = !isEmpty(quantityType) ? quantityType : '';
-  userEmail = !isEmpty(userEmail) ? userEmail : '';
-
-  // CreatedBy check for valid E-mail
-  if (isEmpty(userEmail)) {
-    error = 'An error has occurred. Please try again.';
-  } else if (!validator.isEmail(userEmail)) {
-    error = 'An error has occurred. Please try again.';
-  }
 
   // Check for valid quantity
   if (isEmpty(quantity)) {
@@ -135,11 +131,12 @@ export const updateIngredientInPantry = async (userEmail, ingredientData) => {
     };
   } else {
     try {
-      const payload = {
-        email: userEmail,
-        ingredient: ingredientData,
-      };
-      const response = await axios.put('/api/pantry', payload);
+      const token = cookies.get('user');
+      const response = await axios.put('/api/pantry', ingredientData, {
+        headers: {
+          Authorization: token,
+        },
+      });
 
       if (response.status === 200) {
         return {
@@ -164,19 +161,11 @@ export const updateIngredientInPantry = async (userEmail, ingredientData) => {
 };
 
 // Delete ingredient from pantry
-export const deleteIngredientFromPantry = async (userEmail, ingredientId) => {
+export const deleteIngredientFromPantry = async (ingredientId) => {
   let error;
 
   // Check to see if values are empty, and if so, convert them to empty strings
-  userEmail = !isEmpty(userEmail) ? userEmail : '';
   ingredientId = !isEmpty(ingredientId) ? ingredientId : '';
-
-  // CreatedBy check for valid E-mail
-  if (isEmpty(userEmail)) {
-    error = 'An error has occurred. Please try again.';
-  } else if (!validator.isEmail(userEmail)) {
-    error = 'An error has occurred. Please try again.';
-  }
 
   // Check for valid ingredient ID
   if (isEmpty(ingredientId)) {
@@ -190,12 +179,15 @@ export const deleteIngredientFromPantry = async (userEmail, ingredientId) => {
     };
   } else {
     try {
-      const payload = {
-        email: userEmail,
-        id: ingredientId,
-      };
-
-      const response = await axios.delete('/api/pantry', {data: payload});
+      const token = cookies.get('user');
+      const response = await axios.delete('/api/pantry', {
+        headers: {
+          Authorization: token,
+        },
+        data: {
+          id: ingredientId,
+        },
+      });
 
       if (response.status === 201) {
         return {

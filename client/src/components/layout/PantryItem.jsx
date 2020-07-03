@@ -39,7 +39,7 @@ function PantryItem(props) {
   }, [props]);
 
   const handleDelete = async () => {
-    await props.handleDelete(props.userEmail, props.id);
+    await props.handleDelete(props.id);
   };
 
   const handleEdit = async () => {
@@ -75,10 +75,7 @@ function PantryItem(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await updateIngredientInPantry(
-      props.userEmail,
-      editIngredient
-    );
+    const requestResponse = await updateIngredientInPantry(editIngredient);
 
     if (requestResponse.authResponseType === REQUEST_SUCCESS) {
       // If edit request is successful, set ingredient data back to props

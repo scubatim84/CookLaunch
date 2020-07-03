@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
   // Once user value is obtained, add ingredients to user's pantry
   if (foundUser) {
     try {
-      foundUser.pantry.push(req.body.ingredient);
+      foundUser.pantry.push(req.body);
 
       await foundUser.save();
 
@@ -57,7 +57,7 @@ router.post('/', async (req, res) => {
 router.put('/', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
-  const updatedIngredient = req.body.ingredient;
+  const updatedIngredient = req.body;
 
   // Once user is obtained, update ingredients in user's pantry
   if (foundUser) {
@@ -72,7 +72,7 @@ router.put('/', async (req, res) => {
         currentIngredient.quantityType = updatedIngredient.quantityType;
       }
 
-      foundUser.save();
+      await foundUser.save();
 
       res.status(200).send({
         message: 'success',
@@ -97,7 +97,7 @@ router.delete('/', async (req, res) => {
   if (foundUser) {
     try {
       foundUser.pantry.remove(req.body.id);
-      foundUser.save();
+      await foundUser.save();
 
       res.status(200).send('success');
     } catch (err) {

@@ -81,10 +81,7 @@ function PantryAdd(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await addIngredientToPantry(
-      props.userEmail,
-      addIngredient
-    );
+    const requestResponse = await addIngredientToPantry(addIngredient);
 
     if (requestResponse.authResponseType === REQUEST_SUCCESS) {
       // If adding ingredient is successful, clear form
