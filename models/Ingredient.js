@@ -7,14 +7,20 @@ const IngredientSchema = new Schema({
     type: String,
     required: true,
   },
+  quantity: {
+    type: Number,
+  },
   quantityType: {
     type: String,
-    required: true,
   },
   createdBy: {
     type: String,
-    required: true,
   },
 });
 
-module.exports = Ingredient = mongoose.model('ingredients', IngredientSchema);
+const Ingredient = mongoose.model('ingredients', IngredientSchema);
+
+module.exports = {
+  Ingredient,
+  IngredientSchema,
+};

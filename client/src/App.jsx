@@ -8,6 +8,7 @@ import {ThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Dashboard from './components/layout/Dashboard';
+import Pantry from './components/layout/Pantry';
 import Profile from './components/layout/Profile';
 import Landing from './components/layout/Landing';
 import Login from './components/layout/Login';
@@ -41,6 +42,10 @@ function App() {
     return <Login handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
   };
 
+  const renderPantry = () => {
+    return <Pantry handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
+  };
+
   const renderResetPassword = () => {
     return (
       <ResetPasswordByEmail
@@ -63,6 +68,7 @@ function App() {
           <Route exact path='/' render={renderLanding} />
           <Route exact path='/login' render={renderLogin} />
           <Route exact path='/dashboard' render={renderDashboard} />
+          <Route exact path='/dashboard/pantry' render={renderPantry} />
           <Route exact path='/forgotpassword' component={ForgotPassword} />
           <Route exact path='/profile' render={renderProfile} />
           <Route path='/reset/:token' render={renderResetPassword} />

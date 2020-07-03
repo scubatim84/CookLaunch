@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {Redirect} from 'react-router-dom';
 import {logoutUser} from '../../actions/authActions';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {themeNavbar} from '../../Theme';
@@ -35,12 +34,6 @@ function NavBar(props) {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleProfile = () => {
-    handleClose();
-
-    return <Redirect to='/profile' />;
   };
 
   const handleLogout = async () => {
@@ -94,6 +87,13 @@ function NavBar(props) {
                       style={{textDecoration: 'none'}}
                     >
                       <MenuItem>Profile</MenuItem>
+                    </Link>
+                    <Link
+                      href='/dashboard/pantry'
+                      color='textPrimary'
+                      style={{textDecoration: 'none'}}
+                    >
+                      <MenuItem>Pantry</MenuItem>
                     </Link>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </Menu>

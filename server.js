@@ -3,10 +3,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-
-const userRoutes = require('./routes/api/users');
-const ingredientRoutes = require('./routes/api/ingredients');
-
 const app = express();
 
 // Bodyparser middleware
@@ -24,14 +20,23 @@ try {
   console.log(err);
 }
 
-// Passport middleware
-app.use(passport.initialize());
-
 // Passport config
 require('./config/passport')(passport);
 
+// Passport middleware
+app.use(passport.initialize());
+
 // Routes
+const userRoutes = require('./routes/api/users');
+const pantryRoutes = require('./routes/api/pantry');
+const ingredientRoutes = require('./routes/api/ingredients');
+
 app.use('/api/users', userRoutes);
+app.use(
+  '/api/pantry',
+  passport.authenticate('jwt', {session: false}),
+  pantryRoutes
+);
 app.use('/api/ingredients', ingredientRoutes);
 
 if (process.env.NODE_ENV === 'production') {

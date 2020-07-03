@@ -92,10 +92,11 @@ router.post('/login', async (req, res) => {
     // User matched
     // Create JWT Payload
     const payload = {
-      id: foundUser.id,
+      id: foundUser._id,
       email: foundUser.email,
       firstName: foundUser.firstName,
       lastName: foundUser.lastName,
+      pantry: foundUser.pantry,
     };
 
     //Sign token
@@ -103,7 +104,7 @@ router.post('/login', async (req, res) => {
       payload,
       process.env.SECRET_OR_KEY,
       {
-        expiresIn: 31556926, // 1 year in seconds
+        expiresIn: 1209600, // 14 days in seconds
       },
       (err, jwtToken) => {
         res.status(200).json({
@@ -147,7 +148,7 @@ router.post('/forgotpassword', async (req, res) => {
 
     const mailOptions = await getForgotPasswordEmail(foundUser.email, token);
 
-    transporter.sendMail(mailOptions, (err, response) => {
+    await transporter.sendMail(mailOptions, (err, response) => {
       if (err) {
         console.log('There was an error. ' + err);
       } else {
