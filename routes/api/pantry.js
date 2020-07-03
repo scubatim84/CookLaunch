@@ -3,15 +3,12 @@ const express = require('express');
 const router = express.Router();
 const isEmpty = require('is-empty');
 
-// Load User model
-const User = require('../../models/User');
-
 // @route GET api/pantry
 // @desc Obtain ingredients in user's pantry
 // @access Private
 router.get('/', async (req, res) => {
-  // Find user with email passed in from front end
-  const foundUser = await User.findOne({email: req.query.email});
+  // Obtain user from request
+  const foundUser = req.user;
 
   // Once user is found, send contents of user's pantry
   if (foundUser) {
@@ -32,11 +29,10 @@ router.get('/', async (req, res) => {
 // @desc Add ingredients to user's pantry
 // @access Private
 router.post('/', async (req, res) => {
-  // Find user with email passed in from front end
-  const foundUser = await User.findOne({email: req.body.email});
+  // Obtain user from request
+  const foundUser = req.user;
 
-  // Once user is found, add ingredients to user's pantry
-  // To greatly reduce number of API calls, req.body.ingredients is an array of ingredients
+  // Once user value is obtained, add ingredients to user's pantry
   if (foundUser) {
     try {
       foundUser.pantry.push(req.body.ingredient);
@@ -59,11 +55,11 @@ router.post('/', async (req, res) => {
 // @desc Update ingredients in user's pantry
 // @access Private
 router.put('/', async (req, res) => {
-  // Find user with email passed in from front end
-  const foundUser = await User.findOne({email: req.body.email});
+  // Obtain user from request
+  const foundUser = req.user;
   const updatedIngredient = req.body.ingredient;
 
-  // Once user is found, update ingredients in user's pantry
+  // Once user is obtained, update ingredients in user's pantry
   if (foundUser) {
     try {
       const currentIngredient = foundUser.pantry.id(updatedIngredient.id);
@@ -94,8 +90,8 @@ router.put('/', async (req, res) => {
 // @desc Delete ingredients from user's pantry
 // @access Private
 router.delete('/', async (req, res) => {
-  // Find user with email passed in from front end
-  const foundUser = await User.findOne({email: req.body.email});
+  // Obtain user from request
+  const foundUser = req.user;
 
   // Once user is found, delete ingredients from user's pantry
   if (foundUser) {
