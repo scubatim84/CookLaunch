@@ -5,9 +5,9 @@
 <h3>Current</h3>
 <p>User accounts</p>
 <p>User can add ingredients</p>
+<p>User pantry to track ingredients on hand</p>
 <h3>Planned</h3>
 <p>User can add recipes</p>
-<p>User pantry to track ingredients on hand</p>
 <p>User can generate grocery list</p>
 <p>Generated grocery list subtracts relevant pantry ingredients</p>
 
