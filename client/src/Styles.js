@@ -57,20 +57,7 @@ export const useStylesProfile = makeStyles((theme) => ({
     margin: theme.spacing(2, 2),
   },
   title: {
-    marginBottom: theme.spacing(2),
-    fontSize: 24,
-    fontWeight: 800,
-  },
-  textLabel: {
-    fontSize: 16,
-    fontWeight: 800,
-  },
-  textContent: {
-    fontSize: 16,
-    fontWeight: 400,
-  },
-  paper: {
-    margin: theme.spacing(2, 2),
+    marginTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

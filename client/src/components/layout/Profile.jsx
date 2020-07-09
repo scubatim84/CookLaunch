@@ -3,8 +3,8 @@ import {Redirect} from 'react-router-dom';
 import {getUserData} from '../../actions/authActions';
 import {useStylesProfile} from '../../Styles';
 import {themeMain} from '../../Theme';
-
 import {Button, CssBaseline, Card, Grid, Typography} from '@material-ui/core';
+import ProfileView from './ProfileField';
 
 function Profile(props) {
   const classes = useStylesProfile(themeMain);
@@ -15,6 +15,7 @@ function Profile(props) {
     firstName: '',
     lastName: '',
   });
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     setLoggedIn(props.isLoggedIn);
@@ -37,52 +38,51 @@ function Profile(props) {
     }
   }, [isLoggedIn]);
 
+  const handleEdit = async (e) => {
+    e.preventDefault();
+
+    setEditMode(true);
+  };
+
   return !isLoggedIn ? (
     <Redirect to='/login' />
   ) : (
-    <div className={classes.root}>
+    <Grid container className={classes.root}>
       <Grid xs={12} className={classes.submit}>
-        <Button type='submit' variant='contained' color='primary'>
+        <Button
+          onClick={handleEdit}
+          type='submit'
+          variant='contained'
+          color='primary'
+        >
           Edit Profile
         </Button>
       </Grid>
       <Grid xs={12} sm={4}>
         <Card>
-          <CssBaseline />
-          <div className={classes.paper}>
-            <Typography className={classes.title}>My Profile</Typography>
-            <Grid container spacing={2} justify='space-between'>
-              <Grid item xs={12} sm={6}>
-                <Typography className={classes.textLabel}>Email</Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography className={classes.textContent}>
-                  {user.email}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography className={classes.textLabel}>
-                  First Name
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography className={classes.textContent}>
-                  {user.firstName}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography className={classes.textLabel}>Last Name</Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Typography className={classes.textContent}>
-                  {user.lastName}
-                </Typography>
-              </Grid>
-            </Grid>
-          </div>
+          <Grid xs={12} className={classes.title}>
+            <Typography variant='h5'>My Profile</Typography>
+          </Grid>
+          <Grid container justify='space-between' className={classes.root}>
+            <ProfileView
+              editMode={editMode}
+              label='Email'
+              content={user.email}
+            />
+            <ProfileView
+              editMode={editMode}
+              label='First Name'
+              content={user.firstName}
+            />
+            <ProfileView
+              editMode={editMode}
+              label='Last Name'
+              content={user.lastName}
+            />
+          </Grid>
         </Card>
       </Grid>
-    </div>
+    </Grid>
   );
 }
 
