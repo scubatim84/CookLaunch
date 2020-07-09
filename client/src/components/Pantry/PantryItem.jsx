@@ -13,7 +13,7 @@ import {themeMain} from '../../Theme';
 import {ingredientQuantityTypes, REQUEST_SUCCESS} from '../../actions/types';
 import {updateIngredientInPantry} from '../../actions/pantryActions';
 import isEmpty from 'is-empty';
-import FormSubmitMessage from './FormSubmitMessage';
+import FormSubmitMessage from '../FormSubmitMessage';
 
 function PantryItem(props) {
   const classes = useStylesForm(themeMain);

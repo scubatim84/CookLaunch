@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
-import {getUserData} from '../../actions/authActions';
+import {getUserData} from '../actions/authActions';
 
 import Ingredients from './Ingredients';
 

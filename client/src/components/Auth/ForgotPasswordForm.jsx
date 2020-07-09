@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import FormSubmitMessage from '../layout/FormSubmitMessage';
+import FormSubmitMessage from '../FormSubmitMessage';
 import {sendPasswordResetEmail} from '../../actions/authActions';
 import {REQUEST_SUCCESS, EMAIL_NOT_FOUND} from '../../actions/types';
 import {useStylesForm} from '../../Styles';

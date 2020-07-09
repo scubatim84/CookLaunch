@@ -1,26 +1,30 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
 import {themeMain} from './Theme';
-
 import {ThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
-import Dashboard from './components/layout/Dashboard';
-import Pantry from './components/layout/Pantry';
-import Profile from './components/layout/Profile';
-import Landing from './components/layout/Landing';
-import Login from './components/layout/Login';
-import Navbar from './components/layout/Navbar';
-import ForgotPassword from './components/layout/ForgotPassword';
-import ResetPasswordByEmail from './components/layout/ResetPasswordByEmail';
+import Dashboard from './components/Dashboard';
+import Pantry from './components/Pantry/Pantry';
+import Profile from './components/Profile/Profile';
+import Landing from './components/Landing';
+import Login from './components/Login';
+import Navbar from './components/Navbar';
+import ForgotPassword from './components/Auth/ForgotPassword';
+import ResetPasswordByEmail from './components/Auth/ResetPasswordByEmail';
+import {getUserData} from './actions/authActions';
 
 function App() {
   // Initial check to see if user is logged in
   const token = cookies.get('user');
 
   const [isLoggedIn, setLoggedIn] = useState(!isEmpty(token));
+  const [user, setUser] = useState({
+    email: '',
+    firstName: '',
+    lastName: '',
+  });
 
   const handleLoggedIn = async (loggedIn) => {
     if (loggedIn) {
@@ -29,6 +33,23 @@ function App() {
       setLoggedIn(false);
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const getUserPayload = async () => {
+        const data = await getUserData();
+        const userPayload = await data.payload;
+
+        setUser({
+          email: userPayload.email,
+          firstName: userPayload.firstName,
+          lastName: userPayload.lastName,
+        });
+      };
+
+      getUserPayload();
+    }
+  }, [isLoggedIn]);
 
   const renderDashboard = () => {
     return <Dashboard isLoggedIn={isLoggedIn} />;
@@ -56,7 +77,15 @@ function App() {
   };
 
   const renderProfile = () => {
-    return <Profile handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
+    return (
+      <Profile
+        key={user.email}
+        email={user.email}
+        firstName={user.firstName}
+        lastName={user.lastName}
+        isLoggedIn={isLoggedIn}
+      />
+    );
   };
 
   return (

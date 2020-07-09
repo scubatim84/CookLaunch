@@ -11,7 +11,7 @@ import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
 
-import FormSubmitMessage from '../layout/FormSubmitMessage';
+import FormSubmitMessage from '../FormSubmitMessage';
 
 import {
   Button,

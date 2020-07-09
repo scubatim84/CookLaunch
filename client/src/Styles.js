@@ -56,13 +56,17 @@ export const useStylesProfile = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(2, 2),
   },
+  field: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
   title: {
-    marginTop: theme.spacing(2),
+    paddingTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   submit: {
-    marginBottom: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
 }));

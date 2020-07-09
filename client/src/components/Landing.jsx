@@ -1,6 +1,6 @@
 import React from 'react';
-import RegisterForm from '../auth/RegisterForm';
-import {useStylesLanding} from '../../Styles';
+import RegisterForm from './Auth/RegisterForm';
+import {useStylesLanding} from '../Styles';
 
 import {Grid} from '@material-ui/core';
 

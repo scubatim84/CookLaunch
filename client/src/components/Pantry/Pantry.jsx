@@ -10,8 +10,8 @@ import {
 } from '../../actions/pantryActions';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-import PantryAdd from '../layout/PantryAdd';
-import PantryItem from '../layout/PantryItem';
+import PantryAdd from './PantryAdd';
+import PantryItem from './PantryItem';
 
 import {
   Card,

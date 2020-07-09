@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
-import {loginUser} from '../../actions/authActions';
+import {registerUser, loginUser} from '../../actions/authActions';
 import isEmpty from 'is-empty';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
@@ -17,15 +17,18 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import FormSubmitMessage from '../layout/FormSubmitMessage';
+import FormSubmitMessage from '../FormSubmitMessage';
 
-function LoginForm(props) {
+function RegisterForm(props) {
   const classes = useStylesForm(themeMain);
 
   const [isLoggedin, setLoggedIn] = useState(props.isLoggedin);
-  const [user, setUser] = useState({
+  const [newUser, setNewUser] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
+    password2: '',
   });
   const [error, setError] = useState({
     errorMessage: '',
@@ -38,7 +41,7 @@ function LoginForm(props) {
   const handleChange = async (e) => {
     const {name, value} = e.target;
 
-    setUser((prevValue) => {
+    setNewUser((prevValue) => {
       return {
         ...prevValue,
         [name]: value,
@@ -49,22 +52,33 @@ function LoginForm(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await loginUser(user);
+    const requestResponse = await registerUser(newUser);
 
     if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      // If login request is successful, clear login form
-      setUser({
-        email: '',
-        password: '',
-      });
+      const requestResponse = await loginUser(newUser);
 
-      // If login request is successful, clear old errors from state
-      setError({
-        errorMessage: '',
-      });
+      if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+        // If login is successful after registration, clear registration form
+        setNewUser({
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: '',
+          password2: '',
+        });
 
-      // Set user as logged in
-      props.handleLoggedIn(true);
+        // If login is successful after registration, clear old errors
+        setError({
+          errorMessage: '',
+        });
+
+        // Set user as logged in
+        props.handleLoggedIn(true);
+      } else {
+        setError({
+          errorMessage: requestResponse.authResponsePayload,
+        });
+      }
     } else {
       setError({
         errorMessage: requestResponse.authResponsePayload,
@@ -80,14 +94,40 @@ function LoginForm(props) {
         <CssBaseline />
         <div className={classes.paper}>
           <Typography component='h1' variant='h5'>
-            Sign In Here
+            Start The Oven
           </Typography>
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  onChange={handleChange}
+                  value={newUser.firstName}
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='firstName'
+                  label='First Name'
+                  name='firstName'
+                  autoComplete='fname'
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  onChange={handleChange}
+                  value={newUser.lastName}
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='lastName'
+                  label='Last Name'
+                  name='lastName'
+                  autoComplete='lname'
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
-                  value={user.email}
+                  value={newUser.email}
                   variant='outlined'
                   required
                   fullWidth
@@ -100,7 +140,7 @@ function LoginForm(props) {
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
-                  value={user.password}
+                  value={newUser.password}
                   variant='outlined'
                   required
                   fullWidth
@@ -108,7 +148,21 @@ function LoginForm(props) {
                   label='Password'
                   type='password'
                   id='password'
-                  autoComplete='password'
+                  autoComplete='current-password'
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  onChange={handleChange}
+                  value={newUser.password2}
+                  variant='outlined'
+                  required
+                  fullWidth
+                  name='password2'
+                  label='Confirm password'
+                  type='password'
+                  id='password2'
+                  autoComplete='confirm-password'
                 />
               </Grid>
               <Grid item xs={12}>
@@ -120,19 +174,14 @@ function LoginForm(props) {
                   color='primary'
                   className={classes.submit}
                 >
-                  Login
+                  Sign Up
                 </Button>
               </Grid>
             </Grid>
-            <Grid container justify='space-between' className={classes.form}>
+            <Grid container justify='flex-end' className={classes.form}>
               <Grid item>
-                <Link href='/forgotpassword' variant='body2'>
-                  Forgot Password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href='/' variant='body2'>
-                  Don't have an account? Register
+                <Link href='/login' variant='body2'>
+                  Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
@@ -148,4 +197,4 @@ function LoginForm(props) {
   );
 }
 
-export default LoginForm;
+export default RegisterForm;
