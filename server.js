@@ -33,7 +33,11 @@ const pantryRoutes = require('./routes/api/pantry');
 const ingredientRoutes = require('./routes/api/ingredients');
 
 app.use('/api/auth', authRoutes);
-app.use('/api/ingredients', ingredientRoutes);
+app.use(
+  '/api/ingredients',
+  passport.authenticate('jwt', {session: false}),
+  ingredientRoutes
+);
 app.use(
   '/api/user',
   passport.authenticate('jwt', {session: false}),

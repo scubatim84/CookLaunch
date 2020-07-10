@@ -52,6 +52,21 @@ export const useStylesNavbar = makeStyles((theme) => ({
   },
 }));
 
+export const useStylesFooter = makeStyles((theme) => ({
+  footer: {
+    width: '100%',
+    position: 'fixed',
+    bottom: 0,
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+    marginTop: theme.spacing(4),
+    backgroundColor:
+      theme.palette.type === 'light'
+        ? theme.palette.grey[200]
+        : theme.palette.grey[800],
+  },
+}));
+
 export const useStylesProfile = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(2, 2),

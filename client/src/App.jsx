@@ -11,6 +11,7 @@ import Profile from './components/Profile/Profile';
 import Landing from './components/Landing';
 import Login from './components/Login';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import ResetPasswordByEmail from './components/Auth/ResetPasswordByEmail';
 import {getUserData} from './actions/userActions';
@@ -103,6 +104,7 @@ function App() {
           <Route path='/reset/:token' render={renderResetPassword} />
         </div>
       </Router>
+      <Footer />
     </ThemeProvider>
   );
 }

@@ -2,11 +2,17 @@ import axios from 'axios';
 import isEmpty from 'is-empty';
 import validator from 'validator';
 import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
+import cookies from 'js-cookie';
 
 // Get ingredients from back end
 export const getIngredients = async () => {
   try {
-    const response = await axios.get('/api/ingredients/');
+    const token = cookies.get('user');
+    const response = await axios.get('/api/ingredients/', {
+      headers: {
+        Authorization: token,
+      },
+    });
 
     if (response.data.message === REQUEST_SUCCESS) {
       return {
@@ -57,7 +63,12 @@ export const addIngredientToDatabase = async (ingredientData) => {
     };
   } else {
     try {
-      const response = await axios.post('/api/ingredients/', ingredientData);
+      const token = cookies.get('user');
+      const response = await axios.post('/api/ingredients/', ingredientData, {
+        headers: {
+          Authorization: token,
+        },
+      });
 
       if (response.status === 201) {
         return {
