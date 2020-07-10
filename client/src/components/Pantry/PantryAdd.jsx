@@ -13,7 +13,7 @@ import {themeMain} from '../../Theme';
 import {ingredientQuantityTypes, REQUEST_SUCCESS} from '../../actions/types';
 import {addIngredientToPantry} from '../../actions/pantryActions';
 import isEmpty from 'is-empty';
-import FormSubmitMessage from './FormSubmitMessage';
+import FormSubmitMessage from '../FormSubmitMessage';
 import {getIngredients} from '../../actions/ingredientActions';
 import _ from 'lodash';
 

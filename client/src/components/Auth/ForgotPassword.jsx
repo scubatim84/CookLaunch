@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ForgotPasswordForm from '../auth/ForgotPasswordForm';
+import ForgotPasswordForm from './ForgotPasswordForm';
 
 import {Grid} from '@material-ui/core';
 

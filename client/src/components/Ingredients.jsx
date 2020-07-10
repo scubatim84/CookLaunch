@@ -2,16 +2,16 @@ import React, {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import _ from 'lodash';
-import {REQUEST_SUCCESS} from '../../actions/types';
-import {getUserData} from '../../actions/authActions';
+import {REQUEST_SUCCESS} from '../actions/types';
+import {getUserToken} from '../actions/authActions';
 import {
   addIngredientToDatabase,
   getIngredients,
-} from '../../actions/ingredientActions';
-import {useStylesForm} from '../../Styles';
-import {themeMain} from '../../Theme';
+} from '../actions/ingredientActions';
+import {useStylesForm} from '../Styles';
+import {themeMain} from '../Theme';
 
-import FormSubmitMessage from '../layout/FormSubmitMessage';
+import FormSubmitMessage from './FormSubmitMessage';
 
 import {
   Button,
@@ -61,7 +61,7 @@ function Ingredients(props) {
   useEffect(() => {
     if (isLoggedIn) {
       const getUserPayload = async () => {
-        const data = await getUserData();
+        const data = await getUserToken();
         const userPayload = await data.payload;
 
         setUser({

@@ -16,6 +16,11 @@ export const themeMain = createMuiTheme({
     h5: {
       fontFamily: 'Roboto',
     },
+    subtitle1: {
+      fontFamily: 'Roboto',
+      fontSize: 18,
+      fontWeight: 500,
+    },
   },
 });
 

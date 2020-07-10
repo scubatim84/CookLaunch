@@ -1,7 +1,7 @@
 import React from 'react';
 import {useStylesLanding} from '../../Styles';
 
-import ResetPasswordByEmailForm from '../auth/ResetPasswordByEmailForm';
+import ResetPasswordByEmailForm from './ResetPasswordByEmailForm';
 
 import Grid from '@material-ui/core/Grid';
 

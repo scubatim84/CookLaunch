@@ -27,17 +27,23 @@ require('./config/passport')(passport);
 app.use(passport.initialize());
 
 // Routes
-const userRoutes = require('./routes/api/users');
+const authRoutes = require('./routes/api/auth');
+const userRoutes = require('./routes/api/user');
 const pantryRoutes = require('./routes/api/pantry');
 const ingredientRoutes = require('./routes/api/ingredients');
 
-app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/ingredients', ingredientRoutes);
+app.use(
+  '/api/user',
+  passport.authenticate('jwt', {session: false}),
+  userRoutes
+);
 app.use(
   '/api/pantry',
   passport.authenticate('jwt', {session: false}),
   pantryRoutes
 );
-app.use('/api/ingredients', ingredientRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets

@@ -56,26 +56,17 @@ export const useStylesProfile = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(2, 2),
   },
+  field: {
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
   title: {
-    marginBottom: theme.spacing(2),
-    fontSize: 24,
-    fontWeight: 800,
-  },
-  textLabel: {
-    fontSize: 16,
-    fontWeight: 800,
-  },
-  textContent: {
-    fontSize: 16,
-    fontWeight: 400,
-  },
-  paper: {
-    margin: theme.spacing(2, 2),
+    paddingTop: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   submit: {
-    marginBottom: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
 }));

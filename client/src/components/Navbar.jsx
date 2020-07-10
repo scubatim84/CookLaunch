@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {logoutUser} from '../../actions/authActions';
-import {REQUEST_SUCCESS} from '../../actions/types';
-import {themeNavbar} from '../../Theme';
-import {useStylesNavbar} from '../../Styles';
+import {logoutUser} from '../actions/authActions';
+import {REQUEST_SUCCESS} from '../actions/types';
+import {themeNavbar} from '../Theme';
+import {useStylesNavbar} from '../Styles';
 
 import {
   AppBar,

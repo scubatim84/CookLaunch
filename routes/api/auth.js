@@ -25,7 +25,7 @@ async function hashPassword(password) {
   }
 }
 
-// @route POST api/users/register
+// @route POST api/auth/register
 // @desc Register user
 // @access Public
 router.post('/register', async (req, res) => {
@@ -62,7 +62,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// @route POST api/users/login
+// @route POST api/auth/login
 // @desc Login user and return JWT token
 // @access Public
 router.post('/login', async (req, res) => {
@@ -118,7 +118,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// @route POST api/users/forgotpassword
+// @route POST api/auth/forgotpassword
 // @desc Reset password by sending E-mail to user
 // @access Public
 router.post('/forgotpassword', async (req, res) => {
@@ -159,7 +159,7 @@ router.post('/forgotpassword', async (req, res) => {
   }
 });
 
-// @route GET api/users/validateresetpasswordtoken
+// @route GET api/auth/validateresetpasswordtoken
 // @desc Validate token for resetting password that was emailed to user
 // @access Private
 router.get('/validateresetpasswordtoken', async (req, res) => {
@@ -181,7 +181,7 @@ router.get('/validateresetpasswordtoken', async (req, res) => {
   }
 });
 
-// @route PUT api/users/resetpassword
+// @route PUT api/auth/resetpassword
 // @desc Reset user password
 // @access Private
 router.put('/resetpassword', async (req, res) => {
