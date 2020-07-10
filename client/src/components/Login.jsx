@@ -1,7 +1,6 @@
 import React from 'react';
 import LoginForm from './Auth/LoginForm';
 import {useStylesLanding} from '../Styles';
-
 import Grid from '@material-ui/core/Grid';
 
 function Login(props) {

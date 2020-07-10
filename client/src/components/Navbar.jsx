@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {logoutUser} from '../actions/authActions';
 import {REQUEST_SUCCESS} from '../actions/types';
+import Brand from './Brand';
 import {themeNavbar} from '../Theme';
 import {useStylesNavbar} from '../Styles';
-
+import {ThemeProvider} from '@material-ui/core/styles';
 import {
   AppBar,
   Grid,
@@ -14,9 +15,6 @@ import {
   Toolbar,
 } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import {ThemeProvider} from '@material-ui/core/styles';
-
-import Brand from './Brand';
 
 function NavBar(props) {
   const classes = useStylesNavbar(themeNavbar);

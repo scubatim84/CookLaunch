@@ -2,9 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
-import {themeMain} from './Theme';
-import {ThemeProvider} from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Dashboard from './components/Dashboard';
 import Pantry from './components/Pantry/Pantry';
 import Profile from './components/Profile/Profile';
@@ -15,6 +12,9 @@ import Footer from './components/Footer';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import ResetPasswordByEmail from './components/Auth/ResetPasswordByEmail';
 import {getUserData} from './actions/userActions';
+import {themeMain} from './Theme';
+import {ThemeProvider} from '@material-ui/core/styles';
+import {getIngredients} from './actions/ingredientActions';
 
 function App() {
   // Initial check to see if user is logged in
@@ -26,6 +26,13 @@ function App() {
     firstName: '',
     lastName: '',
   });
+  const [ingredients, setIngredients] = useState({data: []});
+
+  const getIngredientData = async () => {
+    const response = await getIngredients();
+
+    setIngredients({data: response.authResponsePayload});
+  };
 
   const getUserPayload = async () => {
     const requestResponse = await getUserData();
@@ -48,11 +55,23 @@ function App() {
   useEffect(() => {
     if (isLoggedIn) {
       getUserPayload();
+      getIngredientData();
     }
   }, [isLoggedIn]);
 
   const renderDashboard = () => {
-    return <Dashboard isLoggedIn={isLoggedIn} />;
+    return (
+      <Dashboard
+        key={isLoggedIn}
+        getIngredientData={getIngredientData}
+        ingredients={ingredients.data}
+        email={user.email}
+        firstName={user.firstName}
+        lastName={user.lastName}
+        handleLoggedIn={handleLoggedIn}
+        isLoggedIn={isLoggedIn}
+      />
+    );
   };
 
   const renderLanding = () => {
@@ -91,7 +110,6 @@ function App() {
 
   return (
     <ThemeProvider theme={themeMain}>
-      <CssBaseline />
       <Navbar handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />
       <Router>
         <div className='App'>

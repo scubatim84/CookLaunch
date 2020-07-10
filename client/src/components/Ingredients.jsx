@@ -1,23 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import _ from 'lodash';
+import FormSubmitMessage from './FormSubmitMessage';
 import {REQUEST_SUCCESS} from '../actions/types';
-import {getUserToken} from '../actions/authActions';
-import {
-  addIngredientToDatabase,
-  getIngredients,
-} from '../actions/ingredientActions';
+import {addIngredientToDatabase} from '../actions/ingredientActions';
 import {useStylesForm} from '../Styles';
 import {themeMain} from '../Theme';
-
-import FormSubmitMessage from './FormSubmitMessage';
-
 import {
   Button,
   Card,
   Container,
-  CssBaseline,
   Grid,
   List,
   ListItem,
@@ -29,60 +22,24 @@ import {
 function Ingredients(props) {
   const classes = useStylesForm(themeMain);
 
-  const [isLoggedIn, setLoggedIn] = useState(props.isLoggedIn);
-  const [user, setUser] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
+  const [addIngredient, setAddIngredient] = useState({
+    name: '',
+    createdBy: '',
   });
   const [error, setError] = useState({
     errorMessage: '',
   });
-  const [ingredients, setIngredients] = useState({data: []});
-  const [addIngredient, setAddIngredient] = useState({
-    name: '',
-    createdBy: user.email,
-  });
-
-  const getIngredientData = async () => {
-    const response = await getIngredients();
-
-    setIngredients({data: response.authResponsePayload});
-  };
 
   useEffect(() => {
-    getIngredientData();
-  }, [user]);
-
-  useEffect(() => {
-    setLoggedIn(props.isLoggedIn);
-  }, [props.isLoggedIn]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      const getUserPayload = async () => {
-        const data = await getUserToken();
-        const userPayload = await data.payload;
-
-        setUser({
-          email: userPayload.email,
-          firstName: userPayload.firstName,
-          lastName: userPayload.lastName,
-        });
-
-        setAddIngredient((prevValue) => {
-          return {
-            ...prevValue,
-            createdBy: userPayload.email,
-          };
-        });
+    setAddIngredient((prevValue) => {
+      return {
+        ...prevValue,
+        createdBy: props.email,
       };
+    });
+  }, [props.email]);
 
-      getUserPayload();
-    }
-  }, [isLoggedIn]);
-
-  const ingredientList = ingredients.data.map((ingredient, index) => {
+  const ingredientList = props.ingredients.map((ingredient, index) => {
     const formatName = _.startCase(_.toLower(ingredient.name));
 
     return (
@@ -112,7 +69,7 @@ function Ingredients(props) {
       // If adding ingredient is successful, clear form
       setAddIngredient({
         name: '',
-        createdBy: user.email,
+        createdBy: props.email,
       });
 
       // If adding ingredient is successful, clear old errors
@@ -121,7 +78,7 @@ function Ingredients(props) {
       });
 
       // Update ingredient list
-      await getIngredientData();
+      props.getIngredientData();
     } else {
       setError({
         errorMessage: requestResponse.authResponsePayload,
@@ -129,12 +86,11 @@ function Ingredients(props) {
     }
   };
 
-  return !isLoggedIn ? (
+  return !props.isLoggedIn ? (
     <Redirect to='/login' />
   ) : (
     <Container component='main' maxWidth='xs'>
       <Card className={classes.root}>
-        <CssBaseline />
         <div className={classes.paper}>
           <Typography component='h1' variant='h5'>
             Ingredients For Recipes

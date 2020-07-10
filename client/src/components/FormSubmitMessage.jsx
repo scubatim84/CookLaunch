@@ -1,6 +1,5 @@
 import React from 'react';
 import {useStylesFormSubmitMsg} from '../Styles';
-
 import {Typography} from '@material-ui/core';
 
 function FormSubmitMessage(props) {
