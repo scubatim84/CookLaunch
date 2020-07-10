@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Redirect} from 'react-router-dom';
-import {getUserData} from '../actions/authActions';
+import {getUserToken} from '../actions/authActions';
 
 import Ingredients from './Ingredients';
 
@@ -21,7 +21,7 @@ function Dashboard(props) {
   useEffect(() => {
     if (isLoggedIn) {
       const getUserPayload = async () => {
-        const data = await getUserData();
+        const data = await getUserToken();
         const userPayload = await data.payload;
 
         setUser({

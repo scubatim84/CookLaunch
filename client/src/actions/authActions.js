@@ -13,7 +13,7 @@ import validator from 'validator';
 // Register User
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post('/api/users/register', userData);
+    const response = await axios.post('/api/auth/register', userData);
 
     if (response.status === 201) {
       return {
@@ -37,7 +37,7 @@ export const registerUser = async (userData) => {
 // Login - get user token and set cookie
 export const loginUser = async (userData) => {
   try {
-    const response = await axios.post('/api/users/login', userData);
+    const response = await axios.post('/api/auth/login', userData);
 
     // Attempt to login user, and if successful, obtain token
     const {token} = response.data;
@@ -80,7 +80,7 @@ export const authenticateUser = async () => {
 };
 
 // Get user data from decoded JWT token
-export const getUserData = async () => {
+export const getUserToken = async () => {
   // Retrieve token
   const token = cookies.get('user');
 
@@ -112,7 +112,7 @@ export const sendPasswordResetEmail = async (userEmail) => {
     };
   } else {
     try {
-      const response = await axios.post('/api/users/forgotpassword', {
+      const response = await axios.post('/api/auth/forgotpassword', {
         email: userEmail,
       });
 
@@ -158,7 +158,7 @@ export const checkResetPasswordToken = async (token) => {
   }
 
   try {
-    const response = await axios.get('/api/users/validateresetpasswordtoken', {
+    const response = await axios.get('/api/auth/validateresetpasswordtoken', {
       params: {
         resetPasswordToken: token,
       },
@@ -211,7 +211,7 @@ export const resetPassword = async (userData) => {
   }
 
   try {
-    const response = await axios.put('/api/users/resetpassword', userData);
+    const response = await axios.put('/api/auth/resetpassword', userData);
 
     if (response.data === REQUEST_SUCCESS) {
       return {

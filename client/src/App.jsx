@@ -13,7 +13,7 @@ import Login from './components/Login';
 import Navbar from './components/Navbar';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import ResetPasswordByEmail from './components/Auth/ResetPasswordByEmail';
-import {getUserData} from './actions/authActions';
+import {getUserData} from './actions/userActions';
 
 function App() {
   // Initial check to see if user is logged in
@@ -26,6 +26,16 @@ function App() {
     lastName: '',
   });
 
+  const getUserPayload = async () => {
+    const requestResponse = await getUserData();
+
+    setUser({
+      email: requestResponse.authResponsePayload.email,
+      firstName: requestResponse.authResponsePayload.firstName,
+      lastName: requestResponse.authResponsePayload.lastName,
+    });
+  };
+
   const handleLoggedIn = async (loggedIn) => {
     if (loggedIn) {
       setLoggedIn(true);
@@ -36,17 +46,6 @@ function App() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      const getUserPayload = async () => {
-        const data = await getUserData();
-        const userPayload = await data.payload;
-
-        setUser({
-          email: userPayload.email,
-          firstName: userPayload.firstName,
-          lastName: userPayload.lastName,
-        });
-      };
-
       getUserPayload();
     }
   }, [isLoggedIn]);
@@ -80,6 +79,7 @@ function App() {
     return (
       <Profile
         key={user.email}
+        getUserPayload={getUserPayload}
         email={user.email}
         firstName={user.firstName}
         lastName={user.lastName}

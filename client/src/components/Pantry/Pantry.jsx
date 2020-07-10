@@ -3,7 +3,7 @@ import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
 import isEmpty from 'is-empty';
 import {REQUEST_SUCCESS} from '../../actions/types';
-import {getUserData} from '../../actions/authActions';
+import {getUserToken} from '../../actions/authActions';
 import {
   getPantry,
   deleteIngredientFromPantry,
@@ -53,7 +53,7 @@ function Pantry(props) {
   useEffect(() => {
     if (isLoggedIn) {
       const getUserPayload = async () => {
-        const data = await getUserData();
+        const data = await getUserToken();
         const userPayload = await data.payload;
 
         setUser({

@@ -5,6 +5,10 @@ import {themeMain} from '../../Theme';
 import {Card, Grid, Typography} from '@material-ui/core';
 import ProfileField from './ProfileField';
 import ProfileButtons from './ProfileButtons';
+import {REQUEST_SUCCESS} from '../../actions/types';
+import {updateUserProfile} from '../../actions/userActions';
+import isEmpty from 'is-empty';
+import FormSubmitMessage from '../FormSubmitMessage';
 
 function Profile(props) {
   const classes = useStylesProfile(themeMain);
@@ -15,12 +19,21 @@ function Profile(props) {
     lastName: '',
   });
   const [editMode, setEditMode] = useState(false);
+  const [error, setError] = useState({
+    errorMessage: '',
+  });
 
   useEffect(() => {
     setProfileData({
       email: props.email,
       firstName: props.firstName,
       lastName: props.lastName,
+    });
+
+    setEditMode(false);
+
+    setError({
+      errorMessage: '',
     });
   }, [props]);
 
@@ -35,15 +48,23 @@ function Profile(props) {
     });
   };
 
-  const handleEdit = async (e) => {
+  const handleEdit = async () => {
     setEditMode(true);
   };
 
-  const handleSave = async (e) => {
-    setEditMode(false);
+  const handleSave = async () => {
+    const requestResponse = await updateUserProfile(profileData);
+
+    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+      props.getUserPayload();
+    } else {
+      setError({
+        errorMessage: requestResponse.authResponsePayload,
+      });
+    }
   };
 
-  const handleCancel = async (e) => {
+  const handleCancel = async () => {
     setProfileData({
       email: props.email,
       firstName: props.firstName,
@@ -92,6 +113,11 @@ function Profile(props) {
               handleChange={handleChange}
               content={profileData.lastName}
             />
+          </Grid>
+          <Grid item xs={12}>
+            {!isEmpty(error.errorMessage) && (
+              <FormSubmitMessage submitMessage={error.errorMessage} />
+            )}
           </Grid>
         </Card>
       </Grid>
