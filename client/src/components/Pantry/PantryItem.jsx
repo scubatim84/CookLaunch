@@ -1,4 +1,10 @@
 import React, {useEffect, useState} from 'react';
+import isEmpty from 'is-empty';
+import FormSubmitMessage from '../FormSubmitMessage';
+import {ingredientQuantityTypes, REQUEST_SUCCESS} from '../../actions/types';
+import {updateIngredientInPantry} from '../../actions/pantryActions';
+import {useStylesForm} from '../../Styles';
+import {themeMain} from '../../Theme';
 import {
   FormControl,
   Grid,
@@ -8,12 +14,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import {Cancel, Edit, Delete, Done} from '@material-ui/icons';
-import {useStylesForm} from '../../Styles';
-import {themeMain} from '../../Theme';
-import {ingredientQuantityTypes, REQUEST_SUCCESS} from '../../actions/types';
-import {updateIngredientInPantry} from '../../actions/pantryActions';
-import isEmpty from 'is-empty';
-import FormSubmitMessage from '../FormSubmitMessage';
 
 function PantryItem(props) {
   const classes = useStylesForm(themeMain);
@@ -93,8 +93,8 @@ function PantryItem(props) {
 
       // If edit request is successful, set edit mode back to false
       setEditMode(false);
-      // Also get updated pantry to re-render
-      props.updatePantry();
+      // Update user payload to re-render pantry
+      await props.getUserPayload();
     } else {
       setError({
         errorMessage: requestResponse.authResponsePayload,

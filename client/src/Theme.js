@@ -35,5 +35,13 @@ export const themeNavbar = createMuiTheme({
   },
   typography: {
     fontFamily: 'Cambria',
+    h5: {
+      fontFamily: 'Roboto',
+    },
+    subtitle1: {
+      fontFamily: 'Roboto',
+      fontSize: 18,
+      fontWeight: 500,
+    },
   },
 });

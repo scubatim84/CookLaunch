@@ -1,10 +1,11 @@
 import React from 'react';
 import Copyright from './Copyright';
-import {useStylesFooter} from '../Styles';
+import {useStylesMain} from '../Styles';
+import {themeMain} from '../Theme';
 import Container from '@material-ui/core/Container';
 
 function Footer() {
-  const classes = useStylesFooter();
+  const classes = useStylesMain(themeMain);
 
   return (
     <footer className={classes.footer}>

@@ -1,98 +1,37 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
-import isEmpty from 'is-empty';
-import {REQUEST_SUCCESS} from '../../actions/types';
-import {getUserToken} from '../../actions/authActions';
-import {
-  getPantry,
-  deleteIngredientFromPantry,
-} from '../../actions/pantryActions';
-import {useStylesForm} from '../../Styles';
-import {themeMain} from '../../Theme';
+import {deleteIngredientFromPantry} from '../../actions/pantryActions';
 import PantryAdd from './PantryAdd';
 import PantryItem from './PantryItem';
-
-import {
-  Card,
-  Container,
-  CssBaseline,
-  Grid,
-  Typography,
-} from '@material-ui/core';
+import {useStylesForm} from '../../Styles';
+import {themeMain} from '../../Theme';
+import {Card, Container, Grid, Typography} from '@material-ui/core';
 
 function Pantry(props) {
   const classes = useStylesForm(themeMain);
 
-  const [isLoggedIn, setLoggedIn] = useState(props.isLoggedIn);
-  const [user, setUser] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
-  });
-  const [pantry, setPantry] = useState({data: [{name: 'None'}]});
-
-  const getPantryData = async () => {
-    if (!isEmpty(user.email)) {
-      const response = await getPantry(user.email);
-
-      if (response.authResponseType === REQUEST_SUCCESS) {
-        setPantry({data: response.authResponsePayload});
-      }
-    }
-  };
-
-  useEffect(() => {
-    getPantryData(user.email);
-  }, [user]);
-
-  useEffect(() => {
-    setLoggedIn(props.isLoggedIn);
-  }, [props.isLoggedIn]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      const getUserPayload = async () => {
-        const data = await getUserToken();
-        const userPayload = await data.payload;
-
-        setUser({
-          email: userPayload.email,
-          firstName: userPayload.firstName,
-          lastName: userPayload.lastName,
-        });
-
-        setPantry({
-          data: userPayload.pantry,
-        });
-      };
-
-      getUserPayload();
-    }
-  }, [isLoggedIn]);
-
   const handleDelete = async (ingredientId) => {
     await deleteIngredientFromPantry(ingredientId);
 
-    // Update pantry data to re-render
-    await getPantryData();
+    // Update user payload to re-render pantry
+    await props.getUserPayload();
   };
 
-  return !isLoggedIn ? (
+  return !props.isLoggedIn ? (
     <Redirect to='/login' />
   ) : (
     <Container component='main' maxWidth='md'>
       <Card className={classes.root}>
-        <CssBaseline />
         <div className={classes.paper}>
           <Grid container spacing={3}>
             <Grid item xs={12} align='center'>
               <Typography component='h1' variant='h5'>
-                {user.firstName}'s Pantry
+                {props.firstName}'s Pantry
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              {pantry.data.map((ingredient, index) => {
+              {props.pantry.map((ingredient, index) => {
                 const formatName = _.startCase(_.toLower(ingredient.name));
                 const formatQuantityType = _.startCase(
                   _.toLower(ingredient.quantityType)
@@ -103,11 +42,10 @@ function Pantry(props) {
                     key={index}
                     id={ingredient._id}
                     name={formatName}
-                    userEmail={user.email}
-                    quantityType={formatQuantityType}
                     quantity={ingredient.quantity}
+                    quantityType={formatQuantityType}
                     handleDelete={handleDelete}
-                    updatePantry={getPantryData}
+                    getUserPayload={props.getUserPayload}
                   />
                 );
               })}
@@ -115,7 +53,11 @@ function Pantry(props) {
           </Grid>
         </div>
       </Card>
-      <PantryAdd userEmail={user.email} updatePantry={getPantryData} />
+      <PantryAdd
+        key={props.pantry}
+        ingredients={props.ingredients}
+        getUserPayload={props.getUserPayload}
+      />
     </Container>
   );
 }

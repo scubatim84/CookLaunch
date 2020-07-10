@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
+import isEmpty from 'is-empty';
+import {REQUEST_SUCCESS} from '../../actions/types';
+import {updateUserProfile} from '../../actions/userActions';
+import ProfileField from './ProfileField';
+import ProfileButtons from './ProfileButtons';
+import FormSubmitMessage from '../FormSubmitMessage';
 import {useStylesProfile} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {Card, Grid, Typography} from '@material-ui/core';
-import ProfileField from './ProfileField';
-import ProfileButtons from './ProfileButtons';
-import {REQUEST_SUCCESS} from '../../actions/types';
-import {updateUserProfile} from '../../actions/userActions';
-import isEmpty from 'is-empty';
-import FormSubmitMessage from '../FormSubmitMessage';
 
 function Profile(props) {
   const classes = useStylesProfile(themeMain);

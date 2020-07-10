@@ -12,11 +12,15 @@ import Footer from './components/Footer';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import ResetPasswordByEmail from './components/Auth/ResetPasswordByEmail';
 import {getUserData} from './actions/userActions';
+import {getIngredients} from './actions/ingredientActions';
+import {useStylesMain} from './Styles';
 import {themeMain} from './Theme';
 import {ThemeProvider} from '@material-ui/core/styles';
-import {getIngredients} from './actions/ingredientActions';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 function App() {
+  const classes = useStylesMain(themeMain);
+
   // Initial check to see if user is logged in
   const token = cookies.get('user');
 
@@ -25,6 +29,7 @@ function App() {
     email: '',
     firstName: '',
     lastName: '',
+    pantry: [],
   });
   const [ingredients, setIngredients] = useState({data: []});
 
@@ -41,6 +46,7 @@ function App() {
       email: requestResponse.authResponsePayload.email,
       firstName: requestResponse.authResponsePayload.firstName,
       lastName: requestResponse.authResponsePayload.lastName,
+      pantry: requestResponse.authResponsePayload.pantry,
     });
   };
 
@@ -70,20 +76,47 @@ function App() {
         lastName={user.lastName}
         handleLoggedIn={handleLoggedIn}
         isLoggedIn={isLoggedIn}
+        className={classes.root}
       />
     );
   };
 
   const renderLanding = () => {
-    return <Landing handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
+    return (
+      <Landing
+        handleLoggedIn={handleLoggedIn}
+        isLoggedIn={isLoggedIn}
+        className={classes.root}
+      />
+    );
   };
 
   const renderLogin = () => {
-    return <Login handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
+    return (
+      <Login
+        handleLoggedIn={handleLoggedIn}
+        isLoggedIn={isLoggedIn}
+        className={classes.root}
+      />
+    );
   };
 
   const renderPantry = () => {
-    return <Pantry handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
+    return (
+      <Pantry
+        key={user.pantry}
+        pantry={user.pantry}
+        ingredients={ingredients.data}
+        getUserPayload={getUserPayload}
+        getIngredientData={getIngredientData}
+        email={user.email}
+        firstName={user.firstName}
+        lastName={user.lastName}
+        handleLoggedIn={handleLoggedIn}
+        isLoggedIn={isLoggedIn}
+        className={classes.root}
+      />
+    );
   };
 
   const renderResetPassword = () => {
@@ -91,6 +124,7 @@ function App() {
       <ResetPasswordByEmail
         handleLoggedIn={handleLoggedIn}
         isLoggedIn={isLoggedIn}
+        className={classes.root}
       />
     );
   };
@@ -104,13 +138,19 @@ function App() {
         firstName={user.firstName}
         lastName={user.lastName}
         isLoggedIn={isLoggedIn}
+        className={classes.root}
       />
     );
   };
 
   return (
     <ThemeProvider theme={themeMain}>
-      <Navbar handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />
+      <CssBaseline />
+      <Navbar
+        handleLoggedIn={handleLoggedIn}
+        isLoggedIn={isLoggedIn}
+        className={classes.root}
+      />
       <Router>
         <div className='App'>
           <Route exact path='/' render={renderLanding} />
@@ -122,7 +162,7 @@ function App() {
           <Route path='/reset/:token' render={renderResetPassword} />
         </div>
       </Router>
-      <Footer />
+      <Footer className={classes.root} />
     </ThemeProvider>
   );
 }

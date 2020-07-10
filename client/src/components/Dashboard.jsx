@@ -7,7 +7,7 @@ function Dashboard(props) {
   return !props.isLoggedIn ? (
     <Redirect to='/login' />
   ) : (
-    <Grid container spacing={2}>
+    <Grid container>
       <Grid item xs={12} sm={4}>
         <Ingredients
           getIngredientData={props.getIngredientData}
