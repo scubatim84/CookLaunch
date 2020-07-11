@@ -34,10 +34,10 @@ function Ingredients(props) {
     setAddIngredient((prevValue) => {
       return {
         ...prevValue,
-        createdBy: props.email,
+        createdBy: props.id,
       };
     });
-  }, [props.email]);
+  }, [props.id]);
 
   const ingredientList = props.ingredients.map((ingredient, index) => {
     const formatName = _.startCase(_.toLower(ingredient.name));
@@ -66,18 +66,7 @@ function Ingredients(props) {
     const requestResponse = await addIngredientToDatabase(addIngredient);
 
     if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      // If adding ingredient is successful, clear form
-      setAddIngredient({
-        name: '',
-        createdBy: props.email,
-      });
-
-      // If adding ingredient is successful, clear old errors
-      setError({
-        errorMessage: '',
-      });
-
-      // Update ingredient list
+      // If adding ingredient is successful, update ingredient list
       props.getIngredientData();
     } else {
       setError({

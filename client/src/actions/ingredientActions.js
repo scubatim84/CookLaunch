@@ -1,6 +1,5 @@
 import axios from 'axios';
 import isEmpty from 'is-empty';
-import validator from 'validator';
 import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
 import cookies from 'js-cookie';
 
@@ -44,16 +43,14 @@ export const addIngredientToDatabase = async (ingredientData) => {
   name = !isEmpty(name) ? name : '';
   createdBy = !isEmpty(createdBy) ? createdBy : '';
 
-  // CreatedBy check for valid E-mail
-  if (isEmpty(createdBy)) {
-    error = 'An error has occurred. Please try again.';
-  } else if (!validator.isEmail(createdBy)) {
-    error = 'An error has occurred. Please try again.';
-  }
-
   // Check for valid ingredient name
   if (isEmpty(name)) {
     error = 'Please enter an ingredient name.';
+  }
+
+  // Check for valid created by ID
+  if (isEmpty(createdBy)) {
+    error = 'An error has occurred. Please try again.';
   }
 
   if (!isEmpty(error)) {

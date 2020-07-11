@@ -10,8 +10,10 @@ function Dashboard(props) {
     <Grid container>
       <Grid item xs={12} sm={4}>
         <Ingredients
+          key={props.ingredients}
           getIngredientData={props.getIngredientData}
           ingredients={props.ingredients}
+          id={props.id}
           email={props.email}
           firstName={props.firstName}
           lastName={props.lastName}

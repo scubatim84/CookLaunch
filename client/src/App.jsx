@@ -26,6 +26,7 @@ function App() {
 
   const [isLoggedIn, setLoggedIn] = useState(!isEmpty(token));
   const [user, setUser] = useState({
+    id: '',
     email: '',
     firstName: '',
     lastName: '',
@@ -43,6 +44,7 @@ function App() {
     const requestResponse = await getUserData();
 
     setUser({
+      id: requestResponse.authResponsePayload._id,
       email: requestResponse.authResponsePayload.email,
       firstName: requestResponse.authResponsePayload.firstName,
       lastName: requestResponse.authResponsePayload.lastName,
@@ -71,6 +73,7 @@ function App() {
         key={isLoggedIn}
         getIngredientData={getIngredientData}
         ingredients={ingredients.data}
+        id={user.id}
         email={user.email}
         firstName={user.firstName}
         lastName={user.lastName}
