@@ -1,29 +1,25 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Redirect} from 'react-router-dom';
-import {loginUser} from '../../actions/authActions';
 import isEmpty from 'is-empty';
+import FormSubmitMessage from '../FormSubmitMessage';
+import {loginUser} from '../../actions/authActions';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-
 import {
   Button,
   Card,
   Container,
-  CssBaseline,
   Grid,
   Link,
   TextField,
   Typography,
 } from '@material-ui/core';
 
-import FormSubmitMessage from '../FormSubmitMessage';
-
 function LoginForm(props) {
   const classes = useStylesForm(themeMain);
 
-  const [isLoggedin, setLoggedIn] = useState(props.isLoggedin);
-  const [user, setUser] = useState({
+  const [login, setLogin] = useState({
     email: '',
     password: '',
   });
@@ -31,14 +27,10 @@ function LoginForm(props) {
     errorMessage: '',
   });
 
-  useEffect(() => {
-    setLoggedIn(props.isLoggedIn);
-  }, [props.isLoggedIn]);
-
   const handleChange = async (e) => {
     const {name, value} = e.target;
 
-    setUser((prevValue) => {
+    setLogin((prevValue) => {
       return {
         ...prevValue,
         [name]: value,
@@ -49,36 +41,24 @@ function LoginForm(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await loginUser(user);
+    const loginResponse = await loginUser(login);
 
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      // If login request is successful, clear login form
-      setUser({
-        email: '',
-        password: '',
-      });
-
-      // If login request is successful, clear old errors from state
-      setError({
-        errorMessage: '',
-      });
-
-      // Set user as logged in
+    if (loginResponse.authResponseType === REQUEST_SUCCESS) {
+      // If login request is successful, set user as logged in
       props.handleLoggedIn(true);
     } else {
       setError({
-        errorMessage: requestResponse.authResponsePayload,
+        errorMessage: loginResponse.authResponsePayload,
       });
     }
   };
 
-  return isLoggedin ? (
+  return props.isLoggedIn ? (
     <Redirect to='/dashboard' />
   ) : (
     <Container component='main' maxWidth='xs'>
       <Card>
-        <CssBaseline />
-        <div className={classes.paper}>
+        <Grid className={classes.paper}>
           <Typography component='h1' variant='h5'>
             Sign In Here
           </Typography>
@@ -87,7 +67,7 @@ function LoginForm(props) {
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
-                  value={user.email}
+                  value={login.email}
                   variant='outlined'
                   required
                   fullWidth
@@ -100,7 +80,7 @@ function LoginForm(props) {
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
-                  value={user.password}
+                  value={login.password}
                   variant='outlined'
                   required
                   fullWidth
@@ -142,7 +122,7 @@ function LoginForm(props) {
               )}
             </Grid>
           </form>
-        </div>
+        </Grid>
       </Card>
     </Container>
   );

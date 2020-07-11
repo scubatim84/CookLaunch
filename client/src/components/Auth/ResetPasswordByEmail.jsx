@@ -1,6 +1,6 @@
 import React from 'react';
-import {useStylesMain} from '../../Styles';
 import ResetPasswordByEmailForm from './ResetPasswordByEmailForm';
+import {useStylesMain} from '../../Styles';
 import Grid from '@material-ui/core/Grid';
 
 function ResetPassword(props) {
@@ -18,6 +18,7 @@ function ResetPassword(props) {
       >
         <Grid item xs={6}>
           <ResetPasswordByEmailForm
+            key={props.isLoggedIn}
             handleLoggedIn={props.handleLoggedIn}
             isLoggedIn={props.isLoggedIn}
           />

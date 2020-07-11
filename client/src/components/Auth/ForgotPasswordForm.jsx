@@ -4,12 +4,10 @@ import {sendPasswordResetEmail} from '../../actions/authActions';
 import {REQUEST_SUCCESS, EMAIL_NOT_FOUND} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-
 import {
   Button,
   Card,
   Container,
-  CssBaseline,
   Grid,
   TextField,
   Typography,
@@ -18,7 +16,7 @@ import {
 function ForgotPasswordForm() {
   const classes = useStylesForm(themeMain);
 
-  const [user, setUser] = useState({
+  const [forgotUser, setForgotUser] = useState({
     email: '',
   });
   const [submitStatus, setSubmitStatus] = useState({
@@ -35,7 +33,7 @@ function ForgotPasswordForm() {
 
     const {name, value} = e.target;
 
-    setUser((prevValue) => {
+    setForgotUser((prevValue) => {
       return {
         ...prevValue,
         [name]: value,
@@ -46,7 +44,7 @@ function ForgotPasswordForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const email = user.email;
+    const email = forgotUser.email;
 
     const requestResponse = await sendPasswordResetEmail(email);
 
@@ -72,8 +70,7 @@ function ForgotPasswordForm() {
   return (
     <Container component='main' maxWidth='xs'>
       <Card>
-        <CssBaseline />
-        <div className={classes.paper}>
+        <Grid className={classes.paper}>
           <Typography component='h1' variant='h5'>
             Retrieve Password
           </Typography>
@@ -82,14 +79,13 @@ function ForgotPasswordForm() {
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
-                  value={user.email}
+                  value={forgotUser.email}
                   variant='outlined'
                   required
                   fullWidth
-                  id='email'
                   label='Email Address'
                   name='email'
-                  autoComplete='email'
+                  type='email'
                 />
               </Grid>
               <Grid item xs={12}>
@@ -113,7 +109,7 @@ function ForgotPasswordForm() {
               </Grid>
             </Grid>
           </form>
-        </div>
+        </Grid>
       </Card>
     </Container>
   );

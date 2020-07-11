@@ -1,23 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Redirect, useParams} from 'react-router-dom';
+import isEmpty from 'is-empty';
+import FormSubmitMessage from '../FormSubmitMessage';
 import {
   checkResetPasswordToken,
   loginUser,
   validatePassword,
   resetPassword,
 } from '../../actions/authActions';
-import isEmpty from 'is-empty';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-
-import FormSubmitMessage from '../FormSubmitMessage';
-
 import {
   Button,
   Card,
   Container,
-  CssBaseline,
   Grid,
   TextField,
   Typography,
@@ -28,23 +25,18 @@ function ResetPasswordByEmailForm(props) {
 
   const token = useParams().token;
 
-  const [user, setUser] = useState({
+  const [password, setPassword] = useState({
     password: '',
     password2: '',
   });
-  const [isLoggedin, setLoggedIn] = useState(props.isLoggedIn);
   const [error, setError] = useState({
     errorMessage: '',
   });
 
-  useEffect(() => {
-    setLoggedIn(props.isLoggedIn);
-  }, [props.isLoggedIn]);
-
   const handleChange = async (e) => {
     const {name, value} = e.target;
 
-    setUser((prevValue) => {
+    setPassword((prevValue) => {
       return {
         ...prevValue,
         [name]: value,
@@ -55,7 +47,10 @@ function ResetPasswordByEmailForm(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const passwordCheck = await validatePassword(user.password, user.password2);
+    const passwordCheck = await validatePassword(
+      password.password,
+      password.password2
+    );
 
     if (passwordCheck.isValid) {
       const tokenResponse = await checkResetPasswordToken(token);
@@ -63,7 +58,7 @@ function ResetPasswordByEmailForm(props) {
       if (tokenResponse.authResponseType === REQUEST_SUCCESS) {
         const userData = {
           email: tokenResponse.authResponsePayload.email,
-          password: user.password,
+          password: password.password,
         };
 
         const changeResponse = await resetPassword(userData);
@@ -72,20 +67,8 @@ function ResetPasswordByEmailForm(props) {
           const loginResponse = await loginUser(userData);
 
           if (loginResponse.authResponseType === REQUEST_SUCCESS) {
-            // Set user as logged in
+            // If password reset and login are successful, set user as logged in
             props.handleLoggedIn(true);
-
-            // If password reset and login are successful, clear password reset form
-            setUser({
-              email: '',
-              password: '',
-              password2: '',
-            });
-
-            // If password reset and login are successful, clear old errors from state
-            setError({
-              errorMessage: '',
-            });
           } else {
             setError({
               errorMessage: changeResponse.authResponsePayload,
@@ -108,13 +91,12 @@ function ResetPasswordByEmailForm(props) {
     }
   };
 
-  return isLoggedin ? (
+  return props.isLoggedIn ? (
     <Redirect to='/dashboard' />
   ) : (
     <Container component='main' maxWidth='xs'>
       <Card>
-        <CssBaseline />
-        <div className={classes.paper}>
+        <Grid className={classes.paper}>
           <Typography component='h1' variant='h5'>
             Reset Your Password
           </Typography>
@@ -123,49 +105,47 @@ function ResetPasswordByEmailForm(props) {
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
-                  value={user.password}
+                  value={password.password}
                   variant='outlined'
                   required
                   fullWidth
-                  name='password'
                   label='Password'
                   type='password'
-                  id='password'
-                  autoComplete='current-password'
+                  name='password'
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
-                  value={user.password2}
+                  value={password.password2}
                   variant='outlined'
                   required
                   fullWidth
-                  name='password2'
                   label='Confirm password'
                   type='password'
-                  id='password2'
-                  autoComplete='confirm-password'
+                  name='password2'
                 />
               </Grid>
+              <Grid item xs={12}>
+                <Button
+                  onClick={handleSubmit}
+                  fullWidth
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                  className={classes.submit}
+                >
+                  Submit
+                </Button>
+              </Grid>
             </Grid>
-            <Button
-              onClick={handleSubmit}
-              fullWidth
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.submit}
-            >
-              Submit
-            </Button>
             <Grid item xs={12}>
               {!isEmpty(error.errorMessage) && (
                 <FormSubmitMessage submitMessage={error.errorMessage} />
               )}
             </Grid>
           </form>
-        </div>
+        </Grid>
       </Card>
     </Container>
   );

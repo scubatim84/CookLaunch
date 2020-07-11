@@ -1,11 +1,8 @@
 import React from 'react';
 import LoginForm from './Auth/LoginForm';
-import {useStylesMain} from '../Styles';
 import Grid from '@material-ui/core/Grid';
 
 function Login(props) {
-  const classes = useStylesMain();
-
   return (
     <Grid container className='login-background background-image-full'>
       <Grid
@@ -14,10 +11,10 @@ function Login(props) {
         alignItems='center'
         justify='center'
         style={{minHeight: '100vh'}}
-        className={classes.root}
       >
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <LoginForm
+            key={props.isLoggedIn}
             handleLoggedIn={props.handleLoggedIn}
             isLoggedIn={props.isLoggedIn}
           />
