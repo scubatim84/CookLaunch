@@ -38,6 +38,11 @@ export const useStylesForm = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     margin: theme.spacing(2),
   },
+  list: {
+    width: '100%',
+    maxHeight: 300,
+    overflow: 'auto',
+  },
   paper: {
     margin: theme.spacing(2, 2),
     display: 'flex',
