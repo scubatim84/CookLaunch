@@ -13,24 +13,9 @@ import validator from 'validator';
 // Register User
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post('/api/auth/register', userData);
-
-    if (response.status === 201) {
-      return {
-        authResponseType: REQUEST_SUCCESS,
-        authResponsePayload: response.data,
-      };
-    } else {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: response.data,
-      };
-    }
+    return await axios.post('/api/auth/register', userData);
   } catch (err) {
-    return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: err.response.data,
-    };
+    return err.response;
   }
 };
 
@@ -40,20 +25,15 @@ export const loginUser = async (userData) => {
     const response = await axios.post('/api/auth/login', userData);
 
     // Attempt to login user, and if successful, obtain token
-    const {token} = response.data;
+    const token = response.data;
 
     // Set authentication cookie with token
     cookies.set('user', token, {expires: 7});
 
     // Return response
-    return {
-      authResponseType: REQUEST_SUCCESS,
-    };
+    return response;
   } catch (err) {
-    return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: err.response.data,
-    };
+    return err.response;
   }
 };
 
@@ -63,20 +43,13 @@ export const logoutUser = async () => {
   cookies.remove('user');
 
   // Check authentication to ensure user logout was successful
-  const userAuthenticated = await authenticateUser();
+  const userCookie = cookies.get('user');
 
-  if (!userAuthenticated) {
+  if (isEmpty(userCookie)) {
     return REQUEST_SUCCESS;
   } else {
     return REQUEST_FAIL;
   }
-};
-
-// Check if user is logged in
-export const authenticateUser = async () => {
-  const userCookie = cookies.get('user');
-
-  return !isEmpty(userCookie);
 };
 
 // Get user data from decoded JWT token

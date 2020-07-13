@@ -3,7 +3,6 @@ import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {loginUser} from '../../actions/authActions';
-import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
@@ -43,12 +42,12 @@ function LoginForm(props) {
 
     const loginResponse = await loginUser(login);
 
-    if (loginResponse.authResponseType === REQUEST_SUCCESS) {
+    if (loginResponse.status === 200) {
       // If login request is successful, set user as logged in
       props.handleLoggedIn(true);
     } else {
       setError({
-        errorMessage: loginResponse.authResponsePayload,
+        errorMessage: loginResponse.data,
       });
     }
   };

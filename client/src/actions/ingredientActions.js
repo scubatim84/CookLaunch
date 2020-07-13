@@ -111,16 +111,19 @@ export const updateIngredient = async (ingredientData) => {
   } else {
     try {
       const token = cookies.get('user');
-      const response = await axios.put('/api/ingredients', ingredientData, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await axios.put(
+        `/api/ingredients/${ingredientData.id}`,
+        ingredientData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
-      if (response.status === 200) {
+      if (response.status === 204) {
         return {
           authResponseType: REQUEST_SUCCESS,
-          authResponsePayload: response.data,
         };
       } else {
         return {
@@ -159,19 +162,15 @@ export const deleteIngredient = async (ingredientId) => {
   } else {
     try {
       const token = cookies.get('user');
-      const response = await axios.delete('/api/ingredients', {
+      const response = await axios.delete(`/api/ingredients/${ingredientId}`, {
         headers: {
           Authorization: token,
         },
-        data: {
-          id: ingredientId,
-        },
       });
 
-      if (response.status === 200) {
+      if (response.status === 204) {
         return {
           authResponseType: REQUEST_SUCCESS,
-          authResponsePayload: response.data,
         };
       } else {
         return {

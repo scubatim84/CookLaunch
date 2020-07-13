@@ -13,7 +13,7 @@ export const getPantry = async () => {
       },
     });
 
-    if (response.data.message === REQUEST_SUCCESS) {
+    if (response.status === 200) {
       return {
         authResponseType: REQUEST_SUCCESS,
         authResponsePayload: response.data.payload,
@@ -67,15 +67,8 @@ export const addIngredientToPantry = async (ingredientData) => {
     };
   } else {
     try {
-      // Create payload
-      const payload = {
-        name: name,
-        quantity: quantity,
-        quantityType: quantityType,
-      };
-
       const token = cookies.get('user');
-      const response = await axios.post('/api/pantry', payload, {
+      const response = await axios.post('/api/pantry', ingredientData, {
         headers: {
           Authorization: token,
         },
@@ -132,16 +125,19 @@ export const updateIngredientInPantry = async (ingredientData) => {
   } else {
     try {
       const token = cookies.get('user');
-      const response = await axios.put('/api/pantry', ingredientData, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await axios.put(
+        `/api/pantry/${ingredientData.id}`,
+        ingredientData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
-      if (response.status === 200) {
+      if (response.status === 204) {
         return {
           authResponseType: REQUEST_SUCCESS,
-          authResponsePayload: response.data,
         };
       } else {
         return {
@@ -180,19 +176,15 @@ export const deleteIngredientFromPantry = async (ingredientId) => {
   } else {
     try {
       const token = cookies.get('user');
-      const response = await axios.delete('/api/pantry', {
+      const response = await axios.delete(`/api/pantry/${ingredientId}`, {
         headers: {
           Authorization: token,
         },
-        data: {
-          id: ingredientId,
-        },
       });
 
-      if (response.status === 201) {
+      if (response.status === 204) {
         return {
           authResponseType: REQUEST_SUCCESS,
-          authResponsePayload: response.data,
         };
       } else {
         return {
