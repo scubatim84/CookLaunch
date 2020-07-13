@@ -13,15 +13,15 @@ router.get('/', async (req, res) => {
   // Once user is found, send contents of user's pantry
   if (foundUser) {
     try {
-      res.status(200).send({
+      res.status(200).json({
         message: 'success',
         payload: foundUser.pantry,
       });
     } catch (err) {
-      res.status(400).send('An error has occurred. ' + err);
+      res.status(400).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(404).json('No user found in database.');
   }
 });
 
@@ -39,22 +39,22 @@ router.post('/', async (req, res) => {
 
       await foundUser.save();
 
-      res.status(201).send({
+      res.status(201).json({
         message: 'success',
         payload: foundUser.pantry,
       });
     } catch (err) {
-      res.status(400).send('An error has occurred. ' + err);
+      res.status(400).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(404).json('No user found in database.');
   }
 });
 
-// @route PUT api/pantry
-// @desc Update ingredients in user's pantry
+// @route PUT api/pantry/:id
+// @desc Update ingredient in user's pantry by id
 // @access Private
-router.put('/', async (req, res) => {
+router.put('/:id', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
   const updatedIngredient = req.body;
@@ -62,7 +62,7 @@ router.put('/', async (req, res) => {
   // Once user is obtained, update ingredients in user's pantry
   if (foundUser) {
     try {
-      const currentIngredient = foundUser.pantry.id(updatedIngredient.id);
+      const currentIngredient = foundUser.pantry.id(req.params.id);
 
       if (!isEmpty(updatedIngredient.quantity)) {
         currentIngredient.quantity = updatedIngredient.quantity;
@@ -74,37 +74,34 @@ router.put('/', async (req, res) => {
 
       await foundUser.save();
 
-      res.status(200).send({
-        message: 'success',
-        payload: foundUser.pantry,
-      });
+      res.status(204).json(null);
     } catch (err) {
-      res.status(400).send('An error has occurred. ' + err);
+      res.status(400).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(400).json('No user found in database.');
   }
 });
 
-// @route DELETE api/pantry
-// @desc Delete ingredients from user's pantry
+// @route DELETE api/pantry/:id
+// @desc Delete ingredient from user's pantry by id
 // @access Private
-router.delete('/', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
   // Once user is found, delete ingredients from user's pantry
   if (foundUser) {
     try {
-      foundUser.pantry.remove(req.body.id);
+      foundUser.pantry.remove(req.params.id);
       await foundUser.save();
 
-      res.status(200).send('success');
+      res.status(204).json(null);
     } catch (err) {
-      res.status(400).send('An error has occurred. ' + err);
+      res.status(400).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(400).json('No user found in database.');
   }
 });
 
