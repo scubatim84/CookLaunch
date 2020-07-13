@@ -30,10 +30,15 @@ app.use(passport.initialize());
 const authRoutes = require('./routes/api/auth');
 const userRoutes = require('./routes/api/user');
 const pantryRoutes = require('./routes/api/pantry');
+const recipeRoutes = require('./routes/api/recipes');
 const ingredientRoutes = require('./routes/api/ingredients');
 
 app.use('/api/auth', authRoutes);
-app.use('/api/ingredients', ingredientRoutes);
+app.use(
+  '/api/ingredients',
+  passport.authenticate('jwt', {session: false}),
+  ingredientRoutes
+);
 app.use(
   '/api/user',
   passport.authenticate('jwt', {session: false}),
@@ -43,6 +48,11 @@ app.use(
   '/api/pantry',
   passport.authenticate('jwt', {session: false}),
   pantryRoutes
+);
+app.use(
+  '/api/recipes',
+  passport.authenticate('jwt', {session: false}),
+  recipeRoutes
 );
 
 if (process.env.NODE_ENV === 'production') {

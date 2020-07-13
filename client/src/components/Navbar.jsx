@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {logoutUser} from '../actions/authActions';
 import {REQUEST_SUCCESS} from '../actions/types';
+import Brand from './Brand';
 import {themeNavbar} from '../Theme';
-import {useStylesNavbar} from '../Styles';
-
+import {ThemeProvider} from '@material-ui/core/styles';
 import {
   AppBar,
   Grid,
@@ -14,12 +14,8 @@ import {
   Toolbar,
 } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import {ThemeProvider} from '@material-ui/core/styles';
-
-import Brand from './Brand';
 
 function NavBar(props) {
-  const classes = useStylesNavbar(themeNavbar);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(props.isLoggedIn);
   const open = Boolean(anchorEl);
@@ -47,70 +43,72 @@ function NavBar(props) {
   };
 
   return (
-    <div className={classes.root}>
-      <ThemeProvider theme={themeNavbar}>
-        <AppBar position='static'>
-          <Toolbar>
-            {isLoggedIn ? (
-              <Grid justify='space-between' container spacing={10}>
-                <Grid item>
-                  <Brand />
-                </Grid>
-                <Grid item>
-                  <IconButton
-                    aria-label='account of current user'
-                    aria-controls='menu-appbar'
-                    aria-haspopup='true'
-                    onClick={handleMenu}
-                    color='inherit'
-                  >
-                    <AccountCircle />
-                  </IconButton>
-                  <Menu
-                    id='menu-appbar'
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={open}
-                    onClose={handleClose}
-                  >
-                    <Link
-                      href='/profile'
-                      color='textPrimary'
-                      style={{textDecoration: 'none'}}
+    <ThemeProvider theme={themeNavbar}>
+      <Grid container>
+        <Grid item xs={12}>
+          <AppBar position='static'>
+            <Toolbar>
+              {isLoggedIn ? (
+                <Grid container justify='space-between'>
+                  <Grid item>
+                    <Brand />
+                  </Grid>
+                  <Grid item>
+                    <IconButton
+                      aria-label='account of current user'
+                      aria-controls='menu-appbar'
+                      aria-haspopup='true'
+                      onClick={handleMenu}
+                      color='inherit'
                     >
-                      <MenuItem>Profile</MenuItem>
-                    </Link>
-                    <Link
-                      href='/dashboard/pantry'
-                      color='textPrimary'
-                      style={{textDecoration: 'none'}}
+                      <AccountCircle />
+                    </IconButton>
+                    <Menu
+                      id='menu-appbar'
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      open={open}
+                      onClose={handleClose}
                     >
-                      <MenuItem>Pantry</MenuItem>
-                    </Link>
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                  </Menu>
+                      <Link
+                        href='/profile'
+                        color='textPrimary'
+                        style={{textDecoration: 'none'}}
+                      >
+                        <MenuItem>Profile</MenuItem>
+                      </Link>
+                      <Link
+                        href='/dashboard/pantry'
+                        color='textPrimary'
+                        style={{textDecoration: 'none'}}
+                      >
+                        <MenuItem>Pantry</MenuItem>
+                      </Link>
+                      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                    </Menu>
+                  </Grid>
                 </Grid>
-              </Grid>
-            ) : (
-              <Grid justify='space-between' container spacing={10}>
-                <Grid item>
-                  <Brand />
+              ) : (
+                <Grid container justify='space-between'>
+                  <Grid item>
+                    <Brand />
+                  </Grid>
+                  <Grid item></Grid>
                 </Grid>
-                <Grid item></Grid>
-              </Grid>
-            )}
-          </Toolbar>
-        </AppBar>
-      </ThemeProvider>
-    </div>
+              )}
+            </Toolbar>
+          </AppBar>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
   );
 }
 

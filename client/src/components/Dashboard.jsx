@@ -1,46 +1,22 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Redirect} from 'react-router-dom';
-import {getUserToken} from '../actions/authActions';
-
-import Ingredients from './Ingredients';
-
+import Ingredients from './Ingredients/Ingredients';
 import {Grid} from '@material-ui/core';
 
 function Dashboard(props) {
-  const [isLoggedIn, setLoggedIn] = useState(props.isLoggedIn);
-  const [user, setUser] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
-  });
-
-  useEffect(() => {
-    setLoggedIn(props.isLoggedIn);
-  }, [props.isLoggedIn]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      const getUserPayload = async () => {
-        const data = await getUserToken();
-        const userPayload = await data.payload;
-
-        setUser({
-          email: userPayload.email,
-          firstName: userPayload.firstName,
-          lastName: userPayload.lastName,
-        });
-      };
-
-      getUserPayload();
-    }
-  }, [isLoggedIn]);
-
-  return !isLoggedIn ? (
+  return !props.isLoggedIn ? (
     <Redirect to='/login' />
   ) : (
-    <Grid container spacing={2}>
+    <Grid container>
       <Grid item xs={12} sm={4}>
         <Ingredients
+          key={props.ingredients}
+          getIngredientData={props.getIngredientData}
+          ingredients={props.ingredients}
+          id={props.id}
+          email={props.email}
+          firstName={props.firstName}
+          lastName={props.lastName}
           handleLoggedIn={props.handleLoggedIn}
           isLoggedIn={props.isLoggedIn}
         />

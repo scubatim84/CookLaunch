@@ -1,12 +1,17 @@
 import axios from 'axios';
 import isEmpty from 'is-empty';
-import validator from 'validator';
 import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
+import cookies from 'js-cookie';
 
-// Get ingredients from back end
+// Get ingredients
 export const getIngredients = async () => {
   try {
-    const response = await axios.get('/api/ingredients/');
+    const token = cookies.get('user');
+    const response = await axios.get('/api/ingredients/', {
+      headers: {
+        Authorization: token,
+      },
+    });
 
     if (response.data.message === REQUEST_SUCCESS) {
       return {
@@ -27,8 +32,8 @@ export const getIngredients = async () => {
   }
 };
 
-// Add ingredient to database
-export const addIngredientToDatabase = async (ingredientData) => {
+// Add ingredient
+export const addIngredient = async (ingredientData) => {
   let error;
 
   let name = ingredientData.name;
@@ -38,16 +43,14 @@ export const addIngredientToDatabase = async (ingredientData) => {
   name = !isEmpty(name) ? name : '';
   createdBy = !isEmpty(createdBy) ? createdBy : '';
 
-  // CreatedBy check for valid E-mail
-  if (isEmpty(createdBy)) {
-    error = 'An error has occurred. Please try again.';
-  } else if (!validator.isEmail(createdBy)) {
-    error = 'An error has occurred. Please try again.';
-  }
-
   // Check for valid ingredient name
   if (isEmpty(name)) {
     error = 'Please enter an ingredient name.';
+  }
+
+  // Check for valid created by ID
+  if (isEmpty(createdBy)) {
+    error = 'An error has occurred. Please try again.';
   }
 
   if (!isEmpty(error)) {
@@ -57,9 +60,115 @@ export const addIngredientToDatabase = async (ingredientData) => {
     };
   } else {
     try {
-      const response = await axios.post('/api/ingredients/', ingredientData);
+      const token = cookies.get('user');
+      const response = await axios.post('/api/ingredients/', ingredientData, {
+        headers: {
+          Authorization: token,
+        },
+      });
 
       if (response.status === 201) {
+        return {
+          authResponseType: REQUEST_SUCCESS,
+          authResponsePayload: response.data,
+        };
+      } else {
+        return {
+          authResponseType: REQUEST_FAIL,
+          authResponsePayload: response.data,
+        };
+      }
+    } catch (err) {
+      return {
+        authResponseType: REQUEST_FAIL,
+        authResponsePayload: isEmpty(err.response.data)
+          ? 'An error has occurred. Please try again.'
+          : err.response.data,
+      };
+    }
+  }
+};
+
+// Update ingredient
+export const updateIngredient = async (ingredientData) => {
+  let error;
+
+  let name = ingredientData.name;
+
+  // Check to see if values are empty, and if so, convert them to empty strings
+  name = !isEmpty(name) ? name : '';
+
+  // Check for valid name
+  if (isEmpty(name)) {
+    error = 'Please enter a name.';
+  }
+
+  if (!isEmpty(error)) {
+    return {
+      authResponseType: REQUEST_FAIL,
+      authResponsePayload: error,
+    };
+  } else {
+    try {
+      const token = cookies.get('user');
+      const response = await axios.put('/api/ingredients', ingredientData, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      if (response.status === 200) {
+        return {
+          authResponseType: REQUEST_SUCCESS,
+          authResponsePayload: response.data,
+        };
+      } else {
+        return {
+          authResponseType: REQUEST_FAIL,
+          authResponsePayload: response.data,
+        };
+      }
+    } catch (err) {
+      return {
+        authResponseType: REQUEST_FAIL,
+        authResponsePayload: isEmpty(err.response.data)
+          ? 'An error has occurred. Please try again.'
+          : err.response.data,
+      };
+    }
+  }
+};
+
+// Delete ingredient
+export const deleteIngredient = async (ingredientId) => {
+  let error;
+
+  // Check to see if values are empty, and if so, convert them to empty strings
+  ingredientId = !isEmpty(ingredientId) ? ingredientId : '';
+
+  // Check for valid ingredient ID
+  if (isEmpty(ingredientId)) {
+    error = 'An error has occurred. Please try again.';
+  }
+
+  if (!isEmpty(error)) {
+    return {
+      authResponseType: REQUEST_FAIL,
+      authResponsePayload: error,
+    };
+  } else {
+    try {
+      const token = cookies.get('user');
+      const response = await axios.delete('/api/ingredients', {
+        headers: {
+          Authorization: token,
+        },
+        data: {
+          id: ingredientId,
+        },
+      });
+
+      if (response.status === 200) {
         return {
           authResponseType: REQUEST_SUCCESS,
           authResponsePayload: response.data,

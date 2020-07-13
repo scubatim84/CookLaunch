@@ -1,28 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Redirect} from 'react-router-dom';
-import {registerUser, loginUser} from '../../actions/authActions';
 import isEmpty from 'is-empty';
+import FormSubmitMessage from '../FormSubmitMessage';
+import {registerUser, loginUser} from '../../actions/authActions';
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-
 import {
   Button,
   Card,
   Container,
-  CssBaseline,
   Grid,
   Link,
   TextField,
   Typography,
 } from '@material-ui/core';
 
-import FormSubmitMessage from '../FormSubmitMessage';
-
 function RegisterForm(props) {
   const classes = useStylesForm(themeMain);
 
-  const [isLoggedin, setLoggedIn] = useState(props.isLoggedin);
   const [newUser, setNewUser] = useState({
     firstName: '',
     lastName: '',
@@ -33,10 +29,6 @@ function RegisterForm(props) {
   const [error, setError] = useState({
     errorMessage: '',
   });
-
-  useEffect(() => {
-    setLoggedIn(props.isLoggedIn);
-  }, [props.isLoggedIn]);
 
   const handleChange = async (e) => {
     const {name, value} = e.target;
@@ -52,47 +44,32 @@ function RegisterForm(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await registerUser(newUser);
+    const registerResponse = await registerUser(newUser);
 
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      const requestResponse = await loginUser(newUser);
+    if (registerResponse.authResponseType === REQUEST_SUCCESS) {
+      const loginResponse = await loginUser(newUser);
 
-      if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-        // If login is successful after registration, clear registration form
-        setNewUser({
-          firstName: '',
-          lastName: '',
-          email: '',
-          password: '',
-          password2: '',
-        });
-
-        // If login is successful after registration, clear old errors
-        setError({
-          errorMessage: '',
-        });
-
-        // Set user as logged in
+      if (loginResponse.authResponseType === REQUEST_SUCCESS) {
+        // If login is successful after registration, set user as logged in
         props.handleLoggedIn(true);
       } else {
         setError({
-          errorMessage: requestResponse.authResponsePayload,
+          errorMessage: loginResponse.authResponsePayload,
         });
       }
     } else {
       setError({
-        errorMessage: requestResponse.authResponsePayload,
+        errorMessage: registerResponse.authResponsePayload,
       });
     }
   };
 
-  return isLoggedin ? (
+  return props.isLoggedIn ? (
     <Redirect to='/dashboard' />
   ) : (
     <Container component='main' maxWidth='xs'>
       <Card>
-        <CssBaseline />
-        <div className={classes.paper}>
+        <Grid className={classes.paper}>
           <Typography component='h1' variant='h5'>
             Start The Oven
           </Typography>
@@ -105,10 +82,8 @@ function RegisterForm(props) {
                   variant='outlined'
                   required
                   fullWidth
-                  id='firstName'
                   label='First Name'
                   name='firstName'
-                  autoComplete='fname'
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -118,10 +93,8 @@ function RegisterForm(props) {
                   variant='outlined'
                   required
                   fullWidth
-                  id='lastName'
                   label='Last Name'
                   name='lastName'
-                  autoComplete='lname'
                 />
               </Grid>
               <Grid item xs={12}>
@@ -131,10 +104,9 @@ function RegisterForm(props) {
                   variant='outlined'
                   required
                   fullWidth
-                  id='email'
                   label='Email Address'
+                  type='email'
                   name='email'
-                  autoComplete='email'
                 />
               </Grid>
               <Grid item xs={12}>
@@ -144,11 +116,9 @@ function RegisterForm(props) {
                   variant='outlined'
                   required
                   fullWidth
-                  name='password'
                   label='Password'
                   type='password'
-                  id='password'
-                  autoComplete='current-password'
+                  name='password'
                 />
               </Grid>
               <Grid item xs={12}>
@@ -158,11 +128,9 @@ function RegisterForm(props) {
                   variant='outlined'
                   required
                   fullWidth
-                  name='password2'
                   label='Confirm password'
                   type='password'
-                  id='password2'
-                  autoComplete='confirm-password'
+                  name='password2'
                 />
               </Grid>
               <Grid item xs={12}>
@@ -191,7 +159,7 @@ function RegisterForm(props) {
               )}
             </Grid>
           </form>
-        </div>
+        </Grid>
       </Card>
     </Container>
   );
