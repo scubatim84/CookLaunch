@@ -1,6 +1,6 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
-import Ingredients from './Ingredients';
+import Ingredients from './Ingredients/Ingredients';
 import {Grid} from '@material-ui/core';
 
 function Dashboard(props) {

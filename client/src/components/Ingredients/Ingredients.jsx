@@ -2,27 +2,26 @@ import React, {useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import _ from 'lodash';
-import FormSubmitMessage from './FormSubmitMessage';
-import {REQUEST_SUCCESS} from '../actions/types';
-import {addIngredientToDatabase} from '../actions/ingredientActions';
-import {useStylesForm} from '../Styles';
-import {themeMain} from '../Theme';
+import FormSubmitMessage from '../FormSubmitMessage';
+import {REQUEST_SUCCESS} from '../../actions/types';
+import {addIngredient, deleteIngredient} from '../../actions/ingredientActions';
+import {useStylesForm} from '../../Styles';
+import {themeMain} from '../../Theme';
 import {
   Button,
   Card,
   Container,
   Grid,
   List,
-  ListItem,
-  ListItemText,
   TextField,
   Typography,
 } from '@material-ui/core';
+import IngredientItem from './IngredientItem';
 
 function Ingredients(props) {
   const classes = useStylesForm(themeMain);
 
-  const [addIngredient, setAddIngredient] = useState({
+  const [ingredient, setIngredient] = useState({
     name: '',
     createdBy: '',
   });
@@ -31,7 +30,7 @@ function Ingredients(props) {
   });
 
   useEffect(() => {
-    setAddIngredient((prevValue) => {
+    setIngredient((prevValue) => {
       return {
         ...prevValue,
         createdBy: props.id,
@@ -39,20 +38,10 @@ function Ingredients(props) {
     });
   }, [props.id]);
 
-  const ingredientList = props.ingredients.map((ingredient, index) => {
-    const formatName = _.startCase(_.toLower(ingredient.name));
-
-    return (
-      <ListItem dense={true} alignItems='flex-start' key={index} id={index}>
-        <ListItemText primary={formatName} />
-      </ListItem>
-    );
-  });
-
   const handleChange = async (e) => {
     const {name, value} = e.target;
 
-    setAddIngredient((prevValue) => {
+    setIngredient((prevValue) => {
       return {
         ...prevValue,
         [name]: value,
@@ -60,13 +49,20 @@ function Ingredients(props) {
     });
   };
 
+  const handleDelete = async (ingredientId) => {
+    await deleteIngredient(ingredientId);
+
+    // Update ingredient list to re-render ingredients
+    await props.getIngredientData();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await addIngredientToDatabase(addIngredient);
+    const requestResponse = await addIngredient(ingredient);
 
     if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      // If adding ingredient is successful, update ingredient list
+      // If adding ingredient is successful, re-render ingredient list
       props.getIngredientData();
     } else {
       setError({
@@ -84,13 +80,29 @@ function Ingredients(props) {
           <Typography component='h1' variant='h5'>
             Ingredients For Recipes
           </Typography>
-          <List className={classes.list}>{ingredientList}</List>
+          <List className={classes.list}>
+            {props.ingredients.map((ingredient) => {
+              const formatName = _.startCase(_.toLower(ingredient.name));
+
+              return (
+                <IngredientItem
+                  key={ingredient.name}
+                  createdBy={ingredient.createdBy}
+                  userId={props.id}
+                  id={ingredient._id}
+                  name={formatName}
+                  getIngredientData={props.getIngredientData}
+                  handleDelete={handleDelete}
+                />
+              );
+            })}
+          </List>
           <form className={classes.form} noValidate>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
-                  value={addIngredient.name}
+                  value={ingredient.name}
                   variant='outlined'
                   required
                   fullWidth
