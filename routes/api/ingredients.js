@@ -57,14 +57,12 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @route GET api/ingredients/:name
-// @desc Get one ingredient by name
+// @route GET api/ingredients/:id
+// @desc Get one ingredient by id
 // @access Private
-router.get('/:name', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const ingredientName = _.lowerCase(req.params.name);
-
-    const foundIngredient = await Ingredient.findOne({name: ingredientName});
+    const foundIngredient = await Ingredient.findOne({_id: req.params.id});
 
     res.status(200).json(foundIngredient);
   } catch (err) {
@@ -72,18 +70,18 @@ router.get('/:name', async (req, res) => {
   }
 });
 
-// @route PUT api/ingredients/:name
-// @desc Update one ingredient by name
+// @route PUT api/ingredients/:id
+// @desc Update one ingredient by id
 // @access Private
-router.put('/', async (req, res) => {
+router.put('/:id', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
-  // Once user is found, delete ingredient if created by user
+  // Once user is found, update ingredient if created by user
   if (foundUser) {
     try {
       const foundIngredient = await Ingredient.findOne({
-        _id: req.body.id,
+        _id: req.params.id,
         createdBy: foundUser._id,
       });
 
@@ -93,19 +91,19 @@ router.put('/', async (req, res) => {
 
       await foundIngredient.save();
 
-      res.status(200).json(foundIngredient);
+      res.status(204).send(null);
     } catch (err) {
-      res.status(204).json(err);
+      res.status(400).json(err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(400).send('No user found in database.');
   }
 });
 
-// @route DELETE api/ingredients
-// @desc Delete ingredient
+// @route DELETE api/ingredients/:id
+// @desc Delete ingredient by id
 // @access Private
-router.delete('/', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
@@ -113,17 +111,17 @@ router.delete('/', async (req, res) => {
   if (foundUser) {
     try {
       const deletedIngredient = await Ingredient.deleteOne({
-        _id: req.body.id,
+        _id: req.params.id,
         createdBy: foundUser._id,
       });
 
       if (deletedIngredient.deletedCount === 1) {
-        res.status(200).json('success');
+        res.status(204).send(null);
       } else {
         res.status(400).json('fail');
       }
     } catch (err) {
-      res.status(204).json(err);
+      res.status(400).json(err);
     }
   } else {
     res.status(404).send('No user found in database.');
