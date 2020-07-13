@@ -57,7 +57,7 @@ router.post('/register', async (req, res) => {
     try {
       res.status(201).json(newUser);
     } catch (err) {
-      console.log(err);
+      res.status(400).json(err);
     }
   }
 });
@@ -107,10 +107,7 @@ router.post('/login', async (req, res) => {
         expiresIn: 1209600, // 14 days in seconds
       },
       (err, jwtToken) => {
-        res.status(200).json({
-          success: true,
-          token: 'Bearer ' + jwtToken,
-        });
+        res.status(200).json('Bearer ' + jwtToken);
       }
     );
   } else {

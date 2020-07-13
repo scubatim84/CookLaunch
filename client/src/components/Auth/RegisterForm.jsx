@@ -3,7 +3,6 @@ import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {registerUser, loginUser} from '../../actions/authActions';
-import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
@@ -46,20 +45,20 @@ function RegisterForm(props) {
 
     const registerResponse = await registerUser(newUser);
 
-    if (registerResponse.authResponseType === REQUEST_SUCCESS) {
+    if (registerResponse.status === 201) {
       const loginResponse = await loginUser(newUser);
 
-      if (loginResponse.authResponseType === REQUEST_SUCCESS) {
+      if (loginResponse.status === 200) {
         // If login is successful after registration, set user as logged in
         props.handleLoggedIn(true);
       } else {
         setError({
-          errorMessage: loginResponse.authResponsePayload,
+          errorMessage: loginResponse.data,
         });
       }
     } else {
       setError({
-        errorMessage: registerResponse.authResponsePayload,
+        errorMessage: registerResponse.data,
       });
     }
   };
