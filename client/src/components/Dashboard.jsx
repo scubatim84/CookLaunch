@@ -2,6 +2,7 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import Ingredients from './Ingredients/Ingredients';
 import {Grid} from '@material-ui/core';
+import RecipeAdd from './Recipes/RecipeAdd';
 
 function Dashboard(props) {
   return !props.isLoggedIn ? (
@@ -20,6 +21,9 @@ function Dashboard(props) {
           handleLoggedIn={props.handleLoggedIn}
           isLoggedIn={props.isLoggedIn}
         />
+      </Grid>
+      <Grid item xs={12} sm={8}>
+        <RecipeAdd ingredients={props.ingredients} id={props.id} />
       </Grid>
     </Grid>
   );
