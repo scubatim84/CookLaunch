@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {ingredientQuantityTypes, REQUEST_SUCCESS} from '../../actions/types';
+import {ingredientQuantityTypes} from '../../actions/types';
 import {updateIngredientInPantry} from '../../actions/pantryActions';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
@@ -77,27 +77,12 @@ function PantryItem(props) {
 
     const requestResponse = await updateIngredientInPantry(editIngredient);
 
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      // If edit request is successful, set ingredient data back to props
-      setEditIngredient({
-        id: props.id,
-        name: props.name,
-        quantity: props.quantity,
-        quantityType: props.quantityType,
-      });
-
-      // If edit request is successful, clear old errors from state
-      setError({
-        errorMessage: '',
-      });
-
-      // If edit request is successful, set edit mode back to false
-      setEditMode(false);
+    if (requestResponse.status === 204) {
       // Update user payload to re-render pantry
       await props.getUserPayload();
     } else {
       setError({
-        errorMessage: requestResponse.authResponsePayload,
+        errorMessage: requestResponse.data,
       });
     }
   };

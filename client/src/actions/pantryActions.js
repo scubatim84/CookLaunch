@@ -1,36 +1,7 @@
 import axios from 'axios';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
-import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
-
-// Get pantry from back end
-export const getPantry = async () => {
-  try {
-    const token = cookies.get('user');
-    const response = await axios.get('/api/pantry', {
-      headers: {
-        Authorization: token,
-      },
-    });
-
-    if (response.status === 200) {
-      return {
-        authResponseType: REQUEST_SUCCESS,
-        authResponsePayload: response.data.payload,
-      };
-    } else {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: response.data.message,
-      };
-    }
-  } catch (err) {
-    return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: err,
-    };
-  }
-};
+import {REQUEST_FAIL} from './types';
 
 // Add ingredient to pantry
 export const addIngredientToPantry = async (ingredientData) => {
@@ -74,24 +45,9 @@ export const addIngredientToPantry = async (ingredientData) => {
         },
       });
 
-      if (response.status === 201) {
-        return {
-          authResponseType: REQUEST_SUCCESS,
-          authResponsePayload: response.data,
-        };
-      } else {
-        return {
-          authResponseType: REQUEST_FAIL,
-          authResponsePayload: response.data,
-        };
-      }
+      return response;
     } catch (err) {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: isEmpty(err.response.data)
-          ? 'An error has occurred. Please try again.'
-          : err.response.data,
-      };
+      return err.response.data;
     }
   }
 };
@@ -135,23 +91,9 @@ export const updateIngredientInPantry = async (ingredientData) => {
         }
       );
 
-      if (response.status === 204) {
-        return {
-          authResponseType: REQUEST_SUCCESS,
-        };
-      } else {
-        return {
-          authResponseType: REQUEST_FAIL,
-          authResponsePayload: response.data,
-        };
-      }
+      return response;
     } catch (err) {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: isEmpty(err.response.data)
-          ? 'An error has occurred. Please try again.'
-          : err.response.data,
-      };
+      return err.response.data;
     }
   }
 };
@@ -182,23 +124,9 @@ export const deleteIngredientFromPantry = async (ingredientId) => {
         },
       });
 
-      if (response.status === 204) {
-        return {
-          authResponseType: REQUEST_SUCCESS,
-        };
-      } else {
-        return {
-          authResponseType: REQUEST_FAIL,
-          authResponsePayload: response.data,
-        };
-      }
+      return response;
     } catch (err) {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: isEmpty(err.response.data)
-          ? 'An error has occurred. Please try again.'
-          : err.response.data,
-      };
+      return err.response.data;
     }
   }
 };

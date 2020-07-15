@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import isEmpty from 'is-empty';
-import {ingredientQuantityTypes, REQUEST_SUCCESS} from '../../actions/types';
+import {ingredientQuantityTypes} from '../../actions/types';
 import {addIngredientToPantry} from '../../actions/pantryActions';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {useStylesForm} from '../../Styles';
@@ -58,7 +58,7 @@ function PantryAdd(props) {
 
     const requestResponse = await addIngredientToPantry(addIngredient);
 
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+    if (requestResponse.status === 201) {
       // If adding ingredient is successful, clear form
       setAddIngredient({
         name: '',
@@ -75,7 +75,7 @@ function PantryAdd(props) {
       await props.getUserPayload();
     } else {
       setError({
-        errorMessage: requestResponse.authResponsePayload,
+        errorMessage: requestResponse.data,
       });
     }
   };
