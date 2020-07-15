@@ -1,15 +1,27 @@
 import React, {useEffect, useState} from 'react';
-import {Grid, ListItem, ListItemText, TextField} from '@material-ui/core';
-import {Cancel, Delete, Done, Edit} from '@material-ui/icons';
+import {ingredientQuantityTypes} from '../../actions/types';
+import {useStylesForm} from '../../Styles';
+import {themeMain} from '../../Theme';
+import {
+  FormControl,
+  Grid,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@material-ui/core';
+import {Cancel, Edit, Delete, Done} from '@material-ui/icons';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {REQUEST_SUCCESS} from '../../actions/types';
-import {updateIngredient} from '../../actions/ingredientActions';
 
 function IngredientItem(props) {
+  const classes = useStylesForm(themeMain);
+
   const [editIngredient, setEditIngredient] = useState({
     id: props.id,
     name: props.name,
+    quantity: props.quantity,
+    quantityType: props.quantityType,
   });
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState({
@@ -20,11 +32,19 @@ function IngredientItem(props) {
     setEditIngredient({
       id: props.id,
       name: props.name,
+      quantity: props.quantity,
+      quantityType: props.quantityType,
     });
   }, [props]);
 
   const handleDelete = async () => {
-    await props.handleDelete(props.id);
+    const response = await props.handleDelete(props.id);
+
+    if (!isEmpty(response)) {
+      setError({
+        errorMessage: response,
+      });
+    }
   };
 
   const handleEdit = async () => {
@@ -46,38 +66,70 @@ function IngredientItem(props) {
     });
   };
 
+  const handleSelect = async (e) => {
+    const value = e.target.value;
+
+    setEditIngredient((prevValue) => {
+      return {
+        ...prevValue,
+        quantityType: value,
+      };
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await updateIngredient(editIngredient);
+    const response = await props.handleUpdateIngredient(editIngredient);
 
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      // If updating ingredient is successful, re-render ingredient list
-      await props.getIngredientData();
-    } else {
+    if (!isEmpty(response)) {
       setError({
-        errorMessage: requestResponse.authResponsePayload,
+        errorMessage: response,
       });
     }
   };
 
   return editMode ? (
-    <Grid container>
-      <Grid item xs={9}>
+    <Grid container spacing={3} className={classes.root}>
+      <Grid item xs={12} sm={5}>
+        <Typography>{props.name}</Typography>
+      </Grid>
+      <Grid item xs={12} sm={2}>
         <TextField
           onChange={handleChange}
           variant='outlined'
           required
-          placeholder={editIngredient.name}
-          value={editIngredient.name}
-          id='name'
-          name='name'
+          placeholder={editIngredient.quantity.toString()}
+          value={editIngredient.quantity}
+          id='quantity'
+          name='quantity'
+          autoComplete='quantity'
         />
       </Grid>
-      <Grid item xs={1}>
+      <Grid item xs={12} sm={3}>
+        <FormControl>
+          <Select
+            labelId='quantityType'
+            id='quantityType'
+            required
+            placeholder={editIngredient.quantityType}
+            value={editIngredient.quantityType}
+            onChange={handleSelect}
+          >
+            {ingredientQuantityTypes.map((quantityType, index) => {
+              return (
+                <MenuItem key={index} value={quantityType}>
+                  {quantityType}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} sm={1}>
         <Done onClick={handleSubmit} className='icon' />
       </Grid>
-      <Grid item xs={1}>
+      <Grid item xs={12} sm={1}>
         <Cancel onClick={handleCancel} className='icon' />
       </Grid>
       <Grid item xs={12}>
@@ -87,24 +139,22 @@ function IngredientItem(props) {
       </Grid>
     </Grid>
   ) : (
-    <Grid container>
-      <Grid item xs={9}>
-        <ListItem dense={true} alignItems='flex-start'>
-          <ListItemText primary={props.name} />
-        </ListItem>
+    <Grid container className={classes.root}>
+      <Grid item xs={12} sm={6}>
+        <Typography>{props.name}</Typography>
       </Grid>
-      {props.userId === props.createdBy && (
-        <Grid item xs={2}>
-          <Grid container>
-            <Grid item xs={6}>
-              <Edit onClick={handleEdit} className='icon' />
-            </Grid>
-            <Grid item xs={6}>
-              <Delete onClick={handleDelete} className='icon' />
-            </Grid>
-          </Grid>
-        </Grid>
-      )}
+      <Grid item xs={12} sm={1}>
+        <Typography>{props.quantity}</Typography>
+      </Grid>
+      <Grid item xs={12} sm={3}>
+        <Typography>{props.quantityType}</Typography>
+      </Grid>
+      <Grid item xs={12} sm={1}>
+        <Edit onClick={handleEdit} className='icon' />
+      </Grid>
+      <Grid item xs={12} sm={1}>
+        <Delete onClick={handleDelete} className='icon' />
+      </Grid>
     </Grid>
   );
 }

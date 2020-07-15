@@ -16,9 +16,9 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import IngredientItem from './IngredientItem';
+import IngredientNameItem from './IngredientNameItem';
 
-function Ingredients(props) {
+function IngredientNames(props) {
   const classes = useStylesForm(themeMain);
 
   const [ingredient, setIngredient] = useState({
@@ -85,7 +85,7 @@ function Ingredients(props) {
               const formatName = _.startCase(_.toLower(ingredient.name));
 
               return (
-                <IngredientItem
+                <IngredientNameItem
                   key={ingredient.name}
                   createdBy={ingredient.createdBy}
                   userId={props.id}
@@ -137,4 +137,4 @@ function Ingredients(props) {
   );
 }
 
-export default Ingredients;
+export default IngredientNames;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
-import Ingredients from './Ingredients/Ingredients';
+import IngredientNames from './Ingredients/IngredientNames';
 import {Grid} from '@material-ui/core';
 import RecipeAdd from './Recipes/RecipeAdd';
 
@@ -10,7 +10,7 @@ function Dashboard(props) {
   ) : (
     <Grid container>
       <Grid item xs={12} sm={4}>
-        <Ingredients
+        <IngredientNames
           key={props.ingredients}
           getIngredientData={props.getIngredientData}
           ingredients={props.ingredients}

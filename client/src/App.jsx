@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
 import Dashboard from './components/Dashboard';
-import Pantry from './components/Pantry/Pantry';
+import Pantry from './components/Pantry';
 import Profile from './components/Profile/Profile';
 import Landing from './components/Landing';
 import Login from './components/Login';

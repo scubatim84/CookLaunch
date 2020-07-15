@@ -1,21 +1,19 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
-import {deleteIngredientFromPantry} from '../../actions/pantryActions';
-import PantryAdd from './PantryAdd';
-import PantryItem from './PantryItem';
-import {useStylesForm} from '../../Styles';
-import {themeMain} from '../../Theme';
+import {
+  addIngredientToPantry,
+  deleteIngredientFromPantry,
+  updateIngredientInPantry,
+} from '../actions/pantryActions';
+import IngredientAdd from './Ingredients/IngredientAdd';
+import IngredientItem from './Ingredients/IngredientItem';
+import {useStylesForm} from '../Styles';
+import {themeMain} from '../Theme';
 import {Card, Container, Grid, Typography} from '@material-ui/core';
-import isEmpty from 'is-empty';
-import FormSubmitMessage from '../FormSubmitMessage';
 
 function Pantry(props) {
   const classes = useStylesForm(themeMain);
-
-  const [error, setError] = useState({
-    errorMessage: '',
-  });
 
   const handleDelete = async (ingredientId) => {
     const requestResponse = await deleteIngredientFromPantry(ingredientId);
@@ -24,9 +22,34 @@ function Pantry(props) {
       // Update user payload to re-render pantry
       await props.getUserPayload();
     } else {
-      setError({
-        errorMessage: requestResponse.data,
-      });
+      // If request failed, return error message to child component
+      return requestResponse.data;
+    }
+  };
+
+  const handleUpdateIngredient = async (updateIngredient) => {
+    const requestResponse = await updateIngredientInPantry(updateIngredient);
+
+    if (requestResponse.status === 204) {
+      // Update user payload to re-render pantry
+      await props.getUserPayload();
+    } else {
+      // If request failed, return error message to child component
+      return requestResponse.data;
+    }
+  };
+
+  const handleAddIngredient = async (addIngredient) => {
+    const requestResponse = await addIngredientToPantry(addIngredient);
+
+    console.log(requestResponse);
+
+    if (requestResponse.status === 201) {
+      // Update user payload to re-render pantry
+      await props.getUserPayload();
+    } else {
+      // If request failed, return error message to child component
+      return requestResponse.data;
     }
   };
 
@@ -50,31 +73,33 @@ function Pantry(props) {
                 );
 
                 return (
-                  <PantryItem
+                  <IngredientItem
                     key={props.pantry[index].dateLastChanged}
                     id={ingredient._id}
                     name={formatName}
                     quantity={ingredient.quantity}
                     quantityType={formatQuantityType}
                     handleDelete={handleDelete}
-                    getUserPayload={props.getUserPayload}
+                    handleUpdateIngredient={handleUpdateIngredient}
                   />
                 );
               })}
             </Grid>
           </Grid>
+        </div>
+      </Card>
+      <Card className={classes.root}>
+        <div className={classes.paper}>
           <Grid item xs={12}>
-            {!isEmpty(error.errorMessage) && (
-              <FormSubmitMessage submitMessage={error.errorMessage} />
-            )}
+            <IngredientAdd
+              key={props.pantry}
+              name='Pantry'
+              ingredients={props.ingredients}
+              handleAddIngredient={handleAddIngredient}
+            />
           </Grid>
         </div>
       </Card>
-      <PantryAdd
-        key={props.pantry}
-        ingredients={props.ingredients}
-        getUserPayload={props.getUserPayload}
-      />
     </Container>
   );
 }

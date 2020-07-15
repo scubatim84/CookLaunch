@@ -55,8 +55,7 @@ export const addIngredient = async (ingredientData) => {
 
   if (!isEmpty(error)) {
     return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: error,
+      data: error,
     };
   } else {
     try {
@@ -105,8 +104,7 @@ export const updateIngredient = async (ingredientData) => {
 
   if (!isEmpty(error)) {
     return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: error,
+      data: error,
     };
   } else {
     try {
@@ -156,8 +154,7 @@ export const deleteIngredient = async (ingredientId) => {
 
   if (!isEmpty(error)) {
     return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: error,
+      data: error,
     };
   } else {
     try {
