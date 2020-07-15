@@ -3,9 +3,11 @@ import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {Grid, List, Typography} from '@material-ui/core';
+import {Grid, List, TextField, Typography} from '@material-ui/core';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
 import _ from 'lodash';
+import Card from '@material-ui/core/Card';
+import IngredientItem from '../Ingredients/IngredientItem';
 
 function RecipeAdd(props) {
   const classes = useStylesForm(themeMain);
@@ -18,6 +20,41 @@ function RecipeAdd(props) {
     errorMessage: '',
   });
 
+  const handleDelete = async (ingredientId) => {
+    setAddRecipe((prevValue) => {
+      return {
+        ...prevValue,
+        ingredients: addRecipe.ingredients.filter(
+          (ingredient) => ingredient.id !== ingredientId
+        ),
+      };
+    });
+  };
+
+  const handleUpdateIngredient = async (updateIngredient) => {
+    const ingredientsNotUpdated = addRecipe.ingredients.filter(
+      (ingredient) => ingredient.id !== updateIngredient.id
+    );
+
+    setAddRecipe((prevValue) => {
+      return {
+        ...prevValue,
+        ingredients: [ingredientsNotUpdated, updateIngredient],
+      };
+    });
+  };
+
+  const handleChange = async (e) => {
+    const {name, value} = e.target;
+
+    setAddRecipe((prevValue) => {
+      return {
+        ...prevValue,
+        [name]: value,
+      };
+    });
+  };
+
   const addIngredientToRecipe = async (ingredient) => {
     setAddRecipe((prevValue) => {
       return {
@@ -28,25 +65,57 @@ function RecipeAdd(props) {
   };
 
   return (
-    <div className={classes.root}>
+    <Card className={classes.root}>
       <div className={classes.paper}>
         <form noValidate>
-          <Grid container spacing={3} className={classes.root}>
+          <Grid container spacing={2}>
             <Grid item xs={12} align='center'>
               <Typography component='h1' variant='h5'>
-                Add Recipe
+                New Recipe
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={4} align='center'>
+              <Typography component='h1' variant='h5'>
+                Name
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={4} align='center'>
+              <TextField
+                onChange={handleChange}
+                value={addRecipe.name}
+                variant='outlined'
+                required
+                fullWidth
+                name='name'
+              />
+            </Grid>
+            <Grid item xs={12} align='center'>
+              <Typography component='h1' variant='h5'>
+                Recipe Ingredients
               </Typography>
             </Grid>
             <Grid item xs={12}>
               <List className={classes.list}>
-                {addRecipe.ingredients.map((ingredient) => {
+                {addRecipe.ingredients.map((ingredient, index) => {
                   const formatName = _.startCase(_.toLower(ingredient.name));
+                  const formatQuantityType = _.startCase(
+                    _.toLower(ingredient.quantityType)
+                  );
 
-                  return <Typography>{formatName}</Typography>;
+                  return (
+                    <IngredientItem
+                      key={addRecipe.ingredients[index].name}
+                      id={ingredient.id}
+                      name={formatName}
+                      quantity={ingredient.quantity}
+                      quantityType={formatQuantityType}
+                      handleDelete={handleDelete}
+                      handleUpdateIngredient={handleUpdateIngredient}
+                    />
+                  );
                 })}
               </List>
             </Grid>
-
             <Grid item xs={12}>
               <RecipeIngredientAdd
                 key={addRecipe.ingredients}
@@ -55,15 +124,15 @@ function RecipeAdd(props) {
                 recipeIngredients={addRecipe.ingredients}
               />
             </Grid>
-            <Grid item xs={12}>
-              {!isEmpty(error.errorMessage) && (
-                <FormSubmitMessage submitMessage={error.errorMessage} />
-              )}
-            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            {!isEmpty(error.errorMessage) && (
+              <FormSubmitMessage submitMessage={error.errorMessage} />
+            )}
           </Grid>
         </form>
       </div>
-    </div>
+    </Card>
   );
 }
 

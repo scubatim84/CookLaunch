@@ -22,7 +22,7 @@ function Dashboard(props) {
           isLoggedIn={props.isLoggedIn}
         />
       </Grid>
-      <Grid item xs={12} sm={8}>
+      <Grid item xs={12} sm={7}>
         <RecipeAdd ingredients={props.ingredients} id={props.id} />
       </Grid>
     </Grid>

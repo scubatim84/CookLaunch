@@ -11,6 +11,7 @@ function RecipeIngredientAdd(props) {
   const classes = useStylesForm(themeMain);
 
   const [addIngredient, setAddIngredient] = useState({
+    id: '',
     name: '',
     quantity: '',
     quantityType: '',
@@ -24,6 +25,7 @@ function RecipeIngredientAdd(props) {
       setAddIngredient((prevValue) => {
         return {
           ...prevValue,
+          id: ingredient._id,
           name: ingredient.name,
         };
       });

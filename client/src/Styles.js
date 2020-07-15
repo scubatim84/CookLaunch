@@ -36,7 +36,7 @@ export const useStylesForm = makeStyles((theme) => ({
   root: {
     width: '100%',
     backgroundColor: theme.palette.background.paper,
-    margin: theme.spacing(2),
+    margin: theme.spacing(2, 2, 2, 2),
   },
   list: {
     width: '100%',
