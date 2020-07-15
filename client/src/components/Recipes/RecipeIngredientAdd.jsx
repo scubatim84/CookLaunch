@@ -54,9 +54,7 @@ function RecipeIngredientAdd(props) {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     try {
       props.addIngredientToRecipe(addIngredient);
     } catch (err) {
@@ -68,79 +66,77 @@ function RecipeIngredientAdd(props) {
 
   return (
     <div className={classes.paper}>
-      <form noValidate>
-        <Grid container spacing={3} className={classes.root}>
-          <Grid item xs={12} align='center'>
-            <Typography component='h1' variant='h5'>
-              Add Ingredient To Recipe
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={5}>
-            <Autocomplete
-              id='ingredients'
-              options={props.ingredients}
-              onChange={handleAutocompleteName}
-              getOptionLabel={(option) => option.name}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  required
-                  label='Ingredient Name'
-                  variant='outlined'
-                  id='name'
-                  name='name'
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12} sm={2}>
-            <TextField
-              onChange={handleChange}
-              variant='outlined'
-              required
-              value={addIngredient.quantity}
-              label='Quantity'
-              id='quantity'
-              name='quantity'
-            />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <Autocomplete
-              id='ingredientQuantityTypes'
-              options={ingredientQuantityTypes}
-              onChange={handleAutocompleteQuantityType}
-              getOptionLabel={(option) => option}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  required
-                  label='Quantity Type'
-                  variant='outlined'
-                  id='quantityType'
-                  name='quantityType'
-                />
-              )}
-            />
-          </Grid>
-          <Grid item xs={12} sm={2}>
-            <Button
-              onClick={handleSubmit}
-              fullWidth
-              type='submit'
-              variant='contained'
-              color='primary'
-              className={classes.submit}
-            >
-              Add
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            {!isEmpty(error.errorMessage) && (
-              <FormSubmitMessage submitMessage={error.errorMessage} />
-            )}
-          </Grid>
+      <Grid container spacing={3} className={classes.root}>
+        <Grid item xs={12} align='center'>
+          <Typography component='h1' variant='h5'>
+            Add Ingredient To Recipe
+          </Typography>
         </Grid>
-      </form>
+        <Grid item xs={12} sm={5}>
+          <Autocomplete
+            id='ingredients'
+            options={props.ingredients}
+            onChange={handleAutocompleteName}
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                required
+                label='Ingredient Name'
+                variant='outlined'
+                id='name'
+                name='name'
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <TextField
+            onChange={handleChange}
+            variant='outlined'
+            required
+            value={addIngredient.quantity}
+            label='Quantity'
+            id='quantity'
+            name='quantity'
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Autocomplete
+            id='ingredientQuantityTypes'
+            options={ingredientQuantityTypes}
+            onChange={handleAutocompleteQuantityType}
+            getOptionLabel={(option) => option}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                required
+                label='Quantity Type'
+                variant='outlined'
+                id='quantityType'
+                name='quantityType'
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <Button
+            onClick={handleSubmit}
+            fullWidth
+            type='submit'
+            variant='contained'
+            color='primary'
+            className={classes.submit}
+          >
+            Add
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          {!isEmpty(error.errorMessage) && (
+            <FormSubmitMessage submitMessage={error.errorMessage} />
+          )}
+        </Grid>
+      </Grid>
     </div>
   );
 }

@@ -42,8 +42,6 @@ function Pantry(props) {
   const handleAddIngredient = async (addIngredient) => {
     const requestResponse = await addIngredientToPantry(addIngredient);
 
-    console.log(requestResponse);
-
     if (requestResponse.status === 201) {
       // Update user payload to re-render pantry
       await props.getUserPayload();

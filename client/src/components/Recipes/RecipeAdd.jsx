@@ -32,14 +32,17 @@ function RecipeAdd(props) {
   };
 
   const handleUpdateIngredient = async (updateIngredient) => {
-    const ingredientsNotUpdated = addRecipe.ingredients.filter(
+    // Filter out updated ingredient from list to remove old version
+    const updatedIngredientList = addRecipe.ingredients.filter(
       (ingredient) => ingredient.id !== updateIngredient.id
     );
+    // Push new updated ingredient into updated array
+    updatedIngredientList.push(updateIngredient);
 
     setAddRecipe((prevValue) => {
       return {
         ...prevValue,
-        ingredients: [ingredientsNotUpdated, updateIngredient],
+        ingredients: updatedIngredientList,
       };
     });
   };
@@ -104,7 +107,7 @@ function RecipeAdd(props) {
 
                   return (
                     <IngredientItem
-                      key={addRecipe.ingredients[index].name}
+                      key={ingredient.id + new Date()}
                       id={ingredient.id}
                       name={formatName}
                       quantity={ingredient.quantity}
