@@ -3,16 +3,17 @@ import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {Grid, List, TextField, Typography} from '@material-ui/core';
+import {Button, Grid, List, TextField, Typography} from '@material-ui/core';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
 import _ from 'lodash';
 import Card from '@material-ui/core/Card';
 import IngredientItem from '../Ingredients/IngredientItem';
+import {addRecipe} from '../../actions/recipeActions';
 
 function RecipeAdd(props) {
   const classes = useStylesForm(themeMain);
 
-  const [addRecipe, setAddRecipe] = useState({
+  const [recipe, setRecipe] = useState({
     name: '',
     ingredients: [],
   });
@@ -21,10 +22,10 @@ function RecipeAdd(props) {
   });
 
   const handleDelete = async (ingredientId) => {
-    setAddRecipe((prevValue) => {
+    setRecipe((prevValue) => {
       return {
         ...prevValue,
-        ingredients: addRecipe.ingredients.filter(
+        ingredients: recipe.ingredients.filter(
           (ingredient) => ingredient.id !== ingredientId
         ),
       };
@@ -33,13 +34,13 @@ function RecipeAdd(props) {
 
   const handleUpdateIngredient = async (updateIngredient) => {
     // Filter out updated ingredient from list to remove old version
-    const updatedIngredientList = addRecipe.ingredients.filter(
+    const updatedIngredientList = recipe.ingredients.filter(
       (ingredient) => ingredient.id !== updateIngredient.id
     );
     // Push new updated ingredient into updated array
     updatedIngredientList.push(updateIngredient);
 
-    setAddRecipe((prevValue) => {
+    setRecipe((prevValue) => {
       return {
         ...prevValue,
         ingredients: updatedIngredientList,
@@ -50,7 +51,7 @@ function RecipeAdd(props) {
   const handleChange = async (e) => {
     const {name, value} = e.target;
 
-    setAddRecipe((prevValue) => {
+    setRecipe((prevValue) => {
       return {
         ...prevValue,
         [name]: value,
@@ -59,12 +60,27 @@ function RecipeAdd(props) {
   };
 
   const addIngredientToRecipe = async (ingredient) => {
-    setAddRecipe((prevValue) => {
+    setRecipe((prevValue) => {
       return {
         ...prevValue,
-        ingredients: [...addRecipe.ingredients, ingredient],
+        ingredients: [...recipe.ingredients, ingredient],
       };
     });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const requestResponse = await addRecipe(recipe);
+
+    if (requestResponse.status === 201) {
+      // If updating ingredient is successful, re-render ingredient list
+      await props.getRecipeData();
+    } else {
+      setError({
+        errorMessage: requestResponse.authResponsePayload,
+      });
+    }
   };
 
   return (
@@ -85,7 +101,7 @@ function RecipeAdd(props) {
             <Grid item xs={12} sm={4} align='center'>
               <TextField
                 onChange={handleChange}
-                value={addRecipe.name}
+                value={recipe.name}
                 variant='outlined'
                 required
                 fullWidth
@@ -99,7 +115,7 @@ function RecipeAdd(props) {
             </Grid>
             <Grid item xs={12}>
               <List className={classes.list}>
-                {addRecipe.ingredients.map((ingredient, index) => {
+                {recipe.ingredients.map((ingredient, index) => {
                   const formatName = _.startCase(_.toLower(ingredient.name));
                   const formatQuantityType = _.startCase(
                     _.toLower(ingredient.quantityType)
@@ -121,12 +137,23 @@ function RecipeAdd(props) {
             </Grid>
             <Grid item xs={12}>
               <RecipeIngredientAdd
-                key={addRecipe.ingredients}
+                key={recipe.ingredients}
                 addIngredientToRecipe={addIngredientToRecipe}
                 ingredients={props.ingredients}
-                recipeIngredients={addRecipe.ingredients}
+                recipeIngredients={recipe.ingredients}
               />
             </Grid>
+          </Grid>
+          <Grid item xs={12} align='center'>
+            <Button
+              onClick={handleSubmit}
+              type='submit'
+              variant='contained'
+              color='primary'
+              className={classes.submit}
+            >
+              Add Recipe
+            </Button>
           </Grid>
           <Grid item xs={12}>
             {!isEmpty(error.errorMessage) && (

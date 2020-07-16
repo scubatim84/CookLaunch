@@ -1,34 +1,18 @@
 import axios from 'axios';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
-import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
 
 // Get all recipes from back end created by user
 export const getAllRecipes = async () => {
   try {
     const token = cookies.get('user');
-    const response = await axios.get('/api/recipes/', {
+    return await axios.get('/api/recipes/', {
       headers: {
         Authorization: token,
       },
     });
-
-    if (response.data.message === REQUEST_SUCCESS) {
-      return {
-        authResponseType: REQUEST_SUCCESS,
-        authResponsePayload: response.data.payload,
-      };
-    } else {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: response.data.message,
-      };
-    }
   } catch (err) {
-    return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: err,
-    };
+    return err;
   }
 };
 
@@ -53,37 +37,17 @@ export const addRecipe = async (recipeData) => {
   }
 
   if (!isEmpty(error)) {
-    return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: error,
-    };
+    return error;
   } else {
     try {
       const token = cookies.get('user');
-      const response = await axios.post('/api/recipes/', recipeData, {
+      return await axios.post('/api/recipes/', recipeData, {
         headers: {
           Authorization: token,
         },
       });
-
-      if (response.status === 201) {
-        return {
-          authResponseType: REQUEST_SUCCESS,
-          authResponsePayload: response.data,
-        };
-      } else {
-        return {
-          authResponseType: REQUEST_FAIL,
-          authResponsePayload: response.data,
-        };
-      }
     } catch (err) {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: isEmpty(err.response.data)
-          ? 'An error has occurred. Please try again.'
-          : err.response.data,
-      };
+      return err.response.data;
     }
   }
 };

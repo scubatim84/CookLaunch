@@ -17,6 +17,7 @@ import {useStylesMain} from './Styles';
 import {themeMain} from './Theme';
 import {ThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import {getAllRecipes} from './actions/recipeActions';
 
 function App() {
   const classes = useStylesMain(themeMain);
@@ -33,11 +34,18 @@ function App() {
     pantry: [],
   });
   const [ingredients, setIngredients] = useState({data: []});
+  const [recipes, setRecipes] = useState({data: []});
 
   const getIngredientData = async () => {
     const response = await getIngredients();
 
     setIngredients({data: response.authResponsePayload});
+  };
+
+  const getRecipeData = async () => {
+    const response = await getAllRecipes();
+
+    setRecipes({data: response.data});
   };
 
   const getUserPayload = async () => {
@@ -64,6 +72,7 @@ function App() {
     if (isLoggedIn) {
       getUserPayload();
       getIngredientData();
+      getRecipeData();
     }
   }, [isLoggedIn]);
 
@@ -72,7 +81,9 @@ function App() {
       <Dashboard
         key={isLoggedIn}
         getIngredientData={getIngredientData}
+        getRecipeData={getRecipeData}
         ingredients={ingredients.data}
+        recipes={recipes.data}
         id={user.id}
         email={user.email}
         firstName={user.firstName}

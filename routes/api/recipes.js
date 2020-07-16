@@ -19,15 +19,12 @@ router.get('/', async (req, res) => {
     const recipes = await Recipe.find({createdBy: foundUser._id});
 
     try {
-      res.status(200).send({
-        message: 'success',
-        payload: recipes,
-      });
+      res.status(200).json(recipes);
     } catch (err) {
-      res.status(400).send('An error has occurred. ' + err);
+      res.status(400).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(400).json('No user found in database.');
   }
 });
 
@@ -41,7 +38,7 @@ router.post('/', async (req, res) => {
   // Once user is found, create recipe
   if (foundUser) {
     try {
-      const recipeName = _.lowerCase(req.body.name);
+      const recipeName = req.body.name;
       const recipeIngredients = req.body.ingredients;
 
       const foundRecipe = await Recipe.findOne({

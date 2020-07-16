@@ -23,7 +23,12 @@ function Dashboard(props) {
         />
       </Grid>
       <Grid item xs={12} sm={7}>
-        <RecipeAdd ingredients={props.ingredients} id={props.id} />
+        <RecipeAdd
+          key={props.recipes}
+          getRecipeData={props.getRecipeData}
+          ingredients={props.ingredients}
+          id={props.id}
+        />
       </Grid>
     </Grid>
   );
