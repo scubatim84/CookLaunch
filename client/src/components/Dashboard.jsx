@@ -18,7 +18,11 @@ function Dashboard(props) {
 
         return (
           <Grid item xs={12} sm={4} md={3}>
-            <RecipeCard key={recipe._id + new Date()} name={formatName} />
+            <RecipeCard
+              key={recipe._id + new Date()}
+              id={recipe._id}
+              name={formatName}
+            />
           </Grid>
         );
       })}

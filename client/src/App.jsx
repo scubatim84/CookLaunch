@@ -21,6 +21,7 @@ import {getAllRecipes} from './actions/recipeActions';
 import RecipeAdd from './components/Recipes/RecipeAdd';
 import Grid from '@material-ui/core/Grid';
 import IngredientNames from './components/Ingredients/IngredientNames';
+import RecipeExpanded from './components/Recipes/RecipeExpanded';
 
 function App() {
   const classes = useStylesMain(themeMain);
@@ -97,17 +98,19 @@ function App() {
 
   const renderRecipeAdd = () => {
     return (
-      <Grid container justify='center'>
-        <Grid item xs={12} sm={8}>
-          <RecipeAdd
-            key={recipes.data}
-            getRecipeData={getRecipeData}
-            ingredients={ingredients.data}
-          />
-        </Grid>
-      </Grid>
+      <RecipeAdd
+        key={recipes.data}
+        getRecipeData={getRecipeData}
+        ingredients={ingredients.data}
+        isLoggedIn={isLoggedIn}
+      />
     );
   };
+
+  const renderRecipe = () => {
+    return <RecipeExpanded isLoggedIn={isLoggedIn} />;
+  };
+
   const renderIngredients = () => {
     return (
       <Grid container justify='center'>
@@ -205,6 +208,7 @@ function App() {
           <Route exact path='/dashboard' render={renderDashboard} />
           <Route exact path='/ingredients' render={renderIngredients} />
           <Route exact path='/recipes/add' render={renderRecipeAdd} />
+          <Route exact path='/recipes/:id' render={renderRecipe} />
           <Route exact path='/dashboard/pantry' render={renderPantry} />
           <Route exact path='/forgotpassword' component={ForgotPassword} />
           <Route exact path='/profile' render={renderProfile} />

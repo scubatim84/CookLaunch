@@ -51,3 +51,17 @@ export const addRecipe = async (recipeData) => {
     }
   }
 };
+
+// Get one recipe from back end if created by user
+export const getOneRecipe = async (recipeId) => {
+  try {
+    const token = cookies.get('user');
+    return await axios.get(`/api/recipes/${recipeId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  } catch (err) {
+    return err;
+  }
+};

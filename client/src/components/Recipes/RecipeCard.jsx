@@ -4,6 +4,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  Link,
   Typography,
 } from '@material-ui/core';
 import {useStylesForm} from '../../Styles';
@@ -18,7 +19,13 @@ function RecipeCard(props) {
         <Typography color='textPrimary'>{props.name}</Typography>
       </CardContent>
       <CardActions>
-        <Button size='small'>View Recipe</Button>
+        <Link
+          href={`/recipes/${props.id}`}
+          color='textPrimary'
+          style={{textDecoration: 'none'}}
+        >
+          <Button size='small'>View Recipe</Button>
+        </Link>
       </CardActions>
     </Card>
   );
