@@ -8,9 +8,9 @@ export const RECOVERY_EMAIL_SENT = 'recovery email sent';
 
 // Ingredient quantity types
 export const ingredientQuantityTypes = [
-  'Ounces',
+  'Cups',
   'Each',
   'Grams',
-  'Cups',
   'Liters',
+  'Ounces',
 ];

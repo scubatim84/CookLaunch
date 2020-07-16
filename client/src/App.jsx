@@ -18,6 +18,9 @@ import {themeMain} from './Theme';
 import {ThemeProvider} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {getAllRecipes} from './actions/recipeActions';
+import RecipeAdd from './components/Recipes/RecipeAdd';
+import Grid from '@material-ui/core/Grid';
+import IngredientNames from './components/Ingredients/IngredientNames';
 
 function App() {
   const classes = useStylesMain(themeMain);
@@ -80,10 +83,6 @@ function App() {
     return (
       <Dashboard
         key={isLoggedIn}
-        getIngredientData={getIngredientData}
-        getRecipeData={getRecipeData}
-        ingredients={ingredients.data}
-        recipes={recipes.data}
         id={user.id}
         email={user.email}
         firstName={user.firstName}
@@ -92,6 +91,39 @@ function App() {
         isLoggedIn={isLoggedIn}
         className={classes.root}
       />
+    );
+  };
+
+  const renderRecipeAdd = () => {
+    return (
+      <Grid container justify='center'>
+        <Grid item xs={12} sm={8}>
+          <RecipeAdd
+            key={recipes.data}
+            getRecipeData={getRecipeData}
+            ingredients={ingredients.data}
+          />
+        </Grid>
+      </Grid>
+    );
+  };
+  const renderIngredients = () => {
+    return (
+      <Grid container justify='center'>
+        <Grid item xs={12} sm={6} md={4}>
+          <IngredientNames
+            key={ingredients.data}
+            getIngredientData={getIngredientData}
+            ingredients={ingredients.data}
+            id={user.id}
+            email={user.email}
+            firstName={user.firstName}
+            lastName={user.lastName}
+            handleLoggedIn={handleLoggedIn}
+            isLoggedIn={isLoggedIn}
+          />
+        </Grid>
+      </Grid>
     );
   };
 
@@ -170,6 +202,8 @@ function App() {
           <Route exact path='/' render={renderLanding} />
           <Route exact path='/login' render={renderLogin} />
           <Route exact path='/dashboard' render={renderDashboard} />
+          <Route exact path='/ingredients' render={renderIngredients} />
+          <Route exact path='/recipes/add' render={renderRecipeAdd} />
           <Route exact path='/dashboard/pantry' render={renderPantry} />
           <Route exact path='/forgotpassword' component={ForgotPassword} />
           <Route exact path='/profile' render={renderProfile} />

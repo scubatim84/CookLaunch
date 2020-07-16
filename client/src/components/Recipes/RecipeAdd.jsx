@@ -87,7 +87,7 @@ function RecipeAdd(props) {
     <Card className={classes.root}>
       <div className={classes.paper}>
         <form noValidate>
-          <Grid container spacing={2}>
+          <Grid container>
             <Grid item xs={12} align='center'>
               <Typography component='h1' variant='h5'>
                 New Recipe
@@ -115,7 +115,7 @@ function RecipeAdd(props) {
             </Grid>
             <Grid item xs={12}>
               <List className={classes.list}>
-                {recipe.ingredients.map((ingredient, index) => {
+                {recipe.ingredients.map((ingredient) => {
                   const formatName = _.startCase(_.toLower(ingredient.name));
                   const formatQuantityType = _.startCase(
                     _.toLower(ingredient.quantityType)
