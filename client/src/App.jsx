@@ -87,6 +87,7 @@ function App() {
         email={user.email}
         firstName={user.firstName}
         lastName={user.lastName}
+        recipes={recipes.data}
         handleLoggedIn={handleLoggedIn}
         isLoggedIn={isLoggedIn}
         className={classes.root}
