@@ -35,8 +35,11 @@ export const useStylesMain = makeStyles((theme) => ({
 export const useStylesForm = makeStyles((theme) => ({
   root: {
     width: '100%',
-    backgroundColor: theme.palette.background.paper,
-    margin: theme.spacing(2),
+    margin: theme.spacing(2, 2, 2),
+  },
+  card: {
+    width: 200,
+    height: 100,
   },
   list: {
     width: '100%',

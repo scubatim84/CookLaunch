@@ -19,15 +19,12 @@ router.get('/', async (req, res) => {
     const recipes = await Recipe.find({createdBy: foundUser._id});
 
     try {
-      res.status(200).send({
-        message: 'success',
-        payload: recipes,
-      });
+      res.status(200).json(recipes);
     } catch (err) {
-      res.status(400).send('An error has occurred. ' + err);
+      res.status(400).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(400).json('No user found in database.');
   }
 });
 
@@ -41,7 +38,7 @@ router.post('/', async (req, res) => {
   // Once user is found, create recipe
   if (foundUser) {
     try {
-      const recipeName = _.lowerCase(req.body.name);
+      const recipeName = req.body.name;
       const recipeIngredients = req.body.ingredients;
 
       const foundRecipe = await Recipe.findOne({
@@ -74,20 +71,18 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @route GET api/recipes/:name
-// @desc Get one recipe by name if created by user
+// @route GET api/recipes/:id
+// @desc Get one recipe by ID if created by user
 // @access Private
-router.get('/:name', async (req, res) => {
+router.get('/:id', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
   // Once user is found, find recipe if created by that user
   if (foundUser) {
     try {
-      const recipeName = _.lowerCase(req.params.name);
-
       const foundRecipe = await Recipe.findOne({
-        name: recipeName,
+        _id: req.params.id,
         createdBy: foundUser._id,
       });
 
@@ -97,10 +92,10 @@ router.get('/:name', async (req, res) => {
         res.status(400).send('That recipe was not created by this user.');
       }
     } catch (err) {
-      res.status(404).json(err);
+      res.status(400).json(err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(400).send('No user found in database.');
   }
 });
 

@@ -72,6 +72,8 @@ router.put('/:id', async (req, res) => {
         currentIngredient.quantityType = updatedIngredient.quantityType;
       }
 
+      currentIngredient.dateLastChanged = new Date();
+
       await foundUser.save();
 
       res.status(204).json(null);

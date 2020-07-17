@@ -7,4 +7,10 @@ export const EMAIL_NOT_FOUND = 'email not found';
 export const RECOVERY_EMAIL_SENT = 'recovery email sent';
 
 // Ingredient quantity types
-export const ingredientQuantityTypes = ['Ounces', 'Grams', 'Cups', 'Liters'];
+export const ingredientQuantityTypes = [
+  'Cups',
+  'Each',
+  'Grams',
+  'Liters',
+  'Ounces',
+];

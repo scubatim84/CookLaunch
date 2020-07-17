@@ -1,36 +1,6 @@
 import axios from 'axios';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
-import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
-
-// Get pantry from back end
-export const getPantry = async () => {
-  try {
-    const token = cookies.get('user');
-    const response = await axios.get('/api/pantry', {
-      headers: {
-        Authorization: token,
-      },
-    });
-
-    if (response.status === 200) {
-      return {
-        authResponseType: REQUEST_SUCCESS,
-        authResponsePayload: response.data.payload,
-      };
-    } else {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: response.data.message,
-      };
-    }
-  } catch (err) {
-    return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: err,
-    };
-  }
-};
 
 // Add ingredient to pantry
 export const addIngredientToPantry = async (ingredientData) => {
@@ -62,36 +32,18 @@ export const addIngredientToPantry = async (ingredientData) => {
 
   if (!isEmpty(error)) {
     return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: error,
+      data: error,
     };
   } else {
     try {
       const token = cookies.get('user');
-      const response = await axios.post('/api/pantry', ingredientData, {
+      return await axios.post('/api/pantry', ingredientData, {
         headers: {
           Authorization: token,
         },
       });
-
-      if (response.status === 201) {
-        return {
-          authResponseType: REQUEST_SUCCESS,
-          authResponsePayload: response.data,
-        };
-      } else {
-        return {
-          authResponseType: REQUEST_FAIL,
-          authResponsePayload: response.data,
-        };
-      }
     } catch (err) {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: isEmpty(err.response.data)
-          ? 'An error has occurred. Please try again.'
-          : err.response.data,
-      };
+      return err.response.data;
     }
   }
 };
@@ -119,13 +71,12 @@ export const updateIngredientInPantry = async (ingredientData) => {
 
   if (!isEmpty(error)) {
     return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: error,
+      data: error,
     };
   } else {
     try {
       const token = cookies.get('user');
-      const response = await axios.put(
+      return await axios.put(
         `/api/pantry/${ingredientData.id}`,
         ingredientData,
         {
@@ -134,24 +85,8 @@ export const updateIngredientInPantry = async (ingredientData) => {
           },
         }
       );
-
-      if (response.status === 204) {
-        return {
-          authResponseType: REQUEST_SUCCESS,
-        };
-      } else {
-        return {
-          authResponseType: REQUEST_FAIL,
-          authResponsePayload: response.data,
-        };
-      }
     } catch (err) {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: isEmpty(err.response.data)
-          ? 'An error has occurred. Please try again.'
-          : err.response.data,
-      };
+      return err.response.data;
     }
   }
 };
@@ -170,35 +105,18 @@ export const deleteIngredientFromPantry = async (ingredientId) => {
 
   if (!isEmpty(error)) {
     return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: error,
+      data: error,
     };
   } else {
     try {
       const token = cookies.get('user');
-      const response = await axios.delete(`/api/pantry/${ingredientId}`, {
+      return await axios.delete(`/api/pantry/${ingredientId}`, {
         headers: {
           Authorization: token,
         },
       });
-
-      if (response.status === 204) {
-        return {
-          authResponseType: REQUEST_SUCCESS,
-        };
-      } else {
-        return {
-          authResponseType: REQUEST_FAIL,
-          authResponsePayload: response.data,
-        };
-      }
     } catch (err) {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: isEmpty(err.response.data)
-          ? 'An error has occurred. Please try again.'
-          : err.response.data,
-      };
+      return err.response.data;
     }
   }
 };

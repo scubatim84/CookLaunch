@@ -79,6 +79,20 @@ function NavBar(props) {
                       onClose={handleClose}
                     >
                       <Link
+                        href='/recipes/add'
+                        color='textPrimary'
+                        style={{textDecoration: 'none'}}
+                      >
+                        <MenuItem>Add New Recipe</MenuItem>
+                      </Link>
+                      <Link
+                        href='/ingredients'
+                        color='textPrimary'
+                        style={{textDecoration: 'none'}}
+                      >
+                        <MenuItem>Ingredients</MenuItem>
+                      </Link>
+                      <Link
                         href='/profile'
                         color='textPrimary'
                         style={{textDecoration: 'none'}}
@@ -92,6 +106,7 @@ function NavBar(props) {
                       >
                         <MenuItem>Pantry</MenuItem>
                       </Link>
+
                       <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>
                   </Grid>
