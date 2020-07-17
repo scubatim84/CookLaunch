@@ -39,7 +39,7 @@ export const useStylesMain = makeStyles((theme) => ({
     width: '100%',
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(2, 2, 1),
   },
   title: {
     flexGrow: 1,

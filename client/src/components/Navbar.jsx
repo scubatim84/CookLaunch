@@ -79,7 +79,7 @@ function NavBar(props) {
                       onClose={handleClose}
                     >
                       <Link
-                        href='/recipes/add'
+                        href='/addrecipe'
                         color='textPrimary'
                         style={{textDecoration: 'none'}}
                       >

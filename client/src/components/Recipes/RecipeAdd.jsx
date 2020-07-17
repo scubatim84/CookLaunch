@@ -3,10 +3,16 @@ import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {Button, Grid, List, TextField, Typography} from '@material-ui/core';
+import {
+  Button,
+  Card,
+  Grid,
+  List,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
 import _ from 'lodash';
-import Card from '@material-ui/core/Card';
 import IngredientItem from '../Ingredients/IngredientItem';
 import {addRecipe} from '../../actions/recipeActions';
 import {Redirect} from 'react-router-dom';
@@ -157,7 +163,6 @@ function RecipeAdd(props) {
                   type='submit'
                   variant='contained'
                   color='primary'
-                  className={classes.submit}
                 >
                   Add Recipe
                 </Button>
