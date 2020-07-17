@@ -89,74 +89,78 @@ function IngredientItem(props) {
     }
   };
 
-  return editMode ? (
-    <Grid container spacing={3} className={classes.root}>
-      <Grid item xs={12} sm={5}>
-        <Typography>{props.name}</Typography>
-      </Grid>
-      <Grid item xs={12} sm={2}>
-        <TextField
-          onChange={handleChange}
-          variant='outlined'
-          required
-          placeholder={editIngredient.quantity.toString()}
-          value={editIngredient.quantity}
-          id='quantity'
-          name='quantity'
-          autoComplete='quantity'
-        />
-      </Grid>
-      <Grid item xs={12} sm={3}>
-        <FormControl>
-          <Select
-            labelId='quantityType'
-            id='quantityType'
+  if (editMode) {
+    return (
+      <Grid container spacing={3} className={classes.root}>
+        <Grid item xs={12} sm={5}>
+          <Typography>{props.name}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={2}>
+          <TextField
+            onChange={handleChange}
+            variant='outlined'
             required
-            placeholder={editIngredient.quantityType}
-            value={editIngredient.quantityType}
-            onChange={handleSelect}
-          >
-            {ingredientQuantityTypes.map((quantityType, index) => {
-              return (
-                <MenuItem key={index} value={quantityType}>
-                  {quantityType}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
+            placeholder={editIngredient.quantity.toString()}
+            value={editIngredient.quantity}
+            id='quantity'
+            name='quantity'
+            autoComplete='quantity'
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <FormControl>
+            <Select
+              labelId='quantityType'
+              id='quantityType'
+              required
+              placeholder={editIngredient.quantityType}
+              value={editIngredient.quantityType}
+              onChange={handleSelect}
+            >
+              {ingredientQuantityTypes.map((quantityType, index) => {
+                return (
+                  <MenuItem key={index} value={quantityType}>
+                    {quantityType}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={1}>
+          <Done onClick={handleSubmit} className='icon' />
+        </Grid>
+        <Grid item xs={12} sm={1}>
+          <Cancel onClick={handleCancel} className='icon' />
+        </Grid>
+        <Grid item xs={12}>
+          {!isEmpty(error.errorMessage) && (
+            <FormSubmitMessage submitMessage={error.errorMessage} />
+          )}
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={1}>
-        <Done onClick={handleSubmit} className='icon' />
+    );
+  } else {
+    return (
+      <Grid container className={classes.root}>
+        <Grid item xs={12} sm={6}>
+          <Typography>{props.name}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={1}>
+          <Typography>{props.quantity}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Typography>{props.quantityType}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={1}>
+          <Edit onClick={handleEdit} className='icon' />
+        </Grid>
+        <Grid item xs={12} sm={1}>
+          <Delete onClick={handleDelete} className='icon' />
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={1}>
-        <Cancel onClick={handleCancel} className='icon' />
-      </Grid>
-      <Grid item xs={12}>
-        {!isEmpty(error.errorMessage) && (
-          <FormSubmitMessage submitMessage={error.errorMessage} />
-        )}
-      </Grid>
-    </Grid>
-  ) : (
-    <Grid container className={classes.root}>
-      <Grid item xs={12} sm={6}>
-        <Typography>{props.name}</Typography>
-      </Grid>
-      <Grid item xs={12} sm={1}>
-        <Typography>{props.quantity}</Typography>
-      </Grid>
-      <Grid item xs={12} sm={3}>
-        <Typography>{props.quantityType}</Typography>
-      </Grid>
-      <Grid item xs={12} sm={1}>
-        <Edit onClick={handleEdit} className='icon' />
-      </Grid>
-      <Grid item xs={12} sm={1}>
-        <Delete onClick={handleDelete} className='icon' />
-      </Grid>
-    </Grid>
-  );
+    );
+  }
 }
 
 export default IngredientItem;

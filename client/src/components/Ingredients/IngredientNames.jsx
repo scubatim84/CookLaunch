@@ -14,9 +14,9 @@ import {
   Grid,
   List,
   TextField,
-  Typography,
 } from '@material-ui/core';
 import IngredientNameItem from './IngredientNameItem';
+import CardTitle from '../CardTitle';
 
 function IngredientNames(props) {
   const classes = useStylesForm(themeMain);
@@ -71,70 +71,70 @@ function IngredientNames(props) {
     }
   };
 
-  return !props.isLoggedIn ? (
-    <Redirect to='/login' />
-  ) : (
-    <Container component='main' maxWidth='xs'>
-      <Card className={classes.root}>
-        <div className={classes.paper}>
-          <Typography component='h1' variant='h5'>
-            Ingredients For Recipes
-          </Typography>
-          <List className={classes.list}>
-            {props.ingredients.map((ingredient) => {
-              const formatName = _.startCase(_.toLower(ingredient.name));
+  if (!props.isLoggedIn) {
+    return <Redirect to='/login' />;
+  } else {
+    return (
+      <Container component='main' maxWidth='xs'>
+        <Card className={classes.root}>
+          <div className={classes.paper}>
+            <CardTitle title='Ingredients For Recipes' />
+            <List className={classes.list}>
+              {props.ingredients.map((ingredient) => {
+                const formatName = _.startCase(_.toLower(ingredient.name));
 
-              return (
-                <IngredientNameItem
-                  key={ingredient.name}
-                  createdBy={ingredient.createdBy}
-                  userId={props.id}
-                  id={ingredient._id}
-                  name={formatName}
-                  getIngredientData={props.getIngredientData}
-                  handleDelete={handleDelete}
-                />
-              );
-            })}
-          </List>
-          <form className={classes.form} noValidate>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <TextField
-                  onChange={handleChange}
-                  value={ingredient.name}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  id='name'
-                  label='Ingredient Name'
-                  name='name'
-                  autoComplete='name'
-                />
+                return (
+                  <IngredientNameItem
+                    key={ingredient.name}
+                    createdBy={ingredient.createdBy}
+                    userId={props.id}
+                    id={ingredient._id}
+                    name={formatName}
+                    getIngredientData={props.getIngredientData}
+                    handleDelete={handleDelete}
+                  />
+                );
+              })}
+            </List>
+            <form className={classes.form} noValidate>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <TextField
+                    onChange={handleChange}
+                    value={ingredient.name}
+                    variant='outlined'
+                    required
+                    fullWidth
+                    id='name'
+                    label='Ingredient Name'
+                    name='name'
+                    autoComplete='name'
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    onClick={handleSubmit}
+                    fullWidth
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                    className={classes.submit}
+                  >
+                    Add Ingredient
+                  </Button>
+                </Grid>
               </Grid>
               <Grid item xs={12}>
-                <Button
-                  onClick={handleSubmit}
-                  fullWidth
-                  type='submit'
-                  variant='contained'
-                  color='primary'
-                  className={classes.submit}
-                >
-                  Add Ingredient
-                </Button>
+                {!isEmpty(error.errorMessage) && (
+                  <FormSubmitMessage submitMessage={error.errorMessage} />
+                )}
               </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              {!isEmpty(error.errorMessage) && (
-                <FormSubmitMessage submitMessage={error.errorMessage} />
-              )}
-            </Grid>
-          </form>
-        </div>
-      </Card>
-    </Container>
-  );
+            </form>
+          </div>
+        </Card>
+      </Container>
+    );
+  }
 }
 
 export default IngredientNames;

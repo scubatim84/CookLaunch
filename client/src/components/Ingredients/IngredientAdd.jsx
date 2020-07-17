@@ -3,9 +3,10 @@ import isEmpty from 'is-empty';
 import {ingredientQuantityTypes} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {Button, Grid, TextField, Typography} from '@material-ui/core';
+import {Button, Grid, TextField} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import FormSubmitMessage from '../FormSubmitMessage';
+import CardTitle from '../CardTitle';
 
 function IngredientAdd(props) {
   const classes = useStylesForm(themeMain);
@@ -68,9 +69,7 @@ function IngredientAdd(props) {
     <form noValidate>
       <Grid container spacing={3} className={classes.root}>
         <Grid item xs={12} align='center'>
-          <Typography component='h1' variant='h5'>
-            Add Ingredients To {props.name}
-          </Typography>
+          <CardTitle title={`Add Ingredients To ${props.name}`} />
         </Grid>
         <Grid item xs={12} sm={5}>
           <Autocomplete
@@ -126,7 +125,6 @@ function IngredientAdd(props) {
             type='submit'
             variant='contained'
             color='primary'
-            className={classes.submit}
           >
             Add
           </Button>

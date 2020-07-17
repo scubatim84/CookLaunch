@@ -12,8 +12,8 @@ import {
   Grid,
   Link,
   TextField,
-  Typography,
 } from '@material-ui/core';
+import CardTitle from '../CardTitle';
 
 function LoginForm(props) {
   const classes = useStylesForm(themeMain);
@@ -52,78 +52,78 @@ function LoginForm(props) {
     }
   };
 
-  return props.isLoggedIn ? (
-    <Redirect to='/dashboard' />
-  ) : (
-    <Container component='main' maxWidth='xs'>
-      <Card>
-        <Grid className={classes.paper}>
-          <Typography component='h1' variant='h5'>
-            Sign In Here
-          </Typography>
-          <form className={classes.form} noValidate>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  onChange={handleChange}
-                  value={login.email}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  id='email'
-                  label='Email Address'
-                  name='email'
-                  autoComplete='email'
-                />
+  if (props.isLoggedIn) {
+    return <Redirect to='/dashboard' />;
+  } else {
+    return (
+      <Container component='main' maxWidth='xs'>
+        <Card>
+          <Grid className={classes.paper}>
+            <CardTitle title='Sign In Here' />
+            <form className={classes.form} noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    onChange={handleChange}
+                    value={login.email}
+                    variant='outlined'
+                    required
+                    fullWidth
+                    id='email'
+                    label='Email Address'
+                    name='email'
+                    autoComplete='email'
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    onChange={handleChange}
+                    value={login.password}
+                    variant='outlined'
+                    required
+                    fullWidth
+                    name='password'
+                    label='Password'
+                    type='password'
+                    id='password'
+                    autoComplete='password'
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    onClick={handleSubmit}
+                    fullWidth
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                  >
+                    Login
+                  </Button>
+                </Grid>
+              </Grid>
+              <Grid container justify='space-between' className={classes.form}>
+                <Grid item>
+                  <Link href='/forgotpassword' variant='body2'>
+                    Forgot Password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href='/' variant='body2'>
+                    Don't have an account? Register
+                  </Link>
+                </Grid>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  onChange={handleChange}
-                  value={login.password}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  name='password'
-                  label='Password'
-                  type='password'
-                  id='password'
-                  autoComplete='password'
-                />
+                {!isEmpty(error.errorMessage) && (
+                  <FormSubmitMessage submitMessage={error.errorMessage} />
+                )}
               </Grid>
-              <Grid item xs={12}>
-                <Button
-                  onClick={handleSubmit}
-                  fullWidth
-                  type='submit'
-                  variant='contained'
-                  color='primary'
-                >
-                  Login
-                </Button>
-              </Grid>
-            </Grid>
-            <Grid container justify='space-between' className={classes.form}>
-              <Grid item>
-                <Link href='/forgotpassword' variant='body2'>
-                  Forgot Password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href='/' variant='body2'>
-                  Don't have an account? Register
-                </Link>
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              {!isEmpty(error.errorMessage) && (
-                <FormSubmitMessage submitMessage={error.errorMessage} />
-              )}
-            </Grid>
-          </form>
-        </Grid>
-      </Card>
-    </Container>
-  );
+            </form>
+          </Grid>
+        </Card>
+      </Container>
+    );
+  }
 }
 
 export default LoginForm;

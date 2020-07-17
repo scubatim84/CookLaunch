@@ -61,52 +61,56 @@ function IngredientNameItem(props) {
     }
   };
 
-  return editMode ? (
-    <Grid container>
-      <Grid item xs={9}>
-        <TextField
-          onChange={handleChange}
-          variant='outlined'
-          required
-          placeholder={editIngredient.name}
-          value={editIngredient.name}
-          id='name'
-          name='name'
-        />
+  if (editMode) {
+    return (
+      <Grid container>
+        <Grid item xs={9}>
+          <TextField
+            onChange={handleChange}
+            variant='outlined'
+            required
+            placeholder={editIngredient.name}
+            value={editIngredient.name}
+            id='name'
+            name='name'
+          />
+        </Grid>
+        <Grid item xs={1}>
+          <Done onClick={handleSubmit} className='icon' />
+        </Grid>
+        <Grid item xs={1}>
+          <Cancel onClick={handleCancel} className='icon' />
+        </Grid>
+        <Grid item xs={12}>
+          {!isEmpty(error.errorMessage) && (
+            <FormSubmitMessage submitMessage={error.errorMessage} />
+          )}
+        </Grid>
       </Grid>
-      <Grid item xs={1}>
-        <Done onClick={handleSubmit} className='icon' />
-      </Grid>
-      <Grid item xs={1}>
-        <Cancel onClick={handleCancel} className='icon' />
-      </Grid>
-      <Grid item xs={12}>
-        {!isEmpty(error.errorMessage) && (
-          <FormSubmitMessage submitMessage={error.errorMessage} />
-        )}
-      </Grid>
-    </Grid>
-  ) : (
-    <Grid container>
-      <Grid item xs={9}>
-        <ListItem dense={true} alignItems='flex-start'>
-          <ListItemText primary={props.name} />
-        </ListItem>
-      </Grid>
-      {props.userId === props.createdBy && (
-        <Grid item xs={2}>
-          <Grid container>
-            <Grid item xs={6}>
-              <Edit onClick={handleEdit} className='icon' />
-            </Grid>
-            <Grid item xs={6}>
-              <Delete onClick={handleDelete} className='icon' />
+    );
+  } else {
+    return (
+      <Grid container>
+        <Grid item xs={9}>
+          <ListItem dense={true} alignItems='flex-start'>
+            <ListItemText primary={props.name} />
+          </ListItem>
+        </Grid>
+        {props.userId === props.createdBy && (
+          <Grid item xs={2}>
+            <Grid container>
+              <Grid item xs={6}>
+                <Edit onClick={handleEdit} className='icon' />
+              </Grid>
+              <Grid item xs={6}>
+                <Delete onClick={handleDelete} className='icon' />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      )}
-    </Grid>
-  );
+        )}
+      </Grid>
+    );
+  }
 }
 
 export default IngredientNameItem;

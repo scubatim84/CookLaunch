@@ -4,8 +4,9 @@ import {ingredientQuantityTypes} from '../../actions/types';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {Button, Grid, TextField, Typography} from '@material-ui/core';
+import {Button, Grid, TextField} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import CardTitle from '../CardTitle';
 
 function RecipeIngredientAdd(props) {
   const classes = useStylesForm(themeMain);
@@ -68,9 +69,7 @@ function RecipeIngredientAdd(props) {
     <div className={classes.paper}>
       <Grid container spacing={3} className={classes.root}>
         <Grid item xs={12} align='center'>
-          <Typography component='h1' variant='h5'>
-            Add Ingredient To Recipe
-          </Typography>
+          <CardTitle title='Add Ingredient To Recipe' />
         </Grid>
         <Grid item xs={12} sm={5}>
           <Autocomplete

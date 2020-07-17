@@ -1,28 +1,28 @@
 import React from 'react';
 import {Button, Grid} from '@material-ui/core';
 
-function ProfileButtons(props) {
+function RecipeButton(props) {
   if (props.editMode) {
     return (
-      <Grid container>
-        <Grid item xs={12} sm={1}>
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
           <Button
-            onClick={props.handleSave}
-            type='submit'
+            fullWidth
             variant='contained'
             color='primary'
+            onClick={props.handleSubmit}
           >
-            Save
+            Submit Changes
           </Button>
         </Grid>
-        <Grid item xs={12} sm={1}>
+        <Grid item xs={6}>
           <Button
-            onClick={props.handleCancel}
-            type='submit'
+            fullWidth
             variant='contained'
             color='primary'
+            onClick={props.handleCancel}
           >
-            Cancel
+            Cancel Changes
           </Button>
         </Grid>
       </Grid>
@@ -30,15 +30,16 @@ function ProfileButtons(props) {
   } else {
     return (
       <Button
-        onClick={props.handleEdit}
         type='submit'
+        fullWidth
         variant='contained'
         color='primary'
+        onClick={props.handleEdit}
       >
-        Edit Profile
+        Edit Recipe
       </Button>
     );
   }
 }
 
-export default ProfileButtons;
+export default RecipeButton;
