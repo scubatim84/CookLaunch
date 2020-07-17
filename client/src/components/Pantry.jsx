@@ -52,53 +52,55 @@ function Pantry(props) {
     }
   };
 
-  return !props.isLoggedIn ? (
-    <Redirect to='/login' />
-  ) : (
-    <Container component='main' maxWidth='md'>
-      <Card className={classes.root}>
-        <div className={classes.paper}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} align='center'>
-              <CardTitle title={`${props.firstName}'s Pantry`} />
-            </Grid>
-            <Grid item xs={12}>
-              {props.pantry.map((ingredient, index) => {
-                const formatName = _.startCase(_.toLower(ingredient.name));
-                const formatQuantityType = _.startCase(
-                  _.toLower(ingredient.quantityType)
-                );
+  if (!props.isLoggedIn) {
+    return <Redirect to='/login' />;
+  } else {
+    return (
+      <Container component='main' maxWidth='md'>
+        <Card className={classes.root}>
+          <div className={classes.paper}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} align='center'>
+                <CardTitle title={`${props.firstName}'s Pantry`} />
+              </Grid>
+              <Grid item xs={12}>
+                {props.pantry.map((ingredient, index) => {
+                  const formatName = _.startCase(_.toLower(ingredient.name));
+                  const formatQuantityType = _.startCase(
+                    _.toLower(ingredient.quantityType)
+                  );
 
-                return (
-                  <IngredientItem
-                    key={props.pantry[index].dateLastChanged}
-                    id={ingredient._id}
-                    name={formatName}
-                    quantity={ingredient.quantity}
-                    quantityType={formatQuantityType}
-                    handleDelete={handleDelete}
-                    handleUpdateIngredient={handleUpdateIngredient}
-                  />
-                );
-              })}
+                  return (
+                    <IngredientItem
+                      key={props.pantry[index].dateLastChanged}
+                      id={ingredient._id}
+                      name={formatName}
+                      quantity={ingredient.quantity}
+                      quantityType={formatQuantityType}
+                      handleDelete={handleDelete}
+                      handleUpdateIngredient={handleUpdateIngredient}
+                    />
+                  );
+                })}
+              </Grid>
             </Grid>
-          </Grid>
-        </div>
-      </Card>
-      <Card className={classes.root}>
-        <div className={classes.paper}>
-          <Grid item xs={12}>
-            <IngredientAdd
-              key={props.pantry}
-              name='Pantry'
-              ingredients={props.ingredients}
-              handleAddIngredient={handleAddIngredient}
-            />
-          </Grid>
-        </div>
-      </Card>
-    </Container>
-  );
+          </div>
+        </Card>
+        <Card className={classes.root}>
+          <div className={classes.paper}>
+            <Grid item xs={12}>
+              <IngredientAdd
+                key={props.pantry}
+                name='Pantry'
+                ingredients={props.ingredients}
+                handleAddIngredient={handleAddIngredient}
+              />
+            </Grid>
+          </div>
+        </Card>
+      </Container>
+    );
+  }
 }
 
 export default Pantry;

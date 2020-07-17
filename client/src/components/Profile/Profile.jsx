@@ -75,55 +75,57 @@ function Profile(props) {
     setEditMode(false);
   };
 
-  return !props.isLoggedIn ? (
-    <Redirect to='/login' />
-  ) : (
-    <Grid container className={classes.root}>
-      <Grid item xs={12} className={classes.submit}>
-        <ProfileButtons
-          editMode={editMode}
-          handleEdit={handleEdit}
-          handleSave={handleSave}
-          handleCancel={handleCancel}
-        />
+  if (!props.isLoggedIn) {
+    return <Redirect to='/login' />;
+  } else {
+    return (
+      <Grid container className={classes.root}>
+        <Grid item xs={12} className={classes.submit}>
+          <ProfileButtons
+            editMode={editMode}
+            handleEdit={handleEdit}
+            handleSave={handleSave}
+            handleCancel={handleCancel}
+          />
+        </Grid>
+        <Grid item xs={12} sm={5}>
+          <Card>
+            <Grid item xs={12} className={classes.title}>
+              <CardTitle title='My Profile' />
+            </Grid>
+            <Grid container justify='space-between' className={classes.root}>
+              <ProfileField
+                editMode={editMode}
+                label='Email'
+                name='email'
+                handleChange={handleChange}
+                content={profileData.email}
+              />
+              <ProfileField
+                editMode={editMode}
+                label='First Name'
+                name='firstName'
+                handleChange={handleChange}
+                content={profileData.firstName}
+              />
+              <ProfileField
+                editMode={editMode}
+                label='Last Name'
+                name='lastName'
+                handleChange={handleChange}
+                content={profileData.lastName}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {!isEmpty(error.errorMessage) && (
+                <FormSubmitMessage submitMessage={error.errorMessage} />
+              )}
+            </Grid>
+          </Card>
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={5}>
-        <Card>
-          <Grid item xs={12} className={classes.title}>
-            <CardTitle title='My Profile' />
-          </Grid>
-          <Grid container justify='space-between' className={classes.root}>
-            <ProfileField
-              editMode={editMode}
-              label='Email'
-              name='email'
-              handleChange={handleChange}
-              content={profileData.email}
-            />
-            <ProfileField
-              editMode={editMode}
-              label='First Name'
-              name='firstName'
-              handleChange={handleChange}
-              content={profileData.firstName}
-            />
-            <ProfileField
-              editMode={editMode}
-              label='Last Name'
-              name='lastName'
-              handleChange={handleChange}
-              content={profileData.lastName}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            {!isEmpty(error.errorMessage) && (
-              <FormSubmitMessage submitMessage={error.errorMessage} />
-            )}
-          </Grid>
-        </Card>
-      </Grid>
-    </Grid>
-  );
+    );
+  }
 }
 
 export default Profile;

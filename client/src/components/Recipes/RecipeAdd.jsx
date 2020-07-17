@@ -84,88 +84,90 @@ function RecipeAdd(props) {
     }
   };
 
-  return !props.isLoggedIn ? (
-    <Redirect to='/login' />
-  ) : (
-    <Grid container justify='center'>
-      <Grid item xs={12} sm={8}>
-        <Card className={classes.root}>
-          <div className={classes.paper}>
-            <form noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12} align='center'>
-                  <CardTitle title='New Recipe' />
-                </Grid>
-                <Grid item xs={12} sm={4} align='center'>
-                  <CardTitle title='Name' />
-                </Grid>
-                <Grid item xs={12} sm={4} align='center'>
-                  <TextField
-                    onChange={handleChange}
-                    value={recipe.name}
-                    variant='outlined'
-                    required
-                    fullWidth
-                    name='name'
-                  />
-                </Grid>
-                <Grid item xs={12} align='center'>
-                  <CardTitle title='Recipe Ingredients' />
-                </Grid>
-                <Grid item xs={12}>
-                  <List className={classes.list}>
-                    {recipe.ingredients.map((ingredient) => {
-                      const formatName = _.startCase(
-                        _.toLower(ingredient.name)
-                      );
-                      const formatQuantityType = _.startCase(
-                        _.toLower(ingredient.quantityType)
-                      );
+  if (!props.isLoggedIn) {
+    return <Redirect to='/login' />;
+  } else {
+    return (
+      <Grid container justify='center'>
+        <Grid item xs={12} sm={8}>
+          <Card className={classes.root}>
+            <div className={classes.paper}>
+              <form noValidate>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} align='center'>
+                    <CardTitle title='New Recipe' />
+                  </Grid>
+                  <Grid item xs={12} sm={4} align='center'>
+                    <CardTitle title='Name' />
+                  </Grid>
+                  <Grid item xs={12} sm={4} align='center'>
+                    <TextField
+                      onChange={handleChange}
+                      value={recipe.name}
+                      variant='outlined'
+                      required
+                      fullWidth
+                      name='name'
+                    />
+                  </Grid>
+                  <Grid item xs={12} align='center'>
+                    <CardTitle title='Recipe Ingredients' />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <List className={classes.list}>
+                      {recipe.ingredients.map((ingredient) => {
+                        const formatName = _.startCase(
+                          _.toLower(ingredient.name)
+                        );
+                        const formatQuantityType = _.startCase(
+                          _.toLower(ingredient.quantityType)
+                        );
 
-                      return (
-                        <IngredientItem
-                          key={ingredient.id + new Date()}
-                          id={ingredient.id}
-                          name={formatName}
-                          quantity={ingredient.quantity}
-                          quantityType={formatQuantityType}
-                          handleDelete={handleDelete}
-                          handleUpdateIngredient={handleUpdateIngredient}
-                        />
-                      );
-                    })}
-                  </List>
+                        return (
+                          <IngredientItem
+                            key={ingredient.id + new Date()}
+                            id={ingredient.id}
+                            name={formatName}
+                            quantity={ingredient.quantity}
+                            quantityType={formatQuantityType}
+                            handleDelete={handleDelete}
+                            handleUpdateIngredient={handleUpdateIngredient}
+                          />
+                        );
+                      })}
+                    </List>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <RecipeIngredientAdd
+                      key={recipe.ingredients}
+                      addIngredientToRecipe={addIngredientToRecipe}
+                      ingredients={props.ingredients}
+                      recipeIngredients={recipe.ingredients}
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} align='center'>
+                  <Button
+                    onClick={handleSubmit}
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                  >
+                    Add Recipe
+                  </Button>
                 </Grid>
                 <Grid item xs={12}>
-                  <RecipeIngredientAdd
-                    key={recipe.ingredients}
-                    addIngredientToRecipe={addIngredientToRecipe}
-                    ingredients={props.ingredients}
-                    recipeIngredients={recipe.ingredients}
-                  />
+                  {!isEmpty(error.errorMessage) && (
+                    <FormSubmitMessage submitMessage={error.errorMessage} />
+                  )}
                 </Grid>
-              </Grid>
-              <Grid item xs={12} align='center'>
-                <Button
-                  onClick={handleSubmit}
-                  type='submit'
-                  variant='contained'
-                  color='primary'
-                >
-                  Add Recipe
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                {!isEmpty(error.errorMessage) && (
-                  <FormSubmitMessage submitMessage={error.errorMessage} />
-                )}
-              </Grid>
-            </form>
-          </div>
-        </Card>
+              </form>
+            </div>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
-  );
+    );
+  }
 }
 
 export default RecipeAdd;

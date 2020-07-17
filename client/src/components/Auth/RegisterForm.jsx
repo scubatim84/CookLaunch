@@ -63,102 +63,104 @@ function RegisterForm(props) {
     }
   };
 
-  return props.isLoggedIn ? (
-    <Redirect to='/dashboard' />
-  ) : (
-    <Container component='main' maxWidth='xs'>
-      <Card>
-        <Grid className={classes.paper}>
-          <CardTitle title='Start The Oven' />
-          <form className={classes.form} noValidate>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  onChange={handleChange}
-                  value={newUser.firstName}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  label='First Name'
-                  name='firstName'
-                />
+  if (props.isLoggedIn) {
+    return <Redirect to='/dashboard' />;
+  } else {
+    return (
+      <Container component='main' maxWidth='xs'>
+        <Card>
+          <Grid className={classes.paper}>
+            <CardTitle title='Start The Oven' />
+            <form className={classes.form} noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    onChange={handleChange}
+                    value={newUser.firstName}
+                    variant='outlined'
+                    required
+                    fullWidth
+                    label='First Name'
+                    name='firstName'
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    onChange={handleChange}
+                    value={newUser.lastName}
+                    variant='outlined'
+                    required
+                    fullWidth
+                    label='Last Name'
+                    name='lastName'
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    onChange={handleChange}
+                    value={newUser.email}
+                    variant='outlined'
+                    required
+                    fullWidth
+                    label='Email Address'
+                    type='email'
+                    name='email'
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    onChange={handleChange}
+                    value={newUser.password}
+                    variant='outlined'
+                    required
+                    fullWidth
+                    label='Password'
+                    type='password'
+                    name='password'
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    onChange={handleChange}
+                    value={newUser.password2}
+                    variant='outlined'
+                    required
+                    fullWidth
+                    label='Confirm password'
+                    type='password'
+                    name='password2'
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    onClick={handleSubmit}
+                    fullWidth
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                  >
+                    Sign Up
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  onChange={handleChange}
-                  value={newUser.lastName}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  label='Last Name'
-                  name='lastName'
-                />
+              <Grid container justify='flex-end' className={classes.form}>
+                <Grid item xs={12}>
+                  <Link href='/login' variant='body2'>
+                    Already have an account? Sign in
+                  </Link>
+                </Grid>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  onChange={handleChange}
-                  value={newUser.email}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  label='Email Address'
-                  type='email'
-                  name='email'
-                />
+                {!isEmpty(error.errorMessage) && (
+                  <FormSubmitMessage submitMessage={error.errorMessage} />
+                )}
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  onChange={handleChange}
-                  value={newUser.password}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  label='Password'
-                  type='password'
-                  name='password'
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  onChange={handleChange}
-                  value={newUser.password2}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  label='Confirm password'
-                  type='password'
-                  name='password2'
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  onClick={handleSubmit}
-                  fullWidth
-                  type='submit'
-                  variant='contained'
-                  color='primary'
-                >
-                  Sign Up
-                </Button>
-              </Grid>
-            </Grid>
-            <Grid container justify='flex-end' className={classes.form}>
-              <Grid item xs={12}>
-                <Link href='/login' variant='body2'>
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              {!isEmpty(error.errorMessage) && (
-                <FormSubmitMessage submitMessage={error.errorMessage} />
-              )}
-            </Grid>
-          </form>
-        </Grid>
-      </Card>
-    </Container>
-  );
+            </form>
+          </Grid>
+        </Card>
+      </Container>
+    );
+  }
 }
 
 export default RegisterForm;

@@ -85,61 +85,63 @@ function ResetPasswordByEmailForm(props) {
     }
   };
 
-  return props.isLoggedIn ? (
-    <Redirect to='/dashboard' />
-  ) : (
-    <Container component='main' maxWidth='xs'>
-      <Card>
-        <Grid className={classes.paper}>
-          <CardTitle title='Reset Your Password' />
-          <form className={classes.form} noValidate>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  onChange={handleChange}
-                  value={password.password}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  label='Password'
-                  type='password'
-                  name='password'
-                />
+  if (props.isLoggedIn) {
+    return <Redirect to='/dashboard' />;
+  } else {
+    return (
+      <Container component='main' maxWidth='xs'>
+        <Card>
+          <Grid className={classes.paper}>
+            <CardTitle title='Reset Your Password' />
+            <form className={classes.form} noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    onChange={handleChange}
+                    value={password.password}
+                    variant='outlined'
+                    required
+                    fullWidth
+                    label='Password'
+                    type='password'
+                    name='password'
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    onChange={handleChange}
+                    value={password.password2}
+                    variant='outlined'
+                    required
+                    fullWidth
+                    label='Confirm password'
+                    type='password'
+                    name='password2'
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    onClick={handleSubmit}
+                    fullWidth
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                  >
+                    Submit
+                  </Button>
+                </Grid>
               </Grid>
               <Grid item xs={12}>
-                <TextField
-                  onChange={handleChange}
-                  value={password.password2}
-                  variant='outlined'
-                  required
-                  fullWidth
-                  label='Confirm password'
-                  type='password'
-                  name='password2'
-                />
+                {!isEmpty(error.errorMessage) && (
+                  <FormSubmitMessage submitMessage={error.errorMessage} />
+                )}
               </Grid>
-              <Grid item xs={12}>
-                <Button
-                  onClick={handleSubmit}
-                  fullWidth
-                  type='submit'
-                  variant='contained'
-                  color='primary'
-                >
-                  Submit
-                </Button>
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              {!isEmpty(error.errorMessage) && (
-                <FormSubmitMessage submitMessage={error.errorMessage} />
-              )}
-            </Grid>
-          </form>
-        </Grid>
-      </Card>
-    </Container>
-  );
+            </form>
+          </Grid>
+        </Card>
+      </Container>
+    );
+  }
 }
 
 export default ResetPasswordByEmailForm;

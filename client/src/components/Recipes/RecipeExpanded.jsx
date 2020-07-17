@@ -77,83 +77,89 @@ function RecipeExpanded(props) {
     }
   };
 
-  return !props.isLoggedIn ? (
-    <Redirect to='/login' />
-  ) : (
-    <Grid container>
-      <Grid item xs={12}>
-        <Grid item xs={12} sm={2}>
-          <Link href={'/'} color='textPrimary' style={{textDecoration: 'none'}}>
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              color='primary'
-              className={mainClasses.submit}
+  if (!props.isLoggedIn) {
+    return <Redirect to='/login' />;
+  } else {
+    return (
+      <Grid container>
+        <Grid item xs={12}>
+          <Grid item xs={12} sm={2}>
+            <Link
+              href={'/'}
+              color='textPrimary'
+              style={{textDecoration: 'none'}}
             >
-              Return To Dashboard
-            </Button>
-          </Link>
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                color='primary'
+                className={mainClasses.submit}
+              >
+                Return To Dashboard
+              </Button>
+            </Link>
+          </Grid>
+        </Grid>
+        <Grid item xs={12} sm={8}>
+          <Card className={classes.root}>
+            <div className={classes.paper}>
+              <form noValidate>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} align='center'>
+                    <RecipeName
+                      name={recipe.name}
+                      editMode={editMode}
+                      handleChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <CardTitle title='Recipe Ingredients' />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <List className={classes.list}>
+                      {recipe.ingredients.map((ingredient) => {
+                        const formatName = _.startCase(
+                          _.toLower(ingredient.name)
+                        );
+                        const formatQuantityType = _.startCase(
+                          _.toLower(ingredient.quantityType)
+                        );
+
+                        return (
+                          <RecipeIngredientView
+                            key={ingredient.name}
+                            id={ingredient.id}
+                            name={formatName}
+                            quantity={ingredient.quantity}
+                            quantityType={formatQuantityType}
+                          />
+                        );
+                      })}
+                    </List>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <RecipeButton
+                      key={editMode + new Date()}
+                      editMode={editMode}
+                      handleEdit={handleEdit}
+                      handleCancel={handleCancel}
+                      handleSubmit={handleSubmit}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    {!isEmpty(error.errorMessage) && (
+                      <FormSubmitMessage submitMessage={error.errorMessage} />
+                    )}
+                  </Grid>
+                </Grid>
+              </form>
+            </div>
+          </Card>
         </Grid>
       </Grid>
-      <Grid item xs={12} sm={8}>
-        <Card className={classes.root}>
-          <div className={classes.paper}>
-            <form noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12} align='center'>
-                  <RecipeName
-                    name={recipe.name}
-                    editMode={editMode}
-                    handleChange={handleChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <CardTitle title='Recipe Ingredients' />
-                </Grid>
-                <Grid item xs={12}>
-                  <List className={classes.list}>
-                    {recipe.ingredients.map((ingredient) => {
-                      const formatName = _.startCase(
-                        _.toLower(ingredient.name)
-                      );
-                      const formatQuantityType = _.startCase(
-                        _.toLower(ingredient.quantityType)
-                      );
-
-                      return (
-                        <RecipeIngredientView
-                          key={ingredient.name}
-                          id={ingredient.id}
-                          name={formatName}
-                          quantity={ingredient.quantity}
-                          quantityType={formatQuantityType}
-                        />
-                      );
-                    })}
-                  </List>
-                </Grid>
-                <Grid item xs={6}>
-                  <RecipeButton
-                    key={editMode + new Date()}
-                    editMode={editMode}
-                    handleEdit={handleEdit}
-                    handleCancel={handleCancel}
-                    handleSubmit={handleSubmit}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  {!isEmpty(error.errorMessage) && (
-                    <FormSubmitMessage submitMessage={error.errorMessage} />
-                  )}
-                </Grid>
-              </Grid>
-            </form>
-          </div>
-        </Card>
-      </Grid>
-    </Grid>
-  );
+    );
+  }
 }
 
 export default RecipeExpanded;
