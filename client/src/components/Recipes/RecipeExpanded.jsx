@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect, useParams} from 'react-router-dom';
-import {Button, Card, Grid, Link, List, Typography} from '@material-ui/core';
+import {Button, Card, Grid, Link, List} from '@material-ui/core';
 import {useStylesForm, useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {getOneRecipe} from '../../actions/recipeActions';
 import _ from 'lodash';
 import RecipeIngredientView from './RecipeIngredientView';
+import RecipeName from './RecipeName';
+import CardTitle from '../CardTitle';
 
 function RecipeExpanded(props) {
   const classes = useStylesForm(themeMain);
@@ -53,14 +55,13 @@ function RecipeExpanded(props) {
             <form noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12} align='center'>
-                  <Typography component='h1' variant='h5'>
-                    {recipe.name}
-                  </Typography>
+                  <RecipeName
+                    key={recipe.name + new Date()}
+                    name={recipe.name}
+                  />
                 </Grid>
                 <Grid item xs={12}>
-                  <Typography component='h1' variant='h5'>
-                    Recipe Ingredients
-                  </Typography>
+                  <CardTitle title='Recipe Ingredients' />
                 </Grid>
                 <Grid item xs={12}>
                   <List className={classes.list}>

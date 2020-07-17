@@ -10,7 +10,8 @@ import IngredientAdd from './Ingredients/IngredientAdd';
 import IngredientItem from './Ingredients/IngredientItem';
 import {useStylesForm} from '../Styles';
 import {themeMain} from '../Theme';
-import {Card, Container, Grid, Typography} from '@material-ui/core';
+import {Card, Container, Grid} from '@material-ui/core';
+import CardTitle from './CardTitle';
 
 function Pantry(props) {
   const classes = useStylesForm(themeMain);
@@ -59,9 +60,7 @@ function Pantry(props) {
         <div className={classes.paper}>
           <Grid container spacing={3}>
             <Grid item xs={12} align='center'>
-              <Typography component='h1' variant='h5'>
-                {props.firstName}'s Pantry
-              </Typography>
+              <CardTitle title={`${props.firstName}'s Pantry`} />
             </Grid>
             <Grid item xs={12}>
               {props.pantry.map((ingredient, index) => {

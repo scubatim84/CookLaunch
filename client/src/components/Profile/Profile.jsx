@@ -8,7 +8,8 @@ import ProfileButtons from './ProfileButtons';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {useStylesProfile} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {Card, Grid, Typography} from '@material-ui/core';
+import {Card, Grid} from '@material-ui/core';
+import CardTitle from '../CardTitle';
 
 function Profile(props) {
   const classes = useStylesProfile(themeMain);
@@ -89,7 +90,7 @@ function Profile(props) {
       <Grid item xs={12} sm={5}>
         <Card>
           <Grid item xs={12} className={classes.title}>
-            <Typography variant='h5'>My Profile</Typography>
+            <CardTitle title='My Profile' />
           </Grid>
           <Grid container justify='space-between' className={classes.root}>
             <ProfileField

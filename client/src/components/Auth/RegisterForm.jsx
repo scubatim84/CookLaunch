@@ -12,8 +12,8 @@ import {
   Grid,
   Link,
   TextField,
-  Typography,
 } from '@material-ui/core';
+import CardTitle from '../CardTitle';
 
 function RegisterForm(props) {
   const classes = useStylesForm(themeMain);
@@ -69,9 +69,7 @@ function RegisterForm(props) {
     <Container component='main' maxWidth='xs'>
       <Card>
         <Grid className={classes.paper}>
-          <Typography component='h1' variant='h5'>
-            Start The Oven
-          </Typography>
+          <CardTitle title='Start The Oven' />
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>

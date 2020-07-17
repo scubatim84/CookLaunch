@@ -4,14 +4,8 @@ import {sendPasswordResetEmail} from '../../actions/authActions';
 import {REQUEST_SUCCESS, EMAIL_NOT_FOUND} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {
-  Button,
-  Card,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import {Button, Card, Container, Grid, TextField} from '@material-ui/core';
+import CardTitle from '../CardTitle';
 
 function ForgotPasswordForm() {
   const classes = useStylesForm(themeMain);
@@ -71,9 +65,7 @@ function ForgotPasswordForm() {
     <Container component='main' maxWidth='xs'>
       <Card>
         <Grid className={classes.paper}>
-          <Typography component='h1' variant='h5'>
-            Retrieve Password
-          </Typography>
+          <CardTitle title='Retrieve Password' />
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>

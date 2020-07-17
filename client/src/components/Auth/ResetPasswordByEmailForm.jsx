@@ -11,14 +11,8 @@ import {
 import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {
-  Button,
-  Card,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import {Button, Card, Container, Grid, TextField} from '@material-ui/core';
+import CardTitle from '../CardTitle';
 
 function ResetPasswordByEmailForm(props) {
   const classes = useStylesForm(themeMain);
@@ -97,9 +91,7 @@ function ResetPasswordByEmailForm(props) {
     <Container component='main' maxWidth='xs'>
       <Card>
         <Grid className={classes.paper}>
-          <Typography component='h1' variant='h5'>
-            Reset Your Password
-          </Typography>
+          <CardTitle title='Reset Your Password' />
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>

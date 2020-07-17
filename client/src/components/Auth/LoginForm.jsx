@@ -12,8 +12,8 @@ import {
   Grid,
   Link,
   TextField,
-  Typography,
 } from '@material-ui/core';
+import CardTitle from '../CardTitle';
 
 function LoginForm(props) {
   const classes = useStylesForm(themeMain);
@@ -58,9 +58,7 @@ function LoginForm(props) {
     <Container component='main' maxWidth='xs'>
       <Card>
         <Grid className={classes.paper}>
-          <Typography component='h1' variant='h5'>
-            Sign In Here
-          </Typography>
+          <CardTitle title='Sign In Here' />
           <form className={classes.form} noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>

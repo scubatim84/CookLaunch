@@ -3,19 +3,13 @@ import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {
-  Button,
-  Card,
-  Grid,
-  List,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import {Button, Card, Grid, List, TextField} from '@material-ui/core';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
 import _ from 'lodash';
 import IngredientItem from '../Ingredients/IngredientItem';
 import {addRecipe} from '../../actions/recipeActions';
 import {Redirect} from 'react-router-dom';
+import CardTitle from '../CardTitle';
 
 function RecipeAdd(props) {
   const classes = useStylesForm(themeMain);
@@ -100,14 +94,10 @@ function RecipeAdd(props) {
             <form noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12} align='center'>
-                  <Typography component='h1' variant='h5'>
-                    New Recipe
-                  </Typography>
+                  <CardTitle title='New Recipe' />
                 </Grid>
                 <Grid item xs={12} sm={4} align='center'>
-                  <Typography component='h1' variant='h5'>
-                    Name
-                  </Typography>
+                  <CardTitle title='Name' />
                 </Grid>
                 <Grid item xs={12} sm={4} align='center'>
                   <TextField
@@ -120,9 +110,7 @@ function RecipeAdd(props) {
                   />
                 </Grid>
                 <Grid item xs={12} align='center'>
-                  <Typography component='h1' variant='h5'>
-                    Recipe Ingredients
-                  </Typography>
+                  <CardTitle title='Recipe Ingredients' />
                 </Grid>
                 <Grid item xs={12}>
                   <List className={classes.list}>

@@ -14,9 +14,9 @@ import {
   Grid,
   List,
   TextField,
-  Typography,
 } from '@material-ui/core';
 import IngredientNameItem from './IngredientNameItem';
+import CardTitle from '../CardTitle';
 
 function IngredientNames(props) {
   const classes = useStylesForm(themeMain);
@@ -77,9 +77,7 @@ function IngredientNames(props) {
     <Container component='main' maxWidth='xs'>
       <Card className={classes.root}>
         <div className={classes.paper}>
-          <Typography component='h1' variant='h5'>
-            Ingredients For Recipes
-          </Typography>
+          <CardTitle title='Ingredients For Recipes' />
           <List className={classes.list}>
             {props.ingredients.map((ingredient) => {
               const formatName = _.startCase(_.toLower(ingredient.name));
