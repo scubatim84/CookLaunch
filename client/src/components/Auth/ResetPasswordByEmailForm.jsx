@@ -133,7 +133,6 @@ function ResetPasswordByEmailForm(props) {
                   type='submit'
                   variant='contained'
                   color='primary'
-                  className={classes.submit}
                 >
                   Submit
                 </Button>

@@ -95,7 +95,6 @@ function ForgotPasswordForm() {
                   fullWidth
                   variant='contained'
                   color='primary'
-                  className={classes.submit}
                 >
                   Submit
                 </Button>

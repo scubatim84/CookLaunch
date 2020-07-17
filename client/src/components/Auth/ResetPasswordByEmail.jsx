@@ -1,13 +1,13 @@
 import React from 'react';
 import ResetPasswordByEmailForm from './ResetPasswordByEmailForm';
 import {useStylesMain} from '../../Styles';
-import Grid from '@material-ui/core/Grid';
+import {CardMedia, Grid} from '@material-ui/core';
 
 function ResetPassword(props) {
   const classes = useStylesMain();
 
   return (
-    <div className='login-background background-image-full'>
+    <CardMedia className={classes.loginBackground}>
       <Grid
         container
         spacing={0}
@@ -24,7 +24,7 @@ function ResetPassword(props) {
           />
         </Grid>
       </Grid>
-    </div>
+    </CardMedia>
   );
 }
 
