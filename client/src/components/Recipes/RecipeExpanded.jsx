@@ -1,9 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Redirect, useParams} from 'react-router-dom';
+import {Redirect, useHistory, useParams} from 'react-router-dom';
 import {Button, Card, Grid, Link, List} from '@material-ui/core';
 import {useStylesForm, useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {getOneRecipe, updateRecipe} from '../../actions/recipeActions';
+import {
+  deleteRecipe,
+  getOneRecipe,
+  updateRecipe,
+} from '../../actions/recipeActions';
 import _ from 'lodash';
 import RecipeIngredientView from './RecipeIngredientView';
 import RecipeName from './RecipeName';
@@ -11,8 +15,10 @@ import CardTitle from '../CardTitle';
 import RecipeButton from './RecipeButton';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
+import {Delete} from '@material-ui/icons';
 
 function RecipeExpanded(props) {
+  const history = useHistory();
   const classes = useStylesForm(themeMain);
   const mainClasses = useStylesMain(themeMain);
 
@@ -50,6 +56,19 @@ function RecipeExpanded(props) {
 
   const handleCancel = async () => {
     await setEditMode(false);
+  };
+
+  const handleDelete = async () => {
+    const response = await deleteRecipe(recipe._id);
+
+    if (response.status === 204) {
+      await props.getRecipeData();
+      history.push('/dashboard');
+    } else {
+      setError({
+        errorMessage: response,
+      });
+    }
   };
 
   const handleChange = async (e) => {
@@ -102,7 +121,7 @@ function RecipeExpanded(props) {
           </Grid>
         </Grid>
         <Grid item xs={12} sm={8}>
-          <Card className={classes.root}>
+          <Card>
             <div className={classes.paper}>
               <form noValidate>
                 <Grid container spacing={2}>
@@ -138,14 +157,27 @@ function RecipeExpanded(props) {
                       })}
                     </List>
                   </Grid>
-                  <Grid item xs={6}>
-                    <RecipeButton
-                      key={editMode + new Date()}
-                      editMode={editMode}
-                      handleEdit={handleEdit}
-                      handleCancel={handleCancel}
-                      handleSubmit={handleSubmit}
-                    />
+                  <Grid
+                    container
+                    justify='space-between'
+                    className={classes.form}
+                  >
+                    <Grid item xs={6}>
+                      <RecipeButton
+                        key={editMode + new Date()}
+                        editMode={editMode}
+                        handleEdit={handleEdit}
+                        handleCancel={handleCancel}
+                        handleSubmit={handleSubmit}
+                      />
+                    </Grid>
+                    <Grid item xs={1}>
+                      <Delete
+                        onClick={handleDelete}
+                        color='secondary'
+                        className='icon'
+                      />
+                    </Grid>
                   </Grid>
                   <Grid item xs={12}>
                     {!isEmpty(error.errorMessage) && (

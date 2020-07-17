@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const isEmpty = require('is-empty');
 const router = express.Router();
-const _ = require('lodash');
 
 // Load Recipe model
 const {Recipe} = require('../../models/Recipe');
@@ -137,33 +136,31 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// @route DELETE api/recipes/:name
-// @desc Delete one recipe by name if created by that user
+// @route DELETE api/recipes/:id
+// @desc Delete one recipe by ID if created by that user
 // @access Private
-router.delete('/:name', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
   // Once user is found, find recipe if created by that user
   if (foundUser) {
     try {
-      const recipeName = _.lowerCase(req.params.name);
-
       const deletedRecipe = await Recipe.deleteOne({
-        name: recipeName,
+        _id: req.params.id,
         createdBy: foundUser._id,
       });
 
       if (deletedRecipe.deletedCount === 1) {
-        res.status(200).json('success');
+        res.status(204).json(null);
       } else {
         res.status(400).json('fail');
       }
     } catch (err) {
-      res.status(204).json(err);
+      res.status(400).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(400).json('No user found in database.');
   }
 });
 

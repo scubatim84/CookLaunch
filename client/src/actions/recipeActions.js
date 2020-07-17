@@ -104,3 +104,33 @@ export const updateRecipe = async (recipeData) => {
     }
   }
 };
+
+// Delete recipe
+export const deleteRecipe = async (recipeId) => {
+  let error;
+
+  // Check to see if values are empty, and if so, convert them to empty strings
+  recipeId = !isEmpty(recipeId) ? recipeId : '';
+
+  // Check for valid recipe ID
+  if (isEmpty(recipeId)) {
+    error = 'An error has occurred. Please try again.';
+  }
+
+  if (!isEmpty(error)) {
+    return {
+      data: error,
+    };
+  } else {
+    try {
+      const token = cookies.get('user');
+      return await axios.delete(`/api/recipes/${recipeId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+    } catch (err) {
+      return err.response.data;
+    }
+  }
+};
