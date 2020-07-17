@@ -3,11 +3,14 @@ import {Redirect, useParams} from 'react-router-dom';
 import {Button, Card, Grid, Link, List} from '@material-ui/core';
 import {useStylesForm, useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {getOneRecipe} from '../../actions/recipeActions';
+import {getOneRecipe, updateRecipe} from '../../actions/recipeActions';
 import _ from 'lodash';
 import RecipeIngredientView from './RecipeIngredientView';
 import RecipeName from './RecipeName';
 import CardTitle from '../CardTitle';
+import RecipeButton from './RecipeButton';
+import isEmpty from 'is-empty';
+import FormSubmitMessage from '../FormSubmitMessage';
 
 function RecipeExpanded(props) {
   const classes = useStylesForm(themeMain);
@@ -17,18 +20,62 @@ function RecipeExpanded(props) {
 
   const [recipe, setRecipe] = useState({
     name: '',
-    ingredients: [],
+    ingredients: [
+      {
+        id: '',
+        name: '',
+        quantity: '',
+        quantityType: '',
+      },
+    ],
+  });
+  const [editMode, setEditMode] = useState(false);
+  const [error, setError] = useState({
+    errorMessage: '',
   });
 
   useEffect(() => {
-    const getRecipeData = async () => {
+    const getOneRecipeData = async () => {
       const recipeData = await getOneRecipe(recipeId);
 
       setRecipe(recipeData.data);
     };
 
-    getRecipeData();
+    getOneRecipeData();
   }, [recipeId]);
+
+  const handleEdit = async () => {
+    await setEditMode(true);
+  };
+
+  const handleCancel = async () => {
+    await setEditMode(false);
+  };
+
+  const handleChange = async (e) => {
+    const {name, value} = e.target;
+
+    setRecipe((prevValue) => {
+      return {
+        ...prevValue,
+        [name]: value,
+      };
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const response = await updateRecipe(recipe);
+
+    if (response.status === 204) {
+      await props.getRecipeData();
+    } else {
+      setError({
+        errorMessage: response,
+      });
+    }
+  };
 
   return !props.isLoggedIn ? (
     <Redirect to='/login' />
@@ -56,8 +103,9 @@ function RecipeExpanded(props) {
               <Grid container spacing={2}>
                 <Grid item xs={12} align='center'>
                   <RecipeName
-                    key={recipe.name + new Date()}
                     name={recipe.name}
+                    editMode={editMode}
+                    handleChange={handleChange}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -75,7 +123,7 @@ function RecipeExpanded(props) {
 
                       return (
                         <RecipeIngredientView
-                          key={ingredient.id}
+                          key={ingredient.name}
                           id={ingredient.id}
                           name={formatName}
                           quantity={ingredient.quantity}
@@ -84,6 +132,20 @@ function RecipeExpanded(props) {
                       );
                     })}
                   </List>
+                </Grid>
+                <Grid item xs={6}>
+                  <RecipeButton
+                    key={editMode + new Date()}
+                    editMode={editMode}
+                    handleEdit={handleEdit}
+                    handleCancel={handleCancel}
+                    handleSubmit={handleSubmit}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  {!isEmpty(error.errorMessage) && (
+                    <FormSubmitMessage submitMessage={error.errorMessage} />
+                  )}
                 </Grid>
               </Grid>
             </form>

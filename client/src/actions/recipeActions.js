@@ -65,3 +65,42 @@ export const getOneRecipe = async (recipeId) => {
     return err;
   }
 };
+
+// Update recipe
+export const updateRecipe = async (recipeData) => {
+  let error;
+
+  let name = recipeData.name;
+  let ingredients = recipeData.ingredients;
+
+  // Check to see if values are empty, and if so, convert them to empty strings
+  name = !isEmpty(name) ? name : '';
+  ingredients = !isEmpty(ingredients) ? ingredients : [];
+
+  // Check for valid name
+  if (isEmpty(name)) {
+    error = 'Please enter a name.';
+  }
+
+  // Check for valid ingredients
+  if (isEmpty(ingredients)) {
+    error = 'Please add one or more ingredients.';
+  }
+
+  if (!isEmpty(error)) {
+    return {
+      data: error,
+    };
+  } else {
+    try {
+      const token = cookies.get('user');
+      return await axios.put(`/api/recipes/${recipeData._id}`, recipeData, {
+        headers: {
+          Authorization: token,
+        },
+      });
+    } catch (err) {
+      return err.response.data;
+    }
+  }
+};

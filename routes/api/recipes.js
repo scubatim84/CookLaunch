@@ -99,26 +99,24 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// @route PUT api/recipes/:name
-// @desc Update one recipe by name if created by user
+// @route PUT api/recipes/:id
+// @desc Update one recipe by ID if created by user
 // @access Private
-router.put('/:name', async (req, res) => {
+router.put('/:id', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
   // Once user is found, find recipe if created by that user
   if (foundUser) {
     try {
-      const recipeName = _.lowerCase(req.params.name);
-
       const foundRecipe = await Recipe.findOne({
-        name: recipeName,
+        _id: req.params.id,
         createdBy: foundUser._id,
       });
 
       if (foundRecipe) {
         if (!isEmpty(req.body.name)) {
-          foundRecipe.name = _.lowerCase(req.body.name);
+          foundRecipe.name = req.body.name;
         }
 
         if (!isEmpty(req.body.ingredients)) {
@@ -127,15 +125,15 @@ router.put('/:name', async (req, res) => {
 
         await foundRecipe.save();
 
-        res.status(200).json(foundRecipe);
+        res.status(204).json(null);
       } else {
         res.status(400).json('fail');
       }
     } catch (err) {
-      res.status(204).json(err);
+      res.status(400).json(err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(400).json('No user found in database.');
   }
 });
 
@@ -156,7 +154,7 @@ router.delete('/:name', async (req, res) => {
         createdBy: foundUser._id,
       });
 
-      if (deletedRecipe.deletedCount == 1) {
+      if (deletedRecipe.deletedCount === 1) {
         res.status(200).json('success');
       } else {
         res.status(400).json('fail');

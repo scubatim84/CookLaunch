@@ -1,12 +1,23 @@
 import React from 'react';
-import {Typography} from '@material-ui/core';
+import {TextField} from '@material-ui/core';
+import CardTitle from '../CardTitle';
 
 function RecipeName(props) {
-  return (
-    <Typography component='h1' variant='h5'>
-      {props.name}
-    </Typography>
-  );
+  if (props.editMode) {
+    return (
+      <TextField
+        onChange={props.handleChange}
+        variant='outlined'
+        required
+        placeholder={props.name}
+        value={props.name}
+        id='name'
+        name='name'
+      />
+    );
+  } else {
+    return <CardTitle title={props.name} />;
+  }
 }
 
 export default RecipeName;

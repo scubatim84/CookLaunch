@@ -108,7 +108,13 @@ function App() {
   };
 
   const renderRecipe = () => {
-    return <RecipeExpanded isLoggedIn={isLoggedIn} />;
+    return (
+      <RecipeExpanded
+        key={recipes.data + new Date()}
+        isLoggedIn={isLoggedIn}
+        getRecipeData={getRecipeData}
+      />
+    );
   };
 
   const renderIngredients = () => {
