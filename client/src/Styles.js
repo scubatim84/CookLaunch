@@ -1,6 +1,20 @@
 import {makeStyles} from '@material-ui/core/styles';
+import LandingImage from './images/landing-bg.png';
+import LoginImage from './images/login-bg.png';
 
 export const useStylesMain = makeStyles((theme) => ({
+  landingBackground: {
+    backgroundImage: `url(${LandingImage})`,
+    backgroundPosition: '50%',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  },
+  loginBackground: {
+    backgroundImage: `url(${LoginImage})`,
+    backgroundPosition: '50%',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+  },
   footer: {
     width: '100%',
     position: 'fixed',
@@ -14,7 +28,7 @@ export const useStylesMain = makeStyles((theme) => ({
         : theme.palette.grey[800],
   },
   landingPosition: {
-    padding: '125px 0px 100px 20px',
+    padding: '75px 0px 100px 20px',
     marginLeft: '0px',
   },
   menuButton: {
@@ -55,9 +69,6 @@ export const useStylesForm = makeStyles((theme) => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(2),
-  },
-  submit: {
-    margin: theme.spacing(2),
   },
 }));
 

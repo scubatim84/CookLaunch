@@ -139,14 +139,13 @@ function RegisterForm(props) {
                   type='submit'
                   variant='contained'
                   color='primary'
-                  className={classes.submit}
                 >
                   Sign Up
                 </Button>
               </Grid>
             </Grid>
             <Grid container justify='flex-end' className={classes.form}>
-              <Grid item>
+              <Grid item xs={12}>
                 <Link href='/login' variant='body2'>
                   Already have an account? Sign in
                 </Link>

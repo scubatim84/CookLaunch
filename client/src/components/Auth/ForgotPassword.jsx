@@ -1,21 +1,24 @@
 import React from 'react';
 import ForgotPasswordForm from './ForgotPasswordForm';
-import {Grid} from '@material-ui/core';
+import {CardMedia, Grid} from '@material-ui/core';
+import {useStylesMain} from '../../Styles';
 
 function ForgotPassword() {
+  const classes = useStylesMain();
+
   return (
-    <div className='login-background background-image-full'>
+    <CardMedia className={classes.loginBackground}>
       <Grid
         container
         alignItems='center'
         justify='center'
         style={{minHeight: '100vh'}}
       >
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <ForgotPasswordForm />
         </Grid>
       </Grid>
-    </div>
+    </CardMedia>
   );
 }
 

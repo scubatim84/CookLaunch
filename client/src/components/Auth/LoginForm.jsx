@@ -97,7 +97,6 @@ function LoginForm(props) {
                   type='submit'
                   variant='contained'
                   color='primary'
-                  className={classes.submit}
                 >
                   Login
                 </Button>
