@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect, useParams} from 'react-router-dom';
-import {Button, Card, Link, List, Typography} from '@material-ui/core';
-import {useStylesForm} from '../../Styles';
+import {Button, Card, Grid, Link, List, Typography} from '@material-ui/core';
+import {useStylesForm, useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {getOneRecipe} from '../../actions/recipeActions';
-import Grid from '@material-ui/core/Grid';
 import _ from 'lodash';
 import RecipeIngredientView from './RecipeIngredientView';
 
 function RecipeExpanded(props) {
   const classes = useStylesForm(themeMain);
+  const mainClasses = useStylesMain(themeMain);
 
   const recipeId = useParams().id;
 
@@ -40,7 +40,7 @@ function RecipeExpanded(props) {
               fullWidth
               variant='contained'
               color='primary'
-              className={classes.submit}
+              className={mainClasses.submit}
             >
               Return To Dashboard
             </Button>
