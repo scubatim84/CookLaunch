@@ -44,7 +44,7 @@ function RecipeExpanded(props) {
     const getOneRecipeData = async () => {
       const recipeData = await getOneRecipe(recipeId);
 
-      setRecipe(recipeData.data);
+      await setRecipe(recipeData.data);
     };
 
     getOneRecipeData();
