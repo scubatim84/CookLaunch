@@ -86,8 +86,9 @@ function RecipeExpanded(props) {
   const handleUpdateIngredient = async (updateIngredient) => {
     // Filter out updated ingredient from list to remove old version
     const updatedIngredientList = recipe.ingredients.filter(
-      (ingredient) => ingredient._id !== updateIngredient.id
+      (ingredient) => ingredient._id !== updateIngredient._id
     );
+
     // Push new updated ingredient into updated array
     updatedIngredientList.push(updateIngredient);
 
@@ -175,7 +176,7 @@ function RecipeExpanded(props) {
 
                         return (
                           <RecipeIngredientView
-                            key={ingredient._id}
+                            key={ingredient._id + new Date()}
                             _id={ingredient._id}
                             name={formatName}
                             editMode={editMode}
