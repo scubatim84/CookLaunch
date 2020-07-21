@@ -79,7 +79,7 @@ function NavBar(props) {
                       onClose={handleClose}
                     >
                       <Link
-                        href='/addrecipe'
+                        href='/recipes/add'
                         color='textPrimary'
                         style={{textDecoration: 'none'}}
                       >
@@ -116,7 +116,6 @@ function NavBar(props) {
                   <Grid item>
                     <Brand />
                   </Grid>
-                  <Grid item></Grid>
                 </Grid>
               )}
             </Toolbar>

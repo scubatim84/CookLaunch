@@ -28,10 +28,11 @@ function RecipeExpanded(props) {
     name: '',
     ingredients: [
       {
-        id: '',
+        _id: '',
         name: '',
         quantity: '',
         quantityType: '',
+        dateLastChanged: '',
       },
     ],
   });
@@ -44,7 +45,7 @@ function RecipeExpanded(props) {
     const getOneRecipeData = async () => {
       const recipeData = await getOneRecipe(recipeId);
 
-      setRecipe(recipeData.data);
+      await setRecipe(recipeData.data);
     };
 
     getOneRecipeData();
@@ -71,6 +72,34 @@ function RecipeExpanded(props) {
     }
   };
 
+  const handleDeleteIngredient = async (ingredientId) => {
+    setRecipe((prevValue) => {
+      return {
+        ...prevValue,
+        ingredients: recipe.ingredients.filter(
+          (ingredient) => ingredient._id !== ingredientId
+        ),
+      };
+    });
+  };
+
+  const handleUpdateIngredient = async (updateIngredient) => {
+    // Filter out updated ingredient from list to remove old version
+    const updatedIngredientList = recipe.ingredients.filter(
+      (ingredient) => ingredient._id !== updateIngredient._id
+    );
+
+    // Push new updated ingredient into updated array
+    updatedIngredientList.push(updateIngredient);
+
+    setRecipe((prevValue) => {
+      return {
+        ...prevValue,
+        ingredients: updatedIngredientList,
+      };
+    });
+  };
+
   const handleChange = async (e) => {
     const {name, value} = e.target;
 
@@ -91,7 +120,7 @@ function RecipeExpanded(props) {
       await props.getRecipeData();
     } else {
       setError({
-        errorMessage: response,
+        errorMessage: response.data,
       });
     }
   };
@@ -147,11 +176,14 @@ function RecipeExpanded(props) {
 
                         return (
                           <RecipeIngredientView
-                            key={ingredient.name}
-                            id={ingredient.id}
+                            key={ingredient._id + new Date()}
+                            _id={ingredient._id}
                             name={formatName}
+                            editMode={editMode}
                             quantity={ingredient.quantity}
                             quantityType={formatQuantityType}
+                            handleDeleteIngredient={handleDeleteIngredient}
+                            handleUpdateIngredient={handleUpdateIngredient}
                           />
                         );
                       })}

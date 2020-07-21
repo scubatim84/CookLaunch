@@ -107,7 +107,7 @@ function App() {
     );
   };
 
-  const renderRecipe = () => {
+  const renderRecipeView = () => {
     return (
       <RecipeExpanded
         key={recipes.data + new Date()}
@@ -213,8 +213,8 @@ function App() {
           <Route exact path='/login' render={renderLogin} />
           <Route exact path='/dashboard' render={renderDashboard} />
           <Route exact path='/ingredients' render={renderIngredients} />
-          <Route exact path='/addrecipe' render={renderRecipeAdd} />
-          <Route exact path='/recipes/:id' render={renderRecipe} />
+          <Route exact path='/recipes/add' render={renderRecipeAdd} />
+          <Route exact path='/recipes/view/:id' render={renderRecipeView} />
           <Route exact path='/dashboard/pantry' render={renderPantry} />
           <Route exact path='/forgotpassword' component={ForgotPassword} />
           <Route exact path='/profile' render={renderProfile} />

@@ -20,7 +20,7 @@ function RecipeCard(props) {
       </CardContent>
       <CardActions>
         <Link
-          href={`/recipes/${props.id}`}
+          href={`/recipes/view/${props.id}`}
           color='textPrimary'
           style={{textDecoration: 'none'}}
         >
