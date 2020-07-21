@@ -16,6 +16,7 @@ import RecipeButton from './RecipeButton';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {Delete} from '@material-ui/icons';
+import RecipeIngredientAdd from './RecipeIngredientAdd';
 
 function RecipeExpanded(props) {
   const history = useHistory();
@@ -96,6 +97,15 @@ function RecipeExpanded(props) {
       return {
         ...prevValue,
         ingredients: updatedIngredientList,
+      };
+    });
+  };
+
+  const addIngredientToRecipe = async (ingredient) => {
+    setRecipe((prevValue) => {
+      return {
+        ...prevValue,
+        ingredients: [...recipe.ingredients, ingredient],
       };
     });
   };
@@ -189,6 +199,16 @@ function RecipeExpanded(props) {
                       })}
                     </List>
                   </Grid>
+                  {editMode && (
+                    <Grid item xs={12}>
+                      <RecipeIngredientAdd
+                        key={recipe.ingredients}
+                        addIngredientToRecipe={addIngredientToRecipe}
+                        ingredients={props.ingredients}
+                        recipeIngredients={recipe.ingredients}
+                      />
+                    </Grid>
+                  )}
                   <Grid
                     container
                     justify='space-between'
