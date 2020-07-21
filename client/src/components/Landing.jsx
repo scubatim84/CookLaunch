@@ -8,7 +8,7 @@ function Landing(props) {
 
   return (
     <CardMedia className={classes.landingBackground}>
-      <Grid container>
+      <Grid container style={{minHeight: '100vh'}}>
         <Grid item xs={12} sm={4} className={classes.landingPosition}>
           <RegisterForm
             handleLoggedIn={props.handleLoggedIn}
