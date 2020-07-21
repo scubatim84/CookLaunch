@@ -8,21 +8,18 @@ function Login(props) {
 
   return (
     <CardMedia className={classes.loginBackground}>
-      <Grid container>
-        <Grid
-          container
-          spacing={0}
-          alignItems='center'
-          justify='center'
-          style={{minHeight: '100vh'}}
-        >
-          <Grid item xs={12} sm={6}>
-            <LoginForm
-              key={props.isLoggedIn}
-              handleLoggedIn={props.handleLoggedIn}
-              isLoggedIn={props.isLoggedIn}
-            />
-          </Grid>
+      <Grid
+        container
+        alignItems='center'
+        justify='center'
+        style={{minHeight: '100vh'}}
+      >
+        <Grid item xs={12} sm={6}>
+          <LoginForm
+            key={props.isLoggedIn}
+            handleLoggedIn={props.handleLoggedIn}
+            isLoggedIn={props.isLoggedIn}
+          />
         </Grid>
       </Grid>
     </CardMedia>
