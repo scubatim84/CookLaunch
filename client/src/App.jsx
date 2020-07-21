@@ -113,6 +113,7 @@ function App() {
         key={recipes.data + new Date()}
         isLoggedIn={isLoggedIn}
         getRecipeData={getRecipeData}
+        ingredients={ingredients.data}
       />
     );
   };
