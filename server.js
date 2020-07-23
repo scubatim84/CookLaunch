@@ -30,6 +30,7 @@ app.use(passport.initialize());
 const authRoutes = require('./routes/api/auth');
 const userRoutes = require('./routes/api/user');
 const pantryRoutes = require('./routes/api/pantry');
+const groceriesRoutes = require('./routes/api/groceries');
 const recipeRoutes = require('./routes/api/recipes');
 const ingredientRoutes = require('./routes/api/ingredients');
 
@@ -48,6 +49,11 @@ app.use(
   '/api/pantry',
   passport.authenticate('jwt', {session: false}),
   pantryRoutes
+);
+app.use(
+  '/api/groceries',
+  passport.authenticate('jwt', {session: false}),
+  groceriesRoutes
 );
 app.use(
   '/api/recipes',

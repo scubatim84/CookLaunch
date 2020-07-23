@@ -27,6 +27,9 @@ const UserSchema = new Schema({
   pantry: {
     type: [IngredientSchema],
   },
+  groceries: {
+    type: [IngredientSchema],
+  },
   resetPasswordToken: {
     type: String,
   },
