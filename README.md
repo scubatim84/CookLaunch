@@ -7,8 +7,8 @@
 <p>User can add ingredients</p>
 <p>User pantry to track ingredients on hand</p>
 <p>User can add recipes</p>
-<h3>Planned</h3>
 <p>User can generate grocery list</p>
+<h3>Planned</h3>
 <p>Generated grocery list subtracts relevant pantry ingredients</p>
 
 <h2>Built With</h2>
