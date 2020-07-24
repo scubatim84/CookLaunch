@@ -17,6 +17,7 @@ import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {Delete} from '@material-ui/icons';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
+import {addIngredientToGroceries} from '../../actions/groceryActions';
 
 function RecipeExpanded(props) {
   const history = useHistory();
@@ -110,6 +111,22 @@ function RecipeExpanded(props) {
     });
   };
 
+  const addToGroceryList = async () => {
+    for (const ingredient of recipe.ingredients) {
+      const requestResponse = await addIngredientToGroceries(ingredient);
+
+      if (requestResponse.status !== 201) {
+        // If error encountered while adding ingredients to groceries, display
+        setError({
+          errorMessage: requestResponse.data,
+        });
+      }
+    }
+
+    // Update user payload to re-render grocery list
+    await props.getUserPayload();
+  };
+
   const handleChange = async (e) => {
     const {name, value} = e.target;
 
@@ -164,12 +181,22 @@ function RecipeExpanded(props) {
             <div className={classes.paper}>
               <form noValidate>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} align='center'>
+                  <Grid item xs={12} sm={8} align='center'>
                     <RecipeName
                       name={recipe.name}
                       editMode={editMode}
                       handleChange={handleChange}
                     />
+                  </Grid>
+                  <Grid item xs={12} sm={4} align='center'>
+                    <Button
+                      fullWidth
+                      variant='contained'
+                      color='primary'
+                      onClick={addToGroceryList}
+                    >
+                      Add To Grocery List
+                    </Button>
                   </Grid>
                   <Grid item xs={12}>
                     <CardTitle title='Recipe Ingredients' />
