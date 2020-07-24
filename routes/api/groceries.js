@@ -35,7 +35,17 @@ router.post('/', async (req, res) => {
   // Once user value is obtained, add ingredients to user's grocery list
   if (foundUser) {
     try {
-      foundUser.groceries.push(req.body);
+      // Check to see if ingredient is already in list
+      const foundIngredient = foundUser.groceries.find(
+        (ingredient) => ingredient.name === req.body.name
+      );
+
+      // If ingredient is already in list, add to quantity vs. add ingredient
+      if (foundIngredient) {
+        foundIngredient.quantity += req.body.quantity;
+      } else {
+        foundUser.groceries.push(req.body);
+      }
 
       await foundUser.save();
 

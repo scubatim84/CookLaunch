@@ -22,6 +22,7 @@ import RecipeAdd from './components/Recipes/RecipeAdd';
 import Grid from '@material-ui/core/Grid';
 import IngredientNames from './components/Ingredients/IngredientNames';
 import RecipeExpanded from './components/Recipes/RecipeExpanded';
+import Groceries from './components/Groceries';
 
 function App() {
   const classes = useStylesMain(themeMain);
@@ -36,6 +37,7 @@ function App() {
     firstName: '',
     lastName: '',
     pantry: [],
+    groceries: [],
   });
   const [ingredients, setIngredients] = useState({data: []});
   const [recipes, setRecipes] = useState({data: []});
@@ -61,6 +63,7 @@ function App() {
       firstName: requestResponse.authResponsePayload.firstName,
       lastName: requestResponse.authResponsePayload.lastName,
       pantry: requestResponse.authResponsePayload.pantry,
+      groceries: requestResponse.authResponsePayload.groceries,
     });
   };
 
@@ -114,6 +117,8 @@ function App() {
         isLoggedIn={isLoggedIn}
         getRecipeData={getRecipeData}
         ingredients={ingredients.data}
+        groceries={user.groceries}
+        getUserPayload={getUserPayload}
       />
     );
   };
@@ -176,6 +181,23 @@ function App() {
     );
   };
 
+  const renderGroceries = () => {
+    return (
+      <Groceries
+        key={user.groceries}
+        groceries={user.groceries}
+        ingredients={ingredients.data}
+        getUserPayload={getUserPayload}
+        getIngredientData={getIngredientData}
+        email={user.email}
+        firstName={user.firstName}
+        lastName={user.lastName}
+        handleLoggedIn={handleLoggedIn}
+        isLoggedIn={isLoggedIn}
+      />
+    );
+  };
+
   const renderResetPassword = () => {
     return (
       <ResetPasswordByEmail
@@ -216,6 +238,7 @@ function App() {
           <Route exact path='/ingredients' render={renderIngredients} />
           <Route exact path='/recipes/add' render={renderRecipeAdd} />
           <Route exact path='/recipes/view/:id' render={renderRecipeView} />
+          <Route exact path='/dashboard/groceries' render={renderGroceries} />
           <Route exact path='/dashboard/pantry' render={renderPantry} />
           <Route exact path='/forgotpassword' component={ForgotPassword} />
           <Route exact path='/profile' render={renderProfile} />

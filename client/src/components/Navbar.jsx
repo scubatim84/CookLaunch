@@ -106,7 +106,13 @@ function NavBar(props) {
                       >
                         <MenuItem>Pantry</MenuItem>
                       </Link>
-
+                      <Link
+                        href='/dashboard/groceries'
+                        color='textPrimary'
+                        style={{textDecoration: 'none'}}
+                      >
+                        <MenuItem>Grocery List</MenuItem>
+                      </Link>
                       <MenuItem onClick={handleLogout}>Logout</MenuItem>
                     </Menu>
                   </Grid>
