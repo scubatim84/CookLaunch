@@ -13,6 +13,7 @@ import {
 import {Cancel, Edit, Delete, Done} from '@material-ui/icons';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
+import {convert_units} from '../../actions/unitConversions';
 
 function IngredientItem(props) {
   const classes = useStylesForm(themeMain);
@@ -68,13 +69,27 @@ function IngredientItem(props) {
 
   const handleSelect = async (e) => {
     const value = e.target.value;
+    const oldValue = editIngredient.quantityType;
 
-    setEditIngredient((prevValue) => {
-      return {
-        ...prevValue,
-        quantityType: value,
-      };
-    });
+    const newQuantity = await convert_units(
+      editIngredient.quantity,
+      oldValue,
+      value
+    );
+
+    if (isNaN(newQuantity)) {
+      setError({
+        errorMessage: `You cannot convert ${oldValue} to ${value}.`,
+      });
+    } else {
+      setEditIngredient((prevValue) => {
+        return {
+          ...prevValue,
+          quantity: newQuantity,
+          quantityType: value,
+        };
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
