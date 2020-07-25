@@ -11,6 +11,9 @@ import {
 } from '@material-ui/core';
 import {ingredientQuantityTypes} from '../../actions/types';
 import {Cancel, Delete, Done, Edit} from '@material-ui/icons';
+import {convert_units} from '../../actions/unitConversions';
+import isEmpty from 'is-empty';
+import FormSubmitMessage from '../FormSubmitMessage';
 
 function RecipeIngredientView(props) {
   const classes = useStylesForm(themeMain);
@@ -22,6 +25,9 @@ function RecipeIngredientView(props) {
     quantityType: props.quantityType,
   });
   const [editMode, setEditMode] = useState(false);
+  const [error, setError] = useState({
+    errorMessage: '',
+  });
 
   useEffect(() => {
     setEditIngredient({
@@ -58,14 +64,28 @@ function RecipeIngredientView(props) {
 
   const handleSelect = async (e) => {
     const value = e.target.value;
+    const oldValue = editIngredient.quantityType;
 
-    setEditIngredient((prevValue) => {
-      return {
-        ...prevValue,
-        quantityType: value,
-        dateLastChanged: new Date(),
-      };
-    });
+    const newQuantity = await convert_units(
+      editIngredient.quantity,
+      oldValue,
+      value
+    );
+
+    if (isNaN(newQuantity)) {
+      setError({
+        errorMessage: `You cannot convert ${oldValue} to ${value}.`,
+      });
+    } else {
+      setEditIngredient((prevValue) => {
+        return {
+          ...prevValue,
+          quantity: newQuantity,
+          quantityType: value,
+          dateLastChanged: new Date(),
+        };
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -118,6 +138,11 @@ function RecipeIngredientView(props) {
           </Grid>
           <Grid item xs={12} sm={1}>
             <Cancel onClick={handleCancel} className='icon' />
+          </Grid>
+          <Grid item xs={12}>
+            {!isEmpty(error.errorMessage) && (
+              <FormSubmitMessage submitMessage={error.errorMessage} />
+            )}
           </Grid>
         </Grid>
       );

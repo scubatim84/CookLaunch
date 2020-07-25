@@ -2,6 +2,7 @@ let conversionAmounts = new Map();
 
 conversionAmounts['OuncesToPounds'] = 0.0625;
 conversionAmounts['PoundsToOunces'] = 16;
+conversionAmounts['PoundsToGrams'] = 453.592;
 conversionAmounts['GramsToOunces'] = 0.035274;
 conversionAmounts['OuncesToGrams'] = 28.3495;
 conversionAmounts['CupsToOunces'] = 8;
@@ -12,5 +13,5 @@ conversionAmounts['CupsToLiters'] = 0.236588;
 export const convert_units = async (quantity, type_one, type_two) => {
   const convertKey = `${type_one}To${type_two}`;
 
-  return conversionAmounts[convertKey] * quantity;
+  return (conversionAmounts[convertKey] * quantity).toFixed(2);
 };
