@@ -114,7 +114,15 @@ function RecipeExpanded(props) {
 
   const addToGroceryList = async () => {
     for (const ingredient of recipe.ingredients) {
-      const requestResponse = await addIngredientToGroceries(ingredient);
+      const {quantityNeeded} = getHaveNeedQuantities(ingredient);
+
+      const ingredientData = {
+        name: ingredient.name,
+        quantity: quantityNeeded,
+        quantityType: ingredient.quantityType,
+      };
+
+      const requestResponse = await addIngredientToGroceries(ingredientData);
 
       if (requestResponse.status !== 201) {
         // If error encountered while adding ingredients to groceries, display
@@ -126,6 +134,40 @@ function RecipeExpanded(props) {
 
     // Update user payload to re-render grocery list
     await props.getUserPayload();
+  };
+
+  const getHaveNeedQuantities = (ingredient) => {
+    const foundIngredient = props.pantry.find(
+      (pantryIngredient) =>
+        _.toLower(ingredient.name) === _.toLower(pantryIngredient.name)
+    );
+    let quantityNeeded;
+    let quantityHave = 0;
+
+    if (foundIngredient) {
+      /* If user has some of the ingredient needed, deduct it after converting to same quantity
+         type, but if pantry quantity > ingredient quantity then just show 0 as the amount needed */
+      quantityHave = foundIngredient.quantity;
+
+      if (foundIngredient.quantityType !== ingredient.quantityType) {
+        quantityHave = Math.round(
+          convert_units(
+            foundIngredient.quantity,
+            foundIngredient.quantityType,
+            ingredient.quantityType
+          )
+        );
+      }
+
+      quantityNeeded = Math.max(ingredient.quantity - quantityHave, 0);
+    } else {
+      quantityNeeded = ingredient.quantity;
+    }
+
+    return {
+      quantityNeeded: quantityNeeded,
+      quantityHave: quantityHave,
+    };
   };
 
   const handleChange = async (e) => {
@@ -226,39 +268,10 @@ function RecipeExpanded(props) {
                         const formatQuantityType = _.startCase(
                           _.toLower(ingredient.quantityType)
                         );
-                        const foundIngredient = props.pantry.find(
-                          (pantryIngredient) =>
-                            _.toLower(ingredient.name) ===
-                            _.toLower(pantryIngredient.name)
-                        );
-                        let quantityNeeded;
-                        let quantityHave = 0;
-
-                        if (foundIngredient) {
-                          /* If user has some of the ingredient needed, deduct it after converting to same quantity
-                             type, but if pantry quantity > ingredient quantity then just show 0 as the amount needed */
-                          quantityHave = foundIngredient.quantity;
-
-                          if (
-                            foundIngredient.quantityType !==
-                            ingredient.quantityType
-                          ) {
-                            quantityHave = Math.round(
-                              convert_units(
-                                foundIngredient.quantity,
-                                foundIngredient.quantityType,
-                                ingredient.quantityType
-                              )
-                            );
-                          }
-
-                          quantityNeeded = Math.max(
-                            ingredient.quantity - quantityHave,
-                            0
-                          );
-                        } else {
-                          quantityNeeded = ingredient.quantity;
-                        }
+                        const {
+                          quantityNeeded,
+                          quantityHave,
+                        } = getHaveNeedQuantities(ingredient);
 
                         return (
                           <RecipeIngredientView
