@@ -66,11 +66,7 @@ function RecipeIngredientView(props) {
     const value = e.target.value;
     const oldValue = editIngredient.quantityType;
 
-    const newQuantity = await convert_units(
-      editIngredient.quantity,
-      oldValue,
-      value
-    );
+    const newQuantity = convert_units(editIngredient.quantity, oldValue, value);
 
     if (isNaN(newQuantity)) {
       setError({
@@ -170,7 +166,7 @@ function RecipeIngredientView(props) {
   } else {
     return (
       <Grid container className={classes.root}>
-        <Grid item xs={12} sm={8}>
+        <Grid item xs={12} sm={6}>
           <Typography>{props.name}</Typography>
         </Grid>
         <Grid item xs={12} sm={1}>
@@ -178,6 +174,12 @@ function RecipeIngredientView(props) {
         </Grid>
         <Grid item xs={12} sm={3}>
           <Typography>{props.quantityType}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={1}>
+          <Typography>{props.quantityHave}</Typography>
+        </Grid>
+        <Grid item xs={12} sm={1}>
+          <Typography>{props.quantityNeeded}</Typography>
         </Grid>
       </Grid>
     );

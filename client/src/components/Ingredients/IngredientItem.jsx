@@ -71,11 +71,7 @@ function IngredientItem(props) {
     const value = e.target.value;
     const oldValue = editIngredient.quantityType;
 
-    const newQuantity = await convert_units(
-      editIngredient.quantity,
-      oldValue,
-      value
-    );
+    const newQuantity = convert_units(editIngredient.quantity, oldValue, value);
 
     if (isNaN(newQuantity)) {
       setError({
