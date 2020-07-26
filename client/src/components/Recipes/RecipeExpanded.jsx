@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect, useHistory, useParams} from 'react-router-dom';
-import {Button, Card, Grid, Link, List} from '@material-ui/core';
+import {Button, Card, Grid, Link, List, Typography} from '@material-ui/core';
 import {useStylesForm, useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
@@ -18,6 +18,7 @@ import FormSubmitMessage from '../FormSubmitMessage';
 import {Delete} from '@material-ui/icons';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
 import {addIngredientToGroceries} from '../../actions/groceryActions';
+import {convert_units} from '../../actions/unitConversions';
 
 function RecipeExpanded(props) {
   const history = useHistory();
@@ -201,6 +202,21 @@ function RecipeExpanded(props) {
                   <Grid item xs={12}>
                     <CardTitle title='Recipe Ingredients' />
                   </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography>Ingredient Name</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={1}>
+                    <Typography>Quant.</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={3}>
+                    <Typography>Type</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={1}>
+                    <Typography>Have</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={1}>
+                    <Typography>Need</Typography>
+                  </Grid>
                   <Grid item xs={12}>
                     <List className={classes.list}>
                       {recipe.ingredients.map((ingredient) => {
@@ -210,6 +226,39 @@ function RecipeExpanded(props) {
                         const formatQuantityType = _.startCase(
                           _.toLower(ingredient.quantityType)
                         );
+                        const foundIngredient = props.pantry.find(
+                          (pantryIngredient) =>
+                            _.toLower(ingredient.name) ===
+                            _.toLower(pantryIngredient.name)
+                        );
+                        let quantityNeeded;
+                        let quantityHave = 0;
+
+                        if (foundIngredient) {
+                          /* If user has some of the ingredient needed, deduct it after converting to same quantity
+                             type, but if pantry quantity > ingredient quantity then just show 0 as the amount needed */
+                          quantityHave = foundIngredient.quantity;
+
+                          if (
+                            foundIngredient.quantityType !==
+                            ingredient.quantityType
+                          ) {
+                            quantityHave = Math.round(
+                              convert_units(
+                                foundIngredient.quantity,
+                                foundIngredient.quantityType,
+                                ingredient.quantityType
+                              )
+                            );
+                          }
+
+                          quantityNeeded = Math.max(
+                            ingredient.quantity - quantityHave,
+                            0
+                          );
+                        } else {
+                          quantityNeeded = ingredient.quantity;
+                        }
 
                         return (
                           <RecipeIngredientView
@@ -218,6 +267,8 @@ function RecipeExpanded(props) {
                             name={formatName}
                             editMode={editMode}
                             quantity={ingredient.quantity}
+                            quantityNeeded={quantityNeeded}
+                            quantityHave={quantityHave}
                             quantityType={formatQuantityType}
                             handleDeleteIngredient={handleDeleteIngredient}
                             handleUpdateIngredient={handleUpdateIngredient}

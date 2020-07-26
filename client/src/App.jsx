@@ -118,6 +118,7 @@ function App() {
         getRecipeData={getRecipeData}
         ingredients={ingredients.data}
         groceries={user.groceries}
+        pantry={user.pantry}
         getUserPayload={getUserPayload}
       />
     );
