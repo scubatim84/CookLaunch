@@ -58,6 +58,10 @@ function IngredientItem(props) {
 
     if (updateRequired) {
       updateCheckIngredient();
+
+      return function cleanup() {
+        setUpdateRequired(false);
+      };
     }
   }, [editIngredient, updateRequired, props]);
 
@@ -201,17 +205,17 @@ function IngredientItem(props) {
             />
           </Grid>
           <Grid item xs={12} sm={5}>
-            <Typography>
+            <Typography component={'span'}>
               <div className='strikethrough'>{props.name}</div>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={1}>
-            <Typography>
+            <Typography component={'span'}>
               <div className='strikethrough'>{props.quantity}</div>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={3}>
-            <Typography>
+            <Typography component={'span'}>
               <div className='strikethrough'>{props.quantityType}</div>
             </Typography>
           </Grid>
