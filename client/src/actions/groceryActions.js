@@ -52,6 +52,8 @@ export const addIngredientToGroceries = async (ingredientData) => {
 export const updateIngredientInGroceries = async (ingredientData) => {
   let error;
 
+  console.log(ingredientData);
+
   let quantity = ingredientData.quantity;
   let quantityType = ingredientData.quantityType;
 

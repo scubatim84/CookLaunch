@@ -24,10 +24,11 @@ function IngredientItem(props) {
     name: props.name,
     quantity: props.quantity,
     quantityType: props.quantityType,
+    checked: props.checked,
   });
   const [editMode, setEditMode] = useState(false);
+  const [updateRequired, setUpdateRequired] = useState(false);
   const [groceryIngredient, setGroceryIngredient] = React.useState(false);
-  const [checked, setChecked] = React.useState(false);
   const [error, setError] = useState({
     errorMessage: '',
   });
@@ -38,10 +39,27 @@ function IngredientItem(props) {
       name: props.name,
       quantity: props.quantity,
       quantityType: props.quantityType,
+      checked: props.checked,
     });
 
     setGroceryIngredient(props.groceryIngredient);
   }, [props]);
+
+  useEffect(() => {
+    const updateCheckIngredient = async () => {
+      const response = await props.handleUpdateIngredient(editIngredient);
+
+      if (!isEmpty(response)) {
+        setError({
+          errorMessage: response,
+        });
+      }
+    };
+
+    if (updateRequired) {
+      updateCheckIngredient();
+    }
+  }, [editIngredient, updateRequired, props]);
 
   const handleDelete = async () => {
     const response = await props.handleDelete(props.id);
@@ -72,8 +90,17 @@ function IngredientItem(props) {
     });
   };
 
-  const handleCheck = (event) => {
-    setChecked(event.target.checked);
+  const handleCheck = async (event) => {
+    const isChecked = event.target.checked;
+
+    setEditIngredient((prevValue) => {
+      return {
+        ...prevValue,
+        checked: isChecked,
+      };
+    });
+
+    setUpdateRequired(true);
   };
 
   const handleSelect = async (e) => {
@@ -163,12 +190,12 @@ function IngredientItem(props) {
   }
 
   if (groceryIngredient) {
-    if (checked) {
+    if (editIngredient.checked) {
       return (
         <Grid container className={classes.root} alignItems='center'>
           <Grid item xs={12} sm={1}>
             <Checkbox
-              checked={checked}
+              checked={editIngredient.checked}
               onChange={handleCheck}
               color='primary'
             />
@@ -201,7 +228,7 @@ function IngredientItem(props) {
         <Grid container className={classes.root} alignItems='center'>
           <Grid item xs={12} sm={1}>
             <Checkbox
-              checked={checked}
+              checked={editIngredient.checked}
               onChange={handleCheck}
               color='primary'
             />

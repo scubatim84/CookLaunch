@@ -72,12 +72,15 @@ function Groceries(props) {
 
                   return (
                     <IngredientItem
-                      key={props.groceries[index].dateLastChanged}
+                      key={
+                        ingredient._id + props.groceries[index].dateLastChanged
+                      }
                       id={ingredient._id}
                       groceryIngredient={true}
                       name={formatName}
                       quantity={ingredient.quantity}
                       quantityType={formatQuantityType}
+                      checked={ingredient.checked}
                       handleDelete={handleDelete}
                       handleUpdateIngredient={handleUpdateIngredient}
                     />
