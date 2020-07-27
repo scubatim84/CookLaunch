@@ -8,8 +8,9 @@
 <p>User pantry to track ingredients on hand</p>
 <p>User can add recipes</p>
 <p>User can generate grocery list</p>
-<h3>Planned</h3>
 <p>Generated grocery list subtracts relevant pantry ingredients</p>
+<h3>Planned</h3>
+<p>Complete grocery list function to add grocery list items to pantry when shopping trip completed</p>
 
 <h2>Built With</h2>
   <ul>
