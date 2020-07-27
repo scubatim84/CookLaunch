@@ -4,6 +4,7 @@ import {
   Card,
   CardActions,
   CardContent,
+  Grid,
   Link,
   Typography,
 } from '@material-ui/core';
@@ -14,20 +15,22 @@ function RecipeCard(props) {
   const classes = useStylesForm(themeMain);
 
   return (
-    <Card className={classes.card}>
-      <CardContent>
-        <Typography color='textPrimary'>{props.name}</Typography>
-      </CardContent>
-      <CardActions>
-        <Link
-          href={`/recipes/view/${props.id}`}
-          color='textPrimary'
-          style={{textDecoration: 'none'}}
-        >
-          <Button size='small'>View Recipe</Button>
-        </Link>
-      </CardActions>
-    </Card>
+    <Grid item xs={12} sm={4} md={3}>
+      <Card className={classes.card}>
+        <CardContent>
+          <Typography color='textPrimary'>{props.name}</Typography>
+        </CardContent>
+        <CardActions>
+          <Link
+            href={`/recipes/view/${props.id}`}
+            color='textPrimary'
+            style={{textDecoration: 'none'}}
+          >
+            <Button size='small'>View Recipe</Button>
+          </Link>
+        </CardActions>
+      </Card>
+    </Grid>
   );
 }
 

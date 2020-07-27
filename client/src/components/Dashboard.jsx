@@ -18,13 +18,11 @@ function Dashboard(props) {
           const formatName = _.startCase(_.toLower(recipe.name));
 
           return (
-            <Grid item xs={12} sm={4} md={3}>
-              <RecipeCard
-                key={recipe._id + new Date()}
-                id={recipe._id}
-                name={formatName}
-              />
-            </Grid>
+            <RecipeCard
+              key={recipe._id + recipe.dateLastChanged}
+              id={recipe._id}
+              name={formatName}
+            />
           );
         })}
       </Grid>
