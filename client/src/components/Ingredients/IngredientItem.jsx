@@ -3,6 +3,7 @@ import {ingredientQuantityTypes} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
+  Checkbox,
   FormControl,
   Grid,
   MenuItem,
@@ -25,6 +26,8 @@ function IngredientItem(props) {
     quantityType: props.quantityType,
   });
   const [editMode, setEditMode] = useState(false);
+  const [groceryIngredient, setGroceryIngredient] = React.useState(false);
+  const [checked, setChecked] = React.useState(false);
   const [error, setError] = useState({
     errorMessage: '',
   });
@@ -36,6 +39,8 @@ function IngredientItem(props) {
       quantity: props.quantity,
       quantityType: props.quantityType,
     });
+
+    setGroceryIngredient(props.groceryIngredient);
   }, [props]);
 
   const handleDelete = async () => {
@@ -65,6 +70,10 @@ function IngredientItem(props) {
         [name]: value,
       };
     });
+  };
+
+  const handleCheck = (event) => {
+    setChecked(event.target.checked);
   };
 
   const handleSelect = async (e) => {
@@ -151,27 +160,91 @@ function IngredientItem(props) {
         </Grid>
       </Grid>
     );
-  } else {
-    return (
-      <Grid container className={classes.root}>
-        <Grid item xs={12} sm={6}>
-          <Typography>{props.name}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={1}>
-          <Typography>{props.quantity}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Typography>{props.quantityType}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={1}>
-          <Edit onClick={handleEdit} className='icon' />
-        </Grid>
-        <Grid item xs={12} sm={1}>
-          <Delete onClick={handleDelete} className='icon' />
-        </Grid>
-      </Grid>
-    );
   }
+
+  if (groceryIngredient) {
+    if (checked) {
+      return (
+        <Grid container className={classes.root} alignItems='center'>
+          <Grid item xs={12} sm={1}>
+            <Checkbox
+              checked={checked}
+              onChange={handleCheck}
+              color='primary'
+            />
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <Typography>
+              <div className='strikethrough'>{props.name}</div>
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Typography>
+              <div className='strikethrough'>{props.quantity}</div>
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <Typography>
+              <div className='strikethrough'>{props.quantityType}</div>
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Edit onClick={handleEdit} className='icon' />
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Delete onClick={handleDelete} className='icon' />
+          </Grid>
+        </Grid>
+      );
+    } else {
+      return (
+        <Grid container className={classes.root} alignItems='center'>
+          <Grid item xs={12} sm={1}>
+            <Checkbox
+              checked={checked}
+              onChange={handleCheck}
+              color='primary'
+            />
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <Typography>{props.name}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Typography>{props.quantity}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <Typography>{props.quantityType}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Edit onClick={handleEdit} className='icon' />
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Delete onClick={handleDelete} className='icon' />
+          </Grid>
+        </Grid>
+      );
+    }
+  }
+
+  return (
+    <Grid container className={classes.root}>
+      <Grid item xs={12} sm={6}>
+        <Typography>{props.name}</Typography>
+      </Grid>
+      <Grid item xs={12} sm={1}>
+        <Typography>{props.quantity}</Typography>
+      </Grid>
+      <Grid item xs={12} sm={3}>
+        <Typography>{props.quantityType}</Typography>
+      </Grid>
+      <Grid item xs={12} sm={1}>
+        <Edit onClick={handleEdit} className='icon' />
+      </Grid>
+      <Grid item xs={12} sm={1}>
+        <Delete onClick={handleDelete} className='icon' />
+      </Grid>
+    </Grid>
+  );
 }
 
 export default IngredientItem;
