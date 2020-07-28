@@ -22,7 +22,13 @@ function Groceries(props) {
     if (props.groceries && props.groceries.length > 0) {
       let rawGroceryList = props.groceries;
       let sortedGroceries = rawGroceryList.sort((a, b) => {
-        return a.name.localeCompare(b.name);
+        if (a.checked === true && b.checked === false) {
+          return 1;
+        } else if (b.checked === true && a.checked === false) {
+          return -1;
+        } else {
+          return a.name.localeCompare(b.name);
+        }
       });
 
       setGroceryList({data: sortedGroceries});
