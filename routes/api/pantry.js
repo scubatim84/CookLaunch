@@ -1,13 +1,11 @@
 require('dotenv').config();
 const express = require('express');
 const router = express.Router();
-const isEmpty = require('is-empty');
-const _ = require('lodash');
 
 // @route GET api/pantry
 // @desc Obtain ingredients in user's pantry
 // @access Private
-router.get('/', async (req, res) => {
+router.get('/', (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
@@ -29,7 +27,7 @@ router.get('/', async (req, res) => {
 // @route POST api/pantry
 // @desc Add ingredients to user's pantry
 // @access Private
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
@@ -38,7 +36,7 @@ router.post('/', async (req, res) => {
     try {
       foundUser.pantry.push(req.body);
 
-      await foundUser.save();
+      foundUser.save();
 
       res.status(201).json({
         message: 'success',
@@ -55,30 +53,23 @@ router.post('/', async (req, res) => {
 // @route PUT api/pantry/:name
 // @desc Update ingredient in user's pantry by name
 // @access Private
-router.put('/:name', async (req, res) => {
+router.put('/:name', (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
-  const updatedIngredient = req.body;
 
   // Once user is obtained, update ingredients in user's pantry
   if (foundUser) {
     try {
-      const currentIngredient = foundUser.pantry.find(
-        (ingredient) =>
-          _.lowerCase(ingredient.name) === _.lowerCase(req.params.name)
-      );
+      const updatedIngredient = {
+        name: req.body.name,
+        quantity: req.body.quantity,
+        quantityType: req.body.quantityType,
+      };
 
-      if (!isEmpty(updatedIngredient.quantity)) {
-        currentIngredient.quantity = updatedIngredient.quantity;
-      }
+      const foundIngredient = foundUser.pantry.id(req.body.id);
+      foundIngredient.set(updatedIngredient);
 
-      if (!isEmpty(updatedIngredient.quantityType)) {
-        currentIngredient.quantityType = updatedIngredient.quantityType;
-      }
-
-      currentIngredient.dateLastChanged = new Date();
-
-      await foundUser.save();
+      foundUser.save();
 
       res.status(204).json(null);
     } catch (err) {
@@ -92,7 +83,7 @@ router.put('/:name', async (req, res) => {
 // @route DELETE api/pantry/:name
 // @desc Delete ingredient from user's pantry by name
 // @access Private
-router.delete('/:name', async (req, res) => {
+router.delete('/:name', (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
@@ -100,7 +91,7 @@ router.delete('/:name', async (req, res) => {
   if (foundUser) {
     try {
       foundUser.pantry.remove(req.params.name);
-      await foundUser.save();
+      foundUser.save();
 
       res.status(204).json(null);
     } catch (err) {
