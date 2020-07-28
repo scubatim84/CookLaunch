@@ -85,7 +85,7 @@ function Pantry(props) {
 
                   return (
                     <IngredientItem
-                      key={ingredient.name}
+                      key={ingredient.name + ingredient.dateLastChanged}
                       id={ingredient._id}
                       name={formatName}
                       quantity={ingredient.quantity}
@@ -105,8 +105,10 @@ function Pantry(props) {
               <IngredientAdd
                 key={props.pantry}
                 name='Pantry'
+                pantry={props.pantry}
                 ingredients={props.ingredients}
                 handleAddIngredient={handleAddIngredient}
+                handleUpdateIngredient={handleUpdateIngredient}
               />
             </Grid>
           </div>

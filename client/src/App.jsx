@@ -130,6 +130,7 @@ function App() {
         <Grid item xs={12} sm={6} md={4}>
           <IngredientNames
             key={ingredients.data}
+            pantry={user.pantry}
             getIngredientData={getIngredientData}
             ingredients={ingredients.data}
             id={user.id}
@@ -187,6 +188,7 @@ function App() {
       <Groceries
         key={user.groceries}
         groceries={user.groceries}
+        pantry={user.pantry}
         ingredients={ingredients.data}
         getUserPayload={getUserPayload}
         getIngredientData={getIngredientData}

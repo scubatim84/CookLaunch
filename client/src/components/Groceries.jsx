@@ -115,6 +115,7 @@ function Groceries(props) {
               <IngredientAdd
                 key={props.groceries}
                 name='Groceries'
+                pantry={props.pantry}
                 ingredients={props.ingredients}
                 handleAddIngredient={handleAddIngredient}
               />

@@ -69,15 +69,26 @@ function IngredientNames(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await addIngredient(ingredient);
+    const foundIngredient = props.pantry.find(
+      (pantryIngredient) => pantryIngredient.name === ingredient.name
+    );
+    let requestResponse;
 
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      // If adding ingredient is successful, re-render ingredient list
-      props.getIngredientData();
-    } else {
+    if (foundIngredient) {
       setError({
-        errorMessage: requestResponse.authResponsePayload,
+        errorMessage: 'That ingredient already exists.',
       });
+    } else {
+      requestResponse = await addIngredient(ingredient);
+
+      if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+        // If adding ingredient is successful, re-render ingredient list
+        props.getIngredientData();
+      } else {
+        setError({
+          errorMessage: requestResponse.authResponsePayload,
+        });
+      }
     }
   };
 
