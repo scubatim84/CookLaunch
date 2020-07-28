@@ -2,8 +2,7 @@ import axios from 'axios';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
 
-// Add ingredient to pantry
-export const addIngredientToPantry = async (ingredientData) => {
+const validateIngredientData = (ingredientData) => {
   let error;
 
   let name = ingredientData.name;
@@ -30,6 +29,13 @@ export const addIngredientToPantry = async (ingredientData) => {
     error = 'Please enter a quantity type.';
   }
 
+  return error;
+};
+
+// Add ingredient to pantry
+export const addIngredientToPantry = async (ingredientData) => {
+  const error = validateIngredientData(ingredientData);
+
   if (!isEmpty(error)) {
     return {
       data: error,
@@ -50,24 +56,7 @@ export const addIngredientToPantry = async (ingredientData) => {
 
 // Update ingredient in pantry
 export const updateIngredientInPantry = async (ingredientData) => {
-  let error;
-
-  let quantity = ingredientData.quantity;
-  let quantityType = ingredientData.quantityType;
-
-  // Check to see if values are empty, and if so, convert them to empty strings
-  quantity = !isEmpty(quantity) ? quantity : '';
-  quantityType = !isEmpty(quantityType) ? quantityType : '';
-
-  // Check for valid quantity
-  if (isEmpty(quantity)) {
-    error = 'Please enter a quantity.';
-  }
-
-  // Check for valid quantity type
-  if (isEmpty(quantityType)) {
-    error = 'Please enter a quantity type.';
-  }
+  const error = validateIngredientData(ingredientData);
 
   if (!isEmpty(error)) {
     return {
