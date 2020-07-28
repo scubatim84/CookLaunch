@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const isEmpty = require('is-empty');
+const _ = require('lodash');
 
 // @route GET api/groceries
 // @desc Obtain ingredients in user's grocery list
@@ -37,7 +38,8 @@ router.post('/', async (req, res) => {
     try {
       // Check to see if ingredient is already in list
       const foundIngredient = foundUser.groceries.find(
-        (ingredient) => ingredient.name === req.body.name
+        (ingredient) =>
+          _.lowerCase(ingredient.name) === _.lowerCase(req.body.name)
       );
 
       // If ingredient is already in list, add to quantity vs. add ingredient

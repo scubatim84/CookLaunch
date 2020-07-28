@@ -48,7 +48,7 @@ function RecipeExpanded(props) {
     const getOneRecipeData = async () => {
       const recipeData = await getOneRecipe(recipeId);
 
-      await setRecipe(recipeData.data);
+      setRecipe(recipeData.data);
     };
 
     getOneRecipeData();
@@ -75,7 +75,7 @@ function RecipeExpanded(props) {
     }
   };
 
-  const handleDeleteIngredient = async (ingredientId) => {
+  const handleDeleteIngredient = (ingredientId) => {
     setRecipe((prevValue) => {
       return {
         ...prevValue,
@@ -86,7 +86,7 @@ function RecipeExpanded(props) {
     });
   };
 
-  const handleUpdateIngredient = async (updateIngredient) => {
+  const handleUpdateIngredient = (updateIngredient) => {
     // Filter out updated ingredient from list to remove old version
     const updatedIngredientList = recipe.ingredients.filter(
       (ingredient) => ingredient._id !== updateIngredient._id
@@ -103,7 +103,7 @@ function RecipeExpanded(props) {
     });
   };
 
-  const addIngredientToRecipe = async (ingredient) => {
+  const addIngredientToRecipe = (ingredient) => {
     setRecipe((prevValue) => {
       return {
         ...prevValue,

@@ -5,18 +5,28 @@ import IngredientAdd from './Ingredients/IngredientAdd';
 import IngredientItem from './Ingredients/IngredientItem';
 import {useStylesForm} from '../Styles';
 import {themeMain} from '../Theme';
-import {Card, Container, Grid} from '@material-ui/core';
+import {Button, Card, Container, Grid} from '@material-ui/core';
 import CardTitle from './CardTitle';
 import {
   addIngredientToGroceries,
   deleteIngredientFromGroceries,
   updateIngredientInGroceries,
 } from '../actions/groceryActions';
+import {convert_units} from '../actions/unitConversions';
+import isEmpty from 'is-empty';
+import FormSubmitMessage from './FormSubmitMessage';
+import {
+  addIngredientToPantry,
+  updateIngredientInPantry,
+} from '../actions/pantryActions';
 
 function Groceries(props) {
   const classes = useStylesForm(themeMain);
 
   const [groceryList, setGroceryList] = useState({data: []});
+  const [error, setError] = useState({
+    errorMessage: '',
+  });
 
   useEffect(() => {
     if (props.groceries && props.groceries.length > 0) {
@@ -71,6 +81,75 @@ function Groceries(props) {
     }
   };
 
+  const handleAddGroceryListToPantry = async () => {
+    for (const groceryIngredient of groceryList.data) {
+      if (groceryIngredient.checked !== true) {
+        continue;
+      }
+
+      const foundIngredient = props.pantry.find(
+        (ingredient) =>
+          _.lowerCase(ingredient.name) === _.lowerCase(groceryIngredient.name)
+      );
+
+      if (foundIngredient) {
+        /* Convert grocery ingredient quantity to pantry quantity using
+           the convert_units function because quantity types could be
+           different between grocery list and pantry */
+        const oldQuantityType = groceryIngredient.quantityType;
+        const newQuantityType = foundIngredient.quantityType;
+        const quantity = groceryIngredient.quantity;
+
+        let newQuantity = parseFloat(
+          convert_units(quantity, oldQuantityType, newQuantityType)
+        );
+        /* Once the grocery ingredient quantity is converted, add existing
+           pantry quantity to value prior to updating pantry */
+        newQuantity += foundIngredient.quantity;
+
+        if (isNaN(newQuantity)) {
+          setError({
+            errorMessage: `You cannot convert ${oldQuantityType} to ${newQuantityType}.`,
+          });
+        } else {
+          const ingredientData = {
+            id: foundIngredient._id,
+            name: foundIngredient.name,
+            quantity: newQuantity,
+            quantityType: newQuantityType,
+          };
+
+          const response = await updateIngredientInPantry(ingredientData);
+
+          if (response.status === 204) {
+            // Once ingredient is updated in pantry, remove from grocery list
+            await deleteIngredientFromGroceries(groceryIngredient._id);
+          } else {
+            // If request failed, return error message
+            setError({
+              errorMessage: response.data,
+            });
+          }
+        }
+      } else {
+        const response = await addIngredientToPantry(groceryIngredient);
+
+        if (response.status === 201) {
+          // Once ingredient is added in pantry, remove from grocery list
+          await deleteIngredientFromGroceries(groceryIngredient._id);
+        } else {
+          // If request failed, return error message
+          setError({
+            errorMessage: response.data,
+          });
+        }
+      }
+    }
+
+    // Update user payload to re-render grocery list once function completes
+    await props.getUserPayload();
+  };
+
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
   } else {
@@ -105,6 +184,21 @@ function Groceries(props) {
                     />
                   );
                 })}
+              </Grid>
+              <Grid item xs={12} align='center'>
+                <Button
+                  onClick={handleAddGroceryListToPantry}
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                >
+                  Complete Shopping Trip
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                {!isEmpty(error.errorMessage) && (
+                  <FormSubmitMessage submitMessage={error.errorMessage} />
+                )}
               </Grid>
             </Grid>
           </div>
