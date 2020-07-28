@@ -66,7 +66,7 @@ export const updateIngredientInPantry = async (ingredientData) => {
     try {
       const token = cookies.get('user');
       return await axios.put(
-        `/api/pantry/${ingredientData.name}`,
+        `/api/pantry/${ingredientData.id}`,
         ingredientData,
         {
           headers: {

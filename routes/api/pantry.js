@@ -50,10 +50,10 @@ router.post('/', (req, res) => {
   }
 });
 
-// @route PUT api/pantry/:name
-// @desc Update ingredient in user's pantry by name
+// @route PUT api/pantry/:id
+// @desc Update ingredient in user's pantry by ID
 // @access Private
-router.put('/:name', (req, res) => {
+router.put('/:id', (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
@@ -64,9 +64,10 @@ router.put('/:name', (req, res) => {
         name: req.body.name,
         quantity: req.body.quantity,
         quantityType: req.body.quantityType,
+        dateLastChanged: new Date(),
       };
 
-      const foundIngredient = foundUser.pantry.id(req.body.id);
+      const foundIngredient = foundUser.pantry.id(req.params.id);
       foundIngredient.set(updatedIngredient);
 
       foundUser.save();
