@@ -21,6 +21,7 @@ import CardTitle from '../CardTitle';
 function IngredientNames(props) {
   const classes = useStylesForm(themeMain);
 
+  const [ingredientList, setIngredientList] = useState({data: []});
   const [ingredient, setIngredient] = useState({
     name: '',
     createdBy: '',
@@ -36,7 +37,16 @@ function IngredientNames(props) {
         createdBy: props.id,
       };
     });
-  }, [props.id]);
+
+    if (props.ingredients && props.ingredients.length > 0) {
+      let rawIngredientList = props.ingredients;
+      let sortedIngredients = rawIngredientList.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+
+      setIngredientList({data: sortedIngredients});
+    }
+  }, [props.id, props.ingredients]);
 
   const handleChange = async (e) => {
     const {name, value} = e.target;
@@ -59,15 +69,26 @@ function IngredientNames(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await addIngredient(ingredient);
+    const foundIngredient = props.pantry.find(
+      (pantryIngredient) => pantryIngredient.name === ingredient.name
+    );
+    let requestResponse;
 
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
-      // If adding ingredient is successful, re-render ingredient list
-      props.getIngredientData();
-    } else {
+    if (foundIngredient) {
       setError({
-        errorMessage: requestResponse.authResponsePayload,
+        errorMessage: 'That ingredient already exists.',
       });
+    } else {
+      requestResponse = await addIngredient(ingredient);
+
+      if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+        // If adding ingredient is successful, re-render ingredient list
+        props.getIngredientData();
+      } else {
+        setError({
+          errorMessage: requestResponse.authResponsePayload,
+        });
+      }
     }
   };
 
@@ -80,7 +101,7 @@ function IngredientNames(props) {
           <div className={classes.paper}>
             <CardTitle title='Ingredients For Recipes' />
             <List className={classes.list}>
-              {props.ingredients.map((ingredient) => {
+              {ingredientList.data.map((ingredient) => {
                 const formatName = _.startCase(_.toLower(ingredient.name));
 
                 return (

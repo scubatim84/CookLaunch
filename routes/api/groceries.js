@@ -82,6 +82,10 @@ router.put('/:id', async (req, res) => {
         currentIngredient.quantityType = updatedIngredient.quantityType;
       }
 
+      if (!isEmpty(updatedIngredient.checked)) {
+        currentIngredient.checked = updatedIngredient.checked;
+      }
+
       currentIngredient.dateLastChanged = new Date();
 
       await foundUser.save();

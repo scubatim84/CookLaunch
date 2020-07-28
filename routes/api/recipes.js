@@ -122,6 +122,8 @@ router.put('/:id', async (req, res) => {
           foundRecipe.ingredients = req.body.ingredients;
         }
 
+        foundRecipe.dateLastChanged = new Date();
+
         await foundRecipe.save();
 
         res.status(204).json(null);

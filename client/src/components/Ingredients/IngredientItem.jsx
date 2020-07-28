@@ -3,6 +3,7 @@ import {ingredientQuantityTypes} from '../../actions/types';
 import {useStylesForm} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
+  Checkbox,
   FormControl,
   Grid,
   MenuItem,
@@ -23,8 +24,11 @@ function IngredientItem(props) {
     name: props.name,
     quantity: props.quantity,
     quantityType: props.quantityType,
+    checked: props.checked,
   });
   const [editMode, setEditMode] = useState(false);
+  const [updateRequired, setUpdateRequired] = useState(false);
+  const [groceryIngredient, setGroceryIngredient] = React.useState(false);
   const [error, setError] = useState({
     errorMessage: '',
   });
@@ -35,8 +39,31 @@ function IngredientItem(props) {
       name: props.name,
       quantity: props.quantity,
       quantityType: props.quantityType,
+      checked: props.checked,
     });
+
+    setGroceryIngredient(props.groceryIngredient);
   }, [props]);
+
+  useEffect(() => {
+    const updateCheckIngredient = async () => {
+      const response = await props.handleUpdateIngredient(editIngredient);
+
+      if (!isEmpty(response)) {
+        setError({
+          errorMessage: response,
+        });
+      }
+    };
+
+    if (updateRequired) {
+      updateCheckIngredient();
+
+      return function cleanup() {
+        setUpdateRequired(false);
+      };
+    }
+  }, [editIngredient, updateRequired, props]);
 
   const handleDelete = async () => {
     const response = await props.handleDelete(props.id);
@@ -65,6 +92,19 @@ function IngredientItem(props) {
         [name]: value,
       };
     });
+  };
+
+  const handleCheck = async (event) => {
+    const isChecked = event.target.checked;
+
+    setEditIngredient((prevValue) => {
+      return {
+        ...prevValue,
+        checked: isChecked,
+      };
+    });
+
+    setUpdateRequired(true);
   };
 
   const handleSelect = async (e) => {
@@ -151,27 +191,91 @@ function IngredientItem(props) {
         </Grid>
       </Grid>
     );
-  } else {
-    return (
-      <Grid container className={classes.root}>
-        <Grid item xs={12} sm={6}>
-          <Typography>{props.name}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={1}>
-          <Typography>{props.quantity}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Typography>{props.quantityType}</Typography>
-        </Grid>
-        <Grid item xs={12} sm={1}>
-          <Edit onClick={handleEdit} className='icon' />
-        </Grid>
-        <Grid item xs={12} sm={1}>
-          <Delete onClick={handleDelete} className='icon' />
-        </Grid>
-      </Grid>
-    );
   }
+
+  if (groceryIngredient) {
+    if (editIngredient.checked) {
+      return (
+        <Grid container className={classes.root} alignItems='center'>
+          <Grid item xs={12} sm={1}>
+            <Checkbox
+              checked={editIngredient.checked}
+              onChange={handleCheck}
+              color='primary'
+            />
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <Typography component={'span'}>
+              <div className='strikethrough'>{props.name}</div>
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Typography component={'span'}>
+              <div className='strikethrough'>{props.quantity}</div>
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <Typography component={'span'}>
+              <div className='strikethrough'>{props.quantityType}</div>
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Edit onClick={handleEdit} className='icon' />
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Delete onClick={handleDelete} className='icon' />
+          </Grid>
+        </Grid>
+      );
+    } else {
+      return (
+        <Grid container className={classes.root} alignItems='center'>
+          <Grid item xs={12} sm={1}>
+            <Checkbox
+              checked={editIngredient.checked}
+              onChange={handleCheck}
+              color='primary'
+            />
+          </Grid>
+          <Grid item xs={12} sm={5}>
+            <Typography>{props.name}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Typography>{props.quantity}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <Typography>{props.quantityType}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Edit onClick={handleEdit} className='icon' />
+          </Grid>
+          <Grid item xs={12} sm={1}>
+            <Delete onClick={handleDelete} className='icon' />
+          </Grid>
+        </Grid>
+      );
+    }
+  }
+
+  return (
+    <Grid container className={classes.root}>
+      <Grid item xs={12} sm={6}>
+        <Typography>{props.name}</Typography>
+      </Grid>
+      <Grid item xs={12} sm={1}>
+        <Typography>{props.quantity}</Typography>
+      </Grid>
+      <Grid item xs={12} sm={3}>
+        <Typography>{props.quantityType}</Typography>
+      </Grid>
+      <Grid item xs={12} sm={1}>
+        <Edit onClick={handleEdit} className='icon' />
+      </Grid>
+      <Grid item xs={12} sm={1}>
+        <Delete onClick={handleDelete} className='icon' />
+      </Grid>
+    </Grid>
+  );
 }
 
 export default IngredientItem;

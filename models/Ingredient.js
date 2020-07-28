@@ -20,6 +20,10 @@ const IngredientSchema = new Schema({
     type: Date,
     default: new Date(),
   },
+  checked: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Ingredient = mongoose.model('ingredient', IngredientSchema);

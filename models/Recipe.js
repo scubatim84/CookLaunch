@@ -16,6 +16,10 @@ const RecipeSchema = new Schema({
     type: String,
     required: true,
   },
+  dateLastChanged: {
+    type: Date,
+    default: new Date(),
+  },
 });
 
 const Recipe = mongoose.model('recipe', RecipeSchema);

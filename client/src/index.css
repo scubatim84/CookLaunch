@@ -8,3 +8,7 @@
 .icon:hover {
   color: var(--light);
 }
+
+.strikethrough {
+  text-decoration: line-through;
+}

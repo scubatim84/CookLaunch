@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
 import IngredientAdd from './Ingredients/IngredientAdd';
@@ -15,6 +15,25 @@ import {
 
 function Groceries(props) {
   const classes = useStylesForm(themeMain);
+
+  const [groceryList, setGroceryList] = useState({data: []});
+
+  useEffect(() => {
+    if (props.groceries && props.groceries.length > 0) {
+      let rawGroceryList = props.groceries;
+      let sortedGroceries = rawGroceryList.sort((a, b) => {
+        if (a.checked === true && b.checked === false) {
+          return 1;
+        } else if (b.checked === true && a.checked === false) {
+          return -1;
+        } else {
+          return a.name.localeCompare(b.name);
+        }
+      });
+
+      setGroceryList({data: sortedGroceries});
+    }
+  }, [props.groceries]);
 
   const handleDelete = async (ingredientId) => {
     const requestResponse = await deleteIngredientFromGroceries(ingredientId);
@@ -64,7 +83,7 @@ function Groceries(props) {
                 <CardTitle title={`${props.firstName}'s Grocery List`} />
               </Grid>
               <Grid item xs={12}>
-                {props.groceries.map((ingredient, index) => {
+                {groceryList.data.map((ingredient, index) => {
                   const formatName = _.startCase(_.toLower(ingredient.name));
                   const formatQuantityType = _.startCase(
                     _.toLower(ingredient.quantityType)
@@ -72,11 +91,15 @@ function Groceries(props) {
 
                   return (
                     <IngredientItem
-                      key={props.groceries[index].dateLastChanged}
+                      key={
+                        ingredient._id + props.groceries[index].dateLastChanged
+                      }
                       id={ingredient._id}
+                      groceryIngredient={true}
                       name={formatName}
                       quantity={ingredient.quantity}
                       quantityType={formatQuantityType}
+                      checked={ingredient.checked}
                       handleDelete={handleDelete}
                       handleUpdateIngredient={handleUpdateIngredient}
                     />
@@ -92,6 +115,7 @@ function Groceries(props) {
               <IngredientAdd
                 key={props.groceries}
                 name='Groceries'
+                pantry={props.pantry}
                 ingredients={props.ingredients}
                 handleAddIngredient={handleAddIngredient}
               />

@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const isEmpty = require('is-empty');
+const _ = require('lodash');
 
 // @route GET api/pantry
 // @desc Obtain ingredients in user's pantry
@@ -51,10 +52,10 @@ router.post('/', async (req, res) => {
   }
 });
 
-// @route PUT api/pantry/:id
-// @desc Update ingredient in user's pantry by id
+// @route PUT api/pantry/:name
+// @desc Update ingredient in user's pantry by name
 // @access Private
-router.put('/:id', async (req, res) => {
+router.put('/:name', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
   const updatedIngredient = req.body;
@@ -62,7 +63,10 @@ router.put('/:id', async (req, res) => {
   // Once user is obtained, update ingredients in user's pantry
   if (foundUser) {
     try {
-      const currentIngredient = foundUser.pantry.id(req.params.id);
+      const currentIngredient = foundUser.pantry.find(
+        (ingredient) =>
+          _.lowerCase(ingredient.name) === _.lowerCase(req.params.name)
+      );
 
       if (!isEmpty(updatedIngredient.quantity)) {
         currentIngredient.quantity = updatedIngredient.quantity;
@@ -85,17 +89,17 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// @route DELETE api/pantry/:id
-// @desc Delete ingredient from user's pantry by id
+// @route DELETE api/pantry/:name
+// @desc Delete ingredient from user's pantry by name
 // @access Private
-router.delete('/:id', async (req, res) => {
+router.delete('/:name', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
   // Once user is found, delete ingredients from user's pantry
   if (foundUser) {
     try {
-      foundUser.pantry.remove(req.params.id);
+      foundUser.pantry.remove(req.params.name);
       await foundUser.save();
 
       res.status(204).json(null);
