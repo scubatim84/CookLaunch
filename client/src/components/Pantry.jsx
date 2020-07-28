@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
 import {
@@ -15,6 +15,19 @@ import CardTitle from './CardTitle';
 
 function Pantry(props) {
   const classes = useStylesForm(themeMain);
+
+  const [pantry, setPantry] = useState({data: []});
+
+  useEffect(() => {
+    if (props.pantry && props.pantry.length > 0) {
+      let rawPantryList = props.pantry;
+      let sortedPantry = rawPantryList.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+
+      setPantry({data: sortedPantry});
+    }
+  }, [props.pantry]);
 
   const handleDelete = async (ingredientId) => {
     const requestResponse = await deleteIngredientFromPantry(ingredientId);
@@ -64,7 +77,7 @@ function Pantry(props) {
                 <CardTitle title={`${props.firstName}'s Pantry`} />
               </Grid>
               <Grid item xs={12}>
-                {props.pantry.map((ingredient, index) => {
+                {pantry.data.map((ingredient) => {
                   const formatName = _.startCase(_.toLower(ingredient.name));
                   const formatQuantityType = _.startCase(
                     _.toLower(ingredient.quantityType)
@@ -72,7 +85,7 @@ function Pantry(props) {
 
                   return (
                     <IngredientItem
-                      key={props.pantry[index].dateLastChanged}
+                      key={ingredient.name}
                       id={ingredient._id}
                       name={formatName}
                       quantity={ingredient.quantity}
