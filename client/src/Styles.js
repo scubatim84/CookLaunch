@@ -3,6 +3,9 @@ import LandingImage from './images/landing-bg.png';
 import LoginImage from './images/login-bg.png';
 
 export const useStylesMain = makeStyles((theme) => ({
+  buttonMargin: {
+    marginBottom: theme.spacing(1),
+  },
   landingBackground: {
     backgroundImage: `url(${LandingImage})`,
     backgroundPosition: '50%',
@@ -31,12 +34,23 @@ export const useStylesMain = makeStyles((theme) => ({
     padding: '75px 0px 100px 20px',
     marginLeft: '0px',
   },
+  maxWidth: {
+    width: '100%',
+  },
   menuButton: {
     marginRight: theme.spacing(5),
   },
+  paper: {
+    margin: theme.spacing(2, 2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  recipeCard: {
+    margin: theme.spacing(2, 2, 2),
+  },
   root: {
     display: 'flex',
-    width: '100%',
   },
   submit: {
     margin: theme.spacing(2, 2, 1),
@@ -59,16 +73,6 @@ export const useStylesForm = makeStyles((theme) => ({
     width: '100%',
     maxHeight: 300,
     overflow: 'auto',
-  },
-  paper: {
-    margin: theme.spacing(2, 2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  form: {
-    width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing(2),
   },
 }));
 
