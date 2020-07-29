@@ -101,12 +101,20 @@ function App() {
 
   const renderRecipeAdd = () => {
     return (
-      <RecipeAdd
-        key={recipes.data}
-        getRecipeData={getRecipeData}
-        ingredients={ingredients.data}
-        isLoggedIn={isLoggedIn}
-      />
+      <Grid
+        container
+        style={{minHeight: '100vh'}}
+        className={classes.ingredientMargin}
+      >
+        <Grid item xs={12} align='center'>
+          <RecipeAdd
+            key={recipes.data}
+            getRecipeData={getRecipeData}
+            ingredients={ingredients.data}
+            isLoggedIn={isLoggedIn}
+          />
+        </Grid>
+      </Grid>
     );
   };
 

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect, useHistory, useParams} from 'react-router-dom';
 import {Button, Card, Grid, Link, List, Typography} from '@material-ui/core';
-import {useStylesForm, useStylesMain} from '../../Styles';
+import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
   deleteRecipe,
@@ -22,8 +22,7 @@ import {convert_units} from '../../actions/unitConversions';
 
 function RecipeExpanded(props) {
   const history = useHistory();
-  const classes = useStylesForm(themeMain);
-  const mainClasses = useStylesMain(themeMain);
+  const classes = useStylesMain(themeMain);
 
   const recipeId = useParams().id;
 
@@ -212,7 +211,6 @@ function RecipeExpanded(props) {
                 fullWidth
                 variant='contained'
                 color='primary'
-                className={mainClasses.submit}
               >
                 Return To Dashboard
               </Button>

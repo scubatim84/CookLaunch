@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useStylesForm} from '../../Styles';
-import {themeMain} from '../../Theme';
 import {
   FormControl,
   Grid,
@@ -16,8 +14,6 @@ import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 
 function RecipeIngredientView(props) {
-  const classes = useStylesForm(themeMain);
-
   const [editIngredient, setEditIngredient] = useState({
     _id: props._id,
     name: props.name,
@@ -93,7 +89,7 @@ function RecipeIngredientView(props) {
   if (props.editMode) {
     if (editMode) {
       return (
-        <Grid container spacing={3} className={classes.root}>
+        <Grid container alignItems='center'>
           <Grid item xs={12} sm={5}>
             <Typography>{props.name}</Typography>
           </Grid>
@@ -144,7 +140,7 @@ function RecipeIngredientView(props) {
       );
     } else {
       return (
-        <Grid container className={classes.root}>
+        <Grid container alignItems='center'>
           <Grid item xs={12} sm={6}>
             <Typography>{props.name}</Typography>
           </Grid>
@@ -165,7 +161,7 @@ function RecipeIngredientView(props) {
     }
   } else {
     return (
-      <Grid container className={classes.root}>
+      <Grid container alignItems='center'>
         <Grid item xs={12} sm={6}>
           <Typography>{props.name}</Typography>
         </Grid>

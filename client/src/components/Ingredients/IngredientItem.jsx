@@ -138,7 +138,7 @@ function IngredientItem(props) {
 
   if (editMode) {
     return (
-      <Grid container>
+      <Grid container alignItems='center'>
         <Grid item xs={5}>
           <Typography>{props.name}</Typography>
         </Grid>
@@ -254,7 +254,7 @@ function IngredientItem(props) {
   }
 
   return (
-    <Grid container>
+    <Grid container alignItems='center'>
       <Grid item xs={6}>
         <Typography>{props.name}</Typography>
       </Grid>

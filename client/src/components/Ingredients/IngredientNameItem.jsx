@@ -63,7 +63,7 @@ function IngredientNameItem(props) {
 
   if (editMode) {
     return (
-      <Grid container>
+      <Grid container alignItems='center'>
         <Grid item xs={9}>
           <TextField
             onChange={handleChange}
@@ -90,7 +90,7 @@ function IngredientNameItem(props) {
     );
   } else {
     return (
-      <Grid container>
+      <Grid container alignItems='center'>
         <Grid item xs={9}>
           <ListItem dense={true} alignItems='flex-start'>
             <ListItemText primary={props.name} />

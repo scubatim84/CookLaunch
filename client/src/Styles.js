@@ -48,6 +48,11 @@ export const useStylesMain = makeStyles((theme) => ({
     maxHeight: 300,
     overflow: 'auto',
   },
+  listRecipeAdd: {
+    width: '100%',
+    maxHeight: 200,
+    overflow: 'auto',
+  },
   maxWidth: {
     width: '100%',
   },
@@ -69,6 +74,8 @@ export const useStylesMain = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
   },
   recipeCard: {
+    height: 100,
+    width: 200,
     margin: theme.spacing(2, 2, 2),
   },
   root: {
@@ -80,16 +87,5 @@ export const useStylesMain = makeStyles((theme) => ({
   title: {
     marginBottom: theme.spacing(1),
     flexGrow: 1,
-  },
-}));
-
-export const useStylesForm = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    margin: theme.spacing(2, 2, 2),
-  },
-  card: {
-    width: 200,
-    height: 100,
   },
 }));
