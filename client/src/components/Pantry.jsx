@@ -73,8 +73,8 @@ function Pantry(props) {
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Card>
-              <Grid className={classes.paper}>
-                <Grid container>
+              <div className={classes.paper}>
+                <Grid container spacing={2}>
                   <Grid item xs={12} align='center'>
                     <CardTitle title={`${props.firstName}'s Pantry`} />
                   </Grid>
@@ -103,7 +103,7 @@ function Pantry(props) {
                     })}
                   </List>
                 </Grid>
-              </Grid>
+              </div>
             </Card>
           </Grid>
           <Grid item xs={12}>
