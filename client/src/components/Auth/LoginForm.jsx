@@ -3,7 +3,7 @@ import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {loginUser} from '../../actions/authActions';
-import {useStylesForm} from '../../Styles';
+import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
   Button,
@@ -16,7 +16,7 @@ import {
 import CardTitle from '../CardTitle';
 
 function LoginForm(props) {
-  const classes = useStylesForm(themeMain);
+  const classes = useStylesMain(themeMain);
 
   const [login, setLogin] = useState({
     email: '',
@@ -59,9 +59,11 @@ function LoginForm(props) {
       <Container component='main' maxWidth='xs'>
         <Card>
           <Grid className={classes.paper}>
-            <CardTitle title='Sign In Here' />
-            <form className={classes.form} noValidate>
+            <form noValidate>
               <Grid container spacing={2}>
+                <Grid item xs={12} align='center'>
+                  <CardTitle title='Sign In Here' />
+                </Grid>
                 <Grid item xs={12}>
                   <TextField
                     onChange={handleChange}
@@ -96,12 +98,13 @@ function LoginForm(props) {
                     type='submit'
                     variant='contained'
                     color='primary'
+                    className={classes.buttonMargin}
                   >
                     Login
                   </Button>
                 </Grid>
               </Grid>
-              <Grid container justify='space-between' className={classes.form}>
+              <Grid container justify='space-between'>
                 <Grid item>
                   <Link href='/forgotpassword' variant='body2'>
                     Forgot Password?
