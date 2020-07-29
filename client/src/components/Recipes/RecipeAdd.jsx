@@ -96,23 +96,11 @@ function RecipeAdd(props) {
       <Container component='main' maxWidth='md'>
         <Card>
           <div className={classes.paper}>
-            <Grid container spacing={1} alignItems='center'>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                align='center'
-                className={classes.title}
-              >
+            <Grid container spacing={1} justify='center' alignItems='center'>
+              <Grid item xs={12} className={classes.title}>
                 <CardTitle title='New Recipe Name' />
               </Grid>
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                align='center'
-                className={classes.buttonMargin}
-              >
+              <Grid item xs={12} sm={8} className={classes.buttonMargin}>
                 <TextField
                   onChange={handleChange}
                   value={recipe.name}
@@ -122,7 +110,7 @@ function RecipeAdd(props) {
                   name='name'
                 />
               </Grid>
-              <Grid item xs={12} align='center'>
+              <Grid item xs={12}>
                 <CardTitle title='Recipe Ingredients' />
               </Grid>
               <List className={classes.listRecipeAdd}>
@@ -155,7 +143,7 @@ function RecipeAdd(props) {
                   recipeIngredients={recipe.ingredients}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={4} align='center'>
+              <Grid item xs={12} sm={6} md={4}>
                 <Button
                   onClick={handleSubmit}
                   fullWidth

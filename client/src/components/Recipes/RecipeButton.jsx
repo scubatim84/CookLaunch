@@ -4,25 +4,25 @@ import {Button, Grid} from '@material-ui/core';
 function RecipeButton(props) {
   if (props.editMode) {
     return (
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
           <Button
             fullWidth
             variant='contained'
             color='primary'
             onClick={props.handleSubmit}
           >
-            Submit Changes
+            Submit
           </Button>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Button
             fullWidth
             variant='contained'
             color='primary'
             onClick={props.handleCancel}
           >
-            Cancel Changes
+            Cancel
           </Button>
         </Grid>
       </Grid>

@@ -47,6 +47,7 @@ export const useStylesMain = makeStyles((theme) => ({
     width: '100%',
     maxHeight: 300,
     overflow: 'auto',
+    marginBottom: theme.spacing(1),
   },
   listRecipeAdd: {
     width: '100%',
@@ -59,19 +60,22 @@ export const useStylesMain = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(5),
   },
-  paper: {
-    margin: theme.spacing(2, 2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  profileCard: {
+  pageCard: {
     marginTop: theme.spacing(1),
   },
-  profileMargin: {
+  pageMargin: {
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     marginTop: theme.spacing(2),
+  },
+  paper: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   recipeCard: {
     height: 100,

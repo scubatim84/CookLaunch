@@ -79,7 +79,7 @@ function Profile(props) {
     return <Redirect to='/login' />;
   } else {
     return (
-      <div className={classes.profileMargin}>
+      <div className={classes.pageMargin}>
         <Grid container>
           <Grid item xs={12} className={classes.buttonMargin}>
             <ProfileButtons
@@ -89,7 +89,7 @@ function Profile(props) {
               handleCancel={handleCancel}
             />
           </Grid>
-          <Card className={classes.profileCard}>
+          <Card className={classes.pageCard}>
             <div className={classes.paper}>
               <Grid container spacing={1}>
                 <Grid item xs={12} className={classes.title}>
