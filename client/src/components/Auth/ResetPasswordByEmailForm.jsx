@@ -9,13 +9,13 @@ import {
   resetPassword,
 } from '../../actions/authActions';
 import {REQUEST_SUCCESS} from '../../actions/types';
-import {useStylesForm} from '../../Styles';
+import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {Button, Card, Container, Grid, TextField} from '@material-ui/core';
 import CardTitle from '../CardTitle';
 
 function ResetPasswordByEmailForm(props) {
-  const classes = useStylesForm(themeMain);
+  const classes = useStylesMain(themeMain);
 
   const token = useParams().token;
 
@@ -92,9 +92,11 @@ function ResetPasswordByEmailForm(props) {
       <Container component='main' maxWidth='xs'>
         <Card>
           <Grid className={classes.paper}>
-            <CardTitle title='Reset Your Password' />
-            <form className={classes.form} noValidate>
+            <form noValidate>
               <Grid container spacing={2}>
+                <Grid item xs={12} align='center'>
+                  <CardTitle title='Reset Your Password' />
+                </Grid>
                 <Grid item xs={12}>
                   <TextField
                     onChange={handleChange}
@@ -126,6 +128,7 @@ function ResetPasswordByEmailForm(props) {
                     type='submit'
                     variant='contained'
                     color='primary'
+                    className={classes.buttonMargin}
                   >
                     Submit
                   </Button>

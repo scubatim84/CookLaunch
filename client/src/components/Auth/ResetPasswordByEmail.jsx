@@ -10,13 +10,11 @@ function ResetPassword(props) {
     <CardMedia className={classes.loginBackground}>
       <Grid
         container
-        spacing={0}
         alignItems='center'
         justify='center'
         style={{minHeight: '100vh'}}
-        className={classes.root}
       >
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <ResetPasswordByEmailForm
             key={props.isLoggedIn}
             handleLoggedIn={props.handleLoggedIn}
