@@ -171,19 +171,27 @@ function App() {
 
   const renderPantry = () => {
     return (
-      <Pantry
-        key={user.pantry}
-        pantry={user.pantry}
-        ingredients={ingredients.data}
-        getUserPayload={getUserPayload}
-        getIngredientData={getIngredientData}
-        email={user.email}
-        firstName={user.firstName}
-        lastName={user.lastName}
-        handleLoggedIn={handleLoggedIn}
-        isLoggedIn={isLoggedIn}
-        className={classes.root}
-      />
+      <Grid
+        container
+        style={{minHeight: '100vh'}}
+        className={classes.ingredientMargin}
+      >
+        <Grid item xs={12} align='center'>
+          <Pantry
+            key={user.pantry}
+            pantry={user.pantry}
+            ingredients={ingredients.data}
+            getUserPayload={getUserPayload}
+            getIngredientData={getIngredientData}
+            email={user.email}
+            firstName={user.firstName}
+            lastName={user.lastName}
+            handleLoggedIn={handleLoggedIn}
+            isLoggedIn={isLoggedIn}
+            className={classes.root}
+          />
+        </Grid>
+      </Grid>
     );
   };
 
