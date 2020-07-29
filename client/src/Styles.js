@@ -6,6 +6,9 @@ export const useStylesMain = makeStyles((theme) => ({
   buttonMargin: {
     marginBottom: theme.spacing(1),
   },
+  ingredientMargin: {
+    marginTop: theme.spacing(2),
+  },
   landingBackground: {
     backgroundImage: `url(${LandingImage})`,
     backgroundPosition: '50%',
@@ -33,6 +36,11 @@ export const useStylesMain = makeStyles((theme) => ({
   landingPosition: {
     padding: '75px 0px 100px 20px',
     marginLeft: '0px',
+  },
+  list: {
+    width: '100%',
+    maxHeight: 300,
+    overflow: 'auto',
   },
   maxWidth: {
     width: '100%',
@@ -68,11 +76,6 @@ export const useStylesForm = makeStyles((theme) => ({
   card: {
     width: 200,
     height: 100,
-  },
-  list: {
-    width: '100%',
-    maxHeight: 300,
-    overflow: 'auto',
   },
 }));
 

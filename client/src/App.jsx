@@ -126,8 +126,12 @@ function App() {
 
   const renderIngredients = () => {
     return (
-      <Grid container justify='center'>
-        <Grid item xs={12} sm={6} md={4}>
+      <Grid
+        container
+        style={{minHeight: '100vh'}}
+        className={classes.ingredientMargin}
+      >
+        <Grid item xs={12} align='center'>
           <IngredientNames
             key={ingredients.data}
             pantry={user.pantry}
