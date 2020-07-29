@@ -266,9 +266,13 @@ function RecipeExpanded(props) {
                         } = getHaveNeedQuantities(ingredient);
 
                         return (
-                          <Grid item xs={12}>
+                          <Grid
+                            item
+                            xs={12}
+                            key={ingredient.name + ingredient.dateLastChanged}
+                          >
                             <RecipeIngredientView
-                              key={ingredient._id + new Date()}
+                              key={ingredient.name + ingredient.dateLastChanged}
                               _id={ingredient._id}
                               name={formatName}
                               editMode={editMode}
