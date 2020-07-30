@@ -30,38 +30,37 @@ function Pantry(props) {
   }, [props.pantry]);
 
   const handleDelete = async (ingredientId) => {
-    const requestResponse = await deleteIngredientFromPantry(ingredientId);
+    const response = await deleteIngredientFromPantry(ingredientId);
 
-    if (requestResponse.status === 204) {
+    if (response.status === 204) {
       // Update user payload to re-render pantry
       await props.getUserPayload();
     } else {
       // If request failed, return error message to child component
-      return requestResponse.data;
+      return response.data;
     }
   };
 
   const handleUpdateIngredient = async (updateIngredient) => {
-    const requestResponse = await updateIngredientInPantry(updateIngredient);
+    const response = await updateIngredientInPantry(updateIngredient);
 
-    if (requestResponse.status === 204) {
+    if (response.status === 204) {
       // Update user payload to re-render pantry
       await props.getUserPayload();
     } else {
       // If request failed, return error message to child component
-      return requestResponse.data;
+      return response.data;
     }
   };
 
   const handleAddIngredient = async (addIngredient) => {
-    const requestResponse = await addIngredientToPantry(addIngredient);
+    const response = await addIngredientToPantry(addIngredient);
 
-    if (requestResponse.status === 201) {
+    if (response.status === 201) {
       // Update user payload to re-render pantry
       await props.getUserPayload();
     } else {
-      // If request failed, return error message to child component
-      return requestResponse.data;
+      return response.data;
     }
   };
 
@@ -88,7 +87,11 @@ function Pantry(props) {
                       );
 
                       return (
-                        <Grid item xs={12}>
+                        <Grid
+                          item
+                          xs={12}
+                          key={ingredient.name + ingredient.dateLastChanged}
+                        >
                           <IngredientItem
                             key={ingredient.name + ingredient.dateLastChanged}
                             id={ingredient._id}

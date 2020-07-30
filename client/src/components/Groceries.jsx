@@ -164,7 +164,7 @@ function Groceries(props) {
                     <CardTitle title={`${props.firstName}'s Grocery List`} />
                   </Grid>
                   <List className={classes.list}>
-                    {groceryList.data.map((ingredient, index) => {
+                    {groceryList.data.map((ingredient) => {
                       const formatName = _.startCase(
                         _.toLower(ingredient.name)
                       );
@@ -173,12 +173,13 @@ function Groceries(props) {
                       );
 
                       return (
-                        <Grid item xs={12}>
+                        <Grid
+                          item
+                          xs={12}
+                          key={ingredient.name + ingredient.dateLastChanged}
+                        >
                           <IngredientItem
-                            key={
-                              ingredient._id +
-                              props.groceries[index].dateLastChanged
-                            }
+                            key={ingredient.name + ingredient.dateLastChanged}
                             id={ingredient._id}
                             groceryIngredient={true}
                             name={formatName}

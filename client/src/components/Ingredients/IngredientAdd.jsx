@@ -59,20 +59,19 @@ function IngredientAdd(props) {
     const foundIngredient = props.pantry.find(
       (ingredient) => ingredient.name === addIngredient.name
     );
-    let response;
 
     if (foundIngredient) {
       setError({
         errorMessage: 'That ingredient already exists.',
       });
     } else {
-      response = await props.handleAddIngredient(addIngredient);
-    }
+      const response = await props.handleAddIngredient(addIngredient);
 
-    if (!isEmpty(response)) {
-      setError({
-        errorMessage: response.data,
-      });
+      if (!isEmpty(response)) {
+        setError({
+          errorMessage: response,
+        });
+      }
     }
   };
 

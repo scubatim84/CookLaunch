@@ -54,12 +54,14 @@ function RecipeExpanded(props) {
     getOneRecipeData();
   }, [recipeId]);
 
-  const handleEdit = async () => {
-    await setEditMode(true);
+  const handleEdit = () => {
+    setEditMode(true);
   };
 
   const handleCancel = async () => {
-    await setEditMode(false);
+    setEditMode(false);
+
+    await props.getRecipeData();
   };
 
   const handleDelete = async () => {

@@ -3,7 +3,6 @@ import {Grid, ListItem, ListItemText, TextField} from '@material-ui/core';
 import {Cancel, Delete, Done, Edit} from '@material-ui/icons';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {REQUEST_SUCCESS} from '../../actions/types';
 import {updateIngredient} from '../../actions/ingredientActions';
 
 function IngredientNameItem(props) {
@@ -51,12 +50,12 @@ function IngredientNameItem(props) {
 
     const response = await updateIngredient(editIngredient);
 
-    if (response.status === REQUEST_SUCCESS) {
+    if (response.status === 204) {
       // If updating ingredient is successful, re-render ingredient list
       await props.getIngredientData();
     } else {
       setError({
-        errorMessage: response.authResponsePayload,
+        errorMessage: response.data,
       });
     }
   };
