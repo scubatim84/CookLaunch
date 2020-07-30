@@ -19,6 +19,7 @@ import {Delete} from '@material-ui/icons';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
 import {addIngredientToGroceries} from '../../actions/groceryActions';
 import {convert_units} from '../../actions/unitConversions';
+import {validateIngredientData} from '../../actions/validateIngredientData';
 
 function RecipeExpanded(props) {
   const history = useHistory();
@@ -103,12 +104,20 @@ function RecipeExpanded(props) {
   };
 
   const addIngredientToRecipe = (ingredient) => {
-    setRecipe((prevValue) => {
-      return {
-        ...prevValue,
-        ingredients: [...recipe.ingredients, ingredient],
-      };
-    });
+    const error = validateIngredientData(ingredient);
+
+    if (!error) {
+      setRecipe((prevValue) => {
+        return {
+          ...prevValue,
+          ingredients: [...recipe.ingredients, ingredient],
+        };
+      });
+    } else {
+      setError({
+        errorMessage: error,
+      });
+    }
   };
 
   const addToGroceryList = async () => {

@@ -71,7 +71,7 @@ function IngredientAdd(props) {
 
     if (!isEmpty(response)) {
       setError({
-        errorMessage: response,
+        errorMessage: response.data,
       });
     }
   };

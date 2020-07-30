@@ -45,7 +45,7 @@ function App() {
   const getIngredientData = async () => {
     const response = await getIngredients();
 
-    setIngredients({data: response.authResponsePayload});
+    setIngredients({data: response.data});
   };
 
   const getRecipeData = async () => {

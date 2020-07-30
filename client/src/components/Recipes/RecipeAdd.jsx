@@ -15,6 +15,9 @@ import IngredientItem from '../Ingredients/IngredientItem';
 import {addRecipe} from '../../actions/recipeActions';
 import {Redirect} from 'react-router-dom';
 import CardTitle from '../CardTitle';
+import {validateIngredientData} from '../../actions/validateIngredientData';
+import isEmpty from 'is-empty';
+import FormSubmitMessage from '../FormSubmitMessage';
 
 function RecipeAdd(props) {
   const classes = useStylesMain(themeMain);
@@ -66,12 +69,20 @@ function RecipeAdd(props) {
   };
 
   const addIngredientToRecipe = async (ingredient) => {
-    setRecipe((prevValue) => {
-      return {
-        ...prevValue,
-        ingredients: [...recipe.ingredients, ingredient],
-      };
-    });
+    const error = validateIngredientData(ingredient);
+
+    if (!error) {
+      setRecipe((prevValue) => {
+        return {
+          ...prevValue,
+          ingredients: [...recipe.ingredients, ingredient],
+        };
+      });
+    } else {
+      setError({
+        errorMessage: error,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -121,9 +132,13 @@ function RecipeAdd(props) {
                   );
 
                   return (
-                    <Grid item xs={12}>
+                    <Grid
+                      item
+                      xs={12}
+                      key={ingredient.name + ingredient.dateLastChanged}
+                    >
                       <IngredientItem
-                        key={ingredient.id + new Date()}
+                        key={ingredient.name + ingredient.dateLastChanged}
                         id={ingredient.id}
                         name={formatName}
                         quantity={ingredient.quantity}
@@ -153,6 +168,11 @@ function RecipeAdd(props) {
                 >
                   Add Recipe
                 </Button>
+              </Grid>
+              <Grid item xs={12}>
+                {!isEmpty(error.errorMessage) && (
+                  <FormSubmitMessage submitMessage={error.errorMessage} />
+                )}
               </Grid>
             </Grid>
           </div>

@@ -49,14 +49,14 @@ function IngredientNameItem(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await updateIngredient(editIngredient);
+    const response = await updateIngredient(editIngredient);
 
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+    if (response.status === REQUEST_SUCCESS) {
       // If updating ingredient is successful, re-render ingredient list
       await props.getIngredientData();
     } else {
       setError({
-        errorMessage: requestResponse.authResponsePayload,
+        errorMessage: response.authResponsePayload,
       });
     }
   };

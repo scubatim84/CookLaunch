@@ -70,14 +70,14 @@ function Groceries(props) {
   };
 
   const handleAddIngredient = async (addIngredient) => {
-    const requestResponse = await addIngredientToGroceries(addIngredient);
+    const response = await addIngredientToGroceries(addIngredient);
 
-    if (requestResponse.status === 201) {
+    if (response.status === 201) {
       // Update user payload to re-render pantry
       await props.getUserPayload();
     } else {
       // If request failed, return error message to child component
-      return requestResponse.data;
+      return response.data;
     }
   };
 

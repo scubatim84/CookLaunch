@@ -3,7 +3,6 @@ import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import _ from 'lodash';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {REQUEST_SUCCESS} from '../../actions/types';
 import {addIngredient, deleteIngredient} from '../../actions/ingredientActions';
 import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
@@ -72,21 +71,20 @@ function IngredientNames(props) {
     const foundIngredient = props.pantry.find(
       (pantryIngredient) => pantryIngredient.name === ingredient.name
     );
-    let requestResponse;
 
     if (foundIngredient) {
       setError({
         errorMessage: 'That ingredient already exists.',
       });
     } else {
-      requestResponse = await addIngredient(ingredient);
+      const response = await addIngredient(ingredient);
 
-      if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+      if (response.status === 201) {
         // If adding ingredient is successful, re-render ingredient list
         props.getIngredientData();
       } else {
         setError({
-          errorMessage: requestResponse.authResponsePayload,
+          errorMessage: response.data,
         });
       }
     }
@@ -109,9 +107,13 @@ function IngredientNames(props) {
                     const formatName = _.startCase(_.toLower(ingredient.name));
 
                     return (
-                      <Grid item xs={12}>
+                      <Grid
+                        item
+                        xs={12}
+                        key={ingredient.name + ingredient.dateLastChanged}
+                      >
                         <IngredientNameItem
-                          key={ingredient.name}
+                          key={ingredient.name + ingredient.dateLastChanged}
                           createdBy={ingredient.createdBy}
                           userId={props.id}
                           id={ingredient._id}

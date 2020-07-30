@@ -14,12 +14,9 @@ router.get('/', async (req, res) => {
     const foundIngredients = await Ingredient.find({});
 
     if (foundIngredients) {
-      res.status(200).json({
-        message: 'success',
-        payload: foundIngredients,
-      });
+      res.status(200).json(foundIngredients);
     } else {
-      res.status(404).json('fail');
+      res.status(404).json('Ingredients not found.');
     }
   } catch (err) {
     res.status(400).json(err);
@@ -118,7 +115,7 @@ router.delete('/:id', async (req, res) => {
       if (deletedIngredient.deletedCount === 1) {
         res.status(204).send(null);
       } else {
-        res.status(400).json('fail');
+        res.status(400).json('Ingredient deletion failed.');
       }
     } catch (err) {
       res.status(400).json(err);
