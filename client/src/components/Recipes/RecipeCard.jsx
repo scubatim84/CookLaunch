@@ -8,15 +8,15 @@ import {
   Link,
   Typography,
 } from '@material-ui/core';
-import {useStylesForm} from '../../Styles';
+import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 
 function RecipeCard(props) {
-  const classes = useStylesForm(themeMain);
+  const classes = useStylesMain(themeMain);
 
   return (
     <Grid item xs={12} sm={4} md={3}>
-      <Card className={classes.card}>
+      <Card className={classes.recipeCard}>
         <CardContent>
           <Typography color='textPrimary'>{props.name}</Typography>
         </CardContent>

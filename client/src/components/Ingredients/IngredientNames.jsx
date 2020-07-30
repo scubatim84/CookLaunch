@@ -3,9 +3,8 @@ import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import _ from 'lodash';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {REQUEST_SUCCESS} from '../../actions/types';
 import {addIngredient, deleteIngredient} from '../../actions/ingredientActions';
-import {useStylesForm} from '../../Styles';
+import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
   Button,
@@ -19,7 +18,7 @@ import IngredientNameItem from './IngredientNameItem';
 import CardTitle from '../CardTitle';
 
 function IngredientNames(props) {
-  const classes = useStylesForm(themeMain);
+  const classes = useStylesMain(themeMain);
 
   const [ingredientList, setIngredientList] = useState({data: []});
   const [ingredient, setIngredient] = useState({
@@ -72,21 +71,20 @@ function IngredientNames(props) {
     const foundIngredient = props.pantry.find(
       (pantryIngredient) => pantryIngredient.name === ingredient.name
     );
-    let requestResponse;
 
     if (foundIngredient) {
       setError({
         errorMessage: 'That ingredient already exists.',
       });
     } else {
-      requestResponse = await addIngredient(ingredient);
+      const response = await addIngredient(ingredient);
 
-      if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+      if (response.status === 201) {
         // If adding ingredient is successful, re-render ingredient list
         props.getIngredientData();
       } else {
         setError({
-          errorMessage: requestResponse.authResponsePayload,
+          errorMessage: response.data,
         });
       }
     }
@@ -97,28 +95,36 @@ function IngredientNames(props) {
   } else {
     return (
       <Container component='main' maxWidth='xs'>
-        <Card className={classes.root}>
-          <div className={classes.paper}>
-            <CardTitle title='Ingredients For Recipes' />
-            <List className={classes.list}>
-              {ingredientList.data.map((ingredient) => {
-                const formatName = _.startCase(_.toLower(ingredient.name));
+        <Card>
+          <Grid className={classes.paper}>
+            <form noValidate>
+              <Grid container spacing={2}>
+                <Grid item xs={12} align='center'>
+                  <CardTitle title='Ingredients For Recipes' />
+                </Grid>
+                <List className={classes.list}>
+                  {ingredientList.data.map((ingredient) => {
+                    const formatName = _.startCase(_.toLower(ingredient.name));
 
-                return (
-                  <IngredientNameItem
-                    key={ingredient.name}
-                    createdBy={ingredient.createdBy}
-                    userId={props.id}
-                    id={ingredient._id}
-                    name={formatName}
-                    getIngredientData={props.getIngredientData}
-                    handleDelete={handleDelete}
-                  />
-                );
-              })}
-            </List>
-            <form className={classes.form} noValidate>
-              <Grid container spacing={3}>
+                    return (
+                      <Grid
+                        item
+                        xs={12}
+                        key={ingredient.name + ingredient.dateLastChanged}
+                      >
+                        <IngredientNameItem
+                          key={ingredient.name + ingredient.dateLastChanged}
+                          createdBy={ingredient.createdBy}
+                          userId={props.id}
+                          id={ingredient._id}
+                          name={formatName}
+                          getIngredientData={props.getIngredientData}
+                          handleDelete={handleDelete}
+                        />
+                      </Grid>
+                    );
+                  })}
+                </List>
                 <Grid item xs={12}>
                   <TextField
                     onChange={handleChange}
@@ -132,26 +138,25 @@ function IngredientNames(props) {
                     autoComplete='name'
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} align='center'>
                   <Button
                     onClick={handleSubmit}
                     fullWidth
                     type='submit'
                     variant='contained'
                     color='primary'
-                    className={classes.submit}
                   >
                     Add Ingredient
                   </Button>
                 </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                {!isEmpty(error.errorMessage) && (
-                  <FormSubmitMessage submitMessage={error.errorMessage} />
-                )}
+                <Grid item xs={12}>
+                  {!isEmpty(error.errorMessage) && (
+                    <FormSubmitMessage submitMessage={error.errorMessage} />
+                  )}
+                </Grid>
               </Grid>
             </form>
-          </div>
+          </Grid>
         </Card>
       </Container>
     );

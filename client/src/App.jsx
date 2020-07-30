@@ -45,7 +45,7 @@ function App() {
   const getIngredientData = async () => {
     const response = await getIngredients();
 
-    setIngredients({data: response.authResponsePayload});
+    setIngredients({data: response.data});
   };
 
   const getRecipeData = async () => {
@@ -101,12 +101,20 @@ function App() {
 
   const renderRecipeAdd = () => {
     return (
-      <RecipeAdd
-        key={recipes.data}
-        getRecipeData={getRecipeData}
-        ingredients={ingredients.data}
-        isLoggedIn={isLoggedIn}
-      />
+      <Grid
+        container
+        style={{minHeight: '100vh'}}
+        className={classes.ingredientMargin}
+      >
+        <Grid item xs={12} align='center'>
+          <RecipeAdd
+            key={recipes.data}
+            getRecipeData={getRecipeData}
+            ingredients={ingredients.data}
+            isLoggedIn={isLoggedIn}
+          />
+        </Grid>
+      </Grid>
     );
   };
 
@@ -126,8 +134,12 @@ function App() {
 
   const renderIngredients = () => {
     return (
-      <Grid container justify='center'>
-        <Grid item xs={12} sm={6} md={4}>
+      <Grid
+        container
+        style={{minHeight: '100vh'}}
+        className={classes.ingredientMargin}
+      >
+        <Grid item xs={12} align='center'>
           <IngredientNames
             key={ingredients.data}
             pantry={user.pantry}
@@ -167,37 +179,53 @@ function App() {
 
   const renderPantry = () => {
     return (
-      <Pantry
-        key={user.pantry}
-        pantry={user.pantry}
-        ingredients={ingredients.data}
-        getUserPayload={getUserPayload}
-        getIngredientData={getIngredientData}
-        email={user.email}
-        firstName={user.firstName}
-        lastName={user.lastName}
-        handleLoggedIn={handleLoggedIn}
-        isLoggedIn={isLoggedIn}
-        className={classes.root}
-      />
+      <Grid
+        container
+        style={{minHeight: '100vh'}}
+        className={classes.ingredientMargin}
+      >
+        <Grid item xs={12} align='center'>
+          <Pantry
+            key={user.pantry}
+            pantry={user.pantry}
+            ingredients={ingredients.data}
+            getUserPayload={getUserPayload}
+            getIngredientData={getIngredientData}
+            email={user.email}
+            firstName={user.firstName}
+            lastName={user.lastName}
+            handleLoggedIn={handleLoggedIn}
+            isLoggedIn={isLoggedIn}
+            className={classes.root}
+          />
+        </Grid>
+      </Grid>
     );
   };
 
   const renderGroceries = () => {
     return (
-      <Groceries
-        key={user.groceries}
-        groceries={user.groceries}
-        pantry={user.pantry}
-        ingredients={ingredients.data}
-        getUserPayload={getUserPayload}
-        getIngredientData={getIngredientData}
-        email={user.email}
-        firstName={user.firstName}
-        lastName={user.lastName}
-        handleLoggedIn={handleLoggedIn}
-        isLoggedIn={isLoggedIn}
-      />
+      <Grid
+        container
+        style={{minHeight: '100vh'}}
+        className={classes.ingredientMargin}
+      >
+        <Grid item xs={12} align='center'>
+          <Groceries
+            key={user.groceries}
+            groceries={user.groceries}
+            pantry={user.pantry}
+            ingredients={ingredients.data}
+            getUserPayload={getUserPayload}
+            getIngredientData={getIngredientData}
+            email={user.email}
+            firstName={user.firstName}
+            lastName={user.lastName}
+            handleLoggedIn={handleLoggedIn}
+            isLoggedIn={isLoggedIn}
+          />
+        </Grid>
+      </Grid>
     );
   };
 

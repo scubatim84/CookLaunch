@@ -4,8 +4,8 @@ import {Button, Grid} from '@material-ui/core';
 function ProfileButtons(props) {
   if (props.editMode) {
     return (
-      <Grid container>
-        <Grid item xs={12} sm={1}>
+      <Grid container spacing={1}>
+        <Grid item xs={3} sm={2} md={1}>
           <Button
             onClick={props.handleSave}
             type='submit'
@@ -15,7 +15,7 @@ function ProfileButtons(props) {
             Save
           </Button>
         </Grid>
-        <Grid item xs={12} sm={1}>
+        <Grid item xs={3} sm={2} md={1}>
           <Button
             onClick={props.handleCancel}
             type='submit'

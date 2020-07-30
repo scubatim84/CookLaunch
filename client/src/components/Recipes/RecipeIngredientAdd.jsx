@@ -2,15 +2,11 @@ import React, {useState} from 'react';
 import isEmpty from 'is-empty';
 import {ingredientQuantityTypes} from '../../actions/types';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {useStylesForm} from '../../Styles';
-import {themeMain} from '../../Theme';
 import {Button, Grid, TextField} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CardTitle from '../CardTitle';
 
 function RecipeIngredientAdd(props) {
-  const classes = useStylesForm(themeMain);
-
   const [addIngredient, setAddIngredient] = useState({
     id: '',
     name: '',
@@ -55,7 +51,9 @@ function RecipeIngredientAdd(props) {
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
       props.addIngredientToRecipe(addIngredient);
     } catch (err) {
@@ -66,8 +64,8 @@ function RecipeIngredientAdd(props) {
   };
 
   return (
-    <div className={classes.paper}>
-      <Grid container spacing={3} className={classes.root}>
+    <form noValidate>
+      <Grid container spacing={2} alignItems='center'>
         <Grid item xs={12} align='center'>
           <CardTitle title='Add Ingredient To Recipe' />
         </Grid>
@@ -89,7 +87,7 @@ function RecipeIngredientAdd(props) {
             )}
           />
         </Grid>
-        <Grid item xs={12} sm={2}>
+        <Grid item xs={4} sm={2}>
           <TextField
             onChange={handleChange}
             variant='outlined'
@@ -100,7 +98,7 @@ function RecipeIngredientAdd(props) {
             name='quantity'
           />
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={8} sm={3}>
           <Autocomplete
             id='ingredientQuantityTypes'
             options={ingredientQuantityTypes}
@@ -125,7 +123,6 @@ function RecipeIngredientAdd(props) {
             type='submit'
             variant='contained'
             color='primary'
-            className={classes.submit}
           >
             Add
           </Button>
@@ -136,7 +133,7 @@ function RecipeIngredientAdd(props) {
           )}
         </Grid>
       </Grid>
-    </div>
+    </form>
   );
 }
 

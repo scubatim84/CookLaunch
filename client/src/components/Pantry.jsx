@@ -8,13 +8,13 @@ import {
 } from '../actions/pantryActions';
 import IngredientAdd from './Ingredients/IngredientAdd';
 import IngredientItem from './Ingredients/IngredientItem';
-import {useStylesForm} from '../Styles';
+import {useStylesMain} from '../Styles';
 import {themeMain} from '../Theme';
-import {Card, Container, Grid} from '@material-ui/core';
+import {Card, Container, Grid, List} from '@material-ui/core';
 import CardTitle from './CardTitle';
 
 function Pantry(props) {
-  const classes = useStylesForm(themeMain);
+  const classes = useStylesMain(themeMain);
 
   const [pantry, setPantry] = useState({data: []});
 
@@ -30,38 +30,37 @@ function Pantry(props) {
   }, [props.pantry]);
 
   const handleDelete = async (ingredientId) => {
-    const requestResponse = await deleteIngredientFromPantry(ingredientId);
+    const response = await deleteIngredientFromPantry(ingredientId);
 
-    if (requestResponse.status === 204) {
+    if (response.status === 204) {
       // Update user payload to re-render pantry
       await props.getUserPayload();
     } else {
       // If request failed, return error message to child component
-      return requestResponse.data;
+      return response.data;
     }
   };
 
   const handleUpdateIngredient = async (updateIngredient) => {
-    const requestResponse = await updateIngredientInPantry(updateIngredient);
+    const response = await updateIngredientInPantry(updateIngredient);
 
-    if (requestResponse.status === 204) {
+    if (response.status === 204) {
       // Update user payload to re-render pantry
       await props.getUserPayload();
     } else {
       // If request failed, return error message to child component
-      return requestResponse.data;
+      return response.data;
     }
   };
 
   const handleAddIngredient = async (addIngredient) => {
-    const requestResponse = await addIngredientToPantry(addIngredient);
+    const response = await addIngredientToPantry(addIngredient);
 
-    if (requestResponse.status === 201) {
+    if (response.status === 201) {
       // Update user payload to re-render pantry
       await props.getUserPayload();
     } else {
-      // If request failed, return error message to child component
-      return requestResponse.data;
+      return response.data;
     }
   };
 
@@ -70,49 +69,57 @@ function Pantry(props) {
   } else {
     return (
       <Container component='main' maxWidth='md'>
-        <Card className={classes.root}>
-          <div className={classes.paper}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} align='center'>
-                <CardTitle title={`${props.firstName}'s Pantry`} />
-              </Grid>
-              <Grid item xs={12}>
-                {pantry.data.map((ingredient) => {
-                  const formatName = _.startCase(_.toLower(ingredient.name));
-                  const formatQuantityType = _.startCase(
-                    _.toLower(ingredient.quantityType)
-                  );
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <Card>
+              <div className={classes.paper}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} align='center'>
+                    <CardTitle title={`${props.firstName}'s Pantry`} />
+                  </Grid>
+                  <List className={classes.list}>
+                    {pantry.data.map((ingredient) => {
+                      const formatName = _.startCase(
+                        _.toLower(ingredient.name)
+                      );
+                      const formatQuantityType = _.startCase(
+                        _.toLower(ingredient.quantityType)
+                      );
 
-                  return (
-                    <IngredientItem
-                      key={ingredient.name + ingredient.dateLastChanged}
-                      id={ingredient._id}
-                      name={formatName}
-                      quantity={ingredient.quantity}
-                      quantityType={formatQuantityType}
-                      handleDelete={handleDelete}
-                      handleUpdateIngredient={handleUpdateIngredient}
-                    />
-                  );
-                })}
-              </Grid>
-            </Grid>
-          </div>
-        </Card>
-        <Card className={classes.root}>
-          <div className={classes.paper}>
-            <Grid item xs={12}>
-              <IngredientAdd
-                key={props.pantry}
-                name='Pantry'
-                pantry={props.pantry}
-                ingredients={props.ingredients}
-                handleAddIngredient={handleAddIngredient}
-                handleUpdateIngredient={handleUpdateIngredient}
-              />
-            </Grid>
-          </div>
-        </Card>
+                      return (
+                        <Grid
+                          item
+                          xs={12}
+                          key={ingredient.name + ingredient.dateLastChanged}
+                        >
+                          <IngredientItem
+                            key={ingredient.name + ingredient.dateLastChanged}
+                            id={ingredient._id}
+                            name={formatName}
+                            quantity={ingredient.quantity}
+                            quantityType={formatQuantityType}
+                            handleDelete={handleDelete}
+                            handleUpdateIngredient={handleUpdateIngredient}
+                          />
+                        </Grid>
+                      );
+                    })}
+                  </List>
+                </Grid>
+              </div>
+            </Card>
+          </Grid>
+          <Grid item xs={12}>
+            <IngredientAdd
+              key={props.pantry}
+              name='Pantry'
+              pantry={props.pantry}
+              ingredients={props.ingredients}
+              handleAddIngredient={handleAddIngredient}
+              handleUpdateIngredient={handleUpdateIngredient}
+            />
+          </Grid>
+        </Grid>
       </Container>
     );
   }

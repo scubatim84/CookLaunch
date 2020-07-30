@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect, useHistory, useParams} from 'react-router-dom';
 import {Button, Card, Grid, Link, List, Typography} from '@material-ui/core';
-import {useStylesForm, useStylesMain} from '../../Styles';
+import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
   deleteRecipe,
@@ -19,11 +19,11 @@ import {Delete} from '@material-ui/icons';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
 import {addIngredientToGroceries} from '../../actions/groceryActions';
 import {convert_units} from '../../actions/unitConversions';
+import {validateIngredientData} from '../../actions/validateIngredientData';
 
 function RecipeExpanded(props) {
   const history = useHistory();
-  const classes = useStylesForm(themeMain);
-  const mainClasses = useStylesMain(themeMain);
+  const classes = useStylesMain(themeMain);
 
   const recipeId = useParams().id;
 
@@ -54,12 +54,14 @@ function RecipeExpanded(props) {
     getOneRecipeData();
   }, [recipeId]);
 
-  const handleEdit = async () => {
-    await setEditMode(true);
+  const handleEdit = () => {
+    setEditMode(true);
   };
 
   const handleCancel = async () => {
-    await setEditMode(false);
+    setEditMode(false);
+
+    await props.getRecipeData();
   };
 
   const handleDelete = async () => {
@@ -104,12 +106,20 @@ function RecipeExpanded(props) {
   };
 
   const addIngredientToRecipe = (ingredient) => {
-    setRecipe((prevValue) => {
-      return {
-        ...prevValue,
-        ingredients: [...recipe.ingredients, ingredient],
-      };
-    });
+    const error = validateIngredientData(ingredient);
+
+    if (!error) {
+      setRecipe((prevValue) => {
+        return {
+          ...prevValue,
+          ingredients: [...recipe.ingredients, ingredient],
+        };
+      });
+    } else {
+      setError({
+        errorMessage: error,
+      });
+    }
   };
 
   const addToGroceryList = async () => {
@@ -199,67 +209,60 @@ function RecipeExpanded(props) {
     return <Redirect to='/login' />;
   } else {
     return (
-      <Grid container>
-        <Grid item xs={12}>
-          <Grid item xs={12} sm={2}>
-            <Link
-              href={'/'}
-              color='textPrimary'
-              style={{textDecoration: 'none'}}
-            >
-              <Button
-                type='submit'
-                fullWidth
-                variant='contained'
-                color='primary'
-                className={mainClasses.submit}
+      <div className={classes.pageMargin}>
+        <Grid container>
+          <Grid item xs={12}>
+            <Grid item xs={12} sm={4} className={classes.buttonMargin}>
+              <Link
+                href={'/'}
+                color='textPrimary'
+                style={{textDecoration: 'none'}}
               >
-                Return To Dashboard
-              </Button>
-            </Link>
+                <Button
+                  type='submit'
+                  fullWidth
+                  variant='contained'
+                  color='primary'
+                >
+                  Return To Dashboard
+                </Button>
+              </Link>
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={12} sm={8}>
-          <Card>
-            <div className={classes.paper}>
-              <form noValidate>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={8} align='center'>
-                    <RecipeName
-                      name={recipe.name}
-                      editMode={editMode}
-                      handleChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={4} align='center'>
-                    <Button
-                      fullWidth
-                      variant='contained'
-                      color='primary'
-                      onClick={addToGroceryList}
-                    >
-                      Add To Grocery List
-                    </Button>
-                  </Grid>
-                  <Grid item xs={12}>
-                    <CardTitle title='Recipe Ingredients' />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Typography>Ingredient Name</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={1}>
-                    <Typography>Quant.</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={3}>
-                    <Typography>Type</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={1}>
-                    <Typography>Have</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={1}>
-                    <Typography>Need</Typography>
-                  </Grid>
-                  <Grid item xs={12}>
+          <Grid item xs={12}>
+            <Card className={classes.pageCard}>
+              <div className={classes.paper}>
+                <form noValidate>
+                  <Grid container spacing={2} alignItems='center'>
+                    <Grid item xs={12} align='center'>
+                      <RecipeName
+                        name={recipe.name}
+                        editMode={editMode}
+                        handleChange={handleChange}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <CardTitle title='Recipe Ingredients' />
+                    </Grid>
+                    <Grid item xs={4} sm={6}>
+                      <Typography>Name</Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={1}>
+                      <Typography>Quant.</Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={3}>
+                      <Typography>Type</Typography>
+                    </Grid>
+                    {!editMode && (
+                      <Grid item xs={2} sm={1}>
+                        <Typography>Have</Typography>
+                      </Grid>
+                    )}
+                    {!editMode && (
+                      <Grid item xs={2} sm={1}>
+                        <Typography>Need</Typography>
+                      </Grid>
+                    )}
                     <List className={classes.list}>
                       {recipe.ingredients.map((ingredient) => {
                         const formatName = _.startCase(
@@ -274,65 +277,85 @@ function RecipeExpanded(props) {
                         } = getHaveNeedQuantities(ingredient);
 
                         return (
-                          <RecipeIngredientView
-                            key={ingredient._id + new Date()}
-                            _id={ingredient._id}
-                            name={formatName}
-                            editMode={editMode}
-                            quantity={ingredient.quantity}
-                            quantityNeeded={quantityNeeded}
-                            quantityHave={quantityHave}
-                            quantityType={formatQuantityType}
-                            handleDeleteIngredient={handleDeleteIngredient}
-                            handleUpdateIngredient={handleUpdateIngredient}
-                          />
+                          <Grid
+                            item
+                            xs={12}
+                            key={ingredient.name + ingredient.dateLastChanged}
+                          >
+                            <RecipeIngredientView
+                              key={ingredient.name + ingredient.dateLastChanged}
+                              _id={ingredient._id}
+                              name={formatName}
+                              editMode={editMode}
+                              quantity={ingredient.quantity}
+                              quantityNeeded={quantityNeeded}
+                              quantityHave={quantityHave}
+                              quantityType={formatQuantityType}
+                              handleDeleteIngredient={handleDeleteIngredient}
+                              handleUpdateIngredient={handleUpdateIngredient}
+                            />
+                          </Grid>
                         );
                       })}
                     </List>
-                  </Grid>
-                  {editMode && (
-                    <Grid item xs={12}>
-                      <RecipeIngredientAdd
-                        key={recipe.ingredients}
-                        addIngredientToRecipe={addIngredientToRecipe}
-                        ingredients={props.ingredients}
-                        recipeIngredients={recipe.ingredients}
-                      />
-                    </Grid>
-                  )}
-                  <Grid
-                    container
-                    justify='space-between'
-                    className={classes.form}
-                  >
-                    <Grid item xs={6}>
-                      <RecipeButton
-                        key={editMode + new Date()}
-                        editMode={editMode}
-                        handleEdit={handleEdit}
-                        handleCancel={handleCancel}
-                        handleSubmit={handleSubmit}
-                      />
-                    </Grid>
-                    <Grid item xs={1}>
-                      <Delete
-                        onClick={handleDelete}
-                        color='secondary'
-                        className='icon'
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12}>
-                    {!isEmpty(error.errorMessage) && (
-                      <FormSubmitMessage submitMessage={error.errorMessage} />
+                    {editMode && (
+                      <Grid item xs={12}>
+                        <RecipeIngredientAdd
+                          key={recipe.ingredients}
+                          addIngredientToRecipe={addIngredientToRecipe}
+                          ingredients={props.ingredients}
+                          recipeIngredients={recipe.ingredients}
+                        />
+                      </Grid>
                     )}
+                    <Grid container justify='space-between' alignItems='center'>
+                      <Grid item xs={6} sm={4}>
+                        <Button
+                          fullWidth
+                          variant='contained'
+                          color='primary'
+                          onClick={addToGroceryList}
+                        >
+                          Add To Grocery List
+                        </Button>
+                      </Grid>
+                      <Grid item xs={4} sm={4}>
+                        <Grid
+                          container
+                          justify='space-between'
+                          alignItems='center'
+                        >
+                          <Grid item xs={10}>
+                            <RecipeButton
+                              key={editMode + new Date()}
+                              editMode={editMode}
+                              handleEdit={handleEdit}
+                              handleCancel={handleCancel}
+                              handleSubmit={handleSubmit}
+                            />
+                          </Grid>
+                          <Grid item xs={2}>
+                            <Delete
+                              onClick={handleDelete}
+                              color='secondary'
+                              className='icon'
+                            />
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12}>
+                      {!isEmpty(error.errorMessage) && (
+                        <FormSubmitMessage submitMessage={error.errorMessage} />
+                      )}
+                    </Grid>
                   </Grid>
-                </Grid>
-              </form>
-            </div>
-          </Card>
+                </form>
+              </div>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
+      </div>
     );
   }
 }

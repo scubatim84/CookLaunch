@@ -3,9 +3,9 @@ import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
 import IngredientAdd from './Ingredients/IngredientAdd';
 import IngredientItem from './Ingredients/IngredientItem';
-import {useStylesForm} from '../Styles';
+import {useStylesMain} from '../Styles';
 import {themeMain} from '../Theme';
-import {Button, Card, Container, Grid} from '@material-ui/core';
+import {Button, Card, Container, Grid, List} from '@material-ui/core';
 import CardTitle from './CardTitle';
 import {
   addIngredientToGroceries,
@@ -21,7 +21,7 @@ import {
 } from '../actions/pantryActions';
 
 function Groceries(props) {
-  const classes = useStylesForm(themeMain);
+  const classes = useStylesMain(themeMain);
 
   const [groceryList, setGroceryList] = useState({data: []});
   const [error, setError] = useState({
@@ -70,14 +70,14 @@ function Groceries(props) {
   };
 
   const handleAddIngredient = async (addIngredient) => {
-    const requestResponse = await addIngredientToGroceries(addIngredient);
+    const response = await addIngredientToGroceries(addIngredient);
 
-    if (requestResponse.status === 201) {
+    if (response.status === 201) {
       // Update user payload to re-render pantry
       await props.getUserPayload();
     } else {
       // If request failed, return error message to child component
-      return requestResponse.data;
+      return response.data;
     }
   };
 
@@ -155,67 +155,73 @@ function Groceries(props) {
   } else {
     return (
       <Container component='main' maxWidth='md'>
-        <Card className={classes.root}>
-          <div className={classes.paper}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} align='center'>
-                <CardTitle title={`${props.firstName}'s Grocery List`} />
-              </Grid>
-              <Grid item xs={12}>
-                {groceryList.data.map((ingredient, index) => {
-                  const formatName = _.startCase(_.toLower(ingredient.name));
-                  const formatQuantityType = _.startCase(
-                    _.toLower(ingredient.quantityType)
-                  );
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <Card>
+              <div className={classes.paper}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} align='center'>
+                    <CardTitle title={`${props.firstName}'s Grocery List`} />
+                  </Grid>
+                  <List className={classes.list}>
+                    {groceryList.data.map((ingredient) => {
+                      const formatName = _.startCase(
+                        _.toLower(ingredient.name)
+                      );
+                      const formatQuantityType = _.startCase(
+                        _.toLower(ingredient.quantityType)
+                      );
 
-                  return (
-                    <IngredientItem
-                      key={
-                        ingredient._id + props.groceries[index].dateLastChanged
-                      }
-                      id={ingredient._id}
-                      groceryIngredient={true}
-                      name={formatName}
-                      quantity={ingredient.quantity}
-                      quantityType={formatQuantityType}
-                      checked={ingredient.checked}
-                      handleDelete={handleDelete}
-                      handleUpdateIngredient={handleUpdateIngredient}
-                    />
-                  );
-                })}
-              </Grid>
-              <Grid item xs={12} align='center'>
-                <Button
-                  onClick={handleAddGroceryListToPantry}
-                  type='submit'
-                  variant='contained'
-                  color='primary'
-                >
-                  Complete Shopping Trip
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                {!isEmpty(error.errorMessage) && (
-                  <FormSubmitMessage submitMessage={error.errorMessage} />
-                )}
-              </Grid>
-            </Grid>
-          </div>
-        </Card>
-        <Card className={classes.root}>
-          <div className={classes.paper}>
-            <Grid item xs={12}>
-              <IngredientAdd
-                key={props.groceries}
-                name='Groceries'
-                pantry={props.pantry}
-                ingredients={props.ingredients}
-                handleAddIngredient={handleAddIngredient}
-              />
-            </Grid>
-          </div>
-        </Card>
+                      return (
+                        <Grid
+                          item
+                          xs={12}
+                          key={ingredient.name + ingredient.dateLastChanged}
+                        >
+                          <IngredientItem
+                            key={ingredient.name + ingredient.dateLastChanged}
+                            id={ingredient._id}
+                            groceryIngredient={true}
+                            name={formatName}
+                            quantity={ingredient.quantity}
+                            quantityType={formatQuantityType}
+                            checked={ingredient.checked}
+                            handleDelete={handleDelete}
+                            handleUpdateIngredient={handleUpdateIngredient}
+                          />
+                        </Grid>
+                      );
+                    })}
+                  </List>
+                  <Grid item xs={12} align='center'>
+                    <Button
+                      onClick={handleAddGroceryListToPantry}
+                      type='submit'
+                      variant='contained'
+                      color='primary'
+                    >
+                      Complete Shopping Trip
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {!isEmpty(error.errorMessage) && (
+                      <FormSubmitMessage submitMessage={error.errorMessage} />
+                    )}
+                  </Grid>
+                </Grid>
+              </div>
+            </Card>
+          </Grid>
+          <Grid item xs={12}>
+            <IngredientAdd
+              key={props.groceries}
+              name='Groceries'
+              pantry={props.pantry}
+              ingredients={props.ingredients}
+              handleAddIngredient={handleAddIngredient}
+            />
+          </Grid>
+        </Grid>
       </Container>
     );
   }

@@ -3,7 +3,7 @@ import {Redirect} from 'react-router-dom';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {registerUser, loginUser} from '../../actions/authActions';
-import {useStylesForm} from '../../Styles';
+import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
   Button,
@@ -16,7 +16,7 @@ import {
 import CardTitle from '../CardTitle';
 
 function RegisterForm(props) {
-  const classes = useStylesForm(themeMain);
+  const classes = useStylesMain(themeMain);
 
   const [newUser, setNewUser] = useState({
     firstName: '',
@@ -70,9 +70,11 @@ function RegisterForm(props) {
       <Container component='main' maxWidth='xs'>
         <Card>
           <Grid className={classes.paper}>
-            <CardTitle title='Start The Oven' />
-            <form className={classes.form} noValidate>
+            <form noValidate>
               <Grid container spacing={2}>
+                <Grid item xs={12} align='center'>
+                  <CardTitle title='Start The Oven' />
+                </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     onChange={handleChange}
@@ -131,7 +133,7 @@ function RegisterForm(props) {
                     name='password2'
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} className={classes.buttonMargin}>
                   <Button
                     onClick={handleSubmit}
                     fullWidth
@@ -143,12 +145,15 @@ function RegisterForm(props) {
                   </Button>
                 </Grid>
               </Grid>
-              <Grid container justify='flex-end' className={classes.form}>
-                <Grid item xs={12}>
-                  <Link href='/login' variant='body2'>
-                    Already have an account? Sign in
-                  </Link>
-                </Grid>
+              <Grid
+                container
+                alignItems='flex-start'
+                justify='flex-end'
+                direction='row'
+              >
+                <Link href='/login' variant='body2'>
+                  Already have an account? Sign in
+                </Link>
               </Grid>
               <Grid item xs={12}>
                 {!isEmpty(error.errorMessage) && (

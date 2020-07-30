@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {ingredientQuantityTypes} from '../../actions/types';
-import {useStylesForm} from '../../Styles';
-import {themeMain} from '../../Theme';
 import {
   Checkbox,
   FormControl,
@@ -17,8 +15,6 @@ import FormSubmitMessage from '../FormSubmitMessage';
 import {convert_units} from '../../actions/unitConversions';
 
 function IngredientItem(props) {
-  const classes = useStylesForm(themeMain);
-
   const [editIngredient, setEditIngredient] = useState({
     id: props.id,
     name: props.name,
@@ -142,11 +138,11 @@ function IngredientItem(props) {
 
   if (editMode) {
     return (
-      <Grid container spacing={3} className={classes.root}>
-        <Grid item xs={12} sm={5}>
+      <Grid container alignItems='center'>
+        <Grid item xs={5}>
           <Typography>{props.name}</Typography>
         </Grid>
-        <Grid item xs={12} sm={2}>
+        <Grid item xs={2}>
           <TextField
             onChange={handleChange}
             variant='outlined'
@@ -158,7 +154,7 @@ function IngredientItem(props) {
             autoComplete='quantity'
           />
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={3}>
           <FormControl>
             <Select
               labelId='quantityType'
@@ -178,10 +174,10 @@ function IngredientItem(props) {
             </Select>
           </FormControl>
         </Grid>
-        <Grid item xs={12} sm={1}>
+        <Grid item xs={1}>
           <Done onClick={handleSubmit} className='icon' />
         </Grid>
-        <Grid item xs={12} sm={1}>
+        <Grid item xs={1}>
           <Cancel onClick={handleCancel} className='icon' />
         </Grid>
         <Grid item xs={12}>
@@ -196,60 +192,60 @@ function IngredientItem(props) {
   if (groceryIngredient) {
     if (editIngredient.checked) {
       return (
-        <Grid container className={classes.root} alignItems='center'>
-          <Grid item xs={12} sm={1}>
+        <Grid container alignItems='center'>
+          <Grid item xs={1}>
             <Checkbox
               checked={editIngredient.checked}
               onChange={handleCheck}
               color='primary'
             />
           </Grid>
-          <Grid item xs={12} sm={5}>
+          <Grid item xs={5}>
             <Typography component={'span'}>
               <div className='strikethrough'>{props.name}</div>
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={1}>
+          <Grid item xs={1}>
             <Typography component={'span'}>
               <div className='strikethrough'>{props.quantity}</div>
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={3}>
             <Typography component={'span'}>
               <div className='strikethrough'>{props.quantityType}</div>
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={1}>
+          <Grid item xs={1}>
             <Edit onClick={handleEdit} className='icon' />
           </Grid>
-          <Grid item xs={12} sm={1}>
+          <Grid item xs={1}>
             <Delete onClick={handleDelete} className='icon' />
           </Grid>
         </Grid>
       );
     } else {
       return (
-        <Grid container className={classes.root} alignItems='center'>
-          <Grid item xs={12} sm={1}>
+        <Grid container alignItems='center'>
+          <Grid item xs={1}>
             <Checkbox
               checked={editIngredient.checked}
               onChange={handleCheck}
               color='primary'
             />
           </Grid>
-          <Grid item xs={12} sm={5}>
+          <Grid item xs={5}>
             <Typography>{props.name}</Typography>
           </Grid>
-          <Grid item xs={12} sm={1}>
+          <Grid item xs={1}>
             <Typography>{props.quantity}</Typography>
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={3}>
             <Typography>{props.quantityType}</Typography>
           </Grid>
-          <Grid item xs={12} sm={1}>
+          <Grid item xs={1}>
             <Edit onClick={handleEdit} className='icon' />
           </Grid>
-          <Grid item xs={12} sm={1}>
+          <Grid item xs={1}>
             <Delete onClick={handleDelete} className='icon' />
           </Grid>
         </Grid>
@@ -258,20 +254,20 @@ function IngredientItem(props) {
   }
 
   return (
-    <Grid container className={classes.root}>
-      <Grid item xs={12} sm={6}>
+    <Grid container alignItems='center'>
+      <Grid item xs={6}>
         <Typography>{props.name}</Typography>
       </Grid>
-      <Grid item xs={12} sm={1}>
+      <Grid item xs={1}>
         <Typography>{props.quantity}</Typography>
       </Grid>
-      <Grid item xs={12} sm={3}>
+      <Grid item xs={3}>
         <Typography>{props.quantityType}</Typography>
       </Grid>
-      <Grid item xs={12} sm={1}>
+      <Grid item xs={1}>
         <Edit onClick={handleEdit} className='icon' />
       </Grid>
-      <Grid item xs={12} sm={1}>
+      <Grid item xs={1}>
         <Delete onClick={handleDelete} className='icon' />
       </Grid>
     </Grid>
