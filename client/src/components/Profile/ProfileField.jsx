@@ -6,10 +6,10 @@ import ProfileFieldContent from './ProfileFieldContent';
 function ProfileField(props) {
   return (
     <Grid container>
-      <Grid item xs={6} sm={6}>
+      <Grid item xs={4}>
         <ProfileFieldLabel label={props.label} />
       </Grid>
-      <Grid item xs={6} sm={6}>
+      <Grid item xs={8}>
         <ProfileFieldContent
           handleChange={props.handleChange}
           label={props.label}
