@@ -81,17 +81,17 @@ router.put('/:id', (req, res) => {
   }
 });
 
-// @route DELETE api/pantry/:name
-// @desc Delete ingredient from user's pantry by name
+// @route DELETE api/pantry/:id
+// @desc Delete ingredient from user's pantry by ID
 // @access Private
-router.delete('/:name', (req, res) => {
+router.delete('/:id', (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
   // Once user is found, delete ingredients from user's pantry
   if (foundUser) {
     try {
-      foundUser.pantry.remove(req.params.name);
+      foundUser.pantry.remove(req.params.id);
       foundUser.save();
 
       res.status(204).json(null);

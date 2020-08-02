@@ -20,6 +20,10 @@ import RecipeIngredientAdd from './RecipeIngredientAdd';
 import {addIngredientToGroceries} from '../../actions/groceryActions';
 import {convert_units} from '../../actions/unitConversions';
 import {validateIngredientData} from '../../actions/validateIngredientData';
+import {
+  deleteIngredientFromPantry,
+  updateIngredientInPantry,
+} from '../../actions/pantryActions';
 
 function RecipeExpanded(props) {
   const history = useHistory();
@@ -144,6 +148,62 @@ function RecipeExpanded(props) {
 
     // Update user payload to re-render grocery list
     await props.getUserPayload();
+  };
+
+  const ingredientsMissing = () => {
+    for (const ingredient of recipe.ingredients) {
+      const {quantityNeeded} = getHaveNeedQuantities(ingredient);
+
+      if (quantityNeeded > 0) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  const deductFromPantry = async () => {
+    const areIngredientsMissing = ingredientsMissing();
+
+    if (areIngredientsMissing) {
+      setError({
+        errorMessage:
+          'You cannot cook a recipe if you are missing ingredients!',
+      });
+    } else {
+      for (const ingredient of recipe.ingredients) {
+        const foundIngredient = props.pantry.find(
+          (pantryIngredient) =>
+            _.toLower(ingredient.name) === _.toLower(pantryIngredient.name)
+        );
+
+        if (foundIngredient) {
+          const updatedIngredient = {
+            ...foundIngredient,
+            id: foundIngredient._id,
+            quantity: foundIngredient.quantity - ingredient.quantity,
+          };
+
+          let response;
+
+          if (updatedIngredient.quantity === 0) {
+            response = await deleteIngredientFromPantry(updatedIngredient.id);
+          } else {
+            response = await updateIngredientInPantry(updatedIngredient);
+          }
+
+          if (response.status !== 204) {
+            // If request failed, return error message
+            setError({
+              errorMessage: response.data,
+            });
+          }
+        }
+      }
+
+      // Update user payload to re-render pantry
+      await props.getUserPayload();
+    }
   };
 
   const getHaveNeedQuantities = (ingredient) => {
@@ -342,6 +402,23 @@ function RecipeExpanded(props) {
                             />
                           </Grid>
                         </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid container justify='space-between' alignItems='center'>
+                      <Grid
+                        item
+                        xs={6}
+                        sm={4}
+                        className={classes.buttonMarginTop}
+                      >
+                        <Button
+                          fullWidth
+                          variant='contained'
+                          color='primary'
+                          onClick={deductFromPantry}
+                        >
+                          Record Cook
+                        </Button>
                       </Grid>
                     </Grid>
                     <Grid item xs={12}>

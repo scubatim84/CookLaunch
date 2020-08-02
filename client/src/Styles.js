@@ -3,6 +3,9 @@ import LandingImage from './images/landing-bg.png';
 import LoginImage from './images/login-bg.png';
 
 export const useStylesMain = makeStyles((theme) => ({
+  buttonMarginTop: {
+    marginTop: theme.spacing(1),
+  },
   buttonMargin: {
     marginBottom: theme.spacing(1),
   },
