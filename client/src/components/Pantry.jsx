@@ -68,7 +68,7 @@ function Pantry(props) {
     return <Redirect to='/login' />;
   } else {
     return (
-      <Container component='main' maxWidth='md'>
+      <Container component='main' maxWidth='xs'>
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Card>

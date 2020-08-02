@@ -81,8 +81,8 @@ export const useStylesMain = makeStyles((theme) => ({
     alignItems: 'center',
   },
   recipeCard: {
-    height: 100,
-    width: 200,
+    minHeight: 100,
+    minWidth: 200,
     margin: theme.spacing(2, 2, 2),
   },
   root: {

@@ -1,6 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect, useHistory, useParams} from 'react-router-dom';
-import {Button, Card, Grid, Link, List, Typography} from '@material-ui/core';
+import {
+  Button,
+  Card,
+  Container,
+  Grid,
+  Link,
+  List,
+  Typography,
+} from '@material-ui/core';
 import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
@@ -15,7 +23,6 @@ import CardTitle from '../CardTitle';
 import RecipeButton from './RecipeButton';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {Delete} from '@material-ui/icons';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
 import {addIngredientToGroceries} from '../../actions/groceryActions';
 import {convert_units} from '../../actions/unitConversions';
@@ -269,170 +276,168 @@ function RecipeExpanded(props) {
     return <Redirect to='/login' />;
   } else {
     return (
-      <div className={classes.pageMargin}>
-        <Grid container>
-          <Grid item xs={12}>
-            <Grid item xs={12} sm={4} className={classes.buttonMargin}>
-              <Link
-                href={'/'}
-                color='textPrimary'
-                style={{textDecoration: 'none'}}
-              >
-                <Button
-                  type='submit'
-                  fullWidth
-                  variant='contained'
-                  color='primary'
+      <Container component='main' maxWidth='sm'>
+        <div className={classes.pageMargin}>
+          <Grid container>
+            <Grid item xs={12}>
+              <Grid item xs={12} sm={6} className={classes.buttonMargin}>
+                <Link
+                  href={'/'}
+                  color='textPrimary'
+                  style={{textDecoration: 'none'}}
                 >
-                  Return To Dashboard
-                </Button>
-              </Link>
+                  <Button
+                    type='submit'
+                    fullWidth
+                    variant='contained'
+                    color='primary'
+                  >
+                    Return To Dashboard
+                  </Button>
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Card className={classes.pageCard}>
-              <div className={classes.paper}>
-                <form noValidate>
-                  <Grid container spacing={2} alignItems='center'>
-                    <Grid item xs={12} align='center'>
-                      <RecipeName
-                        name={recipe.name}
-                        editMode={editMode}
-                        handleChange={handleChange}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <CardTitle title='Recipe Ingredients' />
-                    </Grid>
-                    <Grid item xs={4} sm={6}>
-                      <Typography>Name</Typography>
-                    </Grid>
-                    <Grid item xs={2} sm={1}>
-                      <Typography>Quant.</Typography>
-                    </Grid>
-                    <Grid item xs={2} sm={3}>
-                      <Typography>Type</Typography>
-                    </Grid>
-                    {!editMode && (
-                      <Grid item xs={2} sm={1}>
-                        <Typography>Have</Typography>
-                      </Grid>
-                    )}
-                    {!editMode && (
-                      <Grid item xs={2} sm={1}>
-                        <Typography>Need</Typography>
-                      </Grid>
-                    )}
-                    <List className={classes.list}>
-                      {recipe.ingredients.map((ingredient) => {
-                        const formatName = _.startCase(
-                          _.toLower(ingredient.name)
-                        );
-                        const formatQuantityType = _.startCase(
-                          _.toLower(ingredient.quantityType)
-                        );
-                        const {
-                          quantityNeeded,
-                          quantityHave,
-                        } = getHaveNeedQuantities(ingredient);
-
-                        return (
-                          <Grid
-                            item
-                            xs={12}
-                            key={ingredient.name + ingredient.dateLastChanged}
-                          >
-                            <RecipeIngredientView
-                              key={ingredient.name + ingredient.dateLastChanged}
-                              _id={ingredient._id}
-                              name={formatName}
-                              editMode={editMode}
-                              quantity={ingredient.quantity}
-                              quantityNeeded={quantityNeeded}
-                              quantityHave={quantityHave}
-                              quantityType={formatQuantityType}
-                              handleDeleteIngredient={handleDeleteIngredient}
-                              handleUpdateIngredient={handleUpdateIngredient}
-                            />
-                          </Grid>
-                        );
-                      })}
-                    </List>
-                    {editMode && (
-                      <Grid item xs={12}>
-                        <RecipeIngredientAdd
-                          key={recipe.ingredients}
-                          addIngredientToRecipe={addIngredientToRecipe}
-                          ingredients={props.ingredients}
-                          recipeIngredients={recipe.ingredients}
+            <Grid item xs={12}>
+              <Card className={classes.pageCard}>
+                <div className={classes.paper}>
+                  <form noValidate>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12} align='center'>
+                        <RecipeName
+                          name={recipe.name}
+                          editMode={editMode}
+                          handleChange={handleChange}
                         />
                       </Grid>
-                    )}
-                    <Grid container justify='space-between' alignItems='center'>
-                      <Grid item xs={6} sm={4}>
-                        <Button
-                          fullWidth
-                          variant='contained'
-                          color='primary'
-                          onClick={addToGroceryList}
-                        >
-                          Add To Grocery List
-                        </Button>
+                      <Grid item xs={12}>
+                        <CardTitle title='Recipe Ingredients' />
                       </Grid>
-                      <Grid item xs={4} sm={4}>
-                        <Grid
-                          container
-                          justify='space-between'
-                          alignItems='center'
-                        >
-                          <Grid item xs={10}>
-                            <RecipeButton
-                              key={editMode + new Date()}
-                              editMode={editMode}
-                              handleEdit={handleEdit}
-                              handleCancel={handleCancel}
-                              handleSubmit={handleSubmit}
-                            />
-                          </Grid>
-                          <Grid item xs={2}>
-                            <Delete
-                              onClick={handleDelete}
-                              color='secondary'
-                              className='icon'
-                            />
-                          </Grid>
+                      <Grid item xs={4} sm={5}>
+                        <Typography>Name</Typography>
+                      </Grid>
+                      <Grid item xs={2} sm={2}>
+                        <Typography>Quant.</Typography>
+                      </Grid>
+                      <Grid item xs={2} sm={3}>
+                        <Typography>Type</Typography>
+                      </Grid>
+                      {!editMode && (
+                        <Grid item xs={2} sm={1}>
+                          <Typography>Have</Typography>
                         </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid container justify='space-between' alignItems='center'>
-                      <Grid
-                        item
-                        xs={6}
-                        sm={4}
-                        className={classes.buttonMarginTop}
-                      >
-                        <Button
-                          fullWidth
-                          variant='contained'
-                          color='primary'
-                          onClick={deductFromPantry}
-                        >
-                          Record Cook
-                        </Button>
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={12}>
-                      {!isEmpty(error.errorMessage) && (
-                        <FormSubmitMessage submitMessage={error.errorMessage} />
                       )}
+                      {!editMode && (
+                        <Grid item xs={2} sm={1}>
+                          <Typography>Need</Typography>
+                        </Grid>
+                      )}
+                      <List className={classes.list}>
+                        {recipe.ingredients.map((ingredient) => {
+                          const formatName = _.startCase(
+                            _.toLower(ingredient.name)
+                          );
+                          const formatQuantityType = _.startCase(
+                            _.toLower(ingredient.quantityType)
+                          );
+                          const {
+                            quantityNeeded,
+                            quantityHave,
+                          } = getHaveNeedQuantities(ingredient);
+
+                          return (
+                            <Grid
+                              item
+                              xs={12}
+                              key={ingredient.name + ingredient.dateLastChanged}
+                            >
+                              <RecipeIngredientView
+                                key={
+                                  ingredient.name + ingredient.dateLastChanged
+                                }
+                                _id={ingredient._id}
+                                name={formatName}
+                                editMode={editMode}
+                                quantity={ingredient.quantity}
+                                quantityNeeded={quantityNeeded}
+                                quantityHave={quantityHave}
+                                quantityType={formatQuantityType}
+                                handleDeleteIngredient={handleDeleteIngredient}
+                                handleUpdateIngredient={handleUpdateIngredient}
+                              />
+                            </Grid>
+                          );
+                        })}
+                      </List>
+                      {editMode && (
+                        <Grid item xs={12}>
+                          <RecipeIngredientAdd
+                            key={recipe.ingredients}
+                            addIngredientToRecipe={addIngredientToRecipe}
+                            ingredients={props.ingredients}
+                            recipeIngredients={recipe.ingredients}
+                          />
+                        </Grid>
+                      )}
+                      {!editMode && (
+                        <Grid item xs={12}>
+                          <Button
+                            fullWidth
+                            variant='contained'
+                            color='primary'
+                            onClick={addToGroceryList}
+                          >
+                            Add To Grocery List
+                          </Button>
+                        </Grid>
+                      )}
+                      <Grid item xs={12}>
+                        <RecipeButton
+                          key={editMode + new Date()}
+                          editMode={editMode}
+                          handleEdit={handleEdit}
+                          handleCancel={handleCancel}
+                          handleSubmit={handleSubmit}
+                        />
+                      </Grid>
+                      {!editMode && (
+                        <Grid item xs={12}>
+                          <Button
+                            fullWidth
+                            variant='contained'
+                            color='primary'
+                            onClick={deductFromPantry}
+                          >
+                            Cook Recipe
+                          </Button>
+                        </Grid>
+                      )}
+                      {!editMode && (
+                        <Grid item xs={12}>
+                          <Button
+                            fullWidth
+                            variant='contained'
+                            color='primary'
+                            onClick={handleDelete}
+                          >
+                            Delete Recipe
+                          </Button>
+                        </Grid>
+                      )}
+                      <Grid item xs={12}>
+                        {!isEmpty(error.errorMessage) && (
+                          <FormSubmitMessage
+                            submitMessage={error.errorMessage}
+                          />
+                        )}
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </form>
-              </div>
-            </Card>
+                  </form>
+                </div>
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
-      </div>
+        </div>
+      </Container>
     );
   }
 }
