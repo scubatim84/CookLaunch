@@ -154,13 +154,13 @@ function Groceries(props) {
     return <Redirect to='/login' />;
   } else {
     return (
-      <Container component='main' maxWidth='md'>
+      <Container component='main' maxWidth='xs'>
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <Card>
               <div className={classes.paper}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} align='center'>
+                <Grid container spacing={2} justify='center'>
+                  <Grid item xs={12}>
                     <CardTitle title={`${props.firstName}'s Grocery List`} />
                   </Grid>
                   <List className={classes.list}>
@@ -193,8 +193,9 @@ function Groceries(props) {
                       );
                     })}
                   </List>
-                  <Grid item xs={12} align='center'>
+                  <Grid item xs={12}>
                     <Button
+                      fullWidth
                       onClick={handleAddGroceryListToPantry}
                       type='submit'
                       variant='contained'

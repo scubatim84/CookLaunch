@@ -80,10 +80,10 @@ function IngredientAdd(props) {
       <form noValidate>
         <div className={classes.paper}>
           <Grid container spacing={2} alignItems='center'>
-            <Grid item xs={12} align='center'>
+            <Grid item xs={12}>
               <CardTitle title={`Add Ingredients To ${props.name}`} />
             </Grid>
-            <Grid item xs={12} sm={5}>
+            <Grid item xs={12}>
               <Autocomplete
                 id='ingredients'
                 options={props.ingredients}
@@ -101,7 +101,7 @@ function IngredientAdd(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={5} sm={2}>
+            <Grid item xs={5}>
               <TextField
                 onChange={handleChange}
                 variant='outlined'
@@ -112,7 +112,7 @@ function IngredientAdd(props) {
                 name='quantity'
               />
             </Grid>
-            <Grid item xs={7} sm={3}>
+            <Grid item xs={7}>
               <Autocomplete
                 id='ingredientQuantityTypes'
                 options={ingredientQuantityTypes}
@@ -130,7 +130,7 @@ function IngredientAdd(props) {
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={2}>
+            <Grid item xs={12}>
               <Button
                 onClick={handleSubmit}
                 fullWidth
