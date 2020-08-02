@@ -87,7 +87,7 @@ function RecipeIngredientAdd(props) {
             )}
           />
         </Grid>
-        <Grid item xs={4} sm={2}>
+        <Grid item xs={4} sm={3}>
           <TextField
             onChange={handleChange}
             variant='outlined'
@@ -98,7 +98,7 @@ function RecipeIngredientAdd(props) {
             name='quantity'
           />
         </Grid>
-        <Grid item xs={8} sm={3}>
+        <Grid item xs={8} sm={4}>
           <Autocomplete
             id='ingredientQuantityTypes'
             options={ingredientQuantityTypes}
@@ -116,7 +116,7 @@ function RecipeIngredientAdd(props) {
             )}
           />
         </Grid>
-        <Grid item xs={12} sm={2}>
+        <Grid item xs={12}>
           <Button
             onClick={handleSubmit}
             fullWidth
@@ -124,7 +124,7 @@ function RecipeIngredientAdd(props) {
             variant='contained'
             color='primary'
           >
-            Add
+            Add Ingredient
           </Button>
         </Grid>
         <Grid item xs={12}>
