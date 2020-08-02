@@ -52,14 +52,14 @@ export const updateIngredientInPantry = async (ingredientData) => {
 };
 
 // Delete ingredient from pantry
-export const deleteIngredientFromPantry = async (ingredientName) => {
+export const deleteIngredientFromPantry = async (ingredientId) => {
   let error;
 
   // Check to see if values are empty, and if so, convert them to empty strings
-  ingredientName = !isEmpty(ingredientName) ? ingredientName : '';
+  ingredientId = !isEmpty(ingredientId) ? ingredientId : '';
 
   // Check for valid ingredient name
-  if (isEmpty(ingredientName)) {
+  if (isEmpty(ingredientId)) {
     error = 'An error has occurred. Please try again.';
   }
 
@@ -70,7 +70,7 @@ export const deleteIngredientFromPantry = async (ingredientName) => {
   } else {
     try {
       const token = cookies.get('user');
-      return await axios.delete(`/api/pantry/${ingredientName}`, {
+      return await axios.delete(`/api/pantry/${ingredientId}`, {
         headers: {
           Authorization: token,
         },

@@ -187,7 +187,7 @@ function RecipeExpanded(props) {
           let response;
 
           if (updatedIngredient.quantity === 0) {
-            response = await deleteIngredientFromPantry(updatedIngredient);
+            response = await deleteIngredientFromPantry(updatedIngredient.id);
           } else {
             response = await updateIngredientInPantry(updatedIngredient);
           }
