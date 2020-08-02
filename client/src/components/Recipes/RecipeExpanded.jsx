@@ -315,7 +315,7 @@ function RecipeExpanded(props) {
                       <Grid item xs={4} sm={5}>
                         <Typography>Name</Typography>
                       </Grid>
-                      <Grid item xs={2} sm={2}>
+                      <Grid item xs={2}>
                         <Typography>Quant.</Typography>
                       </Grid>
                       <Grid item xs={2} sm={3}>
@@ -331,43 +331,51 @@ function RecipeExpanded(props) {
                           <Typography>Need</Typography>
                         </Grid>
                       )}
-                      <List className={classes.list}>
-                        {recipe.ingredients.map((ingredient) => {
-                          const formatName = _.startCase(
-                            _.toLower(ingredient.name)
-                          );
-                          const formatQuantityType = _.startCase(
-                            _.toLower(ingredient.quantityType)
-                          );
-                          const {
-                            quantityNeeded,
-                            quantityHave,
-                          } = getHaveNeedQuantities(ingredient);
+                      <Grid item xs={12}>
+                        <List className={classes.list}>
+                          {recipe.ingredients.map((ingredient) => {
+                            const formatName = _.startCase(
+                              _.toLower(ingredient.name)
+                            );
+                            const formatQuantityType = _.startCase(
+                              _.toLower(ingredient.quantityType)
+                            );
+                            const {
+                              quantityNeeded,
+                              quantityHave,
+                            } = getHaveNeedQuantities(ingredient);
 
-                          return (
-                            <Grid
-                              item
-                              xs={12}
-                              key={ingredient.name + ingredient.dateLastChanged}
-                            >
-                              <RecipeIngredientView
+                            return (
+                              <Grid
+                                item
+                                xs={12}
                                 key={
                                   ingredient.name + ingredient.dateLastChanged
                                 }
-                                _id={ingredient._id}
-                                name={formatName}
-                                editMode={editMode}
-                                quantity={ingredient.quantity}
-                                quantityNeeded={quantityNeeded}
-                                quantityHave={quantityHave}
-                                quantityType={formatQuantityType}
-                                handleDeleteIngredient={handleDeleteIngredient}
-                                handleUpdateIngredient={handleUpdateIngredient}
-                              />
-                            </Grid>
-                          );
-                        })}
-                      </List>
+                              >
+                                <RecipeIngredientView
+                                  key={
+                                    ingredient.name + ingredient.dateLastChanged
+                                  }
+                                  _id={ingredient._id}
+                                  name={formatName}
+                                  editMode={editMode}
+                                  quantity={ingredient.quantity}
+                                  quantityNeeded={quantityNeeded}
+                                  quantityHave={quantityHave}
+                                  quantityType={formatQuantityType}
+                                  handleDeleteIngredient={
+                                    handleDeleteIngredient
+                                  }
+                                  handleUpdateIngredient={
+                                    handleUpdateIngredient
+                                  }
+                                />
+                              </Grid>
+                            );
+                          })}
+                        </List>
+                      </Grid>
                       {editMode && (
                         <Grid item xs={12}>
                           <RecipeIngredientAdd

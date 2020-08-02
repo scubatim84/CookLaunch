@@ -140,7 +140,7 @@ function IngredientItem(props) {
     return (
       <Grid container alignItems='center'>
         <Grid item xs={5}>
-          <Typography>{props.name}</Typography>
+          <Typography align='left'>{props.name}</Typography>
         </Grid>
         <Grid item xs={2}>
           <TextField
@@ -193,25 +193,25 @@ function IngredientItem(props) {
     if (editIngredient.checked) {
       return (
         <Grid container alignItems='center'>
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             <Checkbox
               checked={editIngredient.checked}
               onChange={handleCheck}
               color='primary'
             />
           </Grid>
-          <Grid item xs={5}>
-            <Typography component={'span'}>
+          <Grid item xs={4}>
+            <Typography component={'span'} align='left'>
               <div className='strikethrough'>{props.name}</div>
             </Typography>
           </Grid>
           <Grid item xs={1}>
-            <Typography component={'span'}>
+            <Typography component={'span'} align='left'>
               <div className='strikethrough'>{props.quantity}</div>
             </Typography>
           </Grid>
           <Grid item xs={3}>
-            <Typography component={'span'}>
+            <Typography component={'span'} align='left'>
               <div className='strikethrough'>{props.quantityType}</div>
             </Typography>
           </Grid>
@@ -226,21 +226,21 @@ function IngredientItem(props) {
     } else {
       return (
         <Grid container alignItems='center'>
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             <Checkbox
               checked={editIngredient.checked}
               onChange={handleCheck}
               color='primary'
             />
           </Grid>
-          <Grid item xs={5}>
-            <Typography>{props.name}</Typography>
+          <Grid item xs={4}>
+            <Typography align='left'>{props.name}</Typography>
           </Grid>
           <Grid item xs={1}>
-            <Typography>{props.quantity}</Typography>
+            <Typography align='left'>{props.quantity}</Typography>
           </Grid>
           <Grid item xs={3}>
-            <Typography>{props.quantityType}</Typography>
+            <Typography align='left'>{props.quantityType}</Typography>
           </Grid>
           <Grid item xs={1}>
             <Edit onClick={handleEdit} className='icon' />
@@ -256,13 +256,13 @@ function IngredientItem(props) {
   return (
     <Grid container alignItems='center'>
       <Grid item xs={6}>
-        <Typography>{props.name}</Typography>
+        <Typography align='left'>{props.name}</Typography>
       </Grid>
       <Grid item xs={1}>
-        <Typography>{props.quantity}</Typography>
+        <Typography align='left'>{props.quantity}</Typography>
       </Grid>
       <Grid item xs={3}>
-        <Typography>{props.quantityType}</Typography>
+        <Typography align='left'>{props.quantityType}</Typography>
       </Grid>
       <Grid item xs={1}>
         <Edit onClick={handleEdit} className='icon' />
