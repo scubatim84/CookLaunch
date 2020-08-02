@@ -90,7 +90,7 @@ function RecipeIngredientView(props) {
     if (editMode) {
       return (
         <Grid container spacing={1} alignItems='center'>
-          <Grid item xs={5}>
+          <Grid item xs={4} sm={5}>
             <Typography>{props.name}</Typography>
           </Grid>
           <Grid item xs={2}>
@@ -105,7 +105,7 @@ function RecipeIngredientView(props) {
               autoComplete='quantity'
             />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2} sm={3}>
             <FormControl>
               <Select
                 labelId='quantityType'
@@ -125,10 +125,10 @@ function RecipeIngredientView(props) {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={2} sm={1}>
             <Done onClick={handleSubmit} className='icon' />
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={2} sm={1}>
             <Cancel onClick={handleCancel} className='icon' />
           </Grid>
           <Grid item xs={12}>
@@ -141,19 +141,19 @@ function RecipeIngredientView(props) {
     } else {
       return (
         <Grid container alignItems='center'>
-          <Grid item xs={6}>
+          <Grid item xs={4} sm={5}>
             <Typography>{props.name}</Typography>
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             <Typography>{props.quantity}</Typography>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2} sm={3}>
             <Typography>{props.quantityType}</Typography>
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={2} sm={1}>
             <Edit onClick={handleEdit} className='icon' />
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={2} sm={1}>
             <Delete onClick={handleDelete} className='icon' />
           </Grid>
         </Grid>
@@ -162,19 +162,19 @@ function RecipeIngredientView(props) {
   } else {
     return (
       <Grid container alignItems='center'>
-        <Grid item xs={6}>
+        <Grid item xs={4} sm={5}>
           <Typography>{props.name}</Typography>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={2}>
           <Typography>{props.quantity}</Typography>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={2} sm={3}>
           <Typography>{props.quantityType}</Typography>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={2} sm={1}>
           <Typography>{props.quantityHave}</Typography>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={2} sm={1}>
           <Typography>{props.quantityNeeded}</Typography>
         </Grid>
       </Grid>
