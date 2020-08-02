@@ -77,34 +77,36 @@ function Pantry(props) {
                   <Grid item xs={12} align='center'>
                     <CardTitle title={`${props.firstName}'s Pantry`} />
                   </Grid>
-                  <List className={classes.list}>
-                    {pantry.data.map((ingredient) => {
-                      const formatName = _.startCase(
-                        _.toLower(ingredient.name)
-                      );
-                      const formatQuantityType = _.startCase(
-                        _.toLower(ingredient.quantityType)
-                      );
+                  <Grid item xs={12}>
+                    <List className={classes.list}>
+                      {pantry.data.map((ingredient) => {
+                        const formatName = _.startCase(
+                          _.toLower(ingredient.name)
+                        );
+                        const formatQuantityType = _.startCase(
+                          _.toLower(ingredient.quantityType)
+                        );
 
-                      return (
-                        <Grid
-                          item
-                          xs={12}
-                          key={ingredient.name + ingredient.dateLastChanged}
-                        >
-                          <IngredientItem
+                        return (
+                          <Grid
+                            item
+                            xs={12}
                             key={ingredient.name + ingredient.dateLastChanged}
-                            id={ingredient._id}
-                            name={formatName}
-                            quantity={ingredient.quantity}
-                            quantityType={formatQuantityType}
-                            handleDelete={handleDelete}
-                            handleUpdateIngredient={handleUpdateIngredient}
-                          />
-                        </Grid>
-                      );
-                    })}
-                  </List>
+                          >
+                            <IngredientItem
+                              key={ingredient.name + ingredient.dateLastChanged}
+                              id={ingredient._id}
+                              name={formatName}
+                              quantity={ingredient.quantity}
+                              quantityType={formatQuantityType}
+                              handleDelete={handleDelete}
+                              handleUpdateIngredient={handleUpdateIngredient}
+                            />
+                          </Grid>
+                        );
+                      })}
+                    </List>
+                  </Grid>
                 </Grid>
               </div>
             </Card>
