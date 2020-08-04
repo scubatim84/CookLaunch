@@ -158,7 +158,7 @@ function RecipeAdd(props) {
                   recipeIngredients={recipe.ingredients}
                 />
               </Grid>
-              <Grid item xs={12} sm={6} md={4}>
+              <Grid item xs={12}>
                 <Button
                   onClick={handleSubmit}
                   fullWidth
