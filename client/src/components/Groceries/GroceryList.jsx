@@ -1,26 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
-import IngredientAdd from './Ingredients/IngredientAdd';
-import IngredientItem from './Ingredients/IngredientItem';
-import {useStylesMain} from '../Styles';
-import {themeMain} from '../Theme';
+import IngredientAdd from '../Ingredients/IngredientAdd';
+import IngredientItem from '../Ingredients/IngredientItem';
+import {useStylesMain} from '../../Styles';
+import {themeMain} from '../../Theme';
 import {Button, Card, Container, Grid, List} from '@material-ui/core';
-import CardTitle from './CardTitle';
+import CardTitle from '../CardTitle';
 import {
   addIngredientToGroceries,
   deleteIngredientFromGroceries,
   updateIngredientInGroceries,
-} from '../actions/groceryActions';
-import {convert_units} from '../actions/unitConversions';
+} from '../../actions/groceryActions';
+import {convert_units} from '../../actions/unitConversions';
 import isEmpty from 'is-empty';
-import FormSubmitMessage from './FormSubmitMessage';
+import FormSubmitMessage from '../FormSubmitMessage';
 import {
   addIngredientToPantry,
   updateIngredientInPantry,
-} from '../actions/pantryActions';
+} from '../../actions/pantryActions';
+import GroceryExtra from './GroceryExtra';
 
-function Groceries(props) {
+function GroceryList(props) {
   const classes = useStylesMain(themeMain);
 
   const [groceryList, setGroceryList] = useState({data: []});
@@ -83,6 +84,11 @@ function Groceries(props) {
 
   const handleAddGroceryListToPantry = async () => {
     for (const groceryIngredient of groceryList.data) {
+      if (groceryIngredient.groceryExtra) {
+        await deleteIngredientFromGroceries(groceryIngredient._id);
+        continue;
+      }
+
       if (groceryIngredient.checked !== true) {
         continue;
       }
@@ -214,6 +220,14 @@ function Groceries(props) {
             </Card>
           </Grid>
           <Grid item xs={12}>
+            <GroceryExtra
+              key={props.groceries}
+              name='Groceries'
+              pantry={props.pantry}
+              handleAddIngredient={handleAddIngredient}
+            />
+          </Grid>
+          <Grid item xs={12}>
             <IngredientAdd
               key={props.groceries}
               name='Groceries'
@@ -228,4 +242,4 @@ function Groceries(props) {
   }
 }
 
-export default Groceries;
+export default GroceryList;

@@ -22,7 +22,7 @@ import RecipeAdd from './components/Recipes/RecipeAdd';
 import Grid from '@material-ui/core/Grid';
 import IngredientNames from './components/Ingredients/IngredientNames';
 import RecipeExpanded from './components/Recipes/RecipeExpanded';
-import Groceries from './components/Groceries';
+import GroceryList from './components/Groceries/GroceryList';
 
 function App() {
   const classes = useStylesMain(themeMain);
@@ -211,7 +211,7 @@ function App() {
         className={classes.ingredientMargin}
       >
         <Grid item xs={12} align='center'>
-          <Groceries
+          <GroceryList
             key={user.groceries}
             groceries={user.groceries}
             pantry={user.pantry}
