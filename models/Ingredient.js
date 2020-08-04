@@ -24,6 +24,10 @@ const IngredientSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  groceryExtra: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Ingredient = mongoose.model('ingredient', IngredientSchema);
