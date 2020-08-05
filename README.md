@@ -19,6 +19,7 @@
     <li>MongoDB
     <li>Express
     <li>React
+    <li>Material UI
     <li>Node
       <li>JetBrains WebStorm
         <li>Jira
