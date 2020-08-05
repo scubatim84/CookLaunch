@@ -57,6 +57,8 @@ function RecipeExpanded(props) {
   });
   const [editMode, setEditMode] = useState(false);
   const [open, setOpen] = useState(false);
+  const [cookAlert, setCookAlert] = useState(false);
+  const [groceryAddAlert, setGroceryAddAlert] = useState(false);
   const [error, setError] = useState({
     errorMessage: '',
   });
@@ -167,8 +169,8 @@ function RecipeExpanded(props) {
       }
     }
 
-    // Update user payload to re-render grocery list
-    await props.getUserPayload();
+    // Show alert that add to grocery list function succeeded
+    setGroceryAddAlert(true);
   };
 
   const ingredientsMissing = () => {
@@ -222,9 +224,14 @@ function RecipeExpanded(props) {
         }
       }
 
-      // Update user payload to re-render pantry
-      await props.getUserPayload();
+      // Show alert that cook recipe function succeeded
+      setCookAlert(true);
     }
+  };
+
+  const reloadRecipe = async () => {
+    // Update user payload to re-render recipe ingredients for have/need
+    await props.getUserPayload();
   };
 
   const getHaveNeedQuantities = (ingredient) => {
@@ -412,6 +419,27 @@ function RecipeExpanded(props) {
                             >
                               Add To Grocery List
                             </Button>
+                            <Dialog
+                              open={groceryAddAlert}
+                              onClose={reloadRecipe}
+                              aria-labelledby='alert-dialog-title'
+                              aria-describedby='alert-dialog-description'
+                            >
+                              <DialogTitle id='alert-dialog-title'>
+                                {'Grocery List Updated!'}
+                              </DialogTitle>
+                              <DialogContent>
+                                <DialogContentText id='alert-dialog-description'>
+                                  The recipe ingredients have been added to your
+                                  your grocery list.
+                                </DialogContentText>
+                              </DialogContent>
+                              <DialogActions>
+                                <Button onClick={reloadRecipe} color='primary'>
+                                  Ok
+                                </Button>
+                              </DialogActions>
+                            </Dialog>
                           </Grid>
                         )}
                         <Grid item xs={12}>
@@ -433,6 +461,27 @@ function RecipeExpanded(props) {
                             >
                               Cook Recipe
                             </Button>
+                            <Dialog
+                              open={cookAlert}
+                              onClose={reloadRecipe}
+                              aria-labelledby='alert-dialog-title'
+                              aria-describedby='alert-dialog-description'
+                            >
+                              <DialogTitle id='alert-dialog-title'>
+                                {'Recipe Cooked!'}
+                              </DialogTitle>
+                              <DialogContent>
+                                <DialogContentText id='alert-dialog-description'>
+                                  The recipe ingredients have been deducted from
+                                  your pantry.
+                                </DialogContentText>
+                              </DialogContent>
+                              <DialogActions>
+                                <Button onClick={reloadRecipe} color='primary'>
+                                  Ok
+                                </Button>
+                              </DialogActions>
+                            </Dialog>
                           </Grid>
                         )}
                         {!editMode && (
