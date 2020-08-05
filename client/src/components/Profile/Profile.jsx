@@ -79,58 +79,60 @@ function Profile(props) {
     return <Redirect to='/login' />;
   } else {
     return (
-      <div className={classes.pageMargin}>
-        <Grid container>
-          <Grid item xs={12} className={classes.buttonMargin}>
-            <ProfileButtons
-              editMode={editMode}
-              handleEdit={handleEdit}
-              handleSave={handleSave}
-              handleCancel={handleCancel}
-            />
+      <div className={classes.minHeight}>
+        <div className={classes.pageMargin}>
+          <Grid container>
+            <Grid item xs={12} className={classes.buttonMargin}>
+              <ProfileButtons
+                editMode={editMode}
+                handleEdit={handleEdit}
+                handleSave={handleSave}
+                handleCancel={handleCancel}
+              />
+            </Grid>
+            <Card className={classes.pageCard}>
+              <div className={classes.paper}>
+                <Grid container spacing={1}>
+                  <Grid item xs={12} className={classes.title}>
+                    <CardTitle title='My Profile' />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ProfileField
+                      editMode={editMode}
+                      label='Email'
+                      name='email'
+                      handleChange={handleChange}
+                      content={profileData.email}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ProfileField
+                      editMode={editMode}
+                      label='First Name'
+                      name='firstName'
+                      handleChange={handleChange}
+                      content={profileData.firstName}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ProfileField
+                      editMode={editMode}
+                      label='Last Name'
+                      name='lastName'
+                      handleChange={handleChange}
+                      content={profileData.lastName}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    {!isEmpty(error.errorMessage) && (
+                      <FormSubmitMessage submitMessage={error.errorMessage} />
+                    )}
+                  </Grid>
+                </Grid>
+              </div>
+            </Card>
           </Grid>
-          <Card className={classes.pageCard}>
-            <div className={classes.paper}>
-              <Grid container spacing={1}>
-                <Grid item xs={12} className={classes.title}>
-                  <CardTitle title='My Profile' />
-                </Grid>
-                <Grid item xs={12}>
-                  <ProfileField
-                    editMode={editMode}
-                    label='Email'
-                    name='email'
-                    handleChange={handleChange}
-                    content={profileData.email}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <ProfileField
-                    editMode={editMode}
-                    label='First Name'
-                    name='firstName'
-                    handleChange={handleChange}
-                    content={profileData.firstName}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <ProfileField
-                    editMode={editMode}
-                    label='Last Name'
-                    name='lastName'
-                    handleChange={handleChange}
-                    content={profileData.lastName}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  {!isEmpty(error.errorMessage) && (
-                    <FormSubmitMessage submitMessage={error.errorMessage} />
-                  )}
-                </Grid>
-              </Grid>
-            </div>
-          </Card>
-        </Grid>
+        </div>
       </div>
     );
   }

@@ -10,12 +10,13 @@ export const useStylesMain = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   footer: {
+    display: 'flex',
+    flexDirection: 'column',
     width: '100%',
-    position: 'fixed',
+    position: 'sticky',
     bottom: 0,
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
-    marginTop: theme.spacing(4),
     backgroundColor:
       theme.palette.type === 'light'
         ? theme.palette.grey[200]
@@ -57,6 +58,9 @@ export const useStylesMain = makeStyles((theme) => ({
     maxHeight: 200,
     overflow: 'auto',
   },
+  minHeight: {
+    minHeight: '100vh',
+  },
   maxWidth: {
     width: '100%',
   },
@@ -70,6 +74,9 @@ export const useStylesMain = makeStyles((theme) => ({
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     marginTop: theme.spacing(2),
+  },
+  pageMarginBottom: {
+    marginBottom: theme.spacing(2),
   },
   paper: {
     marginLeft: theme.spacing(2),

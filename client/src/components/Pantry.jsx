@@ -69,7 +69,7 @@ function Pantry(props) {
   } else {
     return (
       <Container component='main' maxWidth='xs'>
-        <Grid container spacing={1}>
+        <Grid container spacing={1} className={classes.pageMarginBottom}>
           <Grid item xs={12}>
             <Card>
               <div className={classes.paper}>
