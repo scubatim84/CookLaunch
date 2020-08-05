@@ -13,27 +13,29 @@ function Dashboard(props) {
     return <Redirect to='/login' />;
   } else {
     return (
-      <Grid container className={(classes.maxWidth, classes.root)}>
-        {props.recipes.map((recipe) => {
-          const formatName = _.startCase(_.toLower(recipe.name));
+      <div className={classes.minHeight}>
+        <Grid container className={(classes.maxWidth, classes.root)}>
+          {props.recipes.map((recipe) => {
+            const formatName = _.startCase(_.toLower(recipe.name));
 
-          return (
-            <Grid
-              item
-              xs={6}
-              sm={3}
-              className={classes.recipeCard}
-              key={recipe._id + recipe.dateLastChanged}
-            >
-              <RecipeCard
+            return (
+              <Grid
+                item
+                xs={6}
+                sm={3}
+                className={classes.recipeCard}
                 key={recipe._id + recipe.dateLastChanged}
-                id={recipe._id}
-                name={formatName}
-              />
-            </Grid>
-          );
-        })}
-      </Grid>
+              >
+                <RecipeCard
+                  key={recipe._id + recipe.dateLastChanged}
+                  id={recipe._id}
+                  name={formatName}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
+      </div>
     );
   }
 }
