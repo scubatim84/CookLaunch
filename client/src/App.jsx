@@ -118,20 +118,6 @@ function App() {
     );
   };
 
-  const renderRecipeView = () => {
-    return (
-      <RecipeExpanded
-        key={recipes.data + new Date()}
-        isLoggedIn={isLoggedIn}
-        getRecipeData={getRecipeData}
-        ingredients={ingredients.data}
-        groceries={user.groceries}
-        pantry={user.pantry}
-        getUserPayload={getUserPayload}
-      />
-    );
-  };
-
   const renderIngredients = () => {
     return (
       <Grid
@@ -268,7 +254,22 @@ function App() {
           <Route exact path='/dashboard' render={renderDashboard} />
           <Route exact path='/ingredients' render={renderIngredients} />
           <Route exact path='/recipes/add' render={renderRecipeAdd} />
-          <Route exact path='/recipes/view/:id' render={renderRecipeView} />
+          <Route
+            exact
+            path='/recipes/view/:id'
+            render={({match}) => (
+              <RecipeExpanded
+                key={match.params.id}
+                isLoggedIn={isLoggedIn}
+                getRecipeData={getRecipeData}
+                ingredients={ingredients.data}
+                groceries={user.groceries}
+                pantry={user.pantry}
+                getUserPayload={getUserPayload}
+                id={match.params.id}
+              />
+            )}
+          />
           <Route exact path='/dashboard/groceries' render={renderGroceries} />
           <Route exact path='/dashboard/pantry' render={renderPantry} />
           <Route exact path='/forgotpassword' component={ForgotPassword} />
