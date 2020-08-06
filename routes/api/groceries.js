@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const router = express.Router();
-const isEmpty = require('is-empty');
 const _ = require('lodash');
 
 // @route GET api/groceries
@@ -69,26 +68,21 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
-  const updatedIngredient = req.body;
 
   // Once user is obtained, update ingredients in user's grocery list
   if (foundUser) {
     try {
-      const currentIngredient = foundUser.groceries.id(req.params.id);
+      const updatedIngredient = {
+        name: req.body.name,
+        quantity: req.body.quantity,
+        quantityType: req.body.quantityType,
+        checked: req.body.checked,
+        groceryExtra: req.body.groceryExtra,
+        dateLastChanged: new Date(),
+      };
 
-      if (!isEmpty(updatedIngredient.quantity)) {
-        currentIngredient.quantity = updatedIngredient.quantity;
-      }
-
-      if (!isEmpty(updatedIngredient.quantityType)) {
-        currentIngredient.quantityType = updatedIngredient.quantityType;
-      }
-
-      if (!isEmpty(updatedIngredient.checked)) {
-        currentIngredient.checked = updatedIngredient.checked;
-      }
-
-      currentIngredient.dateLastChanged = new Date();
+      const foundIngredient = foundUser.groceries.id(req.params.id);
+      foundIngredient.set(updatedIngredient);
 
       await foundUser.save();
 
