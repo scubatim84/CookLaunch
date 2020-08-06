@@ -5,7 +5,18 @@ import IngredientAdd from '../Ingredients/IngredientAdd';
 import IngredientItem from '../Ingredients/IngredientItem';
 import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {Button, Card, Container, Grid, List} from '@material-ui/core';
+import {
+  Button,
+  Card,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  List,
+} from '@material-ui/core';
 import CardTitle from '../CardTitle';
 import {
   addIngredientToGroceries,
@@ -25,6 +36,7 @@ function GroceryList(props) {
   const classes = useStylesMain(themeMain);
 
   const [groceryList, setGroceryList] = useState({data: []});
+  const [groceryComplete, setGroceryComplete] = useState(false);
   const [error, setError] = useState({
     errorMessage: '',
   });
@@ -152,7 +164,11 @@ function GroceryList(props) {
       }
     }
 
-    // Update user payload to re-render grocery list once function completes
+    // Show alert that complete shopping trip function succeeded
+    setGroceryComplete(true);
+  };
+
+  const reloadGroceryList = async () => {
     await props.getUserPayload();
   };
 
@@ -191,6 +207,7 @@ function GroceryList(props) {
                             name={formatName}
                             quantity={ingredient.quantity}
                             quantityType={formatQuantityType}
+                            groceryExtra={ingredient.groceryExtra}
                             checked={ingredient.checked}
                             handleDelete={handleDelete}
                             handleUpdateIngredient={handleUpdateIngredient}
@@ -209,6 +226,27 @@ function GroceryList(props) {
                     >
                       Complete Shopping Trip
                     </Button>
+                    <Dialog
+                      open={groceryComplete}
+                      onClose={reloadGroceryList}
+                      aria-labelledby='alert-dialog-title'
+                      aria-describedby='alert-dialog-description'
+                    >
+                      <DialogTitle id='alert-dialog-title'>
+                        {'Shopping Trip Completed!'}
+                      </DialogTitle>
+                      <DialogContent>
+                        <DialogContentText id='alert-dialog-description'>
+                          The checked off grocery list ingredients, which are
+                          not extras, have been added to your pantry.
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={reloadGroceryList} color='primary'>
+                          Ok
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                   </Grid>
                   <Grid item xs={12}>
                     {!isEmpty(error.errorMessage) && (
@@ -231,6 +269,8 @@ function GroceryList(props) {
             <IngredientAdd
               key={props.groceries}
               name='Groceries'
+              groceryListAdd={true}
+              groceries={props.groceries}
               pantry={props.pantry}
               ingredients={props.ingredients}
               handleAddIngredient={handleAddIngredient}

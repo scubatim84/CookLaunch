@@ -43,6 +43,7 @@ function IngredientItem(props) {
       quantity: props.quantity,
       quantityType: props.quantityType,
       checked: props.checked,
+      groceryExtra: props.groceryExtra,
     });
 
     setGroceryIngredient(props.groceryIngredient);
