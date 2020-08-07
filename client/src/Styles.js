@@ -3,10 +3,6 @@ import LandingImage from './images/landing-bg.png';
 import LoginImage from './images/login-bg.png';
 
 export const useStylesMain = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
   buttonMarginTop: {
     marginTop: theme.spacing(1),
   },

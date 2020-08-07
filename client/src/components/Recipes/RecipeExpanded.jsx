@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect, useHistory, useParams} from 'react-router-dom';
 import {
-  Backdrop,
   Button,
   Card,
-  CircularProgress,
   Container,
   Dialog,
   DialogActions,
@@ -45,7 +43,18 @@ function RecipeExpanded(props) {
 
   const recipeId = useParams().id;
 
-  const [recipe, setRecipe] = useState(null);
+  const [recipe, setRecipe] = useState({
+    name: '',
+    ingredients: [
+      {
+        _id: '',
+        name: '',
+        quantity: '',
+        quantityType: '',
+        dateLastChanged: '',
+      },
+    ],
+  });
   const [editMode, setEditMode] = useState(false);
   const [open, setOpen] = useState(false);
   const [cookAlert, setCookAlert] = useState(false);
@@ -285,14 +294,6 @@ function RecipeExpanded(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
-  } else if (!recipe) {
-    return (
-      <div className={classes.minHeight}>
-        <Backdrop className={classes.backdrop} open={true}>
-          <CircularProgress color='inherit' />
-        </Backdrop>
-      </div>
-    );
   } else {
     return (
       <Container component='main' maxWidth='sm'>
