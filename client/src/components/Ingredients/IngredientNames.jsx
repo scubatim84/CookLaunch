@@ -7,8 +7,10 @@ import {addIngredient, deleteIngredient} from '../../actions/ingredientActions';
 import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
+  Backdrop,
   Button,
   Card,
+  CircularProgress,
   Container,
   Grid,
   List,
@@ -20,7 +22,7 @@ import CardTitle from '../CardTitle';
 function IngredientNames(props) {
   const classes = useStylesMain(themeMain);
 
-  const [ingredientList, setIngredientList] = useState({data: []});
+  const [ingredientList, setIngredientList] = useState(null);
   const [ingredient, setIngredient] = useState({
     name: '',
     createdBy: '',
@@ -92,6 +94,14 @@ function IngredientNames(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
+  } else if (!ingredientList) {
+    return (
+      <div className={classes.minHeight}>
+        <Backdrop className={classes.backdrop} open={true}>
+          <CircularProgress color='inherit' />
+        </Backdrop>
+      </div>
+    );
   } else {
     return (
       <Container component='main' maxWidth='xs'>
