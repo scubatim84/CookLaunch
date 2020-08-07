@@ -10,14 +10,7 @@ import IngredientAdd from './Ingredients/IngredientAdd';
 import IngredientItem from './Ingredients/IngredientItem';
 import {useStylesMain} from '../Styles';
 import {themeMain} from '../Theme';
-import {
-  Backdrop,
-  Card,
-  CircularProgress,
-  Container,
-  Grid,
-  List,
-} from '@material-ui/core';
+import {Card, Container, Grid, List} from '@material-ui/core';
 import CardTitle from './CardTitle';
 
 function Pantry(props) {
@@ -26,13 +19,13 @@ function Pantry(props) {
   const [pantry, setPantry] = useState(null);
 
   useEffect(() => {
-    if (props.pantry && props.pantry.length > 0) {
+    if (props.pantry) {
       let rawPantryList = props.pantry;
       let sortedPantry = rawPantryList.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
 
-      setPantry({data: sortedPantry});
+      setPantry(sortedPantry);
     }
   }, [props.pantry]);
 
@@ -73,15 +66,7 @@ function Pantry(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
-  } else if (!pantry) {
-    return (
-      <div className={classes.minHeight}>
-        <Backdrop className={classes.backdrop} open={true}>
-          <CircularProgress color='inherit' />
-        </Backdrop>
-      </div>
-    );
-  } else {
+  } else if (pantry) {
     return (
       <Container component='main' maxWidth='xs'>
         <Grid container spacing={1} className={classes.pageMarginBottom}>
@@ -94,35 +79,32 @@ function Pantry(props) {
                   </Grid>
                   <Grid item xs={12}>
                     <List className={classes.list}>
-                      {pantry &&
-                        pantry.data.map((ingredient) => {
-                          const formatName = _.startCase(
-                            _.toLower(ingredient.name)
-                          );
-                          const formatQuantityType = _.startCase(
-                            _.toLower(ingredient.quantityType)
-                          );
+                      {pantry.map((ingredient) => {
+                        const formatName = _.startCase(
+                          _.toLower(ingredient.name)
+                        );
+                        const formatQuantityType = _.startCase(
+                          _.toLower(ingredient.quantityType)
+                        );
 
-                          return (
-                            <Grid
-                              item
-                              xs={12}
+                        return (
+                          <Grid
+                            item
+                            xs={12}
+                            key={ingredient.name + ingredient.dateLastChanged}
+                          >
+                            <IngredientItem
                               key={ingredient.name + ingredient.dateLastChanged}
-                            >
-                              <IngredientItem
-                                key={
-                                  ingredient.name + ingredient.dateLastChanged
-                                }
-                                id={ingredient._id}
-                                name={formatName}
-                                quantity={ingredient.quantity}
-                                quantityType={formatQuantityType}
-                                handleDelete={handleDelete}
-                                handleUpdateIngredient={handleUpdateIngredient}
-                              />
-                            </Grid>
-                          );
-                        })}
+                              id={ingredient._id}
+                              name={formatName}
+                              quantity={ingredient.quantity}
+                              quantityType={formatQuantityType}
+                              handleDelete={handleDelete}
+                              handleUpdateIngredient={handleUpdateIngredient}
+                            />
+                          </Grid>
+                        );
+                      })}
                     </List>
                   </Grid>
                 </Grid>

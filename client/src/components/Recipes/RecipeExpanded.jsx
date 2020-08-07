@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect, useHistory, useParams} from 'react-router-dom';
 import {
-  Backdrop,
   Button,
   Card,
-  CircularProgress,
   Container,
   Dialog,
   DialogActions,
@@ -286,15 +284,7 @@ function RecipeExpanded(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
-  } else if (!recipe) {
-    return (
-      <div className={classes.minHeight}>
-        <Backdrop className={classes.backdrop} open={true}>
-          <CircularProgress color='inherit' />
-        </Backdrop>
-      </div>
-    );
-  } else {
+  } else if (recipe) {
     return (
       <Container component='main' maxWidth='sm'>
         <div className={classes.pageMargin}>

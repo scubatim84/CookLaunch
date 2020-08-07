@@ -20,7 +20,7 @@ import CardTitle from '../CardTitle';
 function IngredientNames(props) {
   const classes = useStylesMain(themeMain);
 
-  const [ingredientList, setIngredientList] = useState({data: []});
+  const [ingredientList, setIngredientList] = useState(null);
   const [ingredient, setIngredient] = useState({
     name: '',
     createdBy: '',
@@ -37,13 +37,13 @@ function IngredientNames(props) {
       };
     });
 
-    if (props.ingredients && props.ingredients.length > 0) {
+    if (props.ingredients) {
       let rawIngredientList = props.ingredients;
       let sortedIngredients = rawIngredientList.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
 
-      setIngredientList({data: sortedIngredients});
+      setIngredientList(sortedIngredients);
     }
   }, [props.id, props.ingredients]);
 
@@ -92,7 +92,7 @@ function IngredientNames(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
-  } else {
+  } else if (ingredientList) {
     return (
       <Container component='main' maxWidth='xs'>
         <Card>
