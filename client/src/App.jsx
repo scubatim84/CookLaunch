@@ -41,18 +41,6 @@ function App() {
   });
   const [ingredients, setIngredients] = useState({data: []});
   const [recipes, setRecipes] = useState({data: []});
-  const [recipeEdit, setRecipeEdit] = useState(false);
-
-  useEffect(() => {
-    getRecipeData();
-  }, []);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      getUserPayload();
-      getIngredientData();
-    }
-  }, [isLoggedIn]);
 
   const getIngredientData = async () => {
     const response = await getIngredients();
@@ -86,6 +74,14 @@ function App() {
       setLoggedIn(false);
     }
   };
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getUserPayload();
+      getIngredientData();
+      getRecipeData();
+    }
+  }, [isLoggedIn]);
 
   const renderDashboard = () => {
     return (
@@ -261,22 +257,18 @@ function App() {
           <Route
             exact
             path='/recipes/view/:id'
-            render={({match}) => {
-              return (
-                <RecipeExpanded
-                  key={recipeEdit}
-                  isLoggedIn={isLoggedIn}
-                  getRecipeData={getRecipeData}
-                  recipeEdit={recipeEdit}
-                  setRecipeEdit={setRecipeEdit}
-                  ingredients={ingredients.data}
-                  groceries={user.groceries}
-                  pantry={user.pantry}
-                  getUserPayload={getUserPayload}
-                  id={match.params.id}
-                />
-              );
-            }}
+            render={({match}) => (
+              <RecipeExpanded
+                key={match.params.id}
+                isLoggedIn={isLoggedIn}
+                getRecipeData={getRecipeData}
+                ingredients={ingredients.data}
+                groceries={user.groceries}
+                pantry={user.pantry}
+                getUserPayload={getUserPayload}
+                id={match.params.id}
+              />
+            )}
           />
           <Route exact path='/dashboard/groceries' render={renderGroceries} />
           <Route exact path='/dashboard/pantry' render={renderPantry} />
