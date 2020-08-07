@@ -46,7 +46,6 @@ function RecipeExpanded(props) {
   const recipeId = useParams().id;
 
   const [recipe, setRecipe] = useState(null);
-  const [editMode, setEditMode] = useState(false);
   const [open, setOpen] = useState(false);
   const [cookAlert, setCookAlert] = useState(false);
   const [groceryAddAlert, setGroceryAddAlert] = useState(false);
@@ -73,11 +72,11 @@ function RecipeExpanded(props) {
   };
 
   const handleEdit = () => {
-    setEditMode(true);
+    props.setRecipeEdit(true);
   };
 
   const handleCancel = async () => {
-    setEditMode(false);
+    props.setRecipeEdit(false);
 
     await props.getRecipeData();
   };
@@ -282,6 +281,8 @@ function RecipeExpanded(props) {
         errorMessage: response.data,
       });
     }
+
+    props.setRecipeEdit(false);
   };
 
   if (!props.isLoggedIn) {
@@ -325,8 +326,9 @@ function RecipeExpanded(props) {
                       <Grid container spacing={2}>
                         <Grid item xs={12} align='center'>
                           <RecipeName
+                            key={props.recipeEdit}
                             name={recipe.name}
-                            editMode={editMode}
+                            editMode={props.recipeEdit}
                             handleChange={handleChange}
                           />
                         </Grid>
@@ -342,12 +344,12 @@ function RecipeExpanded(props) {
                         <Grid item xs={2} sm={3}>
                           <Typography>Type</Typography>
                         </Grid>
-                        {!editMode && (
+                        {!props.recipeEdit && (
                           <Grid item xs={2} sm={1}>
                             <Typography>Have</Typography>
                           </Grid>
                         )}
-                        {!editMode && (
+                        {!props.recipeEdit && (
                           <Grid item xs={2} sm={1}>
                             <Typography>Need</Typography>
                           </Grid>
@@ -381,7 +383,7 @@ function RecipeExpanded(props) {
                                     }
                                     _id={ingredient._id}
                                     name={formatName}
-                                    editMode={editMode}
+                                    editMode={props.recipeEdit}
                                     quantity={ingredient.quantity}
                                     quantityNeeded={quantityNeeded}
                                     quantityHave={quantityHave}
@@ -398,7 +400,7 @@ function RecipeExpanded(props) {
                             })}
                           </List>
                         </Grid>
-                        {editMode && (
+                        {props.recipeEdit && (
                           <Grid item xs={12}>
                             <RecipeIngredientAdd
                               key={recipe.ingredients}
@@ -408,7 +410,7 @@ function RecipeExpanded(props) {
                             />
                           </Grid>
                         )}
-                        {!editMode && (
+                        {!props.recipeEdit && (
                           <Grid item xs={12}>
                             <Button
                               fullWidth
@@ -443,14 +445,14 @@ function RecipeExpanded(props) {
                         )}
                         <Grid item xs={12}>
                           <RecipeButton
-                            key={editMode + new Date()}
-                            editMode={editMode}
+                            key={props.recipeEdit}
+                            editMode={props.recipeEdit}
                             handleEdit={handleEdit}
                             handleCancel={handleCancel}
                             handleSubmit={handleSubmit}
                           />
                         </Grid>
-                        {!editMode && (
+                        {!props.recipeEdit && (
                           <Grid item xs={12}>
                             <Button
                               fullWidth
@@ -483,7 +485,7 @@ function RecipeExpanded(props) {
                             </Dialog>
                           </Grid>
                         )}
-                        {!editMode && (
+                        {!props.recipeEdit && (
                           <Grid item xs={12}>
                             <Button
                               fullWidth
