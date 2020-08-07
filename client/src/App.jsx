@@ -23,6 +23,7 @@ import Grid from '@material-ui/core/Grid';
 import IngredientNames from './components/Ingredients/IngredientNames';
 import RecipeExpanded from './components/Recipes/RecipeExpanded';
 import GroceryList from './components/Groceries/GroceryList';
+import {Backdrop, CircularProgress} from '@material-ui/core';
 
 function App() {
   const classes = useStylesMain(themeMain);
@@ -39,7 +40,7 @@ function App() {
     pantry: [],
     groceries: [],
   });
-  const [ingredients, setIngredients] = useState({data: []});
+  const [ingredients, setIngredients] = useState(null);
   const [recipes, setRecipes] = useState({data: []});
   const [recipeEdit, setRecipeEdit] = useState(false);
 
@@ -57,7 +58,7 @@ function App() {
   const getIngredientData = async () => {
     const response = await getIngredients();
 
-    setIngredients({data: response.data});
+    setIngredients(response.data);
   };
 
   const getRecipeData = async () => {
@@ -123,28 +124,38 @@ function App() {
   };
 
   const renderIngredients = () => {
-    return (
-      <Grid
-        container
-        style={{minHeight: '100vh'}}
-        className={classes.ingredientMargin}
-      >
-        <Grid item xs={12} align='center'>
-          <IngredientNames
-            key={ingredients.data}
-            pantry={user.pantry}
-            getIngredientData={getIngredientData}
-            ingredients={ingredients.data}
-            id={user.id}
-            email={user.email}
-            firstName={user.firstName}
-            lastName={user.lastName}
-            handleLoggedIn={handleLoggedIn}
-            isLoggedIn={isLoggedIn}
-          />
+    if (ingredients) {
+      return (
+        <Grid
+          container
+          style={{minHeight: '100vh'}}
+          className={classes.ingredientMargin}
+        >
+          <Grid item xs={12} align='center'>
+            <IngredientNames
+              key={ingredients}
+              pantry={user.pantry}
+              getIngredientData={getIngredientData}
+              ingredients={ingredients}
+              id={user.id}
+              email={user.email}
+              firstName={user.firstName}
+              lastName={user.lastName}
+              handleLoggedIn={handleLoggedIn}
+              isLoggedIn={isLoggedIn}
+            />
+          </Grid>
         </Grid>
-      </Grid>
-    );
+      );
+    } else {
+      return (
+        <div className={classes.minHeight}>
+          <Backdrop className={classes.backdrop} open={true}>
+            <CircularProgress color='inherit' />
+          </Backdrop>
+        </div>
+      );
+    }
   };
 
   const renderLanding = () => {
@@ -269,7 +280,7 @@ function App() {
                   getRecipeData={getRecipeData}
                   recipeEdit={recipeEdit}
                   setRecipeEdit={setRecipeEdit}
-                  ingredients={ingredients.data}
+                  ingredients={ingredients}
                   groceries={user.groceries}
                   pantry={user.pantry}
                   getUserPayload={getUserPayload}
