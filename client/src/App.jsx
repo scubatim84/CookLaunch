@@ -23,6 +23,8 @@ import Grid from '@material-ui/core/Grid';
 import IngredientNames from './components/Ingredients/IngredientNames';
 import RecipeExpanded from './components/Recipes/RecipeExpanded';
 import GroceryList from './components/Groceries/GroceryList';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function App() {
   const classes = useStylesMain(themeMain);
@@ -31,6 +33,7 @@ function App() {
   const token = cookies.get('user');
 
   const [isLoggedIn, setLoggedIn] = useState(!isEmpty(token));
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({
     id: '',
     email: '',
@@ -41,6 +44,19 @@ function App() {
   });
   const [ingredients, setIngredients] = useState({data: []});
   const [recipes, setRecipes] = useState({data: []});
+
+  useEffect(() => {
+    getRecipeData();
+
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getUserPayload();
+      getIngredientData();
+    }
+  }, [isLoggedIn]);
 
   const getIngredientData = async () => {
     const response = await getIngredients();
@@ -74,14 +90,6 @@ function App() {
       setLoggedIn(false);
     }
   };
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      getUserPayload();
-      getIngredientData();
-      getRecipeData();
-    }
-  }, [isLoggedIn]);
 
   const renderDashboard = () => {
     return (
@@ -263,6 +271,9 @@ function App() {
       />
       <Router>
         <div className='App'>
+          <Backdrop className={classes.backdrop} open={loading}>
+            <CircularProgress color='inherit' />
+          </Backdrop>
           <Route exact path='/' render={renderLanding} />
           <Route exact path='/login' render={renderLogin} />
           <Route exact path='/dashboard' render={renderDashboard} />
