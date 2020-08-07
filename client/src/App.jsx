@@ -16,12 +16,14 @@ import {getIngredients} from './actions/ingredientActions';
 import {useStylesMain} from './Styles';
 import {themeMain} from './Theme';
 import {ThemeProvider} from '@material-ui/core/styles';
-import {Backdrop, CircularProgress, CssBaseline, Grid} from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import {getAllRecipes} from './actions/recipeActions';
 import RecipeAdd from './components/Recipes/RecipeAdd';
+import Grid from '@material-ui/core/Grid';
 import IngredientNames from './components/Ingredients/IngredientNames';
 import RecipeExpanded from './components/Recipes/RecipeExpanded';
 import GroceryList from './components/Groceries/GroceryList';
+import {Backdrop, CircularProgress} from '@material-ui/core';
 
 function App() {
   const classes = useStylesMain(themeMain);
@@ -30,7 +32,6 @@ function App() {
   const token = cookies.get('user');
 
   const [isLoggedIn, setLoggedIn] = useState(!isEmpty(token));
-  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({
     id: '',
     email: '',
@@ -41,11 +42,10 @@ function App() {
   });
   const [ingredients, setIngredients] = useState(null);
   const [recipes, setRecipes] = useState({data: []});
+  const [recipeEdit, setRecipeEdit] = useState(false);
 
   useEffect(() => {
     getRecipeData();
-
-    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -115,7 +115,7 @@ function App() {
           <RecipeAdd
             key={recipes.data}
             getRecipeData={getRecipeData}
-            ingredients={ingredients}
+            ingredients={ingredients.data}
             isLoggedIn={isLoggedIn}
           />
         </Grid>
@@ -189,7 +189,7 @@ function App() {
           <Pantry
             key={user.pantry}
             pantry={user.pantry}
-            ingredients={ingredients}
+            ingredients={ingredients.data}
             getUserPayload={getUserPayload}
             getIngredientData={getIngredientData}
             email={user.email}
@@ -216,7 +216,7 @@ function App() {
             key={user.groceries}
             groceries={user.groceries}
             pantry={user.pantry}
-            ingredients={ingredients}
+            ingredients={ingredients.data}
             getUserPayload={getUserPayload}
             getIngredientData={getIngredientData}
             email={user.email}
@@ -254,67 +254,51 @@ function App() {
     );
   };
 
-  const renderRecipe = () => {
-    return (
-      <RecipeExpanded
-        key={recipes}
+  return (
+    <ThemeProvider theme={themeMain}>
+      <CssBaseline />
+      <Navbar
+        handleLoggedIn={handleLoggedIn}
         isLoggedIn={isLoggedIn}
-        getRecipeData={getRecipeData}
-        ingredients={ingredients}
-        groceries={user.groceries}
-        pantry={user.pantry}
-        getUserPayload={getUserPayload}
+        className={classes.root}
       />
-    );
-  };
-
-  if (loading) {
-    return (
-      <ThemeProvider theme={themeMain}>
-        <CssBaseline />
-        <Navbar
-          handleLoggedIn={handleLoggedIn}
-          isLoggedIn={isLoggedIn}
-          className={classes.root}
-        />
+      <Router>
         <div className='App'>
-          <div className={classes.minHeight}>
-            <Backdrop className={classes.backdrop} open={loading}>
-              <CircularProgress color='inherit' />
-            </Backdrop>
-          </div>
+          <Route exact path='/' render={renderLanding} />
+          <Route exact path='/login' render={renderLogin} />
+          <Route exact path='/dashboard' render={renderDashboard} />
+          <Route exact path='/ingredients' render={renderIngredients} />
+          <Route exact path='/recipes/add' render={renderRecipeAdd} />
+          <Route
+            exact
+            path='/recipes/view/:id'
+            render={({match}) => {
+              return (
+                <RecipeExpanded
+                  key={recipeEdit}
+                  isLoggedIn={isLoggedIn}
+                  getRecipeData={getRecipeData}
+                  recipeEdit={recipeEdit}
+                  setRecipeEdit={setRecipeEdit}
+                  ingredients={ingredients}
+                  groceries={user.groceries}
+                  pantry={user.pantry}
+                  getUserPayload={getUserPayload}
+                  id={match.params.id}
+                />
+              );
+            }}
+          />
+          <Route exact path='/dashboard/groceries' render={renderGroceries} />
+          <Route exact path='/dashboard/pantry' render={renderPantry} />
+          <Route exact path='/forgotpassword' component={ForgotPassword} />
+          <Route exact path='/profile' render={renderProfile} />
+          <Route path='/reset/:token' render={renderResetPassword} />
         </div>
-        <Footer className={classes.root} />
-      </ThemeProvider>
-    );
-  } else {
-    return (
-      <ThemeProvider theme={themeMain}>
-        <CssBaseline />
-        <Navbar
-          handleLoggedIn={handleLoggedIn}
-          isLoggedIn={isLoggedIn}
-          className={classes.root}
-        />
-        <Router>
-          <div className='App'>
-            <Route exact path='/' render={renderLanding} />
-            <Route exact path='/login' render={renderLogin} />
-            <Route exact path='/dashboard' render={renderDashboard} />
-            <Route exact path='/ingredients' render={renderIngredients} />
-            <Route exact path='/recipes/add' render={renderRecipeAdd} />
-            <Route exact path='/recipes/view/:id' render={renderRecipe} />
-            <Route exact path='/dashboard/groceries' render={renderGroceries} />
-            <Route exact path='/dashboard/pantry' render={renderPantry} />
-            <Route exact path='/forgotpassword' component={ForgotPassword} />
-            <Route exact path='/profile' render={renderProfile} />
-            <Route path='/reset/:token' render={renderResetPassword} />
-          </div>
-        </Router>
-        <Footer className={classes.root} />
-      </ThemeProvider>
-    );
-  }
+      </Router>
+      <Footer className={classes.root} />
+    </ThemeProvider>
+  );
 }
 
 export default App;
