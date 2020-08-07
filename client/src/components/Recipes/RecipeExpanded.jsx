@@ -48,7 +48,6 @@ function RecipeExpanded(props) {
   const [recipe, setRecipe] = useState(null);
   const [open, setOpen] = useState(false);
   const [cookAlert, setCookAlert] = useState(false);
-  const [groceryAddAlert, setGroceryAddAlert] = useState(false);
   const [error, setError] = useState({
     errorMessage: '',
   });
@@ -159,8 +158,8 @@ function RecipeExpanded(props) {
       }
     }
 
-    // Show alert that add to grocery list function succeeded
-    setGroceryAddAlert(true);
+    // Update user payload to re-render grocery list
+    await props.getUserPayload();
   };
 
   const ingredientsMissing = () => {
@@ -420,27 +419,6 @@ function RecipeExpanded(props) {
                             >
                               Add To Grocery List
                             </Button>
-                            <Dialog
-                              open={groceryAddAlert}
-                              onClose={reloadRecipe}
-                              aria-labelledby='alert-dialog-title'
-                              aria-describedby='alert-dialog-description'
-                            >
-                              <DialogTitle id='alert-dialog-title'>
-                                {'Grocery List Updated!'}
-                              </DialogTitle>
-                              <DialogContent>
-                                <DialogContentText id='alert-dialog-description'>
-                                  The recipe ingredients have been added to your
-                                  your grocery list.
-                                </DialogContentText>
-                              </DialogContent>
-                              <DialogActions>
-                                <Button onClick={reloadRecipe} color='primary'>
-                                  Ok
-                                </Button>
-                              </DialogActions>
-                            </Dialog>
                           </Grid>
                         )}
                         <Grid item xs={12}>
