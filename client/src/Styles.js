@@ -6,6 +6,7 @@ export const useStylesMain = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
+    transitionDuration: 3000,
   },
   buttonMarginTop: {
     marginTop: theme.spacing(1),

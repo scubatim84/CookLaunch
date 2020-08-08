@@ -31,11 +31,12 @@ import {
   updateIngredientInPantry,
 } from '../../actions/pantryActions';
 import GroceryExtra from './GroceryExtra';
+import Loader from '../Loader';
 
 function GroceryList(props) {
   const classes = useStylesMain(themeMain);
 
-  const [groceryList, setGroceryList] = useState({data: []});
+  const [groceryList, setGroceryList] = useState(null);
   const [groceryComplete, setGroceryComplete] = useState(false);
   const [error, setError] = useState({
     errorMessage: '',
@@ -174,6 +175,8 @@ function GroceryList(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
+  } else if (!groceryList) {
+    return <Loader />;
   } else {
     return (
       <Container component='main' maxWidth='xs'>

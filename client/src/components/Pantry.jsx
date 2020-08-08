@@ -10,15 +10,9 @@ import IngredientAdd from './Ingredients/IngredientAdd';
 import IngredientItem from './Ingredients/IngredientItem';
 import {useStylesMain} from '../Styles';
 import {themeMain} from '../Theme';
-import {
-  Backdrop,
-  Card,
-  CircularProgress,
-  Container,
-  Grid,
-  List,
-} from '@material-ui/core';
+import {Card, Container, Grid, List} from '@material-ui/core';
 import CardTitle from './CardTitle';
+import Loader from './Loader';
 
 function Pantry(props) {
   const classes = useStylesMain(themeMain);
@@ -74,13 +68,7 @@ function Pantry(props) {
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
   } else if (!pantry) {
-    return (
-      <div className={classes.minHeight}>
-        <Backdrop className={classes.backdrop} open={true}>
-          <CircularProgress color='inherit' />
-        </Backdrop>
-      </div>
-    );
+    return <Loader />;
   } else {
     return (
       <Container component='main' maxWidth='xs'>

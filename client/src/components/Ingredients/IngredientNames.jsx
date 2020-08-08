@@ -7,10 +7,8 @@ import {addIngredient, deleteIngredient} from '../../actions/ingredientActions';
 import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {
-  Backdrop,
   Button,
   Card,
-  CircularProgress,
   Container,
   Grid,
   List,
@@ -18,6 +16,7 @@ import {
 } from '@material-ui/core';
 import IngredientNameItem from './IngredientNameItem';
 import CardTitle from '../CardTitle';
+import Loader from '../Loader';
 
 function IngredientNames(props) {
   const classes = useStylesMain(themeMain);
@@ -95,13 +94,7 @@ function IngredientNames(props) {
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
   } else if (!ingredientList) {
-    return (
-      <div className={classes.minHeight}>
-        <Backdrop className={classes.backdrop} open={true}>
-          <CircularProgress color='inherit' />
-        </Backdrop>
-      </div>
-    );
+    return <Loader />;
   } else {
     return (
       <Container component='main' maxWidth='xs'>
