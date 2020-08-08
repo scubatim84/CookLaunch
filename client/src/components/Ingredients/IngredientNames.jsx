@@ -95,7 +95,7 @@ function IngredientNames(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
-  } else if (!ingredientList) {
+  } else if (!ingredientList || !props.id) {
     return <Loader />;
   } else {
     return (
