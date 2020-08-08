@@ -74,7 +74,7 @@ function Profile(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
-  } else if (!profileData) {
+  } else if (!profileData?.email) {
     return <Loader />;
   } else {
     return (
