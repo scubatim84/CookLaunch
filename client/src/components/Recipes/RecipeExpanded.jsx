@@ -276,6 +276,8 @@ function RecipeExpanded(props) {
 
     if (response.status === 204) {
       await props.getRecipeData();
+
+      setEditMode(false);
     } else {
       setError({
         errorMessage: response.data,
@@ -285,7 +287,7 @@ function RecipeExpanded(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
-  } else if (!recipe) {
+  } else if (!recipe?._id) {
     return <Loader />;
   } else {
     return (

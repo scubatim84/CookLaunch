@@ -43,13 +43,10 @@ function App() {
   const [recipes, setRecipes] = useState({data: []});
 
   useEffect(() => {
-    getRecipeData();
-  }, []);
-
-  useEffect(() => {
     if (isLoggedIn) {
       getUserPayload();
       getIngredientData();
+      getRecipeData();
     }
   }, [isLoggedIn]);
 
@@ -121,10 +118,14 @@ function App() {
     );
   };
 
-  const renderRecipeView = () => {
+  const renderRecipeView = ({match}) => {
+    const foundRecipe = recipes.data.filter((recipe) => {
+      return recipe._id === match.params.id;
+    });
+
     return (
       <RecipeExpanded
-        key={recipes.data + new Date()}
+        key={foundRecipe._id + foundRecipe.dateLastChanged}
         isLoggedIn={isLoggedIn}
         getRecipeData={getRecipeData}
         ingredients={ingredients.data}
