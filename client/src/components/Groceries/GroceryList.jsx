@@ -31,11 +31,13 @@ import {
   updateIngredientInPantry,
 } from '../../actions/pantryActions';
 import GroceryExtra from './GroceryExtra';
+import Loader from '../Loader';
 
 function GroceryList(props) {
   const classes = useStylesMain(themeMain);
 
-  const [groceryList, setGroceryList] = useState({data: []});
+  const [groceryList, setGroceryList] = useState(null);
+  const [updateNeeded, setUpdateNeeded] = useState(false);
   const [groceryComplete, setGroceryComplete] = useState(false);
   const [error, setError] = useState({
     errorMessage: '',
@@ -55,6 +57,8 @@ function GroceryList(props) {
       });
 
       setGroceryList({data: sortedGroceries});
+    } else if (props.groceries) {
+      setGroceryList({data: []});
     }
   }, [props.groceries]);
 
@@ -71,6 +75,8 @@ function GroceryList(props) {
   };
 
   const handleUpdateIngredient = async (updateIngredient) => {
+    setUpdateNeeded(true);
+
     const requestResponse = await updateIngredientInGroceries(updateIngredient);
 
     if (requestResponse.status === 204) {
@@ -80,6 +86,8 @@ function GroceryList(props) {
       // If request failed, return error message to child component
       return requestResponse.data;
     }
+
+    setUpdateNeeded(false);
   };
 
   const handleAddIngredient = async (addIngredient) => {
@@ -174,6 +182,8 @@ function GroceryList(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
+  } else if (!groceryList || !props.firstName || updateNeeded) {
+    return <Loader />;
   } else {
     return (
       <Container component='main' maxWidth='xs'>

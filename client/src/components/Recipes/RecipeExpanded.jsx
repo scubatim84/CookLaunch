@@ -36,6 +36,7 @@ import {
   deleteIngredientFromPantry,
   updateIngredientInPantry,
 } from '../../actions/pantryActions';
+import Loader from '../Loader';
 
 function RecipeExpanded(props) {
   const history = useHistory();
@@ -43,18 +44,7 @@ function RecipeExpanded(props) {
 
   const recipeId = useParams().id;
 
-  const [recipe, setRecipe] = useState({
-    name: '',
-    ingredients: [
-      {
-        _id: '',
-        name: '',
-        quantity: '',
-        quantityType: '',
-        dateLastChanged: '',
-      },
-    ],
-  });
+  const [recipe, setRecipe] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [open, setOpen] = useState(false);
   const [cookAlert, setCookAlert] = useState(false);
@@ -286,6 +276,8 @@ function RecipeExpanded(props) {
 
     if (response.status === 204) {
       await props.getRecipeData();
+
+      setEditMode(false);
     } else {
       setError({
         errorMessage: response.data,
@@ -295,6 +287,8 @@ function RecipeExpanded(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
+  } else if (!recipe?._id) {
+    return <Loader />;
   } else {
     return (
       <Container component='main' maxWidth='sm'>

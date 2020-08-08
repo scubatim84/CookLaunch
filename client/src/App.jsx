@@ -42,6 +42,14 @@ function App() {
   const [ingredients, setIngredients] = useState({data: []});
   const [recipes, setRecipes] = useState({data: []});
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      getUserPayload();
+      getIngredientData();
+      getRecipeData();
+    }
+  }, [isLoggedIn]);
+
   const getIngredientData = async () => {
     const response = await getIngredients();
 
@@ -74,14 +82,6 @@ function App() {
       setLoggedIn(false);
     }
   };
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      getUserPayload();
-      getIngredientData();
-      getRecipeData();
-    }
-  }, [isLoggedIn]);
 
   const renderDashboard = () => {
     return (
@@ -118,10 +118,14 @@ function App() {
     );
   };
 
-  const renderRecipeView = () => {
+  const renderRecipeView = ({match}) => {
+    const foundRecipe = recipes.data.filter((recipe) => {
+      return recipe._id === match.params.id;
+    });
+
     return (
       <RecipeExpanded
-        key={recipes.data + new Date()}
+        key={foundRecipe._id + foundRecipe.dateLastChanged}
         isLoggedIn={isLoggedIn}
         getRecipeData={getRecipeData}
         ingredients={ingredients.data}

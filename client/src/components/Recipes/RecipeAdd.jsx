@@ -5,6 +5,11 @@ import {
   Button,
   Card,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   List,
   TextField,
@@ -22,6 +27,7 @@ import FormSubmitMessage from '../FormSubmitMessage';
 function RecipeAdd(props) {
   const classes = useStylesMain(themeMain);
 
+  const [recipeAddAlert, setRecipeAddAlert] = useState(false);
   const [recipe, setRecipe] = useState({
     name: '',
     ingredients: [],
@@ -91,13 +97,18 @@ function RecipeAdd(props) {
     const requestResponse = await addRecipe(recipe);
 
     if (requestResponse.status === 201) {
-      // If updating ingredient is successful, re-render ingredient list
-      await props.getRecipeData();
+      // Show alert that add recipe function succeeded
+      setRecipeAddAlert(true);
     } else {
       setError({
         errorMessage: requestResponse.authResponsePayload,
       });
     }
+  };
+
+  const reloadRecipeData = async () => {
+    // If updating ingredient is successful, re-render ingredient list
+    await props.getRecipeData();
   };
 
   if (!props.isLoggedIn) {
@@ -169,6 +180,26 @@ function RecipeAdd(props) {
                   >
                     Add Recipe
                   </Button>
+                  <Dialog
+                    open={recipeAddAlert}
+                    onClose={reloadRecipeData}
+                    aria-labelledby='alert-dialog-title'
+                    aria-describedby='alert-dialog-description'
+                  >
+                    <DialogTitle id='alert-dialog-title'>
+                      {'Recipe Added!'}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id='alert-dialog-description'>
+                        The recipe has been added to your dashboard.
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={reloadRecipeData} color='primary'>
+                        Ok
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </Grid>
                 <Grid item xs={12}>
                   {!isEmpty(error.errorMessage) && (

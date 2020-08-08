@@ -10,15 +10,12 @@ import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {Card, Grid} from '@material-ui/core';
 import CardTitle from '../CardTitle';
+import Loader from '../Loader';
 
 function Profile(props) {
   const classes = useStylesMain(themeMain);
 
-  const [profileData, setProfileData] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
-  });
+  const [profileData, setProfileData] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState({
     errorMessage: '',
@@ -77,6 +74,8 @@ function Profile(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
+  } else if (!profileData?.email) {
+    return <Loader />;
   } else {
     return (
       <div className={classes.minHeight}>

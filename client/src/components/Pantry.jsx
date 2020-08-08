@@ -12,11 +12,12 @@ import {useStylesMain} from '../Styles';
 import {themeMain} from '../Theme';
 import {Card, Container, Grid, List} from '@material-ui/core';
 import CardTitle from './CardTitle';
+import Loader from './Loader';
 
 function Pantry(props) {
   const classes = useStylesMain(themeMain);
 
-  const [pantry, setPantry] = useState({data: []});
+  const [pantry, setPantry] = useState(null);
 
   useEffect(() => {
     if (props.pantry && props.pantry.length > 0) {
@@ -26,6 +27,8 @@ function Pantry(props) {
       });
 
       setPantry({data: sortedPantry});
+    } else if (props.pantry) {
+      setPantry({data: []});
     }
   }, [props.pantry]);
 
@@ -66,6 +69,8 @@ function Pantry(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
+  } else if (!pantry || !props.firstName) {
+    return <Loader />;
   } else {
     return (
       <Container component='main' maxWidth='xs'>
@@ -79,32 +84,35 @@ function Pantry(props) {
                   </Grid>
                   <Grid item xs={12}>
                     <List className={classes.list}>
-                      {pantry.data.map((ingredient) => {
-                        const formatName = _.startCase(
-                          _.toLower(ingredient.name)
-                        );
-                        const formatQuantityType = _.startCase(
-                          _.toLower(ingredient.quantityType)
-                        );
+                      {pantry &&
+                        pantry.data.map((ingredient) => {
+                          const formatName = _.startCase(
+                            _.toLower(ingredient.name)
+                          );
+                          const formatQuantityType = _.startCase(
+                            _.toLower(ingredient.quantityType)
+                          );
 
-                        return (
-                          <Grid
-                            item
-                            xs={12}
-                            key={ingredient.name + ingredient.dateLastChanged}
-                          >
-                            <IngredientItem
+                          return (
+                            <Grid
+                              item
+                              xs={12}
                               key={ingredient.name + ingredient.dateLastChanged}
-                              id={ingredient._id}
-                              name={formatName}
-                              quantity={ingredient.quantity}
-                              quantityType={formatQuantityType}
-                              handleDelete={handleDelete}
-                              handleUpdateIngredient={handleUpdateIngredient}
-                            />
-                          </Grid>
-                        );
-                      })}
+                            >
+                              <IngredientItem
+                                key={
+                                  ingredient.name + ingredient.dateLastChanged
+                                }
+                                id={ingredient._id}
+                                name={formatName}
+                                quantity={ingredient.quantity}
+                                quantityType={formatQuantityType}
+                                handleDelete={handleDelete}
+                                handleUpdateIngredient={handleUpdateIngredient}
+                              />
+                            </Grid>
+                          );
+                        })}
                     </List>
                   </Grid>
                 </Grid>
