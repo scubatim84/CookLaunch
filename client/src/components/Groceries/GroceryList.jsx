@@ -56,6 +56,8 @@ function GroceryList(props) {
       });
 
       setGroceryList({data: sortedGroceries});
+    } else if (props.groceries) {
+      setGroceryList({data: []});
     }
   }, [props.groceries]);
 
@@ -175,7 +177,7 @@ function GroceryList(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
-  } else if (!groceryList) {
+  } else if (!groceryList || !props.firstName) {
     return <Loader />;
   } else {
     return (

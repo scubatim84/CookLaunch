@@ -45,6 +45,8 @@ function IngredientNames(props) {
       });
 
       setIngredientList({data: sortedIngredients});
+    } else if (props.ingredients) {
+      setIngredientList({data: []});
     }
   }, [props.id, props.ingredients]);
 

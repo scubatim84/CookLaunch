@@ -27,6 +27,8 @@ function Pantry(props) {
       });
 
       setPantry({data: sortedPantry});
+    } else if (props.pantry) {
+      setPantry({data: []});
     }
   }, [props.pantry]);
 
@@ -67,7 +69,7 @@ function Pantry(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
-  } else if (!pantry) {
+  } else if (!pantry || !props.firstName) {
     return <Loader />;
   } else {
     return (
