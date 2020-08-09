@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Redirect, useHistory, useParams} from 'react-router-dom';
+import {Redirect, useHistory} from 'react-router-dom';
 import {
   Button,
   Card,
@@ -42,8 +42,6 @@ function RecipeExpanded(props) {
   const history = useHistory();
   const classes = useStylesMain(themeMain);
 
-  const recipeId = useParams().id;
-
   const [recipe, setRecipe] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [open, setOpen] = useState(false);
@@ -55,17 +53,15 @@ function RecipeExpanded(props) {
 
   useEffect(() => {
     const getOneRecipeData = async () => {
-      const recipeData = await getOneRecipe(recipeId);
+      const recipeData = await getOneRecipe(props.recipeId);
 
       setRecipe(recipeData.data);
     };
 
-    getOneRecipeData();
-
-    return () => {
+    if (props.recipeId) {
       getOneRecipeData();
-    };
-  }, [recipeId]);
+    }
+  }, [props.recipeId]);
 
   const handleClickOpen = () => {
     setOpen(true);
