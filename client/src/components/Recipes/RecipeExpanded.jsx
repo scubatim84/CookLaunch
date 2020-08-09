@@ -223,9 +223,18 @@ function RecipeExpanded(props) {
     }
   };
 
-  const reloadRecipe = async () => {
+  const reloadRecipeIngredients = async () => {
     // Update user payload to re-render recipe ingredients for have/need
     await props.getUserPayload();
+
+    setCookAlert(false);
+  };
+
+  const reloadRecipe = async () => {
+    // Update recipe to re-render changes
+    await props.getRecipeData();
+
+    setGroceryAddAlert(false);
   };
 
   const getHaveNeedQuantities = (ingredient) => {
@@ -407,7 +416,7 @@ function RecipeExpanded(props) {
                         <Grid item xs={12}>
                           <Button
                             fullWidth
-                            variant='contained'
+                            variant='outlined'
                             color='primary'
                             onClick={addToGroceryList}
                           >
@@ -449,7 +458,7 @@ function RecipeExpanded(props) {
                         <Grid item xs={12}>
                           <Button
                             fullWidth
-                            variant='contained'
+                            variant='outlined'
                             color='primary'
                             onClick={deductFromPantry}
                           >
@@ -457,7 +466,7 @@ function RecipeExpanded(props) {
                           </Button>
                           <Dialog
                             open={cookAlert}
-                            onClose={reloadRecipe}
+                            onClose={reloadRecipeIngredients}
                             aria-labelledby='alert-dialog-title'
                             aria-describedby='alert-dialog-description'
                           >
@@ -471,7 +480,10 @@ function RecipeExpanded(props) {
                               </DialogContentText>
                             </DialogContent>
                             <DialogActions>
-                              <Button onClick={reloadRecipe} color='primary'>
+                              <Button
+                                onClick={reloadRecipeIngredients}
+                                color='primary'
+                              >
                                 Ok
                               </Button>
                             </DialogActions>
@@ -482,7 +494,7 @@ function RecipeExpanded(props) {
                         <Grid item xs={12}>
                           <Button
                             fullWidth
-                            variant='contained'
+                            variant='outlined'
                             color='primary'
                             onClick={handleClickOpen}
                           >

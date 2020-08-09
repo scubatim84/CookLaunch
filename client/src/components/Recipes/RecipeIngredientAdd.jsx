@@ -121,7 +121,7 @@ function RecipeIngredientAdd(props) {
             onClick={handleSubmit}
             fullWidth
             type='submit'
-            variant='contained'
+            variant='outlined'
             color='primary'
           >
             Add Ingredient
