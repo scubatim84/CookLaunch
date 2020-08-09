@@ -125,7 +125,7 @@ function App() {
 
     return (
       <RecipeExpanded
-        key={foundRecipe._id + foundRecipe.dateLastChanged}
+        key={foundRecipe[0]?._id + foundRecipe[0]?.dateLastChanged}
         isLoggedIn={isLoggedIn}
         getRecipeData={getRecipeData}
         ingredients={ingredients.data}

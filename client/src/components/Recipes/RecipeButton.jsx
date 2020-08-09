@@ -32,7 +32,7 @@ function RecipeButton(props) {
       <Button
         type='submit'
         fullWidth
-        variant='contained'
+        variant='outlined'
         color='primary'
         onClick={props.handleEdit}
       >
