@@ -23,6 +23,7 @@ import Grid from '@material-ui/core/Grid';
 import IngredientNames from './components/Ingredients/IngredientNames';
 import RecipeExpanded from './components/Recipes/RecipeExpanded';
 import GroceryList from './components/Groceries/GroceryList';
+import Welcome from './components/Welcome';
 
 function App() {
   const classes = useStylesMain(themeMain);
@@ -40,7 +41,7 @@ function App() {
     groceries: [],
   });
   const [ingredients, setIngredients] = useState({data: []});
-  const [recipes, setRecipes] = useState({data: []});
+  const [recipes, setRecipes] = useState(undefined);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -59,7 +60,7 @@ function App() {
   const getRecipeData = async () => {
     const response = await getAllRecipes();
 
-    setRecipes({data: response.data});
+    setRecipes(response.data);
   };
 
   const getUserPayload = async () => {
@@ -91,7 +92,7 @@ function App() {
         email={user.email}
         firstName={user.firstName}
         lastName={user.lastName}
-        recipes={recipes.data}
+        recipes={recipes}
         handleLoggedIn={handleLoggedIn}
         isLoggedIn={isLoggedIn}
         className={classes.root}
@@ -108,7 +109,7 @@ function App() {
       >
         <Grid item xs={12} align='center'>
           <RecipeAdd
-            key={recipes.data}
+            key={recipes}
             getRecipeData={getRecipeData}
             ingredients={ingredients.data}
             isLoggedIn={isLoggedIn}
@@ -119,22 +120,24 @@ function App() {
   };
 
   const renderRecipeView = ({match}) => {
-    const foundRecipe = recipes.data.filter((recipe) => {
-      return recipe._id === match.params.id;
-    });
+    if (recipes) {
+      const foundRecipe = recipes.filter((recipe) => {
+        return recipe._id === match.params.id;
+      });
 
-    return (
-      <RecipeExpanded
-        key={foundRecipe[0]?._id + foundRecipe[0]?.dateLastChanged}
-        recipeId={foundRecipe[0]?._id}
-        isLoggedIn={isLoggedIn}
-        getRecipeData={getRecipeData}
-        ingredients={ingredients.data}
-        groceries={user.groceries}
-        pantry={user.pantry}
-        getUserPayload={getUserPayload}
-      />
-    );
+      return (
+        <RecipeExpanded
+          key={foundRecipe[0]?._id + foundRecipe[0]?.dateLastChanged}
+          recipeId={foundRecipe[0]?._id}
+          isLoggedIn={isLoggedIn}
+          getRecipeData={getRecipeData}
+          ingredients={ingredients.data}
+          groceries={user.groceries}
+          pantry={user.pantry}
+          getUserPayload={getUserPayload}
+        />
+      );
+    }
   };
 
   const renderIngredients = () => {
@@ -168,6 +171,17 @@ function App() {
         handleLoggedIn={handleLoggedIn}
         isLoggedIn={isLoggedIn}
         className={classes.root}
+      />
+    );
+  };
+
+  const renderWelcome = () => {
+    return (
+      <Welcome
+        key={isLoggedIn}
+        firstName={user.firstName}
+        handleLoggedIn={handleLoggedIn}
+        isLoggedIn={isLoggedIn}
       />
     );
   };
@@ -271,6 +285,7 @@ function App() {
           <Route exact path='/' render={renderLanding} />
           <Route exact path='/login' render={renderLogin} />
           <Route exact path='/dashboard' render={renderDashboard} />
+          <Route exact path='/welcome' render={renderWelcome} />
           <Route exact path='/ingredients' render={renderIngredients} />
           <Route exact path='/recipes/add' render={renderRecipeAdd} />
           <Route exact path='/recipes/view/:id' render={renderRecipeView} />

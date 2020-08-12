@@ -14,7 +14,9 @@ function Dashboard(props) {
     return <Redirect to='/login' />;
   } else if (!props.recipes) {
     return <Loader />;
-  } else {
+  } else if (props.id && props.recipes.length === 0) {
+    return <Redirect to='/welcome' />;
+  } else if (props.recipes) {
     return (
       <div className={classes.minHeight}>
         <Backdrop className={classes.backdrop} open={!props.recipes}>

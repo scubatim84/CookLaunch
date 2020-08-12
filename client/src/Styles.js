@@ -80,6 +80,11 @@ export const useStylesMain = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     marginTop: theme.spacing(2),
   },
+  pagePadding: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingTop: theme.spacing(2),
+  },
   pageMarginBottom: {
     marginBottom: theme.spacing(2),
   },
