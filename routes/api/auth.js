@@ -128,7 +128,7 @@ router.post('/forgotpassword', async (req, res) => {
   const foundUser = await User.findOne({email});
 
   if (isEmpty(foundUser)) {
-    res.status(404).json('email not found');
+    res.status(404).json(null);
   } else {
     // Add reset password token to user account and set to expire in 1 hour
     foundUser.resetPasswordToken = token;
@@ -150,7 +150,7 @@ router.post('/forgotpassword', async (req, res) => {
         console.log('There was an error. ' + err);
       } else {
         console.log('here is the res: ' + response);
-        res.status(200).send('recovery email sent');
+        res.status(200).send(null);
       }
     });
   }

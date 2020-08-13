@@ -1,10 +1,5 @@
 import axios from 'axios';
-import {
-  EMAIL_NOT_FOUND,
-  RECOVERY_EMAIL_SENT,
-  REQUEST_FAIL,
-  REQUEST_SUCCESS,
-} from './types';
+import {REQUEST_FAIL, REQUEST_SUCCESS} from './types';
 import cookies from 'js-cookie';
 import isEmpty from 'is-empty';
 import validator from 'validator';
@@ -66,34 +61,14 @@ export const sendPasswordResetEmail = async (userEmail) => {
   }
 
   if (!isEmpty(error)) {
-    return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: error,
-    };
+    return error;
   } else {
     try {
-      const response = await axios.post('/api/auth/forgotpassword', {
+      return await axios.post('/api/auth/forgotpassword', {
         email: userEmail,
       });
-
-      if (response.data === EMAIL_NOT_FOUND) {
-        return {
-          authResponseType: REQUEST_FAIL,
-          authResponsePayload: EMAIL_NOT_FOUND,
-        };
-      } else if (response.data === RECOVERY_EMAIL_SENT) {
-        return {
-          authResponseType: REQUEST_SUCCESS,
-          authResponsePayload: RECOVERY_EMAIL_SENT,
-        };
-      }
     } catch (err) {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: isEmpty(err.response.data)
-          ? 'An error has occurred. Please try again.'
-          : err.response.data,
-      };
+      return err.response;
     }
   }
 };
