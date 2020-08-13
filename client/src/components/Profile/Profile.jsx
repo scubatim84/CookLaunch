@@ -35,7 +35,7 @@ function Profile(props) {
     });
   }, [props]);
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const {name, value} = e.target;
 
     setProfileData((prevValue) => {
@@ -46,7 +46,7 @@ function Profile(props) {
     });
   };
 
-  const handleEdit = async () => {
+  const handleEdit = () => {
     setEditMode(true);
   };
 
@@ -62,7 +62,7 @@ function Profile(props) {
     }
   };
 
-  const handleCancel = async () => {
+  const handleCancel = () => {
     setProfileData({
       email: props.email,
       firstName: props.firstName,

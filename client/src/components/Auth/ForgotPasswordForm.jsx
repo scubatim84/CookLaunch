@@ -17,7 +17,7 @@ function ForgotPasswordForm() {
     submitMessage: '',
   });
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     // If user starts changing email, reset submission status and message
     setSubmitStatus({
       isSubmitted: false,

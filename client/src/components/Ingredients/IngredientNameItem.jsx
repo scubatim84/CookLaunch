@@ -46,15 +46,15 @@ function IngredientNameItem(props) {
     await props.handleDelete(props.id);
   };
 
-  const handleEdit = async () => {
-    await setEditMode(true);
+  const handleEdit = () => {
+    setEditMode(true);
   };
 
-  const handleCancel = async () => {
-    await setEditMode(false);
+  const handleCancel = () => {
+    setEditMode(false);
   };
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const {name, value} = e.target;
 
     setEditIngredient((prevValue) => {

@@ -4,11 +4,3 @@
   --light: #629749;
   --verylight: #e1ffb1;
 }
-
-.icon:hover {
-  color: var(--light);
-}
-
-.strikethrough {
-  text-decoration: line-through;
-}

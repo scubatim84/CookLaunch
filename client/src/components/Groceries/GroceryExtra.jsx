@@ -21,7 +21,7 @@ function GroceryExtra(props) {
     errorMessage: '',
   });
 
-  const handleAutocompleteQuantityType = async (event, ingredientType) => {
+  const handleAutocompleteQuantityType = (event, ingredientType) => {
     if (!isEmpty(ingredientType)) {
       setAddIngredient((prevValue) => {
         return {
@@ -32,7 +32,7 @@ function GroceryExtra(props) {
     }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const {name, value} = e.target;
 
     setAddIngredient((prevValue) => {
