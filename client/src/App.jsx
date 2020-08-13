@@ -76,7 +76,7 @@ function App() {
     });
   };
 
-  const handleLoggedIn = async (loggedIn) => {
+  const handleLoggedIn = (loggedIn) => {
     if (loggedIn) {
       setLoggedIn(true);
     } else {

@@ -21,7 +21,7 @@ function IngredientAdd(props) {
     errorMessage: '',
   });
 
-  const handleAutocompleteName = async (event, ingredient) => {
+  const handleAutocompleteName = (event, ingredient) => {
     if (!isEmpty(ingredient)) {
       setAddIngredient((prevValue) => {
         return {
@@ -32,7 +32,7 @@ function IngredientAdd(props) {
     }
   };
 
-  const handleAutocompleteQuantityType = async (event, ingredientType) => {
+  const handleAutocompleteQuantityType = (event, ingredientType) => {
     if (!isEmpty(ingredientType)) {
       setAddIngredient((prevValue) => {
         return {
@@ -43,7 +43,7 @@ function IngredientAdd(props) {
     }
   };
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const {name, value} = e.target;
 
     setAddIngredient((prevValue) => {

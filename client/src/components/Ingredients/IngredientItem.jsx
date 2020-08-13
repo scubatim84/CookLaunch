@@ -87,15 +87,15 @@ function IngredientItem(props) {
     }
   };
 
-  const handleEdit = async () => {
-    await setEditMode(true);
+  const handleEdit = () => {
+    setEditMode(true);
   };
 
-  const handleCancel = async () => {
-    await setEditMode(false);
+  const handleCancel = () => {
+    setEditMode(false);
   };
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const {name, value} = e.target;
 
     setEditIngredient((prevValue) => {
@@ -106,7 +106,7 @@ function IngredientItem(props) {
     });
   };
 
-  const handleCheck = async (event) => {
+  const handleCheck = (event) => {
     const isChecked = event.target.checked;
 
     setEditIngredient((prevValue) => {
@@ -119,7 +119,7 @@ function IngredientItem(props) {
     setUpdateRequired(true);
   };
 
-  const handleSelect = async (e) => {
+  const handleSelect = (e) => {
     const value = e.target.value;
     const oldValue = editIngredient.quantityType;
 

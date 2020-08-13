@@ -50,7 +50,7 @@ function IngredientNames(props) {
     }
   }, [props.id, props.ingredients]);
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const {name, value} = e.target;
 
     setIngredient((prevValue) => {

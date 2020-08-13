@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {sendPasswordResetEmail} from '../../actions/authActions';
-import {REQUEST_SUCCESS, EMAIL_NOT_FOUND} from '../../actions/types';
 import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {Button, Card, Container, Grid, TextField} from '@material-ui/core';
@@ -18,7 +17,7 @@ function ForgotPasswordForm() {
     submitMessage: '',
   });
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     // If user starts changing email, reset submission status and message
     setSubmitStatus({
       isSubmitted: false,
@@ -40,15 +39,15 @@ function ForgotPasswordForm() {
 
     const email = forgotUser.email;
 
-    const requestResponse = await sendPasswordResetEmail(email);
+    const response = await sendPasswordResetEmail(email);
 
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+    if (response.status === 200) {
       setSubmitStatus({
         isSubmitted: true,
         submitMessage:
           'A link has been sent to that email to reset your password.',
       });
-    } else if (requestResponse.authResponsePayload === EMAIL_NOT_FOUND) {
+    } else if (response.status === 404) {
       setSubmitStatus({
         isSubmitted: true,
         submitMessage: 'This email address is not registered.',
@@ -56,7 +55,7 @@ function ForgotPasswordForm() {
     } else {
       setSubmitStatus({
         isSubmitted: true,
-        submitMessage: requestResponse.authResponsePayload,
+        submitMessage: response,
       });
     }
   };
