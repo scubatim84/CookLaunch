@@ -1,5 +1,4 @@
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
 import {
   EMAIL_NOT_FOUND,
   RECOVERY_EMAIL_SENT,
@@ -50,18 +49,6 @@ export const logoutUser = async () => {
   } else {
     return REQUEST_FAIL;
   }
-};
-
-// Get user data from decoded JWT token
-export const getUserToken = async () => {
-  // Retrieve token
-  const token = cookies.get('user');
-
-  // Decode token to get user payload
-  const decoded = await jwtDecode(token);
-
-  // Return decoded payload
-  return {payload: decoded};
 };
 
 // Send password reset E-mail from forgot password form
