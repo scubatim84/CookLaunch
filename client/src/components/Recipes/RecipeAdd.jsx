@@ -36,7 +36,7 @@ function RecipeAdd(props) {
     errorMessage: '',
   });
 
-  const handleDelete = async (ingredientId) => {
+  const handleDelete = (ingredientId) => {
     setRecipe((prevValue) => {
       return {
         ...prevValue,
@@ -47,7 +47,7 @@ function RecipeAdd(props) {
     });
   };
 
-  const handleUpdateIngredient = async (updateIngredient) => {
+  const handleUpdateIngredient = (updateIngredient) => {
     // Filter out updated ingredient from list to remove old version
     const updatedIngredientList = recipe.ingredients.filter(
       (ingredient) => ingredient.id !== updateIngredient.id
@@ -63,7 +63,7 @@ function RecipeAdd(props) {
     });
   };
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const {name, value} = e.target;
 
     setRecipe((prevValue) => {
@@ -74,7 +74,7 @@ function RecipeAdd(props) {
     });
   };
 
-  const addIngredientToRecipe = async (ingredient) => {
+  const addIngredientToRecipe = (ingredient) => {
     const error = validateIngredientData(ingredient);
 
     if (!error) {

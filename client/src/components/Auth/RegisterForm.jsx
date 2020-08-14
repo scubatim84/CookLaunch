@@ -29,7 +29,7 @@ function RegisterForm(props) {
     errorMessage: '',
   });
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const {name, value} = e.target;
 
     setNewUser((prevValue) => {

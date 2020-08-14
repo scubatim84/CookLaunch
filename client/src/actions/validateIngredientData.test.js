@@ -1,4 +1,3 @@
-import React from 'react';
 import {validateIngredientData} from './validateIngredientData';
 
 test('tests validateIngredientData function when name is missing', () => {

@@ -267,7 +267,7 @@ function RecipeExpanded(props) {
     };
   };
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const {name, value} = e.target;
 
     setRecipe((prevValue) => {

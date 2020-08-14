@@ -38,15 +38,15 @@ function RecipeIngredientView(props) {
     await props.handleDeleteIngredient(props._id);
   };
 
-  const handleEdit = async () => {
-    await setEditMode(true);
+  const handleEdit = () => {
+    setEditMode(true);
   };
 
-  const handleCancel = async () => {
-    await setEditMode(false);
+  const handleCancel = () => {
+    setEditMode(false);
   };
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const {name, value} = e.target;
 
     setEditIngredient((prevValue) => {
@@ -58,7 +58,7 @@ function RecipeIngredientView(props) {
     });
   };
 
-  const handleSelect = async (e) => {
+  const handleSelect = (e) => {
     const value = e.target.value;
     const oldValue = editIngredient.quantityType;
 

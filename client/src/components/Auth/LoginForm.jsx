@@ -26,7 +26,7 @@ function LoginForm(props) {
     errorMessage: '',
   });
 
-  const handleChange = async (e) => {
+  const handleChange = (e) => {
     const {name, value} = e.target;
 
     setLogin((prevValue) => {
