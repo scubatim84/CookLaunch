@@ -208,7 +208,7 @@ function IngredientItem(props) {
   if (groceryIngredient) {
     if (editIngredient.checked) {
       return (
-        <Grid container alignItems='center'>
+        <Grid container spacing={1} alignItems='center'>
           <Grid item xs={2}>
             <Checkbox
               checked={editIngredient.checked}
@@ -221,12 +221,12 @@ function IngredientItem(props) {
               <div className='strikethrough'>{props.name}</div>
             </Typography>
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             <Typography component={'span'} align='left'>
               <div className='strikethrough'>{props.quantity}</div>
             </Typography>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <Typography component={'span'} align='left'>
               <div className='strikethrough'>{props.quantityType}</div>
             </Typography>
@@ -265,7 +265,7 @@ function IngredientItem(props) {
       );
     } else {
       return (
-        <Grid container alignItems='center'>
+        <Grid container spacing={1} alignItems='center'>
           <Grid item xs={2}>
             <Checkbox
               checked={editIngredient.checked}
@@ -276,10 +276,10 @@ function IngredientItem(props) {
           <Grid item xs={4}>
             <Typography align='left'>{props.name}</Typography>
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             <Typography align='left'>{props.quantity}</Typography>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <Typography align='left'>{props.quantityType}</Typography>
           </Grid>
           <Grid item xs={1}>
@@ -318,14 +318,14 @@ function IngredientItem(props) {
   }
 
   return (
-    <Grid container alignItems='center'>
+    <Grid container spacing={1} alignItems='center'>
       <Grid item xs={6}>
         <Typography align='left'>{props.name}</Typography>
       </Grid>
-      <Grid item xs={1}>
+      <Grid item xs={2}>
         <Typography align='left'>{props.quantity}</Typography>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={2}>
         <Typography align='left'>{props.quantityType}</Typography>
       </Grid>
       <Grid item xs={1}>
