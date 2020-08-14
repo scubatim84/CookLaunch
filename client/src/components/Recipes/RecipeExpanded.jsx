@@ -334,10 +334,10 @@ function RecipeExpanded(props) {
                       <Grid item xs={12}>
                         <CardTitle title='Recipe Ingredients' />
                       </Grid>
-                      <Grid item xs={4} sm={5}>
+                      <Grid item xs={4} sm={4}>
                         <Typography>Name</Typography>
                       </Grid>
-                      <Grid item xs={2}>
+                      <Grid item xs={2} sm={3}>
                         <Typography>Quant.</Typography>
                       </Grid>
                       <Grid item xs={2} sm={3}>
