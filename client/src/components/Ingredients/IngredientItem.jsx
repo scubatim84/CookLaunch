@@ -19,8 +19,11 @@ import {Cancel, Edit, Delete, Done} from '@material-ui/icons';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {convert_units} from '../../actions/unitConversions';
+import {makeStyles} from '@material-ui/core/styles';
 
 function IngredientItem(props) {
+  const classes = useStyles();
+
   const [editIngredient, setEditIngredient] = useState({
     id: props.id,
     name: props.name,
@@ -220,21 +223,29 @@ function IngredientItem(props) {
           </Grid>
           <Grid item xs={4}>
             <Typography
-              component={'span'}
               align='left'
               style={{overflowWrap: 'break-word'}}
+              className={classes.strikethrough}
             >
-              <div className='strikethrough'>{props.name}</div>
+              {props.name}
             </Typography>
           </Grid>
           <Grid item xs={2}>
-            <Typography component={'span'} align='left'>
-              <div className='strikethrough'>{props.quantity}</div>
+            <Typography
+              align='left'
+              style={{overflowWrap: 'break-word'}}
+              className={classes.strikethrough}
+            >
+              {props.quantity}
             </Typography>
           </Grid>
           <Grid item xs={2}>
-            <Typography component={'span'} align='left'>
-              <div className='strikethrough'>{props.quantityType}</div>
+            <Typography
+              align='left'
+              style={{overflowWrap: 'break-word'}}
+              className={classes.strikethrough}
+            >
+              {props.quantityType}
             </Typography>
           </Grid>
           <Grid item xs={1}>
@@ -371,5 +382,11 @@ function IngredientItem(props) {
     </Grid>
   );
 }
+
+const useStyles = makeStyles(() => ({
+  strikethrough: {
+    textDecoration: 'line-through',
+  },
+}));
 
 export default IngredientItem;
