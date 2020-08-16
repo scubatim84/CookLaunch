@@ -156,7 +156,9 @@ function IngredientItem(props) {
     return (
       <Grid container alignItems='center'>
         <Grid item xs={5}>
-          <Typography align='left'>{props.name}</Typography>
+          <Typography align='left' style={{overflowWrap: 'break-word'}}>
+            {props.name}
+          </Typography>
         </Grid>
         <Grid item xs={2}>
           <TextField
@@ -217,7 +219,11 @@ function IngredientItem(props) {
             />
           </Grid>
           <Grid item xs={4}>
-            <Typography component={'span'} align='left'>
+            <Typography
+              component={'span'}
+              align='left'
+              style={{overflowWrap: 'break-word'}}
+            >
               <div className='strikethrough'>{props.name}</div>
             </Typography>
           </Grid>
@@ -274,7 +280,9 @@ function IngredientItem(props) {
             />
           </Grid>
           <Grid item xs={4}>
-            <Typography align='left'>{props.name}</Typography>
+            <Typography style={{overflowWrap: 'break-word'}} align='left'>
+              {props.name}
+            </Typography>
           </Grid>
           <Grid item xs={2}>
             <Typography align='left'>{props.quantity}</Typography>
@@ -320,7 +328,9 @@ function IngredientItem(props) {
   return (
     <Grid container spacing={1} alignItems='center'>
       <Grid item xs={6}>
-        <Typography align='left'>{props.name}</Typography>
+        <Typography align='left' style={{overflowWrap: 'break-word'}}>
+          {props.name}
+        </Typography>
       </Grid>
       <Grid item xs={2}>
         <Typography align='left'>{props.quantity}</Typography>
