@@ -1,13 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ingredientQuantityTypes} from '../../actions/types';
 import {
-  Button,
   Checkbox,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   FormControl,
   Grid,
   MenuItem,
@@ -19,6 +13,7 @@ import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {convert_units} from '../../actions/unitConversions';
 import IngredientText from './IngredientText';
+import IngredientDeleteDialog from './IngredientDeleteDialog';
 
 function IngredientItem(props) {
   const [editIngredient, setEditIngredient] = useState({
@@ -230,30 +225,11 @@ function IngredientItem(props) {
           </Grid>
           <Grid item xs={1}>
             <Delete onClick={handleClickOpen} className='icon' />
-            <Dialog
+            <IngredientDeleteDialog
               open={open}
-              onClose={handleClose}
-              aria-labelledby='alert-dialog-title'
-              aria-describedby='alert-dialog-description'
-            >
-              <DialogTitle id='alert-dialog-title'>
-                {'Delete ingredient?'}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id='alert-dialog-description'>
-                  This action cannot be reversed. Are you sure you want to
-                  delete this ingredient?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleDelete} color='primary'>
-                  Delete
-                </Button>
-                <Button onClick={handleClose} color='primary' autoFocus>
-                  Cancel
-                </Button>
-              </DialogActions>
-            </Dialog>
+              close={handleClose}
+              delete={handleDelete}
+            />
           </Grid>
         </Grid>
       );
@@ -281,30 +257,11 @@ function IngredientItem(props) {
           </Grid>
           <Grid item xs={1}>
             <Delete onClick={handleClickOpen} className='icon' />
-            <Dialog
+            <IngredientDeleteDialog
               open={open}
-              onClose={handleClose}
-              aria-labelledby='alert-dialog-title'
-              aria-describedby='alert-dialog-description'
-            >
-              <DialogTitle id='alert-dialog-title'>
-                {'Delete ingredient?'}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id='alert-dialog-description'>
-                  This action cannot be reversed. Are you sure you want to
-                  delete this ingredient?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleDelete} color='primary'>
-                  Delete
-                </Button>
-                <Button onClick={handleClose} color='primary' autoFocus>
-                  Cancel
-                </Button>
-              </DialogActions>
-            </Dialog>
+              close={handleClose}
+              delete={handleDelete}
+            />
           </Grid>
         </Grid>
       );
@@ -327,30 +284,11 @@ function IngredientItem(props) {
       </Grid>
       <Grid item xs={1}>
         <Delete onClick={handleClickOpen} className='icon' />
-        <Dialog
+        <IngredientDeleteDialog
           open={open}
-          onClose={handleClose}
-          aria-labelledby='alert-dialog-title'
-          aria-describedby='alert-dialog-description'
-        >
-          <DialogTitle id='alert-dialog-title'>
-            {'Delete ingredient?'}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id='alert-dialog-description'>
-              This action cannot be reversed. Are you sure you want to delete
-              this ingredient?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleDelete} color='primary'>
-              Delete
-            </Button>
-            <Button onClick={handleClose} color='primary' autoFocus>
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
+          close={handleClose}
+          delete={handleDelete}
+        />
       </Grid>
     </Grid>
   );
