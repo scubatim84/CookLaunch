@@ -14,7 +14,7 @@ function GroceryExtra(props) {
   const [addIngredient, setAddIngredient] = useState({
     name: '',
     quantity: '',
-    quantityType: '',
+    quantityType: ingredientQuantityTypes[1],
     groceryExtra: true,
   });
   const [error, setError] = useState({
@@ -99,6 +99,7 @@ function GroceryExtra(props) {
             <Grid item xs={7}>
               <Autocomplete
                 id='ingredientQuantityTypes'
+                value={addIngredient.quantityType}
                 options={ingredientQuantityTypes}
                 onChange={handleAutocompleteQuantityType}
                 getOptionLabel={(option) => option}
