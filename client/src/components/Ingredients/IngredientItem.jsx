@@ -13,17 +13,14 @@ import {
   MenuItem,
   Select,
   TextField,
-  Typography,
 } from '@material-ui/core';
 import {Cancel, Edit, Delete, Done} from '@material-ui/icons';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {convert_units} from '../../actions/unitConversions';
-import {makeStyles} from '@material-ui/core/styles';
+import IngredientText from './IngredientText';
 
 function IngredientItem(props) {
-  const classes = useStyles();
-
   const [editIngredient, setEditIngredient] = useState({
     id: props.id,
     name: props.name,
@@ -159,9 +156,7 @@ function IngredientItem(props) {
     return (
       <Grid container alignItems='center'>
         <Grid item xs={5}>
-          <Typography align='left' style={{overflowWrap: 'break-word'}}>
-            {props.name}
-          </Typography>
+          <IngredientText>{props.name}</IngredientText>
         </Grid>
         <Grid item xs={2}>
           <TextField
@@ -222,31 +217,13 @@ function IngredientItem(props) {
             />
           </Grid>
           <Grid item xs={4}>
-            <Typography
-              align='left'
-              style={{overflowWrap: 'break-word'}}
-              className={classes.strikethrough}
-            >
-              {props.name}
-            </Typography>
+            <IngredientText checked={true}>{props.name}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <Typography
-              align='left'
-              style={{overflowWrap: 'break-word'}}
-              className={classes.strikethrough}
-            >
-              {props.quantity}
-            </Typography>
+            <IngredientText checked={true}>{props.quantity}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <Typography
-              align='left'
-              style={{overflowWrap: 'break-word'}}
-              className={classes.strikethrough}
-            >
-              {props.quantityType}
-            </Typography>
+            <IngredientText checked={true}>{props.quantityType}</IngredientText>
           </Grid>
           <Grid item xs={1}>
             <Edit onClick={handleEdit} className='icon' />
@@ -291,15 +268,13 @@ function IngredientItem(props) {
             />
           </Grid>
           <Grid item xs={4}>
-            <Typography style={{overflowWrap: 'break-word'}} align='left'>
-              {props.name}
-            </Typography>
+            <IngredientText>{props.name}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <Typography align='left'>{props.quantity}</Typography>
+            <IngredientText>{props.quantity}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <Typography align='left'>{props.quantityType}</Typography>
+            <IngredientText>{props.quantityType}</IngredientText>
           </Grid>
           <Grid item xs={1}>
             <Edit onClick={handleEdit} className='icon' />
@@ -339,15 +314,13 @@ function IngredientItem(props) {
   return (
     <Grid container spacing={1} alignItems='center'>
       <Grid item xs={6}>
-        <Typography align='left' style={{overflowWrap: 'break-word'}}>
-          {props.name}
-        </Typography>
+        <IngredientText>{props.name}</IngredientText>
       </Grid>
       <Grid item xs={2}>
-        <Typography align='left'>{props.quantity}</Typography>
+        <IngredientText>{props.quantity}</IngredientText>
       </Grid>
       <Grid item xs={2}>
-        <Typography align='left'>{props.quantityType}</Typography>
+        <IngredientText>{props.quantityType}</IngredientText>
       </Grid>
       <Grid item xs={1}>
         <Edit onClick={handleEdit} className='icon' />
@@ -382,11 +355,5 @@ function IngredientItem(props) {
     </Grid>
   );
 }
-
-const useStyles = makeStyles(() => ({
-  strikethrough: {
-    textDecoration: 'line-through',
-  },
-}));
 
 export default IngredientItem;
