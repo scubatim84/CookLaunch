@@ -4,7 +4,14 @@ import _ from 'lodash';
 import {ingredientQuantityTypes} from '../../actions/types';
 import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
-import {Button, Card, Grid, TextField} from '@material-ui/core';
+import {
+  Button,
+  Card,
+  Checkbox,
+  Grid,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import FormSubmitMessage from '../FormSubmitMessage';
 import CardTitle from '../CardTitle';
@@ -14,8 +21,9 @@ function IngredientAdd(props) {
 
   const [addIngredient, setAddIngredient] = useState({
     name: '',
-    quantity: '',
-    quantityType: '',
+    quantity: 1,
+    quantityType: ingredientQuantityTypes[1],
+    groceryExtra: false,
   });
   const [error, setError] = useState({
     errorMessage: '',
@@ -54,6 +62,15 @@ function IngredientAdd(props) {
     });
   };
 
+  const handleCheck = () => {
+    setAddIngredient((prevValue) => {
+      return {
+        ...prevValue,
+        groceryExtra: !addIngredient.groceryExtra,
+      };
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -86,6 +103,41 @@ function IngredientAdd(props) {
     }
   };
 
+  let ingredientName;
+  if (!addIngredient.groceryExtra) {
+    ingredientName = (
+      <Autocomplete
+        id='ingredients'
+        options={props.ingredients}
+        onChange={handleAutocompleteName}
+        getOptionLabel={(option) => option.name}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            required
+            label='Ingredient Name'
+            variant='outlined'
+            id='name'
+            name='name'
+          />
+        )}
+      />
+    );
+  } else {
+    ingredientName = (
+      <TextField
+        fullWidth
+        onChange={handleChange}
+        variant='outlined'
+        required
+        value={addIngredient.name}
+        label='Ingredient Name'
+        id='name'
+        name='name'
+      />
+    );
+  }
+
   return (
     <Card>
       <form noValidate>
@@ -94,23 +146,24 @@ function IngredientAdd(props) {
             <Grid item xs={12}>
               <CardTitle title={`Add Ingredients To ${props.name}`} />
             </Grid>
+            {props.groceryListAdd && (
+              <Grid item xs={12}>
+                <Grid container alignItems='center'>
+                  <Grid item xs={2}>
+                    <Checkbox
+                      checked={!addIngredient.groceryExtra}
+                      onChange={handleCheck}
+                      color='primary'
+                    />
+                  </Grid>
+                  <Grid item xs={10}>
+                    <Typography align='left'>Track Item In Pantry</Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+            )}
             <Grid item xs={12}>
-              <Autocomplete
-                id='ingredients'
-                options={props.ingredients}
-                onChange={handleAutocompleteName}
-                getOptionLabel={(option) => option.name}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    required
-                    label='Ingredient Name'
-                    variant='outlined'
-                    id='name'
-                    name='name'
-                  />
-                )}
-              />
+              {ingredientName}
             </Grid>
             <Grid item xs={5}>
               <TextField
@@ -126,6 +179,7 @@ function IngredientAdd(props) {
             <Grid item xs={7}>
               <Autocomplete
                 id='ingredientQuantityTypes'
+                value={addIngredient.quantityType}
                 options={ingredientQuantityTypes}
                 onChange={handleAutocompleteQuantityType}
                 getOptionLabel={(option) => option}

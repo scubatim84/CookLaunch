@@ -30,7 +30,6 @@ import {
   addIngredientToPantry,
   updateIngredientInPantry,
 } from '../../actions/pantryActions';
-import GroceryExtra from './GroceryExtra';
 import Loader from '../Loader';
 
 function GroceryList(props) {
@@ -266,14 +265,6 @@ function GroceryList(props) {
                 </Grid>
               </div>
             </Card>
-          </Grid>
-          <Grid item xs={12}>
-            <GroceryExtra
-              key={props.groceries}
-              name='Groceries'
-              pantry={props.pantry}
-              handleAddIngredient={handleAddIngredient}
-            />
           </Grid>
           <Grid item xs={12}>
             <IngredientAdd
