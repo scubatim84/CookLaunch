@@ -26,6 +26,7 @@ function IngredientItem(props) {
     quantity: props.quantity,
     quantityType: props.quantityType,
     checked: props.checked,
+    groceryExtra: false,
   });
   const [editMode, setEditMode] = useState(false);
   const [open, setOpen] = useState(false);
@@ -155,7 +156,20 @@ function IngredientItem(props) {
     return (
       <Grid container alignItems='center'>
         <Grid item xs={5}>
-          <IngredientText>{props.name}</IngredientText>
+          {editIngredient.groceryExtra ? (
+            <TextField
+              onChange={handleChange}
+              variant='outlined'
+              required
+              placeholder={editIngredient.name}
+              value={editIngredient.name}
+              id='name'
+              name='name'
+              autoComplete='name'
+            />
+          ) : (
+            <IngredientText>{props.name}</IngredientText>
+          )}
         </Grid>
         <Grid item xs={2}>
           <TextField
