@@ -193,39 +193,35 @@ function GroceryList(props) {
                 <Grid item xs={12}>
                   <CardTitle title={`${props.firstName}'s Grocery List`} />
                 </Grid>
-                <div className={classes.list}>
-                  <List>
-                    {groceryList.data.map((ingredient) => {
-                      const formatName = _.startCase(
-                        _.toLower(ingredient.name)
-                      );
-                      const formatQuantityType = _.startCase(
-                        _.toLower(ingredient.quantityType)
-                      );
+                <List className={classes.list}>
+                  {groceryList.data.map((ingredient) => {
+                    const formatName = _.startCase(_.toLower(ingredient.name));
+                    const formatQuantityType = _.startCase(
+                      _.toLower(ingredient.quantityType)
+                    );
 
-                      return (
-                        <Grid
-                          item
-                          xs={11}
+                    return (
+                      <Grid
+                        item
+                        xs={11}
+                        key={ingredient.name + ingredient.dateLastChanged}
+                      >
+                        <IngredientItem
                           key={ingredient.name + ingredient.dateLastChanged}
-                        >
-                          <IngredientItem
-                            key={ingredient.name + ingredient.dateLastChanged}
-                            id={ingredient._id}
-                            groceryIngredient={true}
-                            name={formatName}
-                            quantity={ingredient.quantity}
-                            quantityType={formatQuantityType}
-                            groceryExtra={ingredient.groceryExtra}
-                            checked={ingredient.checked}
-                            handleDelete={handleDelete}
-                            handleUpdateIngredient={handleUpdateIngredient}
-                          />
-                        </Grid>
-                      );
-                    })}
-                  </List>
-                </div>
+                          id={ingredient._id}
+                          groceryIngredient={true}
+                          name={formatName}
+                          quantity={ingredient.quantity}
+                          quantityType={formatQuantityType}
+                          groceryExtra={ingredient.groceryExtra}
+                          checked={ingredient.checked}
+                          handleDelete={handleDelete}
+                          handleUpdateIngredient={handleUpdateIngredient}
+                        />
+                      </Grid>
+                    );
+                  })}
+                </List>
                 <Grid item xs={12}>
                   <Button
                     fullWidth

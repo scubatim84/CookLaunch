@@ -1,26 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {ingredientQuantityTypes} from '../../actions/types';
+import {makeStyles} from '@material-ui/core/styles';
+import {themeMain} from '../../Theme';
 import {
-  Button,
   Checkbox,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
   FormControl,
   Grid,
   MenuItem,
   Select,
   TextField,
-  Typography,
 } from '@material-ui/core';
 import {Cancel, Edit, Delete, Done} from '@material-ui/icons';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import {convert_units} from '../../actions/unitConversions';
+import IngredientText from './IngredientText';
+import IngredientDeleteDialog from './IngredientDeleteDialog';
 
 function IngredientItem(props) {
+  const classes = useStyles(themeMain);
+
   const [editIngredient, setEditIngredient] = useState({
     id: props.id,
     name: props.name,
@@ -156,9 +155,7 @@ function IngredientItem(props) {
     return (
       <Grid container alignItems='center'>
         <Grid item xs={5}>
-          <Typography align='left' style={{overflowWrap: 'break-word'}}>
-            {props.name}
-          </Typography>
+          <IngredientText>{props.name}</IngredientText>
         </Grid>
         <Grid item xs={2}>
           <TextField
@@ -193,10 +190,10 @@ function IngredientItem(props) {
           </FormControl>
         </Grid>
         <Grid item xs={1}>
-          <Done onClick={handleSubmit} className='icon' />
+          <Done onClick={handleSubmit} className={classes.icon} />
         </Grid>
         <Grid item xs={1}>
-          <Cancel onClick={handleCancel} className='icon' />
+          <Cancel onClick={handleCancel} className={classes.icon} />
         </Grid>
         <Grid item xs={12}>
           {!isEmpty(error.errorMessage) && (
@@ -219,53 +216,24 @@ function IngredientItem(props) {
             />
           </Grid>
           <Grid item xs={4}>
-            <Typography
-              component={'span'}
-              align='left'
-              style={{overflowWrap: 'break-word'}}
-            >
-              <div className='strikethrough'>{props.name}</div>
-            </Typography>
+            <IngredientText checked={true}>{props.name}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <Typography component={'span'} align='left'>
-              <div className='strikethrough'>{props.quantity}</div>
-            </Typography>
+            <IngredientText checked={true}>{props.quantity}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <Typography component={'span'} align='left'>
-              <div className='strikethrough'>{props.quantityType}</div>
-            </Typography>
+            <IngredientText checked={true}>{props.quantityType}</IngredientText>
           </Grid>
           <Grid item xs={1}>
-            <Edit onClick={handleEdit} className='icon' />
+            <Edit onClick={handleEdit} className={classes.icon} />
           </Grid>
           <Grid item xs={1}>
-            <Delete onClick={handleClickOpen} className='icon' />
-            <Dialog
+            <Delete onClick={handleClickOpen} className={classes.icon} />
+            <IngredientDeleteDialog
               open={open}
-              onClose={handleClose}
-              aria-labelledby='alert-dialog-title'
-              aria-describedby='alert-dialog-description'
-            >
-              <DialogTitle id='alert-dialog-title'>
-                {'Delete ingredient?'}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id='alert-dialog-description'>
-                  This action cannot be reversed. Are you sure you want to
-                  delete this ingredient?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleDelete} color='primary'>
-                  Delete
-                </Button>
-                <Button onClick={handleClose} color='primary' autoFocus>
-                  Cancel
-                </Button>
-              </DialogActions>
-            </Dialog>
+              close={handleClose}
+              delete={handleDelete}
+            />
           </Grid>
         </Grid>
       );
@@ -280,45 +248,24 @@ function IngredientItem(props) {
             />
           </Grid>
           <Grid item xs={4}>
-            <Typography style={{overflowWrap: 'break-word'}} align='left'>
-              {props.name}
-            </Typography>
+            <IngredientText>{props.name}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <Typography align='left'>{props.quantity}</Typography>
+            <IngredientText>{props.quantity}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <Typography align='left'>{props.quantityType}</Typography>
+            <IngredientText>{props.quantityType}</IngredientText>
           </Grid>
           <Grid item xs={1}>
-            <Edit onClick={handleEdit} className='icon' />
+            <Edit onClick={handleEdit} className={classes.icon} />
           </Grid>
           <Grid item xs={1}>
-            <Delete onClick={handleClickOpen} className='icon' />
-            <Dialog
+            <Delete onClick={handleClickOpen} className={classes.icon} />
+            <IngredientDeleteDialog
               open={open}
-              onClose={handleClose}
-              aria-labelledby='alert-dialog-title'
-              aria-describedby='alert-dialog-description'
-            >
-              <DialogTitle id='alert-dialog-title'>
-                {'Delete ingredient?'}
-              </DialogTitle>
-              <DialogContent>
-                <DialogContentText id='alert-dialog-description'>
-                  This action cannot be reversed. Are you sure you want to
-                  delete this ingredient?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleDelete} color='primary'>
-                  Delete
-                </Button>
-                <Button onClick={handleClose} color='primary' autoFocus>
-                  Cancel
-                </Button>
-              </DialogActions>
-            </Dialog>
+              close={handleClose}
+              delete={handleDelete}
+            />
           </Grid>
         </Grid>
       );
@@ -328,48 +275,38 @@ function IngredientItem(props) {
   return (
     <Grid container spacing={1} alignItems='center'>
       <Grid item xs={6}>
-        <Typography align='left' style={{overflowWrap: 'break-word'}}>
-          {props.name}
-        </Typography>
+        <IngredientText>{props.name}</IngredientText>
       </Grid>
       <Grid item xs={2}>
-        <Typography align='left'>{props.quantity}</Typography>
+        <IngredientText>{props.quantity}</IngredientText>
       </Grid>
       <Grid item xs={2}>
-        <Typography align='left'>{props.quantityType}</Typography>
+        <IngredientText>{props.quantityType}</IngredientText>
       </Grid>
       <Grid item xs={1}>
-        <Edit onClick={handleEdit} className='icon' />
+        <Edit onClick={handleEdit} className={classes.icon} />
       </Grid>
       <Grid item xs={1}>
-        <Delete onClick={handleClickOpen} className='icon' />
-        <Dialog
+        <Delete onClick={handleClickOpen} className={classes.icon} />
+        <IngredientDeleteDialog
           open={open}
-          onClose={handleClose}
-          aria-labelledby='alert-dialog-title'
-          aria-describedby='alert-dialog-description'
-        >
-          <DialogTitle id='alert-dialog-title'>
-            {'Delete ingredient?'}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id='alert-dialog-description'>
-              This action cannot be reversed. Are you sure you want to delete
-              this ingredient?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleDelete} color='primary'>
-              Delete
-            </Button>
-            <Button onClick={handleClose} color='primary' autoFocus>
-              Cancel
-            </Button>
-          </DialogActions>
-        </Dialog>
+          close={handleClose}
+          delete={handleDelete}
+        />
       </Grid>
     </Grid>
   );
 }
+
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    '&:hover': {
+      color: theme.palette.primary.main,
+    },
+  },
+  strikethrough: {
+    textDecoration: 'line-through',
+  },
+}));
 
 export default IngredientItem;
