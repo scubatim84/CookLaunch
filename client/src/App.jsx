@@ -22,7 +22,7 @@ import RecipeAdd from './components/Recipes/RecipeAdd';
 import Grid from '@material-ui/core/Grid';
 import IngredientNames from './components/Ingredients/IngredientNames';
 import RecipeExpanded from './components/Recipes/RecipeExpanded';
-import GroceryList from './components/Groceries/GroceryList';
+import GroceryList from './components/GroceryList';
 import Welcome from './components/Welcome';
 
 function App() {

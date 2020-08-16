@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import _ from 'lodash';
-import IngredientAdd from '../Ingredients/IngredientAdd';
-import IngredientItem from '../Ingredients/IngredientItem';
-import {useStylesMain} from '../../Styles';
-import {themeMain} from '../../Theme';
+import IngredientAdd from './Ingredients/IngredientAdd';
+import IngredientItem from './Ingredients/IngredientItem';
+import {makeStyles} from '@material-ui/core/styles';
+import {themeMain} from '../Theme';
 import {
   Button,
   Card,
@@ -17,23 +17,23 @@ import {
   Grid,
   List,
 } from '@material-ui/core';
-import CardTitle from '../CardTitle';
+import CardTitle from './CardTitle';
 import {
   addIngredientToGroceries,
   deleteIngredientFromGroceries,
   updateIngredientInGroceries,
-} from '../../actions/groceryActions';
-import {convert_units} from '../../actions/unitConversions';
+} from '../actions/groceryActions';
+import {convert_units} from '../actions/unitConversions';
 import isEmpty from 'is-empty';
-import FormSubmitMessage from '../FormSubmitMessage';
+import FormSubmitMessage from './FormSubmitMessage';
 import {
   addIngredientToPantry,
   updateIngredientInPantry,
-} from '../../actions/pantryActions';
-import Loader from '../Loader';
+} from '../actions/pantryActions';
+import Loader from './Loader';
 
 function GroceryList(props) {
-  const classes = useStylesMain(themeMain);
+  const classes = useStyles(themeMain);
 
   const [groceryList, setGroceryList] = useState(null);
   const [updateNeeded, setUpdateNeeded] = useState(false);
@@ -190,11 +190,11 @@ function GroceryList(props) {
           <Grid item xs={12}>
             <Card>
               <div className={classes.paper}>
-                <Grid container spacing={2} justify='center'>
-                  <Grid item xs={12}>
-                    <CardTitle title={`${props.firstName}'s Grocery List`} />
-                  </Grid>
-                  <List className={classes.list}>
+                <Grid item xs={12}>
+                  <CardTitle title={`${props.firstName}'s Grocery List`} />
+                </Grid>
+                <div className={classes.list}>
+                  <List>
                     {groceryList.data.map((ingredient) => {
                       const formatName = _.startCase(
                         _.toLower(ingredient.name)
@@ -206,7 +206,7 @@ function GroceryList(props) {
                       return (
                         <Grid
                           item
-                          xs={12}
+                          xs={11}
                           key={ingredient.name + ingredient.dateLastChanged}
                         >
                           <IngredientItem
@@ -225,44 +225,44 @@ function GroceryList(props) {
                       );
                     })}
                   </List>
-                  <Grid item xs={12}>
-                    <Button
-                      fullWidth
-                      onClick={handleAddGroceryListToPantry}
-                      type='submit'
-                      variant='contained'
-                      color='primary'
-                    >
-                      Complete Shopping Trip
-                    </Button>
-                    <Dialog
-                      open={groceryComplete}
-                      onClose={reloadGroceryList}
-                      aria-labelledby='alert-dialog-title'
-                      aria-describedby='alert-dialog-description'
-                    >
-                      <DialogTitle id='alert-dialog-title'>
-                        {'Shopping Trip Completed!'}
-                      </DialogTitle>
-                      <DialogContent>
-                        <DialogContentText id='alert-dialog-description'>
-                          The checked off grocery list ingredients, which are
-                          not extras, have been added to your pantry.
-                        </DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={reloadGroceryList} color='primary'>
-                          Ok
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                  </Grid>
-                  <Grid item xs={12}>
-                    {!isEmpty(error.errorMessage) && (
-                      <FormSubmitMessage submitMessage={error.errorMessage} />
-                    )}
-                  </Grid>
+                </div>
+                <Grid item xs={12}>
+                  <Button
+                    fullWidth
+                    onClick={handleAddGroceryListToPantry}
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                  >
+                    Complete Shopping Trip
+                  </Button>
+                  <Dialog
+                    open={groceryComplete}
+                    onClose={reloadGroceryList}
+                    aria-labelledby='alert-dialog-title'
+                    aria-describedby='alert-dialog-description'
+                  >
+                    <DialogTitle id='alert-dialog-title'>
+                      {'Shopping Trip Completed!'}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id='alert-dialog-description'>
+                        The checked off grocery list ingredients, which are not
+                        extras, have been added to your pantry.
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={reloadGroceryList} color='primary'>
+                        Ok
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </Grid>
+                {!isEmpty(error.errorMessage) && (
+                  <Grid item xs={12}>
+                    <FormSubmitMessage submitMessage={error.errorMessage} />
+                  </Grid>
+                )}
               </div>
             </Card>
           </Grid>
@@ -282,5 +282,28 @@ function GroceryList(props) {
     );
   }
 }
+
+const useStyles = makeStyles((theme) => ({
+  list: {
+    width: '100%',
+    maxWidth: '100%',
+    maxHeight: 350,
+    overflow: 'auto',
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  pageMarginBottom: {
+    marginBottom: theme.spacing(2),
+  },
+  paper: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+}));
 
 export default GroceryList;
