@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ingredientQuantityTypes} from '../../actions/types';
+import {makeStyles} from '@material-ui/core/styles';
+import {themeMain} from '../../Theme';
 import {
   Checkbox,
   FormControl,
@@ -16,6 +18,8 @@ import IngredientText from './IngredientText';
 import IngredientDeleteDialog from './IngredientDeleteDialog';
 
 function IngredientItem(props) {
+  const classes = useStyles(themeMain);
+
   const [editIngredient, setEditIngredient] = useState({
     id: props.id,
     name: props.name,
@@ -186,10 +190,10 @@ function IngredientItem(props) {
           </FormControl>
         </Grid>
         <Grid item xs={1}>
-          <Done onClick={handleSubmit} className='icon' />
+          <Done onClick={handleSubmit} className={classes.icon} />
         </Grid>
         <Grid item xs={1}>
-          <Cancel onClick={handleCancel} className='icon' />
+          <Cancel onClick={handleCancel} className={classes.icon} />
         </Grid>
         <Grid item xs={12}>
           {!isEmpty(error.errorMessage) && (
@@ -221,10 +225,10 @@ function IngredientItem(props) {
             <IngredientText checked={true}>{props.quantityType}</IngredientText>
           </Grid>
           <Grid item xs={1}>
-            <Edit onClick={handleEdit} className='icon' />
+            <Edit onClick={handleEdit} className={classes.icon} />
           </Grid>
           <Grid item xs={1}>
-            <Delete onClick={handleClickOpen} className='icon' />
+            <Delete onClick={handleClickOpen} className={classes.icon} />
             <IngredientDeleteDialog
               open={open}
               close={handleClose}
@@ -253,10 +257,10 @@ function IngredientItem(props) {
             <IngredientText>{props.quantityType}</IngredientText>
           </Grid>
           <Grid item xs={1}>
-            <Edit onClick={handleEdit} className='icon' />
+            <Edit onClick={handleEdit} className={classes.icon} />
           </Grid>
           <Grid item xs={1}>
-            <Delete onClick={handleClickOpen} className='icon' />
+            <Delete onClick={handleClickOpen} className={classes.icon} />
             <IngredientDeleteDialog
               open={open}
               close={handleClose}
@@ -280,10 +284,10 @@ function IngredientItem(props) {
         <IngredientText>{props.quantityType}</IngredientText>
       </Grid>
       <Grid item xs={1}>
-        <Edit onClick={handleEdit} className='icon' />
+        <Edit onClick={handleEdit} className={classes.icon} />
       </Grid>
       <Grid item xs={1}>
-        <Delete onClick={handleClickOpen} className='icon' />
+        <Delete onClick={handleClickOpen} className={classes.icon} />
         <IngredientDeleteDialog
           open={open}
           close={handleClose}
@@ -293,5 +297,16 @@ function IngredientItem(props) {
     </Grid>
   );
 }
+
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    '&:hover': {
+      color: theme.palette.primary.main,
+    },
+  },
+  strikethrough: {
+    textDecoration: 'line-through',
+  },
+}));
 
 export default IngredientItem;
