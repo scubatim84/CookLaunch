@@ -221,7 +221,7 @@ function IngredientItem(props) {
   if (groceryIngredient) {
     if (editIngredient.checked) {
       return (
-        <Grid container spacing={1} alignItems='center'>
+        <Grid container alignItems='center'>
           <Grid item xs={2}>
             <Checkbox
               checked={editIngredient.checked}
@@ -253,7 +253,7 @@ function IngredientItem(props) {
       );
     } else {
       return (
-        <Grid container spacing={1} alignItems='center'>
+        <Grid container alignItems='center'>
           <Grid item xs={2}>
             <Checkbox
               checked={editIngredient.checked}
