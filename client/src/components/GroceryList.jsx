@@ -186,8 +186,8 @@ function GroceryList(props) {
   } else {
     return (
       <Container component='main' maxWidth='xs'>
-        <Grid container spacing={1} className={classes.pageMarginBottom}>
-          <Grid item xs={12}>
+        <Grid container className={classes.pageMarginBottom}>
+          <Grid item xs={12} className={classes.pageMarginBottom}>
             <Card>
               <div className={classes.paper}>
                 <Grid item xs={12}>
@@ -292,8 +292,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   paper: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
     display: 'flex',
