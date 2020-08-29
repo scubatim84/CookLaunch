@@ -167,14 +167,11 @@ router.get('/validateresetpasswordtoken', async (req, res) => {
   const currentTime = new Date();
 
   if (isEmpty(foundUser)) {
-    res.status(404).send('fail');
+    res.status(404).json('User not found.');
   } else if (foundUser.resetPasswordExpires >= currentTime) {
-    res.status(200).send({
-      message: 'success',
-      email: foundUser.email,
-    });
+    res.status(200).json(foundUser.email);
   } else {
-    res.status(403).send('fail');
+    res.status(403).json('Password reset token has expired.');
   }
 });
 
@@ -194,15 +191,15 @@ router.put('/resetpassword', async (req, res) => {
       foundUser.save();
 
       try {
-        res.status(200).send('success');
+        res.status(204).json(null);
       } catch (err) {
-        console.log(err);
+        res.status(400).json('An error has occurred. ' + err);
       }
     } catch (err) {
-      res.status(400).send('An error has occurred. ' + err);
+      res.status(400).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(404).json('No user found in database.');
   }
 });
 
