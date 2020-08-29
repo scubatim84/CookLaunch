@@ -8,7 +8,6 @@ import {
   validatePassword,
   resetPassword,
 } from '../../actions/authActions';
-import {REQUEST_SUCCESS} from '../../actions/types';
 import {useStylesMain} from '../../Styles';
 import {themeMain} from '../../Theme';
 import {Button, Card, Container, Grid, TextField} from '@material-ui/core';
@@ -49,33 +48,33 @@ function ResetPasswordByEmailForm(props) {
     if (passwordCheck.isValid) {
       const tokenResponse = await checkResetPasswordToken(token);
 
-      if (tokenResponse.authResponseType === REQUEST_SUCCESS) {
+      if (tokenResponse.status === 200) {
         const userData = {
-          email: tokenResponse.authResponsePayload.email,
+          email: tokenResponse.data,
           password: password.password,
         };
 
         const changeResponse = await resetPassword(userData);
 
-        if (changeResponse.authResponseType === REQUEST_SUCCESS) {
+        if (changeResponse.status === 204) {
           const loginResponse = await loginUser(userData);
 
-          if (loginResponse.authResponseType === REQUEST_SUCCESS) {
+          if (loginResponse.status === 200) {
             // If password reset and login are successful, set user as logged in
             props.handleLoggedIn(true);
           } else {
             setError({
-              errorMessage: changeResponse.authResponsePayload,
+              errorMessage: changeResponse,
             });
           }
         } else {
           setError({
-            errorMessage: changeResponse.authResponsePayload,
+            errorMessage: changeResponse,
           });
         }
       } else {
         setError({
-          errorMessage: tokenResponse.authResponsePayload,
+          errorMessage: tokenResponse,
         });
       }
     } else {

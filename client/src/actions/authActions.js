@@ -9,7 +9,7 @@ export const registerUser = async (userData) => {
   try {
     return await axios.post('/api/auth/register', userData);
   } catch (err) {
-    return err.response;
+    return err.response.data;
   }
 };
 
@@ -27,7 +27,7 @@ export const loginUser = async (userData) => {
     // Return response
     return response;
   } catch (err) {
-    return err.response;
+    return err.response.data;
   }
 };
 
@@ -68,7 +68,7 @@ export const sendPasswordResetEmail = async (userEmail) => {
         email: userEmail,
       });
     } catch (err) {
-      return err.response;
+      return err.response.data;
     }
   }
 };
@@ -87,34 +87,18 @@ export const checkResetPasswordToken = async (token) => {
 
   if (!isEmpty(error)) {
     return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: error,
+      data: error,
     };
   }
 
   try {
-    const response = await axios.get('/api/auth/validateresetpasswordtoken', {
+    return await axios.get('/api/auth/validateresetpasswordtoken', {
       params: {
         resetPasswordToken: token,
       },
     });
-
-    if (response.data.message === REQUEST_SUCCESS) {
-      return {
-        authResponseType: REQUEST_SUCCESS,
-        authResponsePayload: response.data,
-      };
-    } else {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: response.data,
-      };
-    }
   } catch (err) {
-    return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: 'The password link has expired or is invalid.',
-    };
+    return err.response.data;
   }
 };
 
@@ -140,32 +124,14 @@ export const resetPassword = async (userData) => {
 
   if (!isEmpty(error)) {
     return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: error,
+      data: error,
     };
   }
 
   try {
-    const response = await axios.put('/api/auth/resetpassword', userData);
-
-    if (response.data === REQUEST_SUCCESS) {
-      return {
-        authResponseType: REQUEST_SUCCESS,
-        authResponsePayload: response.data,
-      };
-    } else {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: response.data,
-      };
-    }
+    return await axios.put('/api/auth/resetpassword', userData);
   } catch (err) {
-    return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: isEmpty(err.response.data)
-        ? 'An error has occurred. Please try again.'
-        : err.response.data,
-    };
+    return err.response.data;
   }
 };
 
