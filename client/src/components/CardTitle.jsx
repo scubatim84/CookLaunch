@@ -3,7 +3,7 @@ import {Typography} from '@material-ui/core';
 
 function CardTitle(props) {
   return (
-    <Typography component='h1' variant='h5'>
+    <Typography id='Title' component='h1' variant='h5'>
       {props.title}
     </Typography>
   );
