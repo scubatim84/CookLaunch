@@ -8,6 +8,7 @@ function IngredientText(props) {
   if (props.checked) {
     return (
       <Typography
+        id='Checked'
         align='left'
         style={{overflowWrap: 'break-word'}}
         className={classes.strikethrough}
@@ -17,7 +18,11 @@ function IngredientText(props) {
     );
   } else {
     return (
-      <Typography align='left' style={{overflowWrap: 'break-word'}}>
+      <Typography
+        id='Unchecked'
+        align='left'
+        style={{overflowWrap: 'break-word'}}
+      >
         {props.children}
       </Typography>
     );
