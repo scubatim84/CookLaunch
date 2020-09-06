@@ -6,3 +6,8 @@ node_js:
 before_script:
   - npm install
   - npm install --prefix client
+
+deploy:
+  provider: heroku
+  api_key: ...
+  app: cook-launch
