@@ -20,7 +20,7 @@ function Welcome(props) {
         </Backdrop>
         <Grid container spacing={2} className={classes.pagePadding}>
           <Grid item xs={12}>
-            <Typography variant='h4' color='textPrimary'>
+            <Typography id='FirstName' variant='h4' color='textPrimary'>
               Welcome {props.firstName}!
             </Typography>
           </Grid>

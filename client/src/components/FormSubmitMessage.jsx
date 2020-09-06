@@ -6,7 +6,7 @@ function FormSubmitMessage(props) {
   const classes = useStylesMain();
 
   return (
-    <Typography className={classes.formSubmitMessage}>
+    <Typography id='Message' className={classes.formSubmitMessage}>
       {props.submitMessage}
     </Typography>
   );
