@@ -14,11 +14,22 @@ import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 
 function RecipeIngredientView(props) {
+  const {
+    _id,
+    name,
+    quantity,
+    quantityType,
+    quantityHave,
+    quantityNeeded,
+    handleUpdateIngredient,
+    handleDeleteIngredient,
+  } = props;
+
   const [editIngredient, setEditIngredient] = useState({
-    _id: props._id,
-    name: props.name,
-    quantity: props.quantity,
-    quantityType: props.quantityType,
+    _id: _id,
+    name: name,
+    quantity: quantity,
+    quantityType: quantityType,
   });
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState({
@@ -27,15 +38,15 @@ function RecipeIngredientView(props) {
 
   useEffect(() => {
     setEditIngredient({
-      _id: props._id,
-      name: props.name,
-      quantity: props.quantity,
-      quantityType: props.quantityType,
+      _id: _id,
+      name: name,
+      quantity: quantity,
+      quantityType: quantityType,
     });
-  }, [props]);
+  }, [_id, name, quantity, quantityType]);
 
   const handleDelete = async () => {
-    await props.handleDeleteIngredient(props._id);
+    await handleDeleteIngredient(_id);
   };
 
   const handleEdit = () => {
@@ -83,7 +94,7 @@ function RecipeIngredientView(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await props.handleUpdateIngredient(editIngredient);
+    await handleUpdateIngredient(editIngredient);
   };
 
   if (props.editMode) {
@@ -91,7 +102,7 @@ function RecipeIngredientView(props) {
       return (
         <Grid container spacing={1} alignItems='center'>
           <Grid item xs={4} sm={5}>
-            <Typography>{props.name}</Typography>
+            <Typography>{name}</Typography>
           </Grid>
           <Grid item xs={2}>
             <TextField
@@ -142,13 +153,13 @@ function RecipeIngredientView(props) {
       return (
         <Grid container alignItems='center'>
           <Grid item xs={4} sm={5}>
-            <Typography>{props.name}</Typography>
+            <Typography>{name}</Typography>
           </Grid>
           <Grid item xs={2}>
-            <Typography>{props.quantity}</Typography>
+            <Typography>{quantity}</Typography>
           </Grid>
           <Grid item xs={2} sm={3}>
-            <Typography>{props.quantityType}</Typography>
+            <Typography>{quantityType}</Typography>
           </Grid>
           <Grid item xs={2} sm={1}>
             <Edit onClick={handleEdit} className='icon' />
@@ -163,19 +174,19 @@ function RecipeIngredientView(props) {
     return (
       <Grid container alignItems='center'>
         <Grid item xs={4} sm={5}>
-          <Typography>{props.name}</Typography>
+          <Typography>{name}</Typography>
         </Grid>
         <Grid item xs={2}>
-          <Typography>{props.quantity}</Typography>
+          <Typography>{quantity}</Typography>
         </Grid>
         <Grid item xs={2} sm={3}>
-          <Typography>{props.quantityType}</Typography>
+          <Typography>{quantityType}</Typography>
         </Grid>
         <Grid item xs={2} sm={1}>
-          <Typography>{props.quantityHave}</Typography>
+          <Typography>{quantityHave}</Typography>
         </Grid>
         <Grid item xs={2} sm={1}>
-          <Typography>{props.quantityNeeded}</Typography>
+          <Typography>{quantityNeeded}</Typography>
         </Grid>
       </Grid>
     );

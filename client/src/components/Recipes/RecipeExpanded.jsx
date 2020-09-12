@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Redirect, useHistory} from 'react-router-dom';
 import {
   Button,
@@ -39,6 +39,8 @@ import {
 import Loader from '../Loader';
 
 function RecipeExpanded(props) {
+  const {recipeId} = props;
+
   const history = useHistory();
   const classes = useStylesMain(themeMain);
 
@@ -51,17 +53,17 @@ function RecipeExpanded(props) {
     errorMessage: '',
   });
 
-  useEffect(() => {
-    const getOneRecipeData = async () => {
-      const recipeData = await getOneRecipe(props.recipeId);
+  const getOneRecipeData = useCallback(async () => {
+    if (recipeId) {
+      const recipeData = await getOneRecipe(recipeId);
 
       setRecipe(recipeData.data);
-    };
-
-    if (props.recipeId) {
-      getOneRecipeData();
     }
-  }, [props.recipeId]);
+  }, []);
+
+  useEffect(() => {
+    getOneRecipeData();
+  }, [getOneRecipeData]);
 
   const handleClickOpen = () => {
     setOpen(true);
