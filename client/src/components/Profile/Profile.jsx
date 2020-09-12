@@ -13,6 +13,8 @@ import CardTitle from '../CardTitle';
 import Loader from '../Loader';
 
 function Profile(props) {
+  const {email, firstName, lastName} = props;
+
   const classes = useStylesMain(themeMain);
 
   const [profileData, setProfileData] = useState(null);
@@ -23,9 +25,9 @@ function Profile(props) {
 
   useEffect(() => {
     setProfileData({
-      email: props.email,
-      firstName: props.firstName,
-      lastName: props.lastName,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
     });
 
     setEditMode(false);
@@ -33,7 +35,7 @@ function Profile(props) {
     setError({
       errorMessage: '',
     });
-  }, [props]);
+  }, [email, firstName, lastName]);
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -64,9 +66,9 @@ function Profile(props) {
 
   const handleCancel = () => {
     setProfileData({
-      email: props.email,
-      firstName: props.firstName,
-      lastName: props.lastName,
+      email: email,
+      firstName: firstName,
+      lastName: lastName,
     });
 
     setEditMode(false);
