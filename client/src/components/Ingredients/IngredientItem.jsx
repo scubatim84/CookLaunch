@@ -18,14 +18,16 @@ import IngredientText from './IngredientText';
 import IngredientDeleteDialog from './IngredientDeleteDialog';
 
 function IngredientItem(props) {
+  const {id, name, quantity, quantityType, checked, groceryExtra} = props;
+
   const classes = useStyles(themeMain);
 
   const [editIngredient, setEditIngredient] = useState({
-    id: props.id,
-    name: props.name,
-    quantity: props.quantity,
-    quantityType: props.quantityType,
-    checked: props.checked,
+    id: id,
+    name: name,
+    quantity: quantity,
+    quantityType: quantityType,
+    checked: checked,
     groceryExtra: false,
   });
   const [editMode, setEditMode] = useState(false);
@@ -38,16 +40,24 @@ function IngredientItem(props) {
 
   useEffect(() => {
     setEditIngredient({
-      id: props.id,
-      name: props.name,
-      quantity: props.quantity,
-      quantityType: props.quantityType,
-      checked: props.checked,
-      groceryExtra: props.groceryExtra,
+      id: id,
+      name: name,
+      quantity: quantity,
+      quantityType: quantityType,
+      checked: checked,
+      groceryExtra: groceryExtra,
     });
 
     setGroceryIngredient(props.groceryIngredient);
-  }, [props]);
+  }, [
+    id,
+    name,
+    quantity,
+    quantityType,
+    checked,
+    groceryExtra,
+    props.groceryIngredient,
+  ]);
 
   useEffect(() => {
     const updateCheckIngredient = async () => {
@@ -78,7 +88,7 @@ function IngredientItem(props) {
   };
 
   const handleDelete = async () => {
-    const response = await props.handleDelete(props.id);
+    const response = await props.handleDelete(id);
 
     if (!isEmpty(response)) {
       setError({
@@ -168,7 +178,7 @@ function IngredientItem(props) {
               autoComplete='name'
             />
           ) : (
-            <IngredientText>{props.name}</IngredientText>
+            <IngredientText>{name}</IngredientText>
           )}
         </Grid>
         <Grid item xs={2}>
@@ -230,13 +240,13 @@ function IngredientItem(props) {
             />
           </Grid>
           <Grid item xs={4}>
-            <IngredientText checked={true}>{props.name}</IngredientText>
+            <IngredientText checked={true}>{name}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <IngredientText checked={true}>{props.quantity}</IngredientText>
+            <IngredientText checked={true}>{quantity}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <IngredientText checked={true}>{props.quantityType}</IngredientText>
+            <IngredientText checked={true}>{quantityType}</IngredientText>
           </Grid>
           <Grid item xs={1}>
             <Edit onClick={handleEdit} className={classes.icon} />
@@ -262,13 +272,13 @@ function IngredientItem(props) {
             />
           </Grid>
           <Grid item xs={4}>
-            <IngredientText>{props.name}</IngredientText>
+            <IngredientText>{name}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <IngredientText>{props.quantity}</IngredientText>
+            <IngredientText>{quantity}</IngredientText>
           </Grid>
           <Grid item xs={2}>
-            <IngredientText>{props.quantityType}</IngredientText>
+            <IngredientText>{quantityType}</IngredientText>
           </Grid>
           <Grid item xs={1}>
             <Edit onClick={handleEdit} className={classes.icon} />
@@ -289,13 +299,13 @@ function IngredientItem(props) {
   return (
     <Grid container spacing={1} alignItems='center'>
       <Grid item xs={6}>
-        <IngredientText>{props.name}</IngredientText>
+        <IngredientText>{name}</IngredientText>
       </Grid>
       <Grid item xs={2}>
-        <IngredientText>{props.quantity}</IngredientText>
+        <IngredientText>{quantity}</IngredientText>
       </Grid>
       <Grid item xs={2}>
-        <IngredientText>{props.quantityType}</IngredientText>
+        <IngredientText>{quantityType}</IngredientText>
       </Grid>
       <Grid item xs={1}>
         <Edit onClick={handleEdit} className={classes.icon} />
