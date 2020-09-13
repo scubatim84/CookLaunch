@@ -116,3 +116,6 @@ dist
 /.idea/vcs.xml
 /.idea/*
 .idea*
+
+# Exclude package-lock config file
+package-lock.json
