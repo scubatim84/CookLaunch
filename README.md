@@ -21,8 +21,9 @@
     <li>React
     <li>Material UI
     <li>Node
-      <li>JetBrains WebStorm
-        <li>Jira
+    <li>Jira
+    <li>Heroku
+    <li>Travis CI
   </ul>
 
 <h2>Authors</h2>
