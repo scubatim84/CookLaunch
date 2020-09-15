@@ -117,8 +117,5 @@ dist
 /.idea/*
 .idea*
 
-# Exclude package-lock config file
-package-lock.json
-
 # Exclude VS Code settings
 .vscode*
