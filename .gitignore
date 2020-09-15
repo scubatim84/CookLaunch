@@ -119,3 +119,6 @@ dist
 
 # Exclude package-lock config file
 package-lock.json
+
+# Exclude VS Code settings
+.vscode*
