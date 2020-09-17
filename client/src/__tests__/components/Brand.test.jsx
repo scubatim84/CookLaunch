@@ -4,6 +4,8 @@ import Brand from '../../components/Brand';
 
 describe('Brand', () => {
   it('Renders correctly', () => {
-    shallow(<Brand />);
+    const wrapper = shallow(<Brand />);
+
+    expect(wrapper).toMatchSnapshot();
   });
 });
