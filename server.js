@@ -4,6 +4,9 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import passport from 'passport';
 
+// Authentication strategy
+import { authJwt } from './config/passport.js';
+
 // API Routes
 import authRoutes from './routes/api/auth.js';
 import userRoutes from './routes/api/user.js';
@@ -38,31 +41,11 @@ app.use(passport.initialize());
 
 // API routes
 app.use('/api/auth', authRoutes);
-app.use(
-  '/api/ingredients',
-  passport.authenticate('jwt', { session: false }),
-  ingredientRoutes
-);
-app.use(
-  '/api/user',
-  passport.authenticate('jwt', { session: false }),
-  userRoutes
-);
-app.use(
-  '/api/pantry',
-  passport.authenticate('jwt', { session: false }),
-  pantryRoutes
-);
-app.use(
-  '/api/groceries',
-  passport.authenticate('jwt', { session: false }),
-  groceriesRoutes
-);
-app.use(
-  '/api/recipes',
-  passport.authenticate('jwt', { session: false }),
-  recipeRoutes
-);
+app.use('/api/ingredients', authJwt, ingredientRoutes);
+app.use('/api/user', authJwt, userRoutes);
+app.use('/api/pantry', authJwt, pantryRoutes);
+app.use('/api/groceries', authJwt, groceriesRoutes);
+app.use('/api/recipes', authJwt, recipeRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
