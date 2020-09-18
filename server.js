@@ -15,6 +15,9 @@ import groceriesRoutes from './routes/api/groceries.js';
 import recipeRoutes from './routes/api/recipes.js';
 import ingredientRoutes from './routes/api/ingredients.js';
 
+// Express will serve up index.html file if it doesn't recognize route
+import path from 'path';
+
 // Set up Express server
 const app = express();
 
@@ -51,8 +54,6 @@ if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
   app.use(express.static('client/build'));
 
-  // Express will serve up index.html file if it doesn't recognize route
-  const path = require('path');
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
