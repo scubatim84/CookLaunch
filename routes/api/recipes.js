@@ -1,10 +1,11 @@
-require('dotenv').config();
-const express = require('express');
-const isEmpty = require('is-empty');
-const router = express.Router();
+import express from 'express';
+import isEmpty from 'is-empty';
 
 // Load Recipe model
-const {Recipe} = require('../../models/Recipe');
+import { Recipe } from '../../models/Recipe.js';
+
+// Set up Express router
+const router = express.Router();
 
 // @route GET api/recipes
 // @desc Get all recipes created by user making request
@@ -15,7 +16,7 @@ router.get('/', async (req, res) => {
 
   // Once user is found, retrieve list of all recipes created by that user
   if (foundUser) {
-    const recipes = await Recipe.find({createdBy: foundUser._id});
+    const recipes = await Recipe.find({ createdBy: foundUser._id });
 
     try {
       res.status(200).json(recipes);
@@ -166,4 +167,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

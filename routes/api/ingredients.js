@@ -1,10 +1,12 @@
-const express = require('express');
-const isEmpty = require('is-empty');
-const router = express.Router();
-const _ = require('lodash');
+import express from 'express';
+import isEmpty from 'is-empty';
+import _ from 'lodash';
 
 // Load Ingredient model
-const {Ingredient} = require('../../models/Ingredient');
+import { Ingredient } from '../../models/Ingredient.js';
+
+// Set up Express router
+const router = express.Router();
 
 // @route GET api/ingredients
 // @desc Get all ingredients
@@ -31,7 +33,7 @@ router.post('/', async (req, res) => {
     const ingredientName = _.lowerCase(req.body.name);
     const createdByEmail = req.body.createdBy;
 
-    const foundIngredient = await Ingredient.findOne({name: ingredientName});
+    const foundIngredient = await Ingredient.findOne({ name: ingredientName });
 
     if (foundIngredient) {
       res.status(400).json('That ingredient already exists.');
@@ -59,7 +61,7 @@ router.post('/', async (req, res) => {
 // @access Private
 router.get('/:id', async (req, res) => {
   try {
-    const foundIngredient = await Ingredient.findOne({_id: req.params.id});
+    const foundIngredient = await Ingredient.findOne({ _id: req.params.id });
 
     res.status(200).json(foundIngredient);
   } catch (err) {
@@ -125,4 +127,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

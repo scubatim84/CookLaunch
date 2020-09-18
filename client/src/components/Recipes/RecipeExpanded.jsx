@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Redirect, useHistory} from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Redirect, useHistory } from 'react-router-dom';
 import {
   Button,
   Card,
@@ -14,8 +14,8 @@ import {
   List,
   Typography,
 } from '@material-ui/core';
-import {useStylesMain} from '../../Styles';
-import {themeMain} from '../../Theme';
+import { useStylesMain } from '../../Styles';
+import { themeMain } from '../../Theme';
 import {
   deleteRecipe,
   getOneRecipe,
@@ -29,9 +29,9 @@ import RecipeButton from './RecipeButton';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
-import {addIngredientToGroceries} from '../../actions/groceryActions';
-import {convert_units} from '../../actions/unitConversions';
-import {validateIngredientData} from '../../actions/validateIngredientData';
+import { addIngredientToGroceries } from '../../actions/groceryActions';
+import { convert_units } from '../../actions/unitConversions';
+import { validateIngredientData } from '../../actions/validateIngredientData';
 import {
   deleteIngredientFromPantry,
   updateIngredientInPantry,
@@ -39,7 +39,7 @@ import {
 import Loader from '../Loader';
 
 function RecipeExpanded(props) {
-  const {recipeId} = props;
+  const { recipeId } = props;
 
   const history = useHistory();
   const classes = useStylesMain(themeMain);
@@ -59,7 +59,7 @@ function RecipeExpanded(props) {
 
       setRecipe(recipeData.data);
     }
-  }, []);
+  }, [recipeId]);
 
   useEffect(() => {
     getOneRecipeData();
@@ -143,7 +143,7 @@ function RecipeExpanded(props) {
 
   const addToGroceryList = async () => {
     for (const ingredient of recipe.ingredients) {
-      const {quantityNeeded} = getHaveNeedQuantities(ingredient);
+      const { quantityNeeded } = getHaveNeedQuantities(ingredient);
 
       const ingredientData = {
         name: ingredient.name,
@@ -167,7 +167,7 @@ function RecipeExpanded(props) {
 
   const ingredientsMissing = () => {
     for (const ingredient of recipe.ingredients) {
-      const {quantityNeeded} = getHaveNeedQuantities(ingredient);
+      const { quantityNeeded } = getHaveNeedQuantities(ingredient);
 
       if (quantityNeeded > 0) {
         return true;
@@ -270,7 +270,7 @@ function RecipeExpanded(props) {
   };
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setRecipe((prevValue) => {
       return {
@@ -309,7 +309,7 @@ function RecipeExpanded(props) {
                   <Link
                     href={'/'}
                     color='textPrimary'
-                    style={{textDecoration: 'none'}}
+                    style={{ textDecoration: 'none' }}
                   >
                     <Button
                       type='submit'

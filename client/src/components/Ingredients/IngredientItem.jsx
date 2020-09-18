@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {ingredientQuantityTypes} from '../../actions/types';
-import {makeStyles} from '@material-ui/core/styles';
-import {themeMain} from '../../Theme';
+import React, { useEffect, useState } from 'react';
+import { ingredientQuantityTypes } from '../../actions/types';
+import { makeStyles } from '@material-ui/core/styles';
+import { themeMain } from '../../Theme';
 import {
   Checkbox,
   FormControl,
@@ -10,15 +10,15 @@ import {
   Select,
   TextField,
 } from '@material-ui/core';
-import {Cancel, Edit, Delete, Done} from '@material-ui/icons';
+import { Cancel, Edit, Delete, Done } from '@material-ui/icons';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {convert_units} from '../../actions/unitConversions';
+import { convert_units } from '../../actions/unitConversions';
 import IngredientText from './IngredientText';
 import IngredientDeleteDialog from './IngredientDeleteDialog';
 
 function IngredientItem(props) {
-  const {id, name, quantity, quantityType, checked, groceryExtra} = props;
+  const { id, name, quantity, quantityType, checked, groceryExtra } = props;
 
   const classes = useStyles(themeMain);
 
@@ -106,7 +106,7 @@ function IngredientItem(props) {
   };
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setEditIngredient((prevValue) => {
       return {
@@ -165,7 +165,7 @@ function IngredientItem(props) {
   if (editMode) {
     return (
       <Grid container alignItems='center'>
-        <Grid item xs={5}>
+        <Grid item xs={4}>
           {editIngredient.groceryExtra ? (
             <TextField
               onChange={handleChange}
@@ -193,7 +193,7 @@ function IngredientItem(props) {
             autoComplete='quantity'
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <FormControl>
             <Select
               labelId='quantityType'
@@ -239,13 +239,13 @@ function IngredientItem(props) {
               color='primary'
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <IngredientText checked={true}>{name}</IngredientText>
           </Grid>
           <Grid item xs={2}>
             <IngredientText checked={true}>{quantity}</IngredientText>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <IngredientText checked={true}>{quantityType}</IngredientText>
           </Grid>
           <Grid item xs={1}>
@@ -271,13 +271,13 @@ function IngredientItem(props) {
               color='primary'
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={3}>
             <IngredientText>{name}</IngredientText>
           </Grid>
           <Grid item xs={2}>
             <IngredientText>{quantity}</IngredientText>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             <IngredientText>{quantityType}</IngredientText>
           </Grid>
           <Grid item xs={1}>
@@ -298,13 +298,13 @@ function IngredientItem(props) {
 
   return (
     <Grid container spacing={1} alignItems='center'>
-      <Grid item xs={6}>
+      <Grid item xs={5}>
         <IngredientText>{name}</IngredientText>
       </Grid>
       <Grid item xs={2}>
         <IngredientText>{quantity}</IngredientText>
       </Grid>
-      <Grid item xs={2}>
+      <Grid item xs={3}>
         <IngredientText>{quantityType}</IngredientText>
       </Grid>
       <Grid item xs={1}>

@@ -1,8 +1,9 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 
 // Create Schema
-const IngredientSchema = new Schema({
+export const IngredientSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -30,9 +31,9 @@ const IngredientSchema = new Schema({
   },
 });
 
-const Ingredient = mongoose.model('ingredient', IngredientSchema);
+export const Ingredient = mongoose.model('ingredient', IngredientSchema);
 
-module.exports = {
+export default {
   Ingredient,
   IngredientSchema,
 };

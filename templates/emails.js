@@ -1,6 +1,4 @@
-require('dotenv').config();
-
-module.exports = async function getForgotPasswordEmail(userEmail, token) {
+const getForgotPasswordEmail = async (userEmail, token) => {
   const resetUrl = process.env.SITE_URL + '/reset/' + token;
 
   return {
@@ -14,3 +12,5 @@ module.exports = async function getForgotPasswordEmail(userEmail, token) {
       'If you did not request this, please ignore this email and your password will remain unchanged.\n',
   };
 };
+
+export default getForgotPasswordEmail;
