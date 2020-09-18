@@ -3,6 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import passport from 'passport';
+import path from 'path';
 
 // Authentication strategy
 import { authJwt } from './config/passport.js';
@@ -14,9 +15,6 @@ import pantryRoutes from './routes/api/pantry.js';
 import groceriesRoutes from './routes/api/groceries.js';
 import recipeRoutes from './routes/api/recipes.js';
 import ingredientRoutes from './routes/api/ingredients.js';
-
-// Express will serve up index.html file if it doesn't recognize route
-import path from 'path';
 
 // Set up Express server
 const app = express();
@@ -54,6 +52,8 @@ if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
   app.use(express.static('client/build'));
 
+  // Express will serve up index.html file if it doesn't recognize route
+  const __dirname = path.resolve();
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
