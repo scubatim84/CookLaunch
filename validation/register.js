@@ -1,7 +1,7 @@
-const validator = require('validator');
-const isEmpty = require('is-empty');
+import validator from 'validator';
+import isEmpty from 'is-empty';
 
-module.exports = async function validateRegisterInput(data) {
+const validateRegisterInput = async (data) => {
   let error;
 
   // Convert empty fields to an empty string so we can use validator functions
@@ -35,7 +35,7 @@ module.exports = async function validateRegisterInput(data) {
     error = 'Confirm password field is required';
   }
 
-  if (!validator.isLength(data.password, {min: 6, max: 30})) {
+  if (!validator.isLength(data.password, { min: 6, max: 30 })) {
     error = 'Password must be at least 6 characters';
   }
 
@@ -48,3 +48,5 @@ module.exports = async function validateRegisterInput(data) {
     isValid: isEmpty(error),
   };
 };
+
+export default validateRegisterInput;

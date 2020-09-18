@@ -1,5 +1,6 @@
-require('dotenv').config();
-const express = require('express');
+import express from 'express';
+
+// Set up Express router
 const router = express.Router();
 
 // @route GET api/pantry
@@ -103,4 +104,4 @@ router.delete('/:id', (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

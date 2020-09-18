@@ -1,10 +1,11 @@
-require('dotenv').config();
-const express = require('express');
-const router = express.Router();
-const isEmpty = require('is-empty');
+import express from 'express';
+import isEmpty from 'is-empty';
 
 // Load User model
-const User = require('../../models/User');
+import User from '../../models/User.js';
+
+// Set up Express router
+const router = express.Router();
 
 // @route GET api/user/profile
 // @desc Obtain user profile
@@ -88,4 +89,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

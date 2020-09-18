@@ -1,36 +1,37 @@
-require('dotenv').config();
-const express = require('express');
-const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const nodemailer = require('nodemailer');
-const isEmpty = require('is-empty');
-const addHours = require('date-fns/addHours');
+import express from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
+import nodemailer from 'nodemailer';
+import isEmpty from 'is-empty';
+import * as dateFns from 'date-fns';
 
 // Load input validation
-const validateRegisterInput = require('../../validation/register');
-const validateLoginInput = require('../../validation/login');
-const getForgotPasswordEmail = require('../../templates/emails');
+import validateRegisterInput from '../../validation/register.js';
+import validateLoginInput from '../../validation/login.js';
+import getForgotPasswordEmail from '../../templates/emails.js';
 
 // Load User model
-const User = require('../../models/User');
+import User from '../../models/User.js';
+
+// Set up Express router
+const router = express.Router();
 
 // Use bcrypt to hash passwords and return for later use
-async function hashPassword(password) {
+const hashPassword = async (password) => {
   try {
     return await bcrypt.hash(password, 10);
   } catch (err) {
     console.log(err);
   }
-}
+};
 
 // @route POST api/auth/register
 // @desc Register user
 // @access Public
 router.post('/register', async (req, res) => {
   // Form validation
-  const {error, isValid} = await validateRegisterInput(req.body);
+  const { error, isValid } = await validateRegisterInput(req.body);
 
   //Check validation
   if (!isValid) {
@@ -38,7 +39,7 @@ router.post('/register', async (req, res) => {
   }
 
   // Check whether user already exists
-  const foundUser = await User.findOne({email: req.body.email});
+  const foundUser = await User.findOne({ email: req.body.email });
 
   // If user exists, return error, otherwise create new user
   if (foundUser) {
@@ -67,7 +68,7 @@ router.post('/register', async (req, res) => {
 // @access Public
 router.post('/login', async (req, res) => {
   // Form validation
-  const {error, isValid} = await validateLoginInput(req.body);
+  const { error, isValid } = await validateLoginInput(req.body);
 
   // Check validation
   if (!isValid) {
@@ -78,7 +79,7 @@ router.post('/login', async (req, res) => {
   const password = req.body.password;
 
   // Find user by email
-  const foundUser = await User.findOne({email});
+  const foundUser = await User.findOne({ email });
 
   // Check if user exists
   if (!foundUser) {
@@ -125,14 +126,14 @@ router.post('/forgotpassword', async (req, res) => {
   const token = crypto.randomBytes(20).toString('hex');
 
   // Find user by email
-  const foundUser = await User.findOne({email});
+  const foundUser = await User.findOne({ email });
 
   if (isEmpty(foundUser)) {
     res.status(404).json(null);
   } else {
     // Add reset password token to user account and set to expire in 1 hour
     foundUser.resetPasswordToken = token;
-    foundUser.resetPasswordExpires = addHours(new Date(), 1);
+    foundUser.resetPasswordExpires = dateFns.addHours(new Date(), 1);
     foundUser.save();
 
     const transporter = nodemailer.createTransport({
@@ -180,7 +181,7 @@ router.get('/validateresetpasswordtoken', async (req, res) => {
 // @access Private
 router.put('/resetpassword', async (req, res) => {
   // Find user with email passed in from front end
-  const foundUser = await User.findOne({email: req.body.email});
+  const foundUser = await User.findOne({ email: req.body.email });
 
   // Once user is found, hash password, reset token, then save in database
   if (foundUser) {
@@ -203,4 +204,4 @@ router.put('/resetpassword', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

@@ -1,5 +1,6 @@
-const {IngredientSchema} = require('./Ingredient');
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import { IngredientSchema } from './Ingredient.js';
+
 const Schema = mongoose.Schema;
 
 // Create Schema
@@ -38,4 +39,6 @@ const UserSchema = new Schema({
   },
 });
 
-module.exports = User = mongoose.model('user', UserSchema);
+export const User = mongoose.model('user', UserSchema);
+
+export default User;

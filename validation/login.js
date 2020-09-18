@@ -1,13 +1,7 @@
-const validator = require('validator');
-const isEmpty = require('is-empty');
+import validator from 'validator';
+import isEmpty from 'is-empty';
 
-interface LoginInputData {
-  email: String;
-  password: String;
-}
-
-// noinspection DuplicatedCode
-module.exports = async function validateLoginInput(data: LoginInputData) {
+const validateLoginInput = async (data) => {
   let error;
 
   // Convert empty fields to an empty string so we can use validator functions
@@ -31,3 +25,5 @@ module.exports = async function validateLoginInput(data: LoginInputData) {
     isValid: isEmpty(error),
   };
 };
+
+export default validateLoginInput;

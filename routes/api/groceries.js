@@ -1,7 +1,8 @@
-require('dotenv').config();
-const express = require('express');
+import express from 'express';
+import _ from 'lodash';
+
+// Set up Express router
 const router = express.Router();
-const _ = require('lodash');
 
 // @route GET api/groceries
 // @desc Obtain ingredients in user's grocery list
@@ -117,4 +118,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
