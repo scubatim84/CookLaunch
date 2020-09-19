@@ -1,0 +1,4 @@
+{
+  "collectCoverageFrom": ["**/*.{js}", "!**/node_modules/**", "!**/client/**"],
+  "modulePathIgnorePatterns": ["client"]
+}
