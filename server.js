@@ -16,13 +16,16 @@ import groceriesRoutes from './routes/api/groceries.js';
 import recipeRoutes from './routes/api/recipes.js';
 import ingredientRoutes from './routes/api/ingredients.js';
 
+// Other Routes
+import fileUploadRoute from './routes/uploadfiles.js';
+
 // Set up Express server
 const app = express();
 
 // Set up environment variable support
 dotenv.config();
 
-// Bodyparser middleware
+// Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -47,6 +50,9 @@ app.use('/api/user', authJwt, userRoutes);
 app.use('/api/pantry', authJwt, pantryRoutes);
 app.use('/api/groceries', authJwt, groceriesRoutes);
 app.use('/api/recipes', authJwt, recipeRoutes);
+
+// Other route
+app.use('/uploadfiles', authJwt, fileUploadRoute);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets

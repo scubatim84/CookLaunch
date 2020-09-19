@@ -52,6 +52,23 @@ export const addRecipe = async (recipeData) => {
   }
 };
 
+// TODO: Move to addRecipe and updateRecipe methods once the add file functionality is finished on front end
+export const addRecipeImage = async (formData) => {
+  console.log(formData);
+
+  try {
+    const token = cookies.get('user');
+    return await axios.post('/uploadfiles/recipeimage', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: token,
+      },
+    });
+  } catch (err) {
+    return err.response.data;
+  }
+};
+
 // Get one recipe from back end if created by user
 export const getOneRecipe = async (recipeId) => {
   try {
