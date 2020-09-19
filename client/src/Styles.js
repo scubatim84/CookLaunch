@@ -1,6 +1,6 @@
-import {makeStyles} from '@material-ui/core/styles';
-import LandingImage from './images/landing-bg.png';
-import LoginImage from './images/login-bg.png';
+import { makeStyles } from '@material-ui/core/styles';
+import LandingImage from './images/landing-bg.jpg';
+import LoginImage from './images/login-bg.jpg';
 
 export const useStylesMain = makeStyles((theme) => ({
   backdrop: {
