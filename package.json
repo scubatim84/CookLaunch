@@ -30,7 +30,6 @@
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^10.3.0",
-    "lodash": "^4.17.20",
     "mongoose": "^5.10.3",
     "multiparty": "^4.2.2",
     "nodemailer": "^6.4.10",

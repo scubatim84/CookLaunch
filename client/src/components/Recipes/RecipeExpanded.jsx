@@ -189,7 +189,8 @@ function RecipeExpanded(props) {
       for (const ingredient of recipe.ingredients) {
         const foundIngredient = props.pantry.find(
           (pantryIngredient) =>
-            _.toLower(ingredient.name) === _.toLower(pantryIngredient.name)
+            ingredient.name.toUpperCase() ===
+            pantryIngredient.name.toUpperCase()
         );
 
         if (foundIngredient) {
@@ -238,7 +239,7 @@ function RecipeExpanded(props) {
   const getHaveNeedQuantities = (ingredient) => {
     const foundIngredient = props.pantry.find(
       (pantryIngredient) =>
-        _.toLower(ingredient.name) === _.toLower(pantryIngredient.name)
+        ingredient.name.toUpperCase() === pantryIngredient.name.toUpperCase()
     );
     let quantityNeeded;
     let quantityHave = 0;

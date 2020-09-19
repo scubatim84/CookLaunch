@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {Redirect} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import _ from 'lodash';
 import IngredientAdd from './Ingredients/IngredientAdd';
 import IngredientItem from './Ingredients/IngredientItem';
-import {makeStyles} from '@material-ui/core/styles';
-import {themeMain} from '../Theme';
+import { makeStyles } from '@material-ui/core/styles';
+import { themeMain } from '../Theme';
 import {
   Button,
   Card,
@@ -23,7 +23,7 @@ import {
   deleteIngredientFromGroceries,
   updateIngredientInGroceries,
 } from '../actions/groceryActions';
-import {convert_units} from '../actions/unitConversions';
+import { convert_units } from '../actions/unitConversions';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from './FormSubmitMessage';
 import {
@@ -55,9 +55,9 @@ function GroceryList(props) {
         }
       });
 
-      setGroceryList({data: sortedGroceries});
+      setGroceryList({ data: sortedGroceries });
     } else if (props.groceries) {
-      setGroceryList({data: []});
+      setGroceryList({ data: [] });
     }
   }, [props.groceries]);
 
@@ -114,7 +114,7 @@ function GroceryList(props) {
 
       const foundIngredient = props.pantry.find(
         (ingredient) =>
-          _.lowerCase(ingredient.name) === _.lowerCase(groceryIngredient.name)
+          ingredient.name.toUpperCase() === groceryIngredient.name.toUpperCase()
       );
 
       if (foundIngredient) {

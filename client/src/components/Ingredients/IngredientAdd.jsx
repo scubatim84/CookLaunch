@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import isEmpty from 'is-empty';
-import _ from 'lodash';
-import {ingredientQuantityTypes} from '../../actions/types';
-import {useStylesMain} from '../../Styles';
-import {themeMain} from '../../Theme';
+import { ingredientQuantityTypes } from '../../actions/types';
+import { useStylesMain } from '../../Styles';
+import { themeMain } from '../../Theme';
 import {
   Button,
   Card,
@@ -52,7 +51,7 @@ function IngredientAdd(props) {
   };
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setAddIngredient((prevValue) => {
       return {
@@ -79,12 +78,12 @@ function IngredientAdd(props) {
     if (props.groceryListAdd) {
       foundIngredient = props.groceries.find(
         (ingredient) =>
-          _.lowerCase(ingredient.name) === _.lowerCase(addIngredient.name)
+          ingredient.name.toUpperCase() === addIngredient.name.toUpperCase()
       );
     } else {
       foundIngredient = props.pantry.find(
         (ingredient) =>
-          _.lowerCase(ingredient.name) === _.lowerCase(addIngredient.name)
+          ingredient.name.toUpperCase() === addIngredient.name.toUpperCase()
       );
     }
 
