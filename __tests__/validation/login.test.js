@@ -9,7 +9,7 @@ describe('Test validateLoginInput function', () => {
 
     const res = await validateLoginInput(mockData);
 
-    expect(res.error).not.toBeNull();
+    expect(res.error).toBe('Email field is required');
     expect(res.isValid).toBe(false);
   });
 
@@ -21,7 +21,19 @@ describe('Test validateLoginInput function', () => {
 
     const res = await validateLoginInput(mockData);
 
-    expect(res.error).not.toBeNull();
+    expect(res.error).toBe('Password field is required');
+    expect(res.isValid).toBe(false);
+  });
+
+  test('Returns error and invalid if email is invalid', async () => {
+    const mockData = {
+      email: 'testrunner.com',
+      password: 'tester',
+    };
+
+    const res = await validateLoginInput(mockData);
+
+    expect(res.error).toBe('Email is invalid');
     expect(res.isValid).toBe(false);
   });
 

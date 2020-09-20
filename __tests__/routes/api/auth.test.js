@@ -44,17 +44,21 @@ describe('POST /api/auth/register', () => {
     const newUserMock = {
       firstName: 'test',
       lastName: 'runner',
-      email: 'test@runner.com',
+      email: 'already@there.com',
       password: 'tester',
       password2: 'tester',
     };
 
     let res = await request(app).post('/api/auth/register').send(newUserMock);
 
+    expect(res.statusCode).toBe(201);
+
+    res = await request(app).post('/api/auth/register').send(newUserMock);
+
     expect(res.statusCode).toBe(400);
     expect(res.body).toBe('Email already exists');
   });
-}, 30000);
+});
 
 describe('POST /api/auth/login', () => {
   test('Responds with status code 400 and error if existing user data not valid', async () => {
