@@ -1,6 +1,12 @@
 {
   "testEnvironment": "node",
+  "roots": ["./__tests__/"],
   "collectCoverage": true,
-  "collectCoverageFrom": ["**/*.{js}", "!**/node_modules/**", "!client/**"],
+  "collectCoverageFrom": [
+    "<rootDir>/**/*.js",
+    "!<rootDir>/client/**",
+    "!<rootDir>/node_modules"
+  ],
+  "moduleFileExtensions": ["js", "json"],
   "modulePathIgnorePatterns": ["client"]
 }
