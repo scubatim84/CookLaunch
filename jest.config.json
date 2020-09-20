@@ -1,4 +1,6 @@
 {
-  "collectCoverageFrom": ["**/*.{js}", "!**/node_modules/**", "!**/client/**"],
+  "testEnvironment": "node",
+  "collectCoverage": true,
+  "collectCoverageFrom": ["**/*.{js}", "!**/node_modules/**", "!client/**"],
   "modulePathIgnorePatterns": ["client"]
 }
