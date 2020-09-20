@@ -1,6 +1,6 @@
 import request from 'supertest';
-import mongoose from 'mongoose';
 import app from '../../../server.js';
+import User from '../../../models/User';
 
 describe('POST /api/auth/register', () => {
   test('Responds with status code 400 and error if new user data not valid', async () => {
@@ -124,4 +124,8 @@ describe('POST /api/auth/login', () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).toContain('Bearer');
   });
+});
+
+afterAll(() => {
+  User.collection.drop();
 });
