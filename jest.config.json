@@ -2,6 +2,14 @@
   "testEnvironment": "node",
   "roots": ["./__tests__/"],
   "collectCoverage": true,
+  "coverageThreshold": {
+    "global": {
+      "statements": 90,
+      "branches": 90,
+      "functions": 90,
+      "lines": 90
+    }
+  },
   "collectCoverageFrom": [
     "<rootDir>/**/*.js",
     "!<rootDir>/client/**",

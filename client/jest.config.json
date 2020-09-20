@@ -1,7 +1,0 @@
-{
-  "testEnvironment": "jsdom",
-  "roots": ["./src"],
-  "collectCoverage": true,
-  "collectCoverageFrom": ["/src/**/*.js", "!./node_modules"],
-  "moduleFileExtensions": ["jsx", "js", "json"]
-}
