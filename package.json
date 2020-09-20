@@ -9,8 +9,9 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "test": "./node_modules/.bin/jest --config=jest.config.json --forceExit --runInBand --coverage",
-    "test client": "npm test --prefix client",
+    "test": "npm run test-server && npm run test-client",
+    "test-server": "./node_modules/.bin/jest --config=jest.config.json --forceExit --runInBand --coverage",
+    "test-client": "cd client && npm test --config=/client/jest.config.json",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd client/ && npm install && npm run build",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
@@ -46,8 +47,8 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.11.5",
-    "babel-jest": "^26.3.0",
-    "jest": "^26.4.2",
+    "babel-jest": "24.9.0",
+    "jest": "24.9.0",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
   },
