@@ -13,34 +13,36 @@ const validateRegisterInput = async (data) => {
 
   // Name checks
   if (validator.isEmpty(data.firstName)) {
-    error = 'First name field is required';
+    error === undefined ? (error = 'First name field is required') : '';
   }
   if (validator.isEmpty(data.lastName)) {
-    error = 'Last name field is required';
+    error === undefined ? (error = 'Last name field is required') : '';
   }
 
   //Email checks
   if (validator.isEmpty(data.email)) {
-    error = 'Email field is required';
+    error === undefined ? (error = 'Email field is required') : '';
   } else if (!validator.isEmail(data.email)) {
-    error = 'Email is invalid';
+    error === undefined ? (error = 'Email is invalid') : '';
   }
 
   // Password checks
   if (validator.isEmpty(data.password)) {
-    error = 'Password field is required';
+    error === undefined ? (error = 'Password field is required') : '';
   }
 
   if (validator.isEmpty(data.password2)) {
-    error = 'Confirm password field is required';
+    error === undefined ? (error = 'Confirm password field is required') : '';
   }
 
   if (!validator.isLength(data.password, { min: 6, max: 30 })) {
-    error = 'Password must be at least 6 characters';
+    error === undefined
+      ? (error = 'Password must be 6 to 30 characters long')
+      : '';
   }
 
   if (!validator.equals(data.password, data.password2)) {
-    error = 'Passwords must match';
+    error === undefined ? (error = 'Passwords must match') : '';
   }
 
   return {
