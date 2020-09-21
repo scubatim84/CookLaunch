@@ -45,7 +45,7 @@ describe('Test validateLoginInput function', () => {
 
     const res = await validateLoginInput(mockData);
 
-    expect(res.error).toBeUndefined();
+    expect(res.error).toHaveLength(0);
     expect(res.isValid).toBe(true);
   });
 });

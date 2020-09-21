@@ -147,7 +147,7 @@ describe('Test validateRegisterInput function', () => {
 
     const res = await validateRegisterInput(mockData);
 
-    expect(res.error).toBeUndefined();
+    expect(res.error).toHaveLength(0);
     expect(res.isValid).toBe(true);
   });
 });
