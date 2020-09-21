@@ -67,8 +67,18 @@ if (process.env.NODE_ENV === 'production') {
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () =>
-  console.log('Server up and running on port ' + port + '!')
-);
+try {
+  // This will execute for unit and integration tests only
+  if (module.children) {
+    app.listen(process.env.PORT, () =>
+      console.log(`Test app listening on port ${process.env.PORT}!`)
+    );
+  }
+} catch (err) {
+  // Catch 'Module not defined error', which means not test, and listen on port
+  app.listen(port, () =>
+    console.log('Server up and running on port ' + port + '!')
+  );
+}
 
 export default app;

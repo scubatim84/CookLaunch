@@ -131,5 +131,5 @@ describe('POST /api/auth/login', () => {
 });
 
 afterAll(() => {
-  User.collection.drop();
+  return User.collection.drop();
 });
