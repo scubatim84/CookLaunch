@@ -10,7 +10,7 @@
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "test": "npm run test-server && npm run test-client",
-    "test-server": "./node_modules/.bin/jest --config=jest.config.json --forceExit --runInBand --coverage",
+    "test-server": "./node_modules/.bin/jest --config=jest.config.json --forceExit --coverage",
     "test-client": "cd client && npm test -- --coverage",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd client/ && npm install && npm run build",
