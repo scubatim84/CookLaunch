@@ -118,12 +118,9 @@ describe('POST /api/auth/login', () => {
 
     await request(app).post('/api/auth/register').send(newUserMock);
 
-    const existingUserMock = {
-      email: 'tester@tester.com',
-      password: 'tester',
-    };
-
-    let res = await request(app).post('/api/auth/login').send(existingUserMock);
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({ email: newUserMock.email, password: newUserMock.password });
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toContain('Bearer');
@@ -131,5 +128,5 @@ describe('POST /api/auth/login', () => {
 });
 
 afterAll(() => {
-  return User.collection.drop();
+  User.collection.drop();
 });
