@@ -13,7 +13,8 @@
   "collectCoverageFrom": [
     "<rootDir>/**/*.js",
     "!<rootDir>/client/**",
-    "!<rootDir>/node_modules"
+    "!<rootDir>/node_modules",
+    "!<rootDir>/setUpTestUser.js"
   ],
   "moduleFileExtensions": ["js", "json"],
   "modulePathIgnorePatterns": ["client"]
