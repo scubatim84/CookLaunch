@@ -29,14 +29,16 @@ function Dashboard(props) {
             return (
               <Grid
                 item
-                xs={6}
-                sm={3}
+                xs={12}
+                sm={6}
+                md={3}
                 className={classes.recipeCard}
                 key={recipe._id + recipe.dateLastChanged}
               >
                 <RecipeCard
                   key={recipe._id + recipe.dateLastChanged}
                   id={recipe._id}
+                  imageUrl={recipe.imageUrl}
                   name={formatName}
                 />
               </Grid>
