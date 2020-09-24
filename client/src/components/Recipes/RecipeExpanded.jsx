@@ -1,8 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
+import _ from 'lodash';
+import isEmpty from 'is-empty';
 import {
   Button,
   Card,
+  CardMedia,
   Container,
   Dialog,
   DialogActions,
@@ -14,21 +17,14 @@ import {
   List,
   Typography,
 } from '@material-ui/core';
-import { useStylesMain } from '../../Styles';
+import { makeStyles } from '@material-ui/core/styles';
+
 import { themeMain } from '../../Theme';
 import {
   deleteRecipe,
   getOneRecipe,
   updateRecipe,
 } from '../../actions/recipeActions';
-import _ from 'lodash';
-import RecipeIngredientView from './RecipeIngredientView';
-import RecipeName from './RecipeName';
-import CardTitle from '../CardTitle';
-import RecipeButton from './RecipeButton';
-import isEmpty from 'is-empty';
-import FormSubmitMessage from '../FormSubmitMessage';
-import RecipeIngredientAdd from './RecipeIngredientAdd';
 import { addIngredientToGroceries } from '../../actions/groceryActions';
 import { convert_units } from '../../actions/unitConversions';
 import { validateIngredientData } from '../../actions/validateIngredientData';
@@ -36,13 +32,19 @@ import {
   deleteIngredientFromPantry,
   updateIngredientInPantry,
 } from '../../actions/pantryActions';
+import RecipeIngredientView from './RecipeIngredientView';
+import RecipeName from './RecipeName';
+import CardTitle from '../CardTitle';
+import RecipeButton from './RecipeButton';
+import FormSubmitMessage from '../FormSubmitMessage';
+import RecipeIngredientAdd from './RecipeIngredientAdd';
 import Loader from '../Loader';
 
 function RecipeExpanded(props) {
   const { recipeId } = props;
 
   const history = useHistory();
-  const classes = useStylesMain(themeMain);
+  const classes = useStyles(themeMain);
 
   const [recipe, setRecipe] = useState(null);
   const [editMode, setEditMode] = useState(false);
@@ -301,32 +303,37 @@ function RecipeExpanded(props) {
     return <Loader />;
   } else {
     return (
-      <Container component='main' maxWidth='sm'>
-        <div className={classes.pageMargin}>
-          <div className={classes.minHeight}>
-            <Grid container>
-              <Grid item xs={12}>
-                <Grid item xs={12} sm={6} className={classes.buttonMargin}>
-                  <Link
-                    href={'/'}
-                    color='textPrimary'
-                    style={{ textDecoration: 'none' }}
-                  >
-                    <Button
-                      type='submit'
-                      fullWidth
-                      variant='contained'
-                      color='primary'
-                    >
-                      Return To Dashboard
-                    </Button>
-                  </Link>
-                </Grid>
-              </Grid>
-              <Grid item xs={12}>
-                <Card className={classes.pageCard}>
-                  <div className={classes.paper}>
-                    <Grid container spacing={2}>
+      <Container component='main' maxWidth='lg'>
+        <Grid container spacing={0}>
+          <Grid item xs={12} sm={6} className={classes.button}>
+            <Link
+              href={'/'}
+              color='textPrimary'
+              style={{ textDecoration: 'none' }}
+            >
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                color='primary'
+              >
+                Return To Dashboard
+              </Button>
+            </Link>
+          </Grid>
+          <Grid item xs={12} className={classes.pageContainer}>
+            <Card className={classes.card}>
+              <div className={classes.paper}>
+                <Grid container spacing={1}>
+                  <Grid item xs={12} sm={6}>
+                    <CardMedia
+                      className={classes.image}
+                      image={recipe.imageUrl}
+                      title={recipe.name}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6} className={classes.recipeDetails}>
+                    <Grid container spacing={0}>
                       <Grid item xs={12} align='center'>
                         <RecipeName
                           name={recipe.name}
@@ -412,7 +419,7 @@ function RecipeExpanded(props) {
                         </Grid>
                       )}
                       {!editMode && (
-                        <Grid item xs={12}>
+                        <Grid item xs={12} className={classes.button}>
                           <Button
                             fullWidth
                             variant='outlined'
@@ -444,7 +451,7 @@ function RecipeExpanded(props) {
                           </Dialog>
                         </Grid>
                       )}
-                      <Grid item xs={12}>
+                      <Grid item xs={12} className={classes.button}>
                         <RecipeButton
                           key={editMode + new Date()}
                           editMode={editMode}
@@ -454,7 +461,7 @@ function RecipeExpanded(props) {
                         />
                       </Grid>
                       {!editMode && (
-                        <Grid item xs={12}>
+                        <Grid item xs={12} className={classes.button}>
                           <Button
                             fullWidth
                             variant='outlined'
@@ -490,7 +497,7 @@ function RecipeExpanded(props) {
                         </Grid>
                       )}
                       {!editMode && (
-                        <Grid item xs={12}>
+                        <Grid item xs={12} className={classes.button}>
                           <Button
                             fullWidth
                             variant='outlined'
@@ -537,15 +544,54 @@ function RecipeExpanded(props) {
                         )}
                       </Grid>
                     </Grid>
-                  </div>
-                </Card>
-              </Grid>
-            </Grid>
-          </div>
-        </div>
+                  </Grid>
+                </Grid>
+              </div>
+            </Card>
+          </Grid>
+        </Grid>
       </Container>
     );
   }
 }
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    marginTop: theme.spacing(2),
+  },
+  card: {
+    marginTop: theme.spacing(1),
+  },
+  list: {
+    width: '100%',
+    maxHeight: 300,
+    overflow: 'auto',
+    marginBottom: theme.spacing(1),
+  },
+  image: {
+    height: '100%',
+    width: 'auto',
+    paddingTop: '56.25%', // 16:9
+  },
+  pageContainer: {
+    direction: 'row',
+    justifyContent: 'center',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    minHeight: '100vh',
+  },
+  paper: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  recipeDetails: {
+    alignItems: 'flex-end',
+  },
+}));
 
 export default RecipeExpanded;
