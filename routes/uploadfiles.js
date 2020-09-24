@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import AWS from 'aws-sdk';
 import fs from 'fs';
@@ -5,6 +6,9 @@ import multiparty from 'multiparty';
 
 // Set up Express router
 const router = express.Router();
+
+// Set up environment variable support
+dotenv.config();
 
 // Configure the keys for accessing AWS
 AWS.config.update({

@@ -6,7 +6,6 @@ import { useStylesMain } from '../Styles';
 import { themeMain } from '../Theme';
 import RecipeCard from './Recipes/RecipeCard';
 import Loader from './Loader';
-import FileUploadTest from './FileUploadTest';
 
 function Dashboard(props) {
   const classes = useStylesMain(themeMain);
@@ -43,11 +42,6 @@ function Dashboard(props) {
               </Grid>
             );
           })}
-        </Grid>
-        <Grid container>
-          <Grid item xs={12}>
-            <FileUploadTest />
-          </Grid>
         </Grid>
       </div>
     );

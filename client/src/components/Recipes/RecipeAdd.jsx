@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {useStylesMain} from '../../Styles';
-import {themeMain} from '../../Theme';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import isEmpty from 'is-empty';
 import {
   Button,
   Card,
@@ -14,15 +14,18 @@ import {
   List,
   TextField,
 } from '@material-ui/core';
-import RecipeIngredientAdd from './RecipeIngredientAdd';
 import _ from 'lodash';
+
+import { useStylesMain } from '../../Styles';
+import { themeMain } from '../../Theme';
+import RecipeIngredientAdd from './RecipeIngredientAdd';
 import IngredientItem from '../Ingredients/IngredientItem';
-import {addRecipe} from '../../actions/recipeActions';
-import {Redirect} from 'react-router-dom';
+import { addRecipe } from '../../actions/recipeActions';
 import CardTitle from '../CardTitle';
-import {validateIngredientData} from '../../actions/validateIngredientData';
-import isEmpty from 'is-empty';
+import { validateIngredientData } from '../../actions/validateIngredientData';
 import FormSubmitMessage from '../FormSubmitMessage';
+import { addRecipeImage } from '../../actions/recipeActions';
+import RecipeImageUpload from './RecipeImageUpload';
 
 function RecipeAdd(props) {
   const classes = useStylesMain(themeMain);
@@ -31,6 +34,10 @@ function RecipeAdd(props) {
   const [recipe, setRecipe] = useState({
     name: '',
     ingredients: [],
+    imageUrl: '',
+  });
+  const [recipeImage, setRecipeImage] = useState({
+    file: { image: '' },
   });
   const [error, setError] = useState({
     errorMessage: '',
@@ -64,7 +71,7 @@ function RecipeAdd(props) {
   };
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setRecipe((prevValue) => {
       return {
@@ -94,7 +101,17 @@ function RecipeAdd(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const requestResponse = await addRecipe(recipe);
+    const formData = new FormData();
+    formData.append('file', recipeImage.file.image);
+
+    const response = await addRecipeImage(formData);
+
+    const recipeData = {
+      ...recipe,
+      imageUrl: response.data.Location,
+    };
+
+    const requestResponse = await addRecipe(recipeData);
 
     if (requestResponse.status === 201) {
       // Show alert that add recipe function succeeded
@@ -116,95 +133,111 @@ function RecipeAdd(props) {
   } else {
     return (
       <div className={classes.minHeight}>
-        <Container component='main' maxWidth='md'>
+        <Container component='main'>
           <Card>
             <div className={classes.paper}>
-              <Grid container spacing={1} justify='center' alignItems='center'>
-                <Grid item xs={12} className={classes.title}>
-                  <CardTitle title='New Recipe Name' />
-                </Grid>
-                <Grid item xs={12} sm={8} className={classes.buttonMargin}>
-                  <TextField
-                    onChange={handleChange}
-                    value={recipe.name}
-                    variant='outlined'
-                    required
-                    fullWidth
-                    name='name'
+              <Grid
+                container
+                spacing={1}
+                justify='center'
+                alignItems='flex-start'
+              >
+                <Grid item xs={12} sm={6}>
+                  <RecipeImageUpload
+                    recipeImage={recipeImage}
+                    setRecipeImage={setRecipeImage}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <CardTitle title='Recipe Ingredients' />
-                </Grid>
-                <List className={classes.listRecipeAdd}>
-                  {recipe.ingredients.map((ingredient) => {
-                    const formatName = _.startCase(_.toLower(ingredient.name));
-                    const formatQuantityType = _.startCase(
-                      _.toLower(ingredient.quantityType)
-                    );
+                <Grid item xs={12} sm={6}>
+                  <Grid item xs={12} className={classes.title}>
+                    <CardTitle title='New Recipe Name' />
+                  </Grid>
+                  <Grid item xs={12} sm={8} className={classes.buttonMargin}>
+                    <TextField
+                      onChange={handleChange}
+                      value={recipe.name}
+                      variant='outlined'
+                      required
+                      fullWidth
+                      name='name'
+                    />
+                  </Grid>
 
-                    return (
-                      <Grid
-                        item
-                        xs={12}
-                        key={ingredient.name + ingredient.dateLastChanged}
-                      >
-                        <IngredientItem
+                  <Grid item xs={12}>
+                    <CardTitle title='Recipe Ingredients' />
+                  </Grid>
+                  <List className={classes.listRecipeAdd}>
+                    {recipe.ingredients.map((ingredient) => {
+                      const formatName = _.startCase(
+                        _.toLower(ingredient.name)
+                      );
+                      const formatQuantityType = _.startCase(
+                        _.toLower(ingredient.quantityType)
+                      );
+
+                      return (
+                        <Grid
+                          item
+                          xs={12}
                           key={ingredient.name + ingredient.dateLastChanged}
-                          id={ingredient.id}
-                          name={formatName}
-                          quantity={ingredient.quantity}
-                          quantityType={formatQuantityType}
-                          handleDelete={handleDelete}
-                          handleUpdateIngredient={handleUpdateIngredient}
-                        />
-                      </Grid>
-                    );
-                  })}
-                </List>
-                <Grid item xs={12}>
-                  <RecipeIngredientAdd
-                    key={recipe.ingredients}
-                    addIngredientToRecipe={addIngredientToRecipe}
-                    ingredients={props.ingredients}
-                    recipeIngredients={recipe.ingredients}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    onClick={handleSubmit}
-                    fullWidth
-                    type='submit'
-                    variant='contained'
-                    color='primary'
-                  >
-                    Add Recipe
-                  </Button>
-                  <Dialog
-                    open={recipeAddAlert}
-                    onClose={reloadRecipeData}
-                    aria-labelledby='alert-dialog-title'
-                    aria-describedby='alert-dialog-description'
-                  >
-                    <DialogTitle id='alert-dialog-title'>
-                      {'Recipe Added!'}
-                    </DialogTitle>
-                    <DialogContent>
-                      <DialogContentText id='alert-dialog-description'>
-                        The recipe has been added to your dashboard.
-                      </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={reloadRecipeData} color='primary'>
-                        Ok
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                </Grid>
-                <Grid item xs={12}>
-                  {!isEmpty(error.errorMessage) && (
-                    <FormSubmitMessage submitMessage={error.errorMessage} />
-                  )}
+                        >
+                          <IngredientItem
+                            key={ingredient.name + ingredient.dateLastChanged}
+                            id={ingredient.id}
+                            name={formatName}
+                            quantity={ingredient.quantity}
+                            quantityType={formatQuantityType}
+                            handleDelete={handleDelete}
+                            handleUpdateIngredient={handleUpdateIngredient}
+                          />
+                        </Grid>
+                      );
+                    })}
+                  </List>
+                  <Grid item xs={12}>
+                    <RecipeIngredientAdd
+                      key={recipe.ingredients}
+                      addIngredientToRecipe={addIngredientToRecipe}
+                      ingredients={props.ingredients}
+                      recipeIngredients={recipe.ingredients}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button
+                      onClick={handleSubmit}
+                      fullWidth
+                      type='submit'
+                      variant='contained'
+                      color='primary'
+                    >
+                      Add Recipe
+                    </Button>
+                    <Dialog
+                      open={recipeAddAlert}
+                      onClose={reloadRecipeData}
+                      aria-labelledby='alert-dialog-title'
+                      aria-describedby='alert-dialog-description'
+                    >
+                      <DialogTitle id='alert-dialog-title'>
+                        {'Recipe Added!'}
+                      </DialogTitle>
+                      <DialogContent>
+                        <DialogContentText id='alert-dialog-description'>
+                          The recipe has been added to your dashboard.
+                        </DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={reloadRecipeData} color='primary'>
+                          Ok
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
+                  </Grid>
+                  <Grid item xs={12}>
+                    {!isEmpty(error.errorMessage) && (
+                      <FormSubmitMessage submitMessage={error.errorMessage} />
+                    )}
+                  </Grid>
                 </Grid>
               </Grid>
             </div>

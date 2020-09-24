@@ -1,9 +1,9 @@
 import React from 'react';
-import {useStylesMain} from '../Styles';
-import {Typography} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 
 function FormSubmitMessage(props) {
-  const classes = useStylesMain();
+  const classes = useStyles();
 
   return (
     <Typography id='Message' className={classes.formSubmitMessage}>
@@ -11,5 +11,14 @@ function FormSubmitMessage(props) {
     </Typography>
   );
 }
+
+const useStyles = makeStyles(() => ({
+  formSubmitMessage: {
+    fontSize: '1rem',
+    color: '#ff0000',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+}));
 
 export default FormSubmitMessage;
