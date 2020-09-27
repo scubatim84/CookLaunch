@@ -119,6 +119,7 @@ function RecipeAdd(props) {
 
       recipeData = {
         ...recipeData,
+        imageKey: response.data.Key,
         imageUrl: response.data.Location,
       };
     }
@@ -130,7 +131,7 @@ function RecipeAdd(props) {
       setRecipeAddAlert(true);
     } else {
       setError({
-        errorMessage: requestResponse.authResponsePayload,
+        errorMessage: requestResponse,
       });
     }
 

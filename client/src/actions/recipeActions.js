@@ -56,7 +56,7 @@ export const addRecipe = async (recipeData) => {
 export const addRecipeImage = async (formData) => {
   try {
     const token = cookies.get('user');
-    return await axios.post('/uploadfiles/recipeimage', formData, {
+    return await axios.post('/files/recipeimage', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: token,

@@ -41,9 +41,10 @@ router.post('/', async (req, res) => {
       const recipeName = req.body.name;
       const recipeIngredients = req.body.ingredients;
       const recipeImageUrl = req.body.imageUrl;
+      const recipeKey = req.body.imageKey;
 
       const foundRecipe = await Recipe.findOne({
-        name: recipeName,
+        name: recipeName.toUpperCase(),
         createdBy: foundUser._id,
       });
 
@@ -56,6 +57,7 @@ router.post('/', async (req, res) => {
         ingredients: recipeIngredients,
         createdBy: foundUser._id,
         imageUrl: recipeImageUrl,
+        imageKey: recipeKey,
       });
 
       if (!foundRecipe) {

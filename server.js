@@ -17,7 +17,7 @@ import recipeRoutes from './routes/api/recipes.js';
 import ingredientRoutes from './routes/api/ingredients.js';
 
 // Other Routes
-import fileUploadRoute from './routes/uploadfiles.js';
+import fileUploadRoute from './routes/files.js';
 
 // Set up Express server
 const app = express();
@@ -52,7 +52,7 @@ app.use('/api/groceries', authJwt, groceriesRoutes);
 app.use('/api/recipes', authJwt, recipeRoutes);
 
 // Other route
-app.use('/uploadfiles', authJwt, fileUploadRoute);
+app.use('/files', authJwt, fileUploadRoute);
 
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets

@@ -40,7 +40,7 @@ const uploadFile = (buffer, fileName, type, folder) => {
   return s3.upload(uploadParams).promise();
 };
 
-// @route POST uploadfiles/recipeimage
+// @route POST files/recipeimage
 // @desc Upload recipe image
 // @access Private
 router.post('/recipeimage', (request, response) => {
@@ -65,6 +65,27 @@ router.post('/recipeimage', (request, response) => {
     });
   } catch (err) {
     return response.status(400).json(error);
+  }
+});
+
+// @route DELETE files/:folder/:name
+// @desc Delete image
+// @access Private
+router.delete('/:folder/:name', async (req, res) => {
+  const deleteParams = {
+    Bucket: process.env.S3_BUCKET,
+    Key: req.params.folder + '/' + req.params.name,
+  };
+
+  try {
+    s3.deleteObject(deleteParams, (err, data) => {
+      if (err) {
+        res.status(400).json(err);
+      }
+      res.status(204).send(null);
+    });
+  } catch (err) {
+    res.status(400).json(err);
   }
 });
 

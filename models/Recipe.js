@@ -25,6 +25,10 @@ const RecipeSchema = new Schema({
     type: String,
     required: false,
   },
+  imageKey: {
+    type: String,
+    required: false,
+  },
 });
 
 export const Recipe = mongoose.model('recipe', RecipeSchema);
