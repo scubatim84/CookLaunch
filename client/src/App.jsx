@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
 import Dashboard from './components/Dashboard';
@@ -11,13 +11,13 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import ResetPasswordByEmail from './components/Auth/ResetPasswordByEmail';
-import {getUserData} from './actions/userActions';
-import {getIngredients} from './actions/ingredientActions';
-import {useStylesMain} from './Styles';
-import {themeMain} from './Theme';
-import {ThemeProvider} from '@material-ui/core/styles';
+import { getUserData } from './actions/userActions';
+import { getIngredients } from './actions/ingredientActions';
+import { useStylesMain } from './Styles';
+import { themeMain } from './Theme';
+import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import {getAllRecipes} from './actions/recipeActions';
+import { getAllRecipes } from './actions/recipeActions';
 import RecipeAdd from './components/Recipes/RecipeAdd';
 import Grid from '@material-ui/core/Grid';
 import IngredientNames from './components/Ingredients/IngredientNames';
@@ -40,30 +40,22 @@ function App() {
     pantry: [],
     groceries: [],
   });
-  const [ingredients, setIngredients] = useState({data: []});
+  const [ingredients, setIngredients] = useState({ data: [] });
   const [recipes, setRecipes] = useState(undefined);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      getUserPayload();
-      getIngredientData();
-      getRecipeData();
-    }
-  }, [isLoggedIn]);
-
-  const getIngredientData = async () => {
+  const getIngredientData = useCallback(async () => {
     const response = await getIngredients();
 
-    setIngredients({data: response.data});
-  };
+    setIngredients({ data: response.data });
+  }, []);
 
-  const getRecipeData = async () => {
+  const getRecipeData = useCallback(async () => {
     const response = await getAllRecipes();
 
     setRecipes(response.data);
-  };
+  }, []);
 
-  const getUserPayload = async () => {
+  const getUserPayload = useCallback(async () => {
     const requestResponse = await getUserData();
 
     setUser({
@@ -74,7 +66,15 @@ function App() {
       pantry: requestResponse.authResponsePayload.pantry,
       groceries: requestResponse.authResponsePayload.groceries,
     });
-  };
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      getUserPayload();
+      getIngredientData();
+      getRecipeData();
+    }
+  }, [isLoggedIn, getUserPayload, getIngredientData, getRecipeData]);
 
   const handleLoggedIn = (loggedIn) => {
     if (loggedIn) {
@@ -104,7 +104,7 @@ function App() {
     return (
       <Grid
         container
-        style={{minHeight: '100vh'}}
+        style={{ minHeight: '100vh' }}
         className={classes.ingredientMargin}
       >
         <Grid item xs={12} align='center'>
@@ -119,7 +119,7 @@ function App() {
     );
   };
 
-  const renderRecipeView = ({match}) => {
+  const renderRecipeView = ({ match }) => {
     if (recipes) {
       const foundRecipe = recipes.filter((recipe) => {
         return recipe._id === match.params.id;
@@ -130,6 +130,7 @@ function App() {
           key={foundRecipe[0]?._id + foundRecipe[0]?.dateLastChanged}
           recipeId={foundRecipe[0]?._id}
           isLoggedIn={isLoggedIn}
+          imageUrl={foundRecipe[0].imageUrl}
           getRecipeData={getRecipeData}
           ingredients={ingredients.data}
           groceries={user.groceries}
@@ -144,7 +145,7 @@ function App() {
     return (
       <Grid
         container
-        style={{minHeight: '100vh'}}
+        style={{ minHeight: '100vh' }}
         className={classes.ingredientMargin}
       >
         <Grid item xs={12} align='center'>
@@ -200,7 +201,7 @@ function App() {
     return (
       <Grid
         container
-        style={{minHeight: '100vh'}}
+        style={{ minHeight: '100vh' }}
         className={classes.ingredientMargin}
       >
         <Grid item xs={12} align='center'>
@@ -226,7 +227,7 @@ function App() {
     return (
       <Grid
         container
-        style={{minHeight: '100vh'}}
+        style={{ minHeight: '100vh' }}
         className={classes.ingredientMargin}
       >
         <Grid item xs={12} align='center'>

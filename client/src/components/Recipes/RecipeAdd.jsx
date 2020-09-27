@@ -101,15 +101,19 @@ function RecipeAdd(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('file', recipeImage.file.image);
+    let recipeData = { ...recipe };
 
-    const response = await addRecipeImage(formData);
+    if (recipeImage.file.image) {
+      const formData = new FormData();
+      formData.append('file', recipeImage.file.image);
 
-    const recipeData = {
-      ...recipe,
-      imageUrl: response.data.Location,
-    };
+      const response = await addRecipeImage(formData);
+
+      recipeData = {
+        ...recipeData,
+        imageUrl: response.data.Location,
+      };
+    }
 
     const requestResponse = await addRecipe(recipeData);
 

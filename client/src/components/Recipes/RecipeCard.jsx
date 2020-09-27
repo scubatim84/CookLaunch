@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { themeMain } from '../../Theme';
+import defaultImage from '../../images/defaultrecipeimage.jpg';
 
 function RecipeCard(props) {
   const classes = useStyles(themeMain);
@@ -21,7 +22,7 @@ function RecipeCard(props) {
       </CardContent>
       <CardMedia
         className={classes.media}
-        image={props.imageUrl}
+        image={props.imageUrl ? props.imageUrl : defaultImage}
         title={props.name}
       />
       <CardActions>

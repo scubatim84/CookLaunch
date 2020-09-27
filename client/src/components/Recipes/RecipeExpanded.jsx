@@ -39,6 +39,7 @@ import RecipeButton from './RecipeButton';
 import FormSubmitMessage from '../FormSubmitMessage';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
 import Loader from '../Loader';
+import defaultImage from '../../images/defaultrecipeimage.jpg';
 
 function RecipeExpanded(props) {
   const { recipeId } = props;
@@ -324,15 +325,15 @@ function RecipeExpanded(props) {
           <Grid item xs={12} className={classes.pageContainer}>
             <Card className={classes.card}>
               <div className={classes.paper}>
-                <Grid container spacing={1}>
-                  <Grid item xs={12} sm={6}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={6}>
                     <CardMedia
                       className={classes.image}
-                      image={recipe.imageUrl}
+                      image={props.imageUrl ? props.imageUrl : defaultImage}
                       title={recipe.name}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6} className={classes.recipeDetails}>
+                  <Grid item xs={12} md={6} className={classes.recipeDetails}>
                     <Grid container spacing={0}>
                       <Grid item xs={12} align='center'>
                         <RecipeName
