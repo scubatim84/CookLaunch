@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import AWS from 'aws-sdk';
+import fileType from 'file-type';
 import fs from 'fs';
 import multiparty from 'multiparty';
 
@@ -21,12 +22,19 @@ AWS.config.update({
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
 // Abstracts function to upload a file which returns a promise
-const uploadFile = (buffer, fileName) => {
+const uploadFile = (buffer, fileName, type, folder) => {
+  const fileType = type.mime.split('/')[0];
+
+  if (fileType !== 'image') {
+    throw new Error();
+  }
+
   const uploadParams = {
     ACL: 'public-read',
     Body: buffer,
     Bucket: process.env.S3_BUCKET,
-    Key: fileName,
+    ContentType: type.mime,
+    Key: folder + fileName,
   };
 
   return s3.upload(uploadParams).promise();
@@ -46,11 +54,13 @@ router.post('/recipeimage', (request, response) => {
         const fileName = files.file[0].originalFilename;
         const path = files.file[0].path;
         const buffer = fs.readFileSync(path);
-        const data = await uploadFile(buffer, fileName);
+        const type = await fileType.fromBuffer(buffer);
+        const folder = 'recipe/';
+        const data = await uploadFile(buffer, fileName, type, folder);
 
         return response.status(200).json(data);
       } catch (error) {
-        return response.status(400).json(error);
+        return response.status(500).json(error);
       }
     });
   } catch (err) {
