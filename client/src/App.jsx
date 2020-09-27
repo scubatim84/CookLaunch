@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
+import _ from 'lodash';
 import Dashboard from './components/Dashboard';
 import Pantry from './components/Pantry';
 import Profile from './components/Profile/Profile';
@@ -46,7 +47,14 @@ function App() {
   const getIngredientData = useCallback(async () => {
     const response = await getIngredients();
 
-    setIngredients({ data: response.data });
+    const ingredients = response.data.map((ingredient) => {
+      return {
+        ...ingredient,
+        name: _.startCase(_.toLower(ingredient.name)),
+      };
+    });
+
+    setIngredients({ data: ingredients });
   }, []);
 
   const getRecipeData = useCallback(async () => {
