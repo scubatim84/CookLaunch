@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Grid, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Compressor from 'compressorjs';
 
 import { themeMain } from '../../Theme';
 import CardTitle from '../CardTitle';
@@ -20,14 +21,25 @@ function RecipeImageUpload(props) {
       return;
     }
 
-    if (image && image.size > 10000000) {
+    if (image.size > 10000000) {
       setError({
         errorMessage:
           'Your image is too large! Please upload an image 200KB or less in size.',
       });
-    } else if (image) {
-      props.setRecipeImage({
-        file: { image },
+    } else {
+      new Compressor(image, {
+        quality: 0.6,
+        convertSize: 500000,
+        success(result) {
+          props.setRecipeImage({
+            file: { image: result },
+          });
+        },
+        error(err) {
+          setError({
+            errorMessage: err.message,
+          });
+        },
       });
     }
   };

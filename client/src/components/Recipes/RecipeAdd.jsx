@@ -26,11 +26,13 @@ import { validateIngredientData } from '../../actions/validateIngredientData';
 import FormSubmitMessage from '../FormSubmitMessage';
 import { addRecipeImage } from '../../actions/recipeActions';
 import RecipeImageUpload from './RecipeImageUpload';
+import Loader from '../Loader';
 
 function RecipeAdd(props) {
   const classes = useStylesMain(themeMain);
 
   const [recipeAddAlert, setRecipeAddAlert] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [recipe, setRecipe] = useState({
     name: '',
     ingredients: [],
@@ -101,11 +103,17 @@ function RecipeAdd(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setIsLoading(true);
+
     let recipeData = { ...recipe };
 
     if (recipeImage.file.image) {
       const formData = new FormData();
-      formData.append('file', recipeImage.file.image);
+      formData.append(
+        'file',
+        recipeImage.file.image,
+        recipeImage.file.image.name
+      );
 
       const response = await addRecipeImage(formData);
 
@@ -125,12 +133,18 @@ function RecipeAdd(props) {
         errorMessage: requestResponse.authResponsePayload,
       });
     }
+
+    setIsLoading(false);
   };
 
   const reloadRecipeData = async () => {
     // If updating ingredient is successful, re-render ingredient list
     await props.getRecipeData();
   };
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
