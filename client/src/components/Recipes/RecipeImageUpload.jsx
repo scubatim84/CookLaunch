@@ -1,21 +1,31 @@
 import React, { useState } from 'react';
-import { Button, Grid, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import Compressor from 'compressorjs';
+import { Button, CardMedia, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { themeMain } from '../../Theme';
 import CardTitle from '../CardTitle';
 import FormSubmitMessage from '../FormSubmitMessage';
+import Loader from '../Loader';
 
 function RecipeImageUpload(props) {
   const classes = useStyles(themeMain);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [imagePreview, setImagePreview] = useState(undefined);
   const [error, setError] = useState({
     errorMessage: '',
   });
 
   const handleFileUpload = (event) => {
+    setIsLoading(true);
+
     const image = event.target.files[0];
+
+    setImagePreview({
+      name: event.target.files[0].name,
+      URL: URL.createObjectURL(event.target.files[0]),
+    });
 
     if (!image) {
       return;
@@ -42,10 +52,16 @@ function RecipeImageUpload(props) {
         },
       });
     }
+
+    setIsLoading(false);
   };
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
-    <Grid container>
+    <Grid container spacing={1}>
       <Grid item xs={12} className={classes.title}>
         <CardTitle title='New Recipe Image' />
       </Grid>
@@ -63,21 +79,30 @@ function RecipeImageUpload(props) {
           </Button>
         </label>
       </Grid>
+      {imagePreview && (
+        <Grid item xs={12}>
+          <CardMedia
+            className={classes.media}
+            image={imagePreview.URL}
+            title={imagePreview.name}
+          />
+        </Grid>
+      )}
       <Grid item xs={12}>
         {error.errorMessage.length > 0 && (
           <FormSubmitMessage submitMessage={error.errorMessage} />
         )}
       </Grid>
-      {props.recipeImage.file.image && (
-        <Grid item xs={12}>
-          <Typography>{props.recipeImage.file.image.name} uploaded</Typography>
-        </Grid>
-      )}
     </Grid>
   );
 }
 
 const useStyles = makeStyles((theme) => ({
+  media: {
+    height: 'auto',
+    width: '100%',
+    paddingTop: '56.25%', // 16:9
+  },
   title: {
     marginBottom: theme.spacing(1),
     flexGrow: 1,

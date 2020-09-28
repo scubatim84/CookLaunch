@@ -163,7 +163,7 @@ function RecipeAdd(props) {
             <div className={classes.paper}>
               <Grid
                 container
-                spacing={1}
+                spacing={2}
                 justify='center'
                 alignItems='flex-start'
               >
