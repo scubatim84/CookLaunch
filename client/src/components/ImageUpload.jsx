@@ -3,12 +3,12 @@ import Compressor from 'compressorjs';
 import { Button, CardMedia, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { themeMain } from '../../Theme';
-import CardTitle from '../CardTitle';
-import FormSubmitMessage from '../FormSubmitMessage';
-import Loader from '../Loader';
+import { themeMain } from '../Theme';
+import CardTitle from './CardTitle';
+import FormSubmitMessage from './FormSubmitMessage';
+import Loader from './Loader';
 
-function RecipeImageUpload(props) {
+function ImageUpload(props) {
   const classes = useStyles(themeMain);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +41,7 @@ function RecipeImageUpload(props) {
         quality: 0.6,
         convertSize: 500000,
         success(result) {
-          props.setRecipeImage({
+          props.setImage({
             file: { image: result },
           });
         },
@@ -109,4 +109,4 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default RecipeImageUpload;
+export default ImageUpload;
