@@ -25,7 +25,7 @@ import CardTitle from '../CardTitle';
 import { validateIngredientData } from '../../actions/validateIngredientData';
 import FormSubmitMessage from '../FormSubmitMessage';
 import { addImage } from '../../actions/fileActions';
-import ImageUpload from '../ImageUpload';
+import ImageController from '../ImageController';
 import Loader from '../Loader';
 
 function RecipeAdd(props) {
@@ -170,7 +170,7 @@ function RecipeAdd(props) {
                 alignItems='flex-start'
               >
                 <Grid item xs={12} sm={6}>
-                  <ImageUpload
+                  <ImageController
                     buttonCaption='Add File To Upload'
                     cardTitle='New Recipe Image'
                     setImage={setRecipeImage}

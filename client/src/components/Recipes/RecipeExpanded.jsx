@@ -40,6 +40,7 @@ import RecipeButton from './RecipeButton';
 import FormSubmitMessage from '../FormSubmitMessage';
 import RecipeIngredientAdd from './RecipeIngredientAdd';
 import Loader from '../Loader';
+import ImageController from '../ImageController';
 import defaultImage from '../../images/defaultrecipeimage.jpg';
 
 function RecipeExpanded(props) {
@@ -49,6 +50,7 @@ function RecipeExpanded(props) {
   const classes = useStyles(themeMain);
 
   const [recipe, setRecipe] = useState(null);
+  const [imageKeyToDelete, setImageKeyToDelete] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [open, setOpen] = useState(false);
   const [cookAlert, setCookAlert] = useState(false);
@@ -67,7 +69,7 @@ function RecipeExpanded(props) {
 
   useEffect(() => {
     getOneRecipeData();
-  }, [getOneRecipeData]);
+  }, [getOneRecipeData, editMode]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -298,6 +300,16 @@ function RecipeExpanded(props) {
   };
 
   const handleSubmit = async () => {
+    if (imageKeyToDelete) {
+      const imageResponse = await deleteImage(imageKeyToDelete);
+
+      if (imageResponse.status !== 204) {
+        return setError({
+          errorMessage: imageResponse.data,
+        });
+      }
+    }
+
     const response = await updateRecipe(recipe);
 
     if (response.status === 204) {
@@ -309,6 +321,18 @@ function RecipeExpanded(props) {
         errorMessage: response.data,
       });
     }
+  };
+
+  const handleDeleteImage = () => {
+    setImageKeyToDelete(recipe.imageKey);
+
+    setRecipe((prevValue) => {
+      return {
+        ...prevValue,
+        imageUrl: '',
+        imageKey: '',
+      };
+    });
   };
 
   if (!props.isLoggedIn) {
@@ -340,11 +364,30 @@ function RecipeExpanded(props) {
               <div className={classes.paper}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={6}>
-                    <CardMedia
-                      className={classes.image}
-                      image={props.imageUrl ? props.imageUrl : defaultImage}
-                      title={recipe.name}
-                    />
+                    {editMode && (
+                      <ImageController
+                        imageUrl={recipe.imageUrl ? recipe.imageUrl : undefined}
+                        buttonCaption={
+                          recipe.imageKey
+                            ? 'Replace Recipe Image'
+                            : 'Add Recipe Image'
+                        }
+                        cardTitle='Recipe Image'
+                        setImage={() => {}}
+                        deleteImage={handleDeleteImage}
+                      />
+                    )}
+                    {!editMode && (
+                      <CardMedia
+                        className={classes.image}
+                        image={
+                          props.imageUrl.length > 0
+                            ? props.imageUrl
+                            : defaultImage
+                        }
+                        title={recipe.name}
+                      />
+                    )}
                   </Grid>
                   <Grid item xs={12} md={6} className={classes.recipeDetails}>
                     <Grid container spacing={0}>

@@ -127,6 +127,8 @@ router.put('/:id', async (req, res) => {
           foundRecipe.ingredients = req.body.ingredients;
         }
 
+        foundRecipe.imageUrl = req.body.imageUrl;
+        foundRecipe.imageKey = req.body.imageKey;
         foundRecipe.dateLastChanged = new Date();
 
         await foundRecipe.save();
