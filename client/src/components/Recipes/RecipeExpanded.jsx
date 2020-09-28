@@ -85,8 +85,6 @@ function RecipeExpanded(props) {
 
   const handleCancel = async () => {
     setEditMode(false);
-
-    await props.getRecipeData();
   };
 
   const handleDelete = async () => {
@@ -313,8 +311,6 @@ function RecipeExpanded(props) {
     const response = await updateRecipe(recipe);
 
     if (response.status === 204) {
-      await props.getRecipeData();
-
       setEditMode(false);
     } else {
       setError({
@@ -381,8 +377,8 @@ function RecipeExpanded(props) {
                       <CardMedia
                         className={classes.image}
                         image={
-                          props.imageUrl.length > 0
-                            ? props.imageUrl
+                          recipe.imageUrl.length > 0
+                            ? recipe.imageUrl
                             : defaultImage
                         }
                         title={recipe.name}
