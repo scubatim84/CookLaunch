@@ -63,7 +63,7 @@ function RecipeImageUpload(props) {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} className={classes.title}>
-        <CardTitle title='New Recipe Image' />
+        <CardTitle title={props.cardTitle} />
       </Grid>
       <Grid item xs={12}>
         <input
@@ -75,7 +75,7 @@ function RecipeImageUpload(props) {
         />
         <label htmlFor='raised-button-file'>
           <Button type='submit' variant='outlined' component='span'>
-            Add File To Upload
+            {props.buttonCaption}
           </Button>
         </label>
       </Grid>

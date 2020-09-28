@@ -169,6 +169,8 @@ function RecipeAdd(props) {
               >
                 <Grid item xs={12} sm={6}>
                   <RecipeImageUpload
+                    buttonCaption='Add File To Upload'
+                    cardTitle='New Recipe Image'
                     recipeImage={recipeImage}
                     setRecipeImage={setRecipeImage}
                   />
