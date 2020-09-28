@@ -109,15 +109,16 @@ function RecipeAdd(props) {
 
     if (recipeImage.file.image) {
       const formData = new FormData();
+      const fileExt = recipeImage.file.image.name.split('.')[1];
+      const imageKey = props.userId + '_' + recipe.name + '.' + fileExt;
+
       formData.append(
         'file',
         recipeImage.file.image,
         recipeImage.file.image.name
       );
-      formData.append('recipe', recipe.name);
-      formData.append('userId', props.userId);
 
-      const response = await addImage('recipe', formData);
+      const response = await addImage('recipe', imageKey, formData);
 
       try {
         recipeData = {

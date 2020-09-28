@@ -15,9 +15,7 @@ import pantryRoutes from './routes/api/pantry.js';
 import groceriesRoutes from './routes/api/groceries.js';
 import recipeRoutes from './routes/api/recipes.js';
 import ingredientRoutes from './routes/api/ingredients.js';
-
-// Other Routes
-import fileUploadRoute from './routes/files.js';
+import fileUploadRoute from './routes/api/files.js';
 
 // Set up Express server
 const app = express();

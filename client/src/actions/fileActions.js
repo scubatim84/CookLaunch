@@ -1,10 +1,10 @@
 import axios from 'axios';
 import cookies from 'js-cookie';
 
-export const addImage = async (folder, formData) => {
+export const addImage = async (folder, imageKey, formData) => {
   try {
     const token = cookies.get('user');
-    return await axios.post(`/files/${folder}`, formData, {
+    return await axios.post(`/files/${folder}/${imageKey}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: token,
