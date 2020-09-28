@@ -138,7 +138,7 @@ function App() {
           key={foundRecipe[0]?._id + foundRecipe[0]?.dateLastChanged}
           recipeId={foundRecipe[0]?._id}
           isLoggedIn={isLoggedIn}
-          imageUrl={foundRecipe[0].imageUrl}
+          imageUrl={foundRecipe[0]?.imageUrl}
           getRecipeData={getRecipeData}
           ingredients={ingredients.data}
           groceries={user.groceries}

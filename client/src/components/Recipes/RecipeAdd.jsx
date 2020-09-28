@@ -24,7 +24,7 @@ import { addRecipe } from '../../actions/recipeActions';
 import CardTitle from '../CardTitle';
 import { validateIngredientData } from '../../actions/validateIngredientData';
 import FormSubmitMessage from '../FormSubmitMessage';
-import { addRecipeImage } from '../../actions/recipeActions';
+import { addImage } from '../../actions/fileActions';
 import RecipeImageUpload from './RecipeImageUpload';
 import Loader from '../Loader';
 
@@ -115,13 +115,19 @@ function RecipeAdd(props) {
         recipeImage.file.image.name
       );
 
-      const response = await addRecipeImage(formData);
+      const response = await addImage('recipe', formData);
 
-      recipeData = {
-        ...recipeData,
-        imageKey: response.data.Key,
-        imageUrl: response.data.Location,
-      };
+      try {
+        recipeData = {
+          ...recipeData,
+          imageKey: response.data.Key,
+          imageUrl: response.data.Location,
+        };
+      } catch (err) {
+        setError({
+          errorMessage: err,
+        });
+      }
     }
 
     const requestResponse = await addRecipe(recipeData);

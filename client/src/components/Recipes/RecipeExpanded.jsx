@@ -32,6 +32,7 @@ import {
   deleteIngredientFromPantry,
   updateIngredientInPantry,
 } from '../../actions/pantryActions';
+import { deleteImage } from '../../actions/fileActions';
 import RecipeIngredientView from './RecipeIngredientView';
 import RecipeName from './RecipeName';
 import CardTitle from '../CardTitle';
@@ -90,8 +91,16 @@ function RecipeExpanded(props) {
     const response = await deleteRecipe(recipe._id);
 
     if (response.status === 204) {
-      await props.getRecipeData();
-      history.push('/dashboard');
+      const imageResponse = await deleteImage(recipe.imageKey);
+
+      if (imageResponse.status === 204) {
+        await props.getRecipeData();
+        history.push('/dashboard');
+      } else {
+        setError({
+          errorMessage: imageResponse,
+        });
+      }
     } else {
       setError({
         errorMessage: response,

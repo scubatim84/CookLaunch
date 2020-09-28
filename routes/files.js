@@ -34,20 +34,20 @@ const uploadFile = (buffer, fileName, type, folder) => {
     Body: buffer,
     Bucket: process.env.S3_BUCKET,
     ContentType: type.mime,
-    Key: folder + fileName,
+    Key: folder + '/' + fileName,
   };
 
   return s3.upload(uploadParams).promise();
 };
 
-// @route POST files/recipeimage
-// @desc Upload recipe image
+// @route POST files/:folder
+// @desc Upload image
 // @access Private
-router.post('/recipeimage', (request, response) => {
+router.post('/:folder', (req, res) => {
   const form = new multiparty.Form();
 
   try {
-    form.parse(request, async (error, fields, files) => {
+    form.parse(req, async (error, fields, files) => {
       if (error) throw new Error(error);
 
       try {
@@ -55,16 +55,16 @@ router.post('/recipeimage', (request, response) => {
         const path = files.file[0].path;
         const buffer = fs.readFileSync(path);
         const type = await fileType.fromBuffer(buffer);
-        const folder = 'recipe/';
+        const folder = req.params.folder;
         const data = await uploadFile(buffer, fileName, type, folder);
 
-        return response.status(200).json(data);
+        return res.status(200).json(data);
       } catch (error) {
-        return response.status(500).json(error);
+        return res.status(500).json(error);
       }
     });
   } catch (err) {
-    return response.status(400).json(error);
+    return res.status(400).json(err);
   }
 });
 
