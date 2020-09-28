@@ -118,6 +118,7 @@ function App() {
         <Grid item xs={12} align='center'>
           <RecipeAdd
             key={recipes}
+            userId={user.id}
             getRecipeData={getRecipeData}
             ingredients={ingredients.data}
             isLoggedIn={isLoggedIn}

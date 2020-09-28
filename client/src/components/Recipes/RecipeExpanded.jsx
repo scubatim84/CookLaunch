@@ -91,15 +91,19 @@ function RecipeExpanded(props) {
     const response = await deleteRecipe(recipe._id);
 
     if (response.status === 204) {
-      const imageResponse = await deleteImage(recipe.imageKey);
+      if (recipe.imageKey) {
+        const imageResponse = await deleteImage(recipe.imageKey);
 
-      if (imageResponse.status === 204) {
+        if (!imageResponse.status === 204) {
+          setError({
+            errorMessage: imageResponse,
+          });
+        }
+      }
+
+      if (!error.errorMessage) {
         await props.getRecipeData();
         history.push('/dashboard');
-      } else {
-        setError({
-          errorMessage: imageResponse,
-        });
       }
     } else {
       setError({

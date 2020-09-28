@@ -22,7 +22,7 @@ AWS.config.update({
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
 // Abstracts function to upload a file which returns a promise
-const uploadFile = (buffer, fileName, type, folder) => {
+const uploadFile = (buffer, name, type, folder) => {
   const fileType = type.mime.split('/')[0];
 
   if (fileType !== 'image') {
@@ -34,7 +34,7 @@ const uploadFile = (buffer, fileName, type, folder) => {
     Body: buffer,
     Bucket: process.env.S3_BUCKET,
     ContentType: type.mime,
-    Key: folder + '/' + fileName,
+    Key: folder + '/' + name,
   };
 
   return s3.upload(uploadParams).promise();
@@ -50,13 +50,17 @@ router.post('/:folder', (req, res) => {
     form.parse(req, async (error, fields, files) => {
       if (error) throw new Error(error);
 
+      const userId = fields.userId[0];
+      const recipeName = fields.recipe[0];
+      const fileExt = files.file[0].originalFilename.split('.')[1];
+
       try {
-        const fileName = files.file[0].originalFilename;
+        const name = userId + '_' + recipeName + '.' + fileExt;
         const path = files.file[0].path;
         const buffer = fs.readFileSync(path);
         const type = await fileType.fromBuffer(buffer);
         const folder = req.params.folder;
-        const data = await uploadFile(buffer, fileName, type, folder);
+        const data = await uploadFile(buffer, name, type, folder);
 
         return res.status(200).json(data);
       } catch (error) {

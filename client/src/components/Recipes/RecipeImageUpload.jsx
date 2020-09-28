@@ -34,7 +34,7 @@ function RecipeImageUpload(props) {
     if (image.size > 10000000) {
       setError({
         errorMessage:
-          'Your image is too large! Please upload an image 200KB or less in size.',
+          'Your image is too large! Please upload an image 10MB or less in size.',
       });
     } else {
       new Compressor(image, {
