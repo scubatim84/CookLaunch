@@ -9,7 +9,9 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "test": "npm test --prefix client",
+    "test": "npm run test-server && npm run test-client",
+    "test-server": "./node_modules/.bin/jest --config=jest.config.json --forceExit --coverage",
+    "test-client": "cd client && npm run test-ci",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd client/ && npm install && npm run build",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
@@ -18,18 +20,21 @@
   "license": "MIT",
   "dependencies": {
     "@types/date-fns": "^2.6.0",
+    "aws-sdk": "^2.756.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "concurrently": "^5.2.0",
     "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "file-type": "^15.0.1",
+    "fs": "0.0.1-security",
     "husky": "^4.2.5",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^10.3.0",
-    "lodash": "^4.17.20",
     "mongoose": "^5.10.3",
+    "multiparty": "^4.2.2",
     "nodemailer": "^6.4.10",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
@@ -42,7 +47,11 @@
     ]
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "@babel/preset-env": "^7.11.5",
+    "babel-jest": "24.9.0",
+    "jest": "24.9.0",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
   },
   "husky": {
     "hooks": {

@@ -40,9 +40,11 @@ router.post('/', async (req, res) => {
     try {
       const recipeName = req.body.name;
       const recipeIngredients = req.body.ingredients;
+      const recipeImageUrl = req.body.imageUrl;
+      const recipeKey = req.body.imageKey;
 
       const foundRecipe = await Recipe.findOne({
-        name: recipeName,
+        name: recipeName.toUpperCase(),
         createdBy: foundUser._id,
       });
 
@@ -54,6 +56,8 @@ router.post('/', async (req, res) => {
         name: recipeName,
         ingredients: recipeIngredients,
         createdBy: foundUser._id,
+        imageUrl: recipeImageUrl,
+        imageKey: recipeKey,
       });
 
       if (!foundRecipe) {
@@ -123,6 +127,8 @@ router.put('/:id', async (req, res) => {
           foundRecipe.ingredients = req.body.ingredients;
         }
 
+        foundRecipe.imageUrl = req.body.imageUrl;
+        foundRecipe.imageKey = req.body.imageKey;
         foundRecipe.dateLastChanged = new Date();
 
         await foundRecipe.save();

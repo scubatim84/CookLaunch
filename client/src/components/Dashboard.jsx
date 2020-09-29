@@ -1,9 +1,9 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
-import {Backdrop, CircularProgress, Grid} from '@material-ui/core';
+import { Redirect } from 'react-router-dom';
+import { Backdrop, CircularProgress, Grid } from '@material-ui/core';
 import _ from 'lodash';
-import {useStylesMain} from '../Styles';
-import {themeMain} from '../Theme';
+import { useStylesMain } from '../Styles';
+import { themeMain } from '../Theme';
 import RecipeCard from './Recipes/RecipeCard';
 import Loader from './Loader';
 
@@ -29,14 +29,16 @@ function Dashboard(props) {
             return (
               <Grid
                 item
-                xs={6}
-                sm={3}
+                xs={12}
+                sm={6}
+                md={3}
                 className={classes.recipeCard}
                 key={recipe._id + recipe.dateLastChanged}
               >
                 <RecipeCard
                   key={recipe._id + recipe.dateLastChanged}
                   id={recipe._id}
+                  imageUrl={recipe.imageUrl}
                   name={formatName}
                 />
               </Grid>

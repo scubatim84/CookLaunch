@@ -15,6 +15,7 @@ import pantryRoutes from './routes/api/pantry.js';
 import groceriesRoutes from './routes/api/groceries.js';
 import recipeRoutes from './routes/api/recipes.js';
 import ingredientRoutes from './routes/api/ingredients.js';
+import fileUploadRoute from './routes/api/files.js';
 
 // Set up Express server
 const app = express();
@@ -22,7 +23,7 @@ const app = express();
 // Set up environment variable support
 dotenv.config();
 
-// Bodyparser middleware
+// Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -48,6 +49,9 @@ app.use('/api/pantry', authJwt, pantryRoutes);
 app.use('/api/groceries', authJwt, groceriesRoutes);
 app.use('/api/recipes', authJwt, recipeRoutes);
 
+// Other route
+app.use('/files', authJwt, fileUploadRoute);
+
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
   app.use(express.static('client/build'));
@@ -61,8 +65,18 @@ if (process.env.NODE_ENV === 'production') {
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () =>
-  console.log('Server up and running on port ' + port + '!')
-);
+try {
+  // This will execute for unit and integration tests only
+  if (module.children) {
+    app.listen(process.env.PORT, () =>
+      console.log(`Test app listening on port ${process.env.PORT}!`)
+    );
+  }
+} catch (err) {
+  // Catch 'Module not defined error', which means not test, and listen on port
+  app.listen(port, () =>
+    console.log('Server up and running on port ' + port + '!')
+  );
+}
 
 export default app;

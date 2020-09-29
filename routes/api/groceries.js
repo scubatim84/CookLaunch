@@ -1,5 +1,4 @@
 import express from 'express';
-import _ from 'lodash';
 
 // Set up Express router
 const router = express.Router();
@@ -39,7 +38,7 @@ router.post('/', async (req, res) => {
       // Check to see if ingredient is already in list
       const foundIngredient = foundUser.groceries.find(
         (ingredient) =>
-          _.lowerCase(ingredient.name) === _.lowerCase(req.body.name)
+          ingredient.name.toUpperCase() === req.body.name.toUpperCase()
       );
 
       // If ingredient is already in list, add to quantity vs. add ingredient

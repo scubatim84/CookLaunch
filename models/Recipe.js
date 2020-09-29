@@ -21,6 +21,14 @@ const RecipeSchema = new Schema({
     type: Date,
     default: new Date(),
   },
+  imageUrl: {
+    type: String,
+    required: false,
+  },
+  imageKey: {
+    type: String,
+    required: false,
+  },
 });
 
 export const Recipe = mongoose.model('recipe', RecipeSchema);

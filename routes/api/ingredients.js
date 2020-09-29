@@ -1,6 +1,5 @@
 import express from 'express';
 import isEmpty from 'is-empty';
-import _ from 'lodash';
 
 // Load Ingredient model
 import { Ingredient } from '../../models/Ingredient.js';
@@ -30,7 +29,7 @@ router.get('/', async (req, res) => {
 // @access Private
 router.post('/', async (req, res) => {
   try {
-    const ingredientName = _.lowerCase(req.body.name);
+    const ingredientName = req.body.name.toUpperCase();
     const createdByEmail = req.body.createdBy;
 
     const foundIngredient = await Ingredient.findOne({ name: ingredientName });
@@ -85,7 +84,7 @@ router.put('/:id', async (req, res) => {
       });
 
       if (!isEmpty(req.body.name)) {
-        foundIngredient.name = _.lowerCase(req.body.name);
+        foundIngredient.name = req.body.name.toUpperCase();
       }
 
       await foundIngredient.save();

@@ -97,11 +97,6 @@ export const useStylesMain = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  recipeCard: {
-    minHeight: 100,
-    minWidth: 200,
-    margin: theme.spacing(2, 2, 2),
-  },
   root: {
     display: 'flex',
   },
