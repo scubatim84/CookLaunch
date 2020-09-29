@@ -321,7 +321,11 @@ function RecipeExpanded(props) {
       const changeResponse = await handleChangeImage(recipeData);
 
       if (!error.errorMessage) {
-        recipeData = changeResponse;
+        recipeData = {
+          ...recipeData,
+          imageUrl: changeResponse.imageUrl,
+          imageKey: changeResponse.imageKey,
+        };
       } else {
         return;
       }
@@ -339,7 +343,7 @@ function RecipeExpanded(props) {
     }
   };
 
-  const handleChangeImage = async (recipeData) => {
+  const handleChangeImage = async () => {
     const formData = new FormData();
     const fileName = updateImage.file.image.name;
     const imageKey = userId + '_' + fileName;
@@ -353,20 +357,19 @@ function RecipeExpanded(props) {
     const response = await addImage('recipe', imageKey, formData);
 
     try {
-      if (imageKey !== recipe.imageKey.split('/')[1]) {
+      if (recipe.imageKey && imageKey !== recipe.imageKey.split('/')[1]) {
         await handleDeleteImage(recipe.imageKey);
       }
-
-      return (recipeData = {
-        ...recipeData,
-        imageKey: response.data.Key,
-        imageUrl: response.data.Location,
-      });
     } catch (err) {
       setError({
         errorMessage: err,
       });
     }
+
+    return {
+      imageKey: response.data.Key,
+      imageUrl: response.data.Location,
+    };
   };
 
   const handleDeleteImage = async () => {
@@ -425,7 +428,7 @@ function RecipeExpanded(props) {
                     <CardMedia
                       className={classes.image}
                       image={
-                        recipe.imageUrl.length > 0
+                        recipe.imageUrl?.length > 0
                           ? recipe.imageUrl
                           : defaultImage
                       }
@@ -437,7 +440,7 @@ function RecipeExpanded(props) {
                   <Grid container spacing={0}>
                     <Grid item xs={12} align='center'>
                       <RecipeName
-                        name={recipe.name}
+                        name={recipe?.name}
                         editMode={editMode}
                         handleChange={handleChange}
                       />
