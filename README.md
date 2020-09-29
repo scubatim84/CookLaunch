@@ -24,6 +24,7 @@
     <li>Jira
     <li>Heroku
     <li>Travis CI
+      <li>AWS S3
   </ul>
 
 <h2>Authors</h2>
