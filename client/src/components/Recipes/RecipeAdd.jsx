@@ -109,8 +109,8 @@ function RecipeAdd(props) {
 
     if (recipeImage.file.image) {
       const formData = new FormData();
-      const fileExt = recipeImage.file.image.name.split('.')[1];
-      const imageKey = props.userId + '_' + recipe.name + '.' + fileExt;
+      const fileName = recipeImage.file.image.name;
+      const imageKey = props.userId + '_' + fileName;
 
       formData.append(
         'file',

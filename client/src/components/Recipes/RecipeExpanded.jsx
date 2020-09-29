@@ -65,15 +65,25 @@ function RecipeExpanded(props) {
 
   const getOneRecipeData = useCallback(async () => {
     if (recipeId) {
-      const recipeData = await getOneRecipe(recipeId);
+      const response = await getOneRecipe(recipeId);
 
-      setRecipe(recipeData.data);
+      setRecipe(response.data);
     }
   }, [recipeId]);
 
   useEffect(() => {
     getOneRecipeData();
   }, [getOneRecipeData, editMode]);
+
+  useEffect(() => {
+    const handleDelete = async () => {
+      await deleteImage(imageKeyToDelete);
+    };
+
+    if (imageKeyToDelete && !editMode) {
+      handleDelete();
+    }
+  }, [imageKeyToDelete, editMode]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -88,6 +98,7 @@ function RecipeExpanded(props) {
   };
 
   const handleCancel = async () => {
+    setImageKeyToDelete(null);
     setEditMode(false);
   };
 
@@ -307,38 +318,12 @@ function RecipeExpanded(props) {
     let recipeData = { ...recipe };
 
     if (updateImage.file.image) {
-      const formData = new FormData();
-      const fileExt = updateImage.file.image.name.split('.')[1];
-      const imageKey = userId + '_' + recipe.name + '.' + fileExt;
+      const changeResponse = await handleChangeImage(recipeData);
 
-      formData.append(
-        'file',
-        updateImage.file.image,
-        updateImage.file.image.name
-      );
-
-      const response = await addImage('recipe', imageKey, formData);
-
-      try {
-        recipeData = {
-          ...recipeData,
-          imageKey: response.data.Key,
-          imageUrl: response.data.Location,
-        };
-      } catch (err) {
-        return setError({
-          errorMessage: err,
-        });
-      }
-    }
-
-    if (imageKeyToDelete) {
-      const imageResponse = await deleteImage(imageKeyToDelete);
-
-      if (imageResponse.status !== 204) {
-        return setError({
-          errorMessage: imageResponse.data,
-        });
+      if (!error.errorMessage) {
+        recipeData = changeResponse;
+      } else {
+        return;
       }
     }
 
@@ -348,13 +333,43 @@ function RecipeExpanded(props) {
       setEditMode(false);
       setIsLoading(false);
     } else {
-      return setError({
+      setError({
         errorMessage: response.data,
       });
     }
   };
 
-  const handleDeleteImage = () => {
+  const handleChangeImage = async (recipeData) => {
+    const formData = new FormData();
+    const fileName = updateImage.file.image.name;
+    const imageKey = userId + '_' + fileName;
+
+    formData.append(
+      'file',
+      updateImage.file.image,
+      updateImage.file.image.name
+    );
+
+    const response = await addImage('recipe', imageKey, formData);
+
+    try {
+      if (imageKey !== recipe.imageKey.split('/')[1]) {
+        await handleDeleteImage(recipe.imageKey);
+      }
+
+      return (recipeData = {
+        ...recipeData,
+        imageKey: response.data.Key,
+        imageUrl: response.data.Location,
+      });
+    } catch (err) {
+      setError({
+        errorMessage: err,
+      });
+    }
+  };
+
+  const handleDeleteImage = async () => {
     setImageKeyToDelete(recipe.imageKey);
 
     setRecipe((prevValue) => {
@@ -372,277 +387,264 @@ function RecipeExpanded(props) {
 
   if (!recipe?._id || isLoading) {
     return <Loader />;
-  } else {
-    return (
-      <Container component='main' maxWidth='lg'>
-        <Grid container spacing={0}>
-          <Grid item xs={12} sm={6} className={classes.button}>
-            <Link
-              href={'/'}
-              color='textPrimary'
-              style={{ textDecoration: 'none' }}
-            >
-              <Button
-                type='submit'
-                fullWidth
-                variant='contained'
-                color='primary'
-              >
-                Return To Dashboard
-              </Button>
-            </Link>
-          </Grid>
-          <Grid item xs={12} className={classes.pageContainer}>
-            <Card className={classes.card}>
-              <div className={classes.paper}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} md={6}>
-                    {editMode && (
-                      <ImageController
-                        imageUrl={recipe.imageUrl ? recipe.imageUrl : undefined}
-                        buttonCaption={
-                          recipe.imageKey
-                            ? 'Replace Recipe Image'
-                            : 'Add Recipe Image'
-                        }
-                        cardTitle='Recipe Image'
-                        setImage={setUpdateImage}
-                        deleteImage={handleDeleteImage}
+  }
+
+  return (
+    <Container component='main' maxWidth='lg'>
+      <Grid container spacing={0}>
+        <Grid item xs={12} sm={6} className={classes.button}>
+          <Link
+            href={'/'}
+            color='textPrimary'
+            style={{ textDecoration: 'none' }}
+          >
+            <Button type='submit' fullWidth variant='contained' color='primary'>
+              Return To Dashboard
+            </Button>
+          </Link>
+        </Grid>
+        <Grid item xs={12} className={classes.pageContainer}>
+          <Card className={classes.card}>
+            <div className={classes.paper}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  {editMode && (
+                    <ImageController
+                      imageUrl={recipe.imageUrl ? recipe.imageUrl : undefined}
+                      buttonCaption={
+                        recipe.imageKey
+                          ? 'Replace Recipe Image'
+                          : 'Add Recipe Image'
+                      }
+                      cardTitle='Recipe Image'
+                      setImage={setUpdateImage}
+                      deleteImage={handleDeleteImage}
+                    />
+                  )}
+                  {!editMode && (
+                    <CardMedia
+                      className={classes.image}
+                      image={
+                        recipe.imageUrl.length > 0
+                          ? recipe.imageUrl
+                          : defaultImage
+                      }
+                      title={recipe.name}
+                    />
+                  )}
+                </Grid>
+                <Grid item xs={12} md={6} className={classes.recipeDetails}>
+                  <Grid container spacing={0}>
+                    <Grid item xs={12} align='center'>
+                      <RecipeName
+                        name={recipe.name}
+                        editMode={editMode}
+                        handleChange={handleChange}
                       />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <CardTitle title='Recipe Ingredients' />
+                    </Grid>
+                    <Grid item xs={4} sm={4}>
+                      <Typography>Name</Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={3}>
+                      <Typography>Quant.</Typography>
+                    </Grid>
+                    <Grid item xs={2} sm={3}>
+                      <Typography>Type</Typography>
+                    </Grid>
+                    {!editMode && (
+                      <Grid item xs={2} sm={1}>
+                        <Typography>Have</Typography>
+                      </Grid>
                     )}
                     {!editMode && (
-                      <CardMedia
-                        className={classes.image}
-                        image={
-                          recipe.imageUrl.length > 0
-                            ? recipe.imageUrl
-                            : defaultImage
-                        }
-                        title={recipe.name}
-                      />
+                      <Grid item xs={2} sm={1}>
+                        <Typography>Need</Typography>
+                      </Grid>
                     )}
-                  </Grid>
-                  <Grid item xs={12} md={6} className={classes.recipeDetails}>
-                    <Grid container spacing={0}>
-                      <Grid item xs={12} align='center'>
-                        <RecipeName
-                          name={recipe.name}
-                          editMode={editMode}
-                          handleChange={handleChange}
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <CardTitle title='Recipe Ingredients' />
-                      </Grid>
-                      <Grid item xs={4} sm={4}>
-                        <Typography>Name</Typography>
-                      </Grid>
-                      <Grid item xs={2} sm={3}>
-                        <Typography>Quant.</Typography>
-                      </Grid>
-                      <Grid item xs={2} sm={3}>
-                        <Typography>Type</Typography>
-                      </Grid>
-                      {!editMode && (
-                        <Grid item xs={2} sm={1}>
-                          <Typography>Have</Typography>
-                        </Grid>
-                      )}
-                      {!editMode && (
-                        <Grid item xs={2} sm={1}>
-                          <Typography>Need</Typography>
-                        </Grid>
-                      )}
-                      <Grid item xs={12}>
-                        <List className={classes.list}>
-                          {recipe.ingredients.map((ingredient) => {
-                            const formatName = _.startCase(
-                              _.toLower(ingredient.name)
-                            );
-                            const formatQuantityType = _.startCase(
-                              _.toLower(ingredient.quantityType)
-                            );
-                            const {
-                              quantityNeeded,
-                              quantityHave,
-                            } = getHaveNeedQuantities(ingredient);
+                    <Grid item xs={12}>
+                      <List className={classes.list}>
+                        {recipe.ingredients.map((ingredient) => {
+                          const formatName = _.startCase(
+                            _.toLower(ingredient.name)
+                          );
+                          const formatQuantityType = _.startCase(
+                            _.toLower(ingredient.quantityType)
+                          );
+                          const {
+                            quantityNeeded,
+                            quantityHave,
+                          } = getHaveNeedQuantities(ingredient);
 
-                            return (
-                              <Grid
-                                item
-                                xs={12}
+                          return (
+                            <Grid
+                              item
+                              xs={12}
+                              key={ingredient.name + ingredient.dateLastChanged}
+                            >
+                              <RecipeIngredientView
                                 key={
                                   ingredient.name + ingredient.dateLastChanged
                                 }
-                              >
-                                <RecipeIngredientView
-                                  key={
-                                    ingredient.name + ingredient.dateLastChanged
-                                  }
-                                  _id={ingredient._id}
-                                  name={formatName}
-                                  editMode={editMode}
-                                  quantity={ingredient.quantity}
-                                  quantityNeeded={quantityNeeded}
-                                  quantityHave={quantityHave}
-                                  quantityType={formatQuantityType}
-                                  handleDeleteIngredient={
-                                    handleDeleteIngredient
-                                  }
-                                  handleUpdateIngredient={
-                                    handleUpdateIngredient
-                                  }
-                                />
-                              </Grid>
-                            );
-                          })}
-                        </List>
-                      </Grid>
-                      {editMode && (
-                        <Grid item xs={12}>
-                          <RecipeIngredientAdd
-                            key={recipe.ingredients}
-                            addIngredientToRecipe={addIngredientToRecipe}
-                            ingredients={props.ingredients}
-                            recipeIngredients={recipe.ingredients}
-                          />
-                        </Grid>
-                      )}
-                      {!editMode && (
-                        <Grid item xs={12} className={classes.button}>
-                          <Button
-                            fullWidth
-                            variant='outlined'
-                            color='primary'
-                            onClick={addToGroceryList}
-                          >
-                            Add To Grocery List
-                          </Button>
-                          <Dialog
-                            open={groceryAddAlert}
-                            onClose={reloadRecipe}
-                            aria-labelledby='alert-dialog-title'
-                            aria-describedby='alert-dialog-description'
-                          >
-                            <DialogTitle id='alert-dialog-title'>
-                              {'Grocery List Updated!'}
-                            </DialogTitle>
-                            <DialogContent>
-                              <DialogContentText id='alert-dialog-description'>
-                                The recipe ingredients have been added to your
-                                your grocery list.
-                              </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                              <Button onClick={reloadRecipe} color='primary'>
-                                Ok
-                              </Button>
-                            </DialogActions>
-                          </Dialog>
-                        </Grid>
-                      )}
-                      <Grid item xs={12} className={classes.button}>
-                        <RecipeButton
-                          key={editMode + new Date()}
-                          editMode={editMode}
-                          handleEdit={handleEdit}
-                          handleCancel={handleCancel}
-                          handleSubmit={handleSubmit}
+                                _id={ingredient._id}
+                                name={formatName}
+                                editMode={editMode}
+                                quantity={ingredient.quantity}
+                                quantityNeeded={quantityNeeded}
+                                quantityHave={quantityHave}
+                                quantityType={formatQuantityType}
+                                handleDeleteIngredient={handleDeleteIngredient}
+                                handleUpdateIngredient={handleUpdateIngredient}
+                              />
+                            </Grid>
+                          );
+                        })}
+                      </List>
+                    </Grid>
+                    {editMode && (
+                      <Grid item xs={12}>
+                        <RecipeIngredientAdd
+                          key={recipe.ingredients}
+                          addIngredientToRecipe={addIngredientToRecipe}
+                          ingredients={props.ingredients}
+                          recipeIngredients={recipe.ingredients}
                         />
                       </Grid>
-                      {!editMode && (
-                        <Grid item xs={12} className={classes.button}>
-                          <Button
-                            fullWidth
-                            variant='outlined'
-                            color='primary'
-                            onClick={deductFromPantry}
-                          >
-                            Cook Recipe
-                          </Button>
-                          <Dialog
-                            open={cookAlert}
-                            onClose={reloadRecipeIngredients}
-                            aria-labelledby='alert-dialog-title'
-                            aria-describedby='alert-dialog-description'
-                          >
-                            <DialogTitle id='alert-dialog-title'>
-                              {'Recipe Cooked!'}
-                            </DialogTitle>
-                            <DialogContent>
-                              <DialogContentText id='alert-dialog-description'>
-                                The recipe ingredients have been deducted from
-                                your pantry.
-                              </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                              <Button
-                                onClick={reloadRecipeIngredients}
-                                color='primary'
-                              >
-                                Ok
-                              </Button>
-                            </DialogActions>
-                          </Dialog>
-                        </Grid>
-                      )}
-                      {!editMode && (
-                        <Grid item xs={12} className={classes.button}>
-                          <Button
-                            fullWidth
-                            variant='outlined'
-                            color='primary'
-                            onClick={handleClickOpen}
-                          >
-                            Delete Recipe
-                          </Button>
-                          <Dialog
-                            open={open}
-                            onClose={handleClose}
-                            aria-labelledby='alert-dialog-title'
-                            aria-describedby='alert-dialog-description'
-                          >
-                            <DialogTitle id='alert-dialog-title'>
-                              {'Delete recipe?'}
-                            </DialogTitle>
-                            <DialogContent>
-                              <DialogContentText id='alert-dialog-description'>
-                                This action cannot be reversed. Are you sure you
-                                want to delete this recipe?
-                              </DialogContentText>
-                            </DialogContent>
-                            <DialogActions>
-                              <Button onClick={handleDelete} color='primary'>
-                                Delete
-                              </Button>
-                              <Button
-                                onClick={handleClose}
-                                color='primary'
-                                autoFocus
-                              >
-                                Cancel
-                              </Button>
-                            </DialogActions>
-                          </Dialog>
-                        </Grid>
-                      )}
-                      <Grid item xs={12}>
-                        {!isEmpty(error.errorMessage) && (
-                          <FormSubmitMessage
-                            submitMessage={error.errorMessage}
-                          />
-                        )}
+                    )}
+                    {!editMode && (
+                      <Grid item xs={12} className={classes.button}>
+                        <Button
+                          fullWidth
+                          variant='outlined'
+                          color='primary'
+                          onClick={addToGroceryList}
+                        >
+                          Add To Grocery List
+                        </Button>
+                        <Dialog
+                          open={groceryAddAlert}
+                          onClose={reloadRecipe}
+                          aria-labelledby='alert-dialog-title'
+                          aria-describedby='alert-dialog-description'
+                        >
+                          <DialogTitle id='alert-dialog-title'>
+                            {'Grocery List Updated!'}
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText id='alert-dialog-description'>
+                              The recipe ingredients have been added to your
+                              your grocery list.
+                            </DialogContentText>
+                          </DialogContent>
+                          <DialogActions>
+                            <Button onClick={reloadRecipe} color='primary'>
+                              Ok
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
                       </Grid>
+                    )}
+                    <Grid item xs={12} className={classes.button}>
+                      <RecipeButton
+                        key={editMode + new Date()}
+                        editMode={editMode}
+                        handleEdit={handleEdit}
+                        handleCancel={handleCancel}
+                        handleSubmit={handleSubmit}
+                      />
+                    </Grid>
+                    {!editMode && (
+                      <Grid item xs={12} className={classes.button}>
+                        <Button
+                          fullWidth
+                          variant='outlined'
+                          color='primary'
+                          onClick={deductFromPantry}
+                        >
+                          Cook Recipe
+                        </Button>
+                        <Dialog
+                          open={cookAlert}
+                          onClose={reloadRecipeIngredients}
+                          aria-labelledby='alert-dialog-title'
+                          aria-describedby='alert-dialog-description'
+                        >
+                          <DialogTitle id='alert-dialog-title'>
+                            {'Recipe Cooked!'}
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText id='alert-dialog-description'>
+                              The recipe ingredients have been deducted from
+                              your pantry.
+                            </DialogContentText>
+                          </DialogContent>
+                          <DialogActions>
+                            <Button
+                              onClick={reloadRecipeIngredients}
+                              color='primary'
+                            >
+                              Ok
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </Grid>
+                    )}
+                    {!editMode && (
+                      <Grid item xs={12} className={classes.button}>
+                        <Button
+                          fullWidth
+                          variant='outlined'
+                          color='primary'
+                          onClick={handleClickOpen}
+                        >
+                          Delete Recipe
+                        </Button>
+                        <Dialog
+                          open={open}
+                          onClose={handleClose}
+                          aria-labelledby='alert-dialog-title'
+                          aria-describedby='alert-dialog-description'
+                        >
+                          <DialogTitle id='alert-dialog-title'>
+                            {'Delete recipe?'}
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText id='alert-dialog-description'>
+                              This action cannot be reversed. Are you sure you
+                              want to delete this recipe?
+                            </DialogContentText>
+                          </DialogContent>
+                          <DialogActions>
+                            <Button onClick={handleDelete} color='primary'>
+                              Delete
+                            </Button>
+                            <Button
+                              onClick={handleClose}
+                              color='primary'
+                              autoFocus
+                            >
+                              Cancel
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </Grid>
+                    )}
+                    <Grid item xs={12}>
+                      {!isEmpty(error.errorMessage) && (
+                        <FormSubmitMessage submitMessage={error.errorMessage} />
+                      )}
                     </Grid>
                   </Grid>
                 </Grid>
-              </div>
-            </Card>
-          </Grid>
+              </Grid>
+            </div>
+          </Card>
         </Grid>
-      </Container>
-    );
-  }
+      </Grid>
+    </Container>
+  );
 }
 
 const useStyles = makeStyles((theme) => ({
