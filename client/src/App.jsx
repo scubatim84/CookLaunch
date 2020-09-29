@@ -137,6 +137,7 @@ function App() {
       return (
         <RecipeExpanded
           key={foundRecipe[0]?._id + foundRecipe[0]?.dateLastChanged}
+          userId={user.id}
           recipeId={foundRecipe[0]?._id}
           isLoggedIn={isLoggedIn}
           imageUrl={foundRecipe[0]?.imageUrl}

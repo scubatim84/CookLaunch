@@ -32,7 +32,7 @@ import {
   deleteIngredientFromPantry,
   updateIngredientInPantry,
 } from '../../actions/pantryActions';
-import { deleteImage } from '../../actions/fileActions';
+import { addImage, deleteImage } from '../../actions/fileActions';
 import RecipeIngredientView from './RecipeIngredientView';
 import RecipeName from './RecipeName';
 import CardTitle from '../CardTitle';
@@ -44,12 +44,16 @@ import ImageController from '../ImageController';
 import defaultImage from '../../images/defaultrecipeimage.jpg';
 
 function RecipeExpanded(props) {
-  const { recipeId } = props;
+  const { recipeId, userId } = props;
 
   const history = useHistory();
   const classes = useStyles(themeMain);
 
   const [recipe, setRecipe] = useState(null);
+  const [updateImage, setUpdateImage] = useState({
+    file: { image: '' },
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const [imageKeyToDelete, setImageKeyToDelete] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [open, setOpen] = useState(false);
@@ -298,6 +302,36 @@ function RecipeExpanded(props) {
   };
 
   const handleSubmit = async () => {
+    setIsLoading(true);
+
+    let recipeData = { ...recipe };
+
+    if (updateImage.file.image) {
+      const formData = new FormData();
+      const fileExt = updateImage.file.image.name.split('.')[1];
+      const imageKey = userId + '_' + recipe.name + '.' + fileExt;
+
+      formData.append(
+        'file',
+        updateImage.file.image,
+        updateImage.file.image.name
+      );
+
+      const response = await addImage('recipe', imageKey, formData);
+
+      try {
+        recipeData = {
+          ...recipeData,
+          imageKey: response.data.Key,
+          imageUrl: response.data.Location,
+        };
+      } catch (err) {
+        return setError({
+          errorMessage: err,
+        });
+      }
+    }
+
     if (imageKeyToDelete) {
       const imageResponse = await deleteImage(imageKeyToDelete);
 
@@ -308,12 +342,13 @@ function RecipeExpanded(props) {
       }
     }
 
-    const response = await updateRecipe(recipe);
+    const response = await updateRecipe(recipeData);
 
     if (response.status === 204) {
       setEditMode(false);
+      setIsLoading(false);
     } else {
-      setError({
+      return setError({
         errorMessage: response.data,
       });
     }
@@ -333,7 +368,9 @@ function RecipeExpanded(props) {
 
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
-  } else if (!recipe?._id) {
+  }
+
+  if (!recipe?._id || isLoading) {
     return <Loader />;
   } else {
     return (
@@ -369,7 +406,7 @@ function RecipeExpanded(props) {
                             : 'Add Recipe Image'
                         }
                         cardTitle='Recipe Image'
-                        setImage={() => {}}
+                        setImage={setUpdateImage}
                         deleteImage={handleDeleteImage}
                       />
                     )}
