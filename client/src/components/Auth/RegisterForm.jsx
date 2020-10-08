@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {Redirect} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {registerUser, loginUser} from '../../actions/authActions';
-import {useStylesMain} from '../../Styles';
-import {themeMain} from '../../Theme';
+import { registerUser, loginUser } from '../../actions/authActions';
+import { useStylesMain } from '../../Styles';
+import { themeMain } from '../../Theme';
 import {
   Button,
   Card,
@@ -30,7 +30,7 @@ function RegisterForm(props) {
   });
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setNewUser((prevValue) => {
       return {
@@ -83,6 +83,7 @@ function RegisterForm(props) {
                     required
                     fullWidth
                     label='First Name'
+                    id='firstName'
                     name='firstName'
                   />
                 </Grid>
@@ -94,6 +95,7 @@ function RegisterForm(props) {
                     required
                     fullWidth
                     label='Last Name'
+                    id='lastName'
                     name='lastName'
                   />
                 </Grid>
@@ -106,6 +108,7 @@ function RegisterForm(props) {
                     fullWidth
                     label='Email Address'
                     type='email'
+                    id='email'
                     name='email'
                   />
                 </Grid>
