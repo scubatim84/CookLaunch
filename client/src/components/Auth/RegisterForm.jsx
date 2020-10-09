@@ -77,30 +77,31 @@ function RegisterForm(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    inputProps={{ 'data-testid': 'firstName' }}
                     onChange={handleChange}
                     value={newUser.firstName}
                     variant='outlined'
                     required
                     fullWidth
                     label='First Name'
-                    id='firstName'
                     name='firstName'
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    inputProps={{ 'data-testid': 'lastName' }}
                     onChange={handleChange}
                     value={newUser.lastName}
                     variant='outlined'
                     required
                     fullWidth
                     label='Last Name'
-                    id='lastName'
                     name='lastName'
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    inputProps={{ 'data-testid': 'email' }}
                     onChange={handleChange}
                     value={newUser.email}
                     variant='outlined'
@@ -108,12 +109,12 @@ function RegisterForm(props) {
                     fullWidth
                     label='Email Address'
                     type='email'
-                    id='email'
                     name='email'
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    inputProps={{ 'data-testid': 'password' }}
                     onChange={handleChange}
                     value={newUser.password}
                     variant='outlined'
@@ -126,6 +127,7 @@ function RegisterForm(props) {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    inputProps={{ 'data-testid': 'password2' }}
                     onChange={handleChange}
                     value={newUser.password2}
                     variant='outlined'

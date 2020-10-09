@@ -13,8 +13,7 @@ describe('RegisterForm', () => {
   it('First name input field stores input in hook', () => {
     render(<RegisterForm />);
 
-    const firstNameInput = screen.getAllByRole('textbox')[0];
-    expect(firstNameInput.id).toBe('firstName');
+    const firstNameInput = screen.getByTestId('firstName');
     expect(firstNameInput.value).toBe('');
 
     UserEvent.type(firstNameInput, 'Te');
@@ -26,8 +25,7 @@ describe('RegisterForm', () => {
   it('Last name input field stores input in hook', () => {
     render(<RegisterForm />);
 
-    const lastNameInput = screen.getAllByRole('textbox')[1];
-    expect(lastNameInput.id).toBe('lastName');
+    const lastNameInput = screen.getByTestId('lastName');
     expect(lastNameInput.value).toBe('');
 
     UserEvent.type(lastNameInput, 'Te');
@@ -39,13 +37,36 @@ describe('RegisterForm', () => {
   it('Email input field stores input in hook', () => {
     render(<RegisterForm />);
 
-    const emailInput = screen.getAllByRole('textbox')[2];
-    expect(emailInput.id).toBe('email');
+    const emailInput = screen.getByTestId('email');
     expect(emailInput.value).toBe('');
 
     UserEvent.type(emailInput, 'Te');
     expect(emailInput.value).toBe('Te');
     UserEvent.type(emailInput, 'st');
     expect(emailInput.value).toBe('Test');
+  });
+
+  it('Password input field stores input in hook', () => {
+    render(<RegisterForm />);
+
+    const passwordInput = screen.getByTestId('password');
+    expect(passwordInput.value).toBe('');
+
+    UserEvent.type(passwordInput, 'Te');
+    expect(passwordInput.value).toBe('Te');
+    UserEvent.type(passwordInput, 'st');
+    expect(passwordInput.value).toBe('Test');
+  });
+
+  it('Password 2 input field stores input in hook', () => {
+    render(<RegisterForm />);
+
+    const password2Input = screen.getByTestId('password2');
+    expect(password2Input.value).toBe('');
+
+    UserEvent.type(password2Input, 'Te');
+    expect(password2Input.value).toBe('Te');
+    UserEvent.type(password2Input, 'st');
+    expect(password2Input.value).toBe('Test');
   });
 });
