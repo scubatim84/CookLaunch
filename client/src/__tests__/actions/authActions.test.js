@@ -1,9 +1,61 @@
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import {
+  registerUser,
   checkResetPasswordToken,
   resetPassword,
   sendPasswordResetEmail,
   validatePassword,
 } from '../../actions/authActions';
+
+const newUser = {
+  firstName: 'test',
+  lastName: 'runner',
+  email: 'test@runner.com',
+};
+
+const server = setupServer(
+  rest.post('/api/auth/register', (req, res, ctx) => {
+    return res(ctx.status(201), ctx.json(newUser));
+  }),
+  rest.get('/api/auth/validateresetpasswordtoken', (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json('test@runner.com'));
+  })
+);
+
+// Enable API mocking before tests.
+beforeAll(() => server.listen());
+
+// Reset any runtime request handlers we may add during the tests.
+afterEach(() => server.resetHandlers());
+
+// Disable API mocking after the tests are done.
+afterAll(() => server.close());
+
+describe('registerUser function', () => {
+  it('Tests successful API post request', async () => {
+    const response = await registerUser(newUser);
+
+    expect(response.status).toBe(201);
+    expect(response.data).toEqual(newUser);
+  });
+
+  it('Tests failed API post request', async () => {
+    const errorMessage = 'An error message';
+
+    server.use(
+      rest.post('/api/auth/register', (req, res, ctx) => {
+        // Respond with "400 Bad Request" status for this test.
+        return res(ctx.status(400), ctx.json(errorMessage));
+      })
+    );
+
+    const response = await registerUser(newUser);
+
+    expect(response).toEqual(errorMessage);
+  });
+});
 
 describe('sendPasswordResetEmail function', () => {
   it('Tests function when email is empty', async () => {
@@ -24,6 +76,24 @@ describe('checkResetPasswordToken function', () => {
     const response = await checkResetPasswordToken({});
 
     expect(response.data).toBe('An error has occurred. Please try again.');
+  });
+
+  it('Tests function when API get request is successful', async () => {
+    const response = await checkResetPasswordToken('testtoken');
+
+    expect(response.status).toBe(200);
+    expect(response.data).toBe('test@runner.com');
+  });
+
+  it('Tests function when API get request fails', async () => {
+    server.use(
+      rest.get('/api/auth/validateresetpasswordtoken', (req, res, ctx) => {
+        return res(ctx.status(403), ctx.json('User not found.'));
+      })
+    );
+    const response = await checkResetPasswordToken('testtoken');
+
+    expect(response).toBe('User not found.');
   });
 });
 
