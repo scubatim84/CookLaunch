@@ -1,10 +1,11 @@
 import React from 'react';
-import {TextField, Typography} from '@material-ui/core';
+import { TextField, Typography } from '@material-ui/core';
 
 function ProfileFieldContent(props) {
   if (props.editMode) {
     return (
       <TextField
+        inputProps={{ 'data-testid': 'edit-' + props.label }}
         onChange={props.handleChange}
         value={props.content}
         variant='outlined'
@@ -14,7 +15,11 @@ function ProfileFieldContent(props) {
       />
     );
   } else {
-    return <Typography variant='subtitle1'>{props.content}</Typography>;
+    return (
+      <Typography variant='subtitle1' data-testid={'view-' + props.label}>
+        {props.content}
+      </Typography>
+    );
   }
 }
 

@@ -67,4 +67,57 @@ describe('Profile', () => {
     expect(queryByTestId('save-button')).toBeNull();
     expect(queryByTestId('cancel-button')).toBeNull();
   });
+
+  it('Profile fields cannot be edited when not in edit mode', () => {
+    const firstName = 'Test';
+    const lastName = 'Runner';
+    const email = 'test@runner.com';
+
+    const { queryByTestId } = render(
+      <Profile
+        isLoggedIn
+        firstName={firstName}
+        lastName={lastName}
+        email={email}
+      />
+    );
+
+    expect(queryByTestId('view-Email').innerHTML).toBe(email);
+    expect(queryByTestId('view-First Name').innerHTML).toBe(firstName);
+    expect(queryByTestId('view-Last Name').innerHTML).toBe(lastName);
+  });
+
+  it('Profile fields can be edited when in edit mode', () => {
+    const firstName = 'Test';
+    const lastName = 'Runner';
+    const email = 'test@';
+
+    const { queryByTestId } = render(
+      <Profile
+        isLoggedIn
+        firstName={firstName}
+        lastName={lastName}
+        email={email}
+      />
+    );
+
+    UserEvent.click(queryByTestId('edit-button'));
+
+    const emailInput = screen.getByTestId('edit-Email');
+    const firstNameInput = screen.getByTestId('edit-First Name');
+    const lastNameInput = screen.getByTestId('edit-Last Name');
+
+    expect(emailInput.value).toBe(email);
+    expect(firstNameInput.value).toBe(firstName);
+    expect(lastNameInput.value).toBe(lastName);
+
+    UserEvent.type(emailInput, 'runner.com');
+    expect(emailInput.value).toBe('test@runner.com');
+
+    UserEvent.type(firstNameInput, 'er');
+    expect(firstNameInput.value).toBe('Tester');
+
+    UserEvent.type(lastNameInput, 'runner');
+    expect(lastNameInput.value).toBe('Runnerrunner');
+  });
 });
