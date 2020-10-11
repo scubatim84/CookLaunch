@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Grid} from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 
 function ProfileButtons(props) {
   if (props.editMode) {
@@ -7,6 +7,7 @@ function ProfileButtons(props) {
       <Grid container spacing={1}>
         <Grid item xs={3} sm={2} md={1}>
           <Button
+            data-testid='save-button'
             onClick={props.handleSave}
             id='Save'
             type='submit'
@@ -18,6 +19,7 @@ function ProfileButtons(props) {
         </Grid>
         <Grid item xs={3} sm={2} md={1}>
           <Button
+            data-testid='cancel-button'
             onClick={props.handleCancel}
             id='Cancel'
             type='submit'
@@ -32,6 +34,7 @@ function ProfileButtons(props) {
   } else {
     return (
       <Button
+        data-testid='edit-button'
         onClick={props.handleEdit}
         id='Edit'
         type='submit'
