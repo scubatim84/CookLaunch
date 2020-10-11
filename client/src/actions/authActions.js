@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {REQUEST_FAIL, REQUEST_SUCCESS} from './types';
+import { REQUEST_FAIL, REQUEST_SUCCESS } from './types';
 import cookies from 'js-cookie';
 import isEmpty from 'is-empty';
 import validator from 'validator';
@@ -22,7 +22,7 @@ export const loginUser = async (userData) => {
     const token = response.data;
 
     // Set authentication cookie with token
-    cookies.set('user', token, {expires: 7});
+    cookies.set('user', token, { expires: 7 });
 
     // Return response
     return response;
@@ -147,15 +147,22 @@ export const validatePassword = async (password, password2) => {
     error = 'Password field is required';
   }
 
-  if (validator.isEmpty(password2)) {
+  if (!validator.isEmpty(password) && validator.isEmpty(password2)) {
     error = 'Confirm password field is required';
   }
 
-  if (!validator.isLength(password, {min: 6, max: 30})) {
+  if (
+    !validator.isEmpty(password) &&
+    !validator.isLength(password, { min: 6, max: 30 })
+  ) {
     error = 'Password must be at least 6 characters';
   }
 
-  if (!validator.equals(password, password2)) {
+  if (
+    !validator.isEmpty(password) &&
+    !validator.isEmpty(password2) &&
+    !validator.equals(password, password2)
+  ) {
     error = 'Passwords must match';
   }
 
