@@ -2,6 +2,7 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import {
+  loginUser,
   registerUser,
   checkResetPasswordToken,
   resetPassword,
@@ -9,20 +10,7 @@ import {
   validatePassword,
 } from '../../actions/authActions';
 
-const newUser = {
-  firstName: 'test',
-  lastName: 'runner',
-  email: 'test@runner.com',
-};
-
-const server = setupServer(
-  rest.post('/api/auth/register', (req, res, ctx) => {
-    return res(ctx.status(201), ctx.json(newUser));
-  }),
-  rest.get('/api/auth/validateresetpasswordtoken', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json('test@runner.com'));
-  })
-);
+const server = setupServer();
 
 // Enable API mocking before tests.
 beforeAll(() => server.listen());
@@ -34,14 +22,26 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('registerUser function', () => {
-  it('Tests successful API post request', async () => {
+  const newUser = {
+    firstName: 'test',
+    lastName: 'runner',
+    email: 'test@runner.com',
+  };
+
+  it('Tests successful API post request for registration', async () => {
+    server.use(
+      rest.post('/api/auth/register', (req, res, ctx) => {
+        return res(ctx.status(201), ctx.json(newUser));
+      })
+    );
+
     const response = await registerUser(newUser);
 
     expect(response.status).toBe(201);
     expect(response.data).toEqual(newUser);
   });
 
-  it('Tests failed API post request', async () => {
+  it('Tests failed API post request for registration', async () => {
     const errorMessage = 'An error message';
 
     server.use(
@@ -52,6 +52,41 @@ describe('registerUser function', () => {
     );
 
     const response = await registerUser(newUser);
+
+    expect(response).toEqual(errorMessage);
+  });
+});
+
+describe('loginUser function', () => {
+  const existingUser = {
+    email: 'test@runner.com',
+    password: 'tester',
+  };
+
+  it('Tests successful API post request for login', async () => {
+    server.use(
+      rest.post('/api/auth/login', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json('Bearer ' + 'testtoken'));
+      })
+    );
+
+    const response = await loginUser(existingUser);
+
+    expect(response.status).toBe(200);
+    expect(response.data).toEqual('Bearer ' + 'testtoken');
+  });
+
+  it('Tests failed API post request for login', async () => {
+    const errorMessage = 'An error message';
+
+    server.use(
+      rest.post('/api/auth/login', (req, res, ctx) => {
+        // Respond with "400 Bad Request" status for this test.
+        return res(ctx.status(400), ctx.json(errorMessage));
+      })
+    );
+
+    const response = await loginUser(existingUser);
 
     expect(response).toEqual(errorMessage);
   });
@@ -79,6 +114,12 @@ describe('checkResetPasswordToken function', () => {
   });
 
   it('Tests function when API get request is successful', async () => {
+    server.use(
+      rest.get('/api/auth/validateresetpasswordtoken', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json('test@runner.com'));
+      })
+    );
+
     const response = await checkResetPasswordToken('testtoken');
 
     expect(response.status).toBe(200);

@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { REQUEST_FAIL, REQUEST_SUCCESS } from './types';
 import cookies from 'js-cookie';
 import isEmpty from 'is-empty';
 import validator from 'validator';
+
+import { REQUEST_FAIL, REQUEST_SUCCESS } from './types';
 
 // Register User
 export const registerUser = async (userData) => {
