@@ -148,9 +148,8 @@ router.post('/forgotpassword', async (req, res) => {
 
     await transporter.sendMail(mailOptions, (err, response) => {
       if (err) {
-        console.log('There was an error. ' + err);
+        res.status(500).json(err);
       } else {
-        console.log('here is the res: ' + response);
         res.status(200).send(null);
       }
     });
@@ -191,13 +190,9 @@ router.put('/resetpassword', async (req, res) => {
       foundUser.resetPasswordExpires = null;
       foundUser.save();
 
-      try {
-        res.status(204).json(null);
-      } catch (err) {
-        res.status(400).json('An error has occurred. ' + err);
-      }
+      res.status(204).json(null);
     } catch (err) {
-      res.status(400).json('An error has occurred. ' + err);
+      res.status(500).json('An error has occurred. ' + err);
     }
   } else {
     res.status(404).json('No user found in database.');

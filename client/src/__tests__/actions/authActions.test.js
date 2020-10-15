@@ -8,7 +8,9 @@ import {
   resetPassword,
   sendPasswordResetEmail,
   validatePassword,
+  logoutUser,
 } from '../../actions/authActions';
+import { REQUEST_FAIL, REQUEST_SUCCESS } from '../../actions/types';
 
 const server = setupServer();
 
@@ -92,7 +94,18 @@ describe('loginUser function', () => {
   });
 });
 
+describe('logoutUser function', () => {
+  it('Tests user logout', async () => {
+    // In test environment, cookie is not set, so should be successful
+    const response = await logoutUser();
+
+    expect(response).toBe(REQUEST_SUCCESS);
+  });
+});
+
 describe('sendPasswordResetEmail function', () => {
+  const testEmail = 'test@runner.com';
+
   it('Tests function when email is empty', async () => {
     const response = await sendPasswordResetEmail('');
 
@@ -103,6 +116,34 @@ describe('sendPasswordResetEmail function', () => {
     const response = await sendPasswordResetEmail('notanemail');
 
     expect(response).toBe('Email is invalid');
+  });
+
+  it('Tests successful API post request for sending email', async () => {
+    server.use(
+      rest.post('/api/auth/forgotpassword', (req, res, ctx) => {
+        return res(ctx.status(204), ctx.json(null));
+      })
+    );
+
+    const response = await sendPasswordResetEmail(testEmail);
+
+    expect(response.status).toBe(204);
+    expect(response.data).toEqual(null);
+  });
+
+  it('Tests failed API post request for sending email', async () => {
+    const errorMessage = 'An error message';
+
+    server.use(
+      rest.post('/api/auth/forgotpassword', (req, res, ctx) => {
+        // Respond with "500 Internal Server Error" status for this test.
+        return res(ctx.status(500), ctx.json(errorMessage));
+      })
+    );
+
+    const response = await sendPasswordResetEmail(testEmail);
+
+    expect(response).toEqual(errorMessage);
   });
 });
 
@@ -139,6 +180,11 @@ describe('checkResetPasswordToken function', () => {
 });
 
 describe('resetPassword function', () => {
+  let userData = {
+    email: 'test@runner.com',
+    password: 'tester',
+  };
+
   it('Tests function when userData parameter is empty', async () => {
     const response = await resetPassword({});
 
@@ -164,6 +210,32 @@ describe('resetPassword function', () => {
     const response = await resetPassword(userData);
 
     expect(response.data).toBe('Email is invalid');
+  });
+
+  it('Tests function when API request is successful', async () => {
+    server.use(
+      rest.put('/api/auth/resetpassword', (req, res, ctx) => {
+        return res(ctx.status(204), ctx.json(null));
+      })
+    );
+
+    const response = await resetPassword(userData);
+
+    expect(response.status).toBe(204);
+    expect(response.data).toBe(null);
+  });
+
+  it('Tests function when API get request fails', async () => {
+    const errorMessage = 'An error message';
+
+    server.use(
+      rest.put('/api/auth/resetpassword', (req, res, ctx) => {
+        return res(ctx.status(500), ctx.json(errorMessage));
+      })
+    );
+    const response = await resetPassword(userData);
+
+    expect(response).toBe(errorMessage);
   });
 });
 
