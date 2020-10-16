@@ -1,9 +1,9 @@
 import React from 'react';
-import {Grid} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import ProfileFieldLabel from './ProfileFieldLabel';
 import ProfileFieldContent from './ProfileFieldContent';
 
-function ProfileField(props) {
+const ProfileField = (props) => {
   return (
     <Grid container>
       <Grid item xs={4}>
@@ -20,6 +20,6 @@ function ProfileField(props) {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default ProfileField;

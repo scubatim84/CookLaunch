@@ -66,7 +66,7 @@ export const updateIngredient = async (ingredientData) => {
 
   // Check for valid name
   if (isEmpty(name)) {
-    error = 'Please enter a name.';
+    error = 'Please enter an ingredient name.';
   }
 
   if (!isEmpty(error)) {

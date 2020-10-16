@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {Redirect} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {loginUser} from '../../actions/authActions';
-import {useStylesMain} from '../../Styles';
-import {themeMain} from '../../Theme';
+import { loginUser } from '../../actions/authActions';
+import { useStylesMain } from '../../Styles';
+import { themeMain } from '../../Theme';
 import {
   Button,
   Card,
@@ -27,7 +27,7 @@ function LoginForm(props) {
   });
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setLogin((prevValue) => {
       return {
@@ -47,7 +47,7 @@ function LoginForm(props) {
       props.handleLoggedIn(true);
     } else {
       setError({
-        errorMessage: loginResponse.data,
+        errorMessage: loginResponse,
       });
     }
   };
@@ -66,6 +66,7 @@ function LoginForm(props) {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    inputProps={{ 'data-testid': 'email' }}
                     onChange={handleChange}
                     value={login.email}
                     variant='outlined'
@@ -79,6 +80,7 @@ function LoginForm(props) {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    inputProps={{ 'data-testid': 'password' }}
                     onChange={handleChange}
                     value={login.password}
                     variant='outlined'

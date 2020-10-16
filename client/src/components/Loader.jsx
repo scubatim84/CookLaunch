@@ -1,18 +1,18 @@
 import React from 'react';
-import {useStylesMain} from '../Styles';
-import {themeMain} from '../Theme';
-import {Backdrop, CircularProgress} from '@material-ui/core';
+import { useStylesMain } from '../Styles';
+import { themeMain } from '../Theme';
+import { Backdrop, CircularProgress } from '@material-ui/core';
 
-function Loader() {
+const Loader = (props) => {
   const classes = useStylesMain(themeMain);
 
   return (
     <div className={classes.minHeight}>
       <Backdrop className={classes.backdrop} open={true}>
-        <CircularProgress color='inherit' />
+        <CircularProgress {...props} color='inherit' />
       </Backdrop>
     </div>
   );
-}
+};
 
 export default Loader;

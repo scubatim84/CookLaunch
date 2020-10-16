@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {Redirect} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import isEmpty from 'is-empty';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {registerUser, loginUser} from '../../actions/authActions';
-import {useStylesMain} from '../../Styles';
-import {themeMain} from '../../Theme';
+import { registerUser, loginUser } from '../../actions/authActions';
+import { useStylesMain } from '../../Styles';
+import { themeMain } from '../../Theme';
 import {
   Button,
   Card,
@@ -30,7 +30,7 @@ function RegisterForm(props) {
   });
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setNewUser((prevValue) => {
       return {
@@ -53,12 +53,12 @@ function RegisterForm(props) {
         props.handleLoggedIn(true);
       } else {
         setError({
-          errorMessage: loginResponse.data,
+          errorMessage: loginResponse,
         });
       }
     } else {
       setError({
-        errorMessage: registerResponse.data,
+        errorMessage: registerResponse,
       });
     }
   };
@@ -77,6 +77,7 @@ function RegisterForm(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    inputProps={{ 'data-testid': 'firstName' }}
                     onChange={handleChange}
                     value={newUser.firstName}
                     variant='outlined'
@@ -88,6 +89,7 @@ function RegisterForm(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
+                    inputProps={{ 'data-testid': 'lastName' }}
                     onChange={handleChange}
                     value={newUser.lastName}
                     variant='outlined'
@@ -99,6 +101,7 @@ function RegisterForm(props) {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    inputProps={{ 'data-testid': 'email' }}
                     onChange={handleChange}
                     value={newUser.email}
                     variant='outlined'
@@ -111,6 +114,7 @@ function RegisterForm(props) {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    inputProps={{ 'data-testid': 'password' }}
                     onChange={handleChange}
                     value={newUser.password}
                     variant='outlined'
@@ -123,6 +127,7 @@ function RegisterForm(props) {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    inputProps={{ 'data-testid': 'password2' }}
                     onChange={handleChange}
                     value={newUser.password2}
                     variant='outlined'
