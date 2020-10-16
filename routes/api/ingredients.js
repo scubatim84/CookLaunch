@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
       res.status(404).json('Ingredients not found.');
     }
   } catch (err) {
-    res.status(400).json(err);
+    res.status(500).json(err);
   }
 });
 
@@ -49,9 +49,7 @@ router.post('/', async (req, res) => {
       res.status(201).json(createdIngredient);
     }
   } catch (err) {
-    console.log(err);
-
-    res.status(400).json(err);
+    res.status(500).json(err);
   }
 });
 
@@ -64,7 +62,7 @@ router.get('/:id', async (req, res) => {
 
     res.status(200).json(foundIngredient);
   } catch (err) {
-    res.status(404).json(err);
+    res.status(500).json(err);
   }
 });
 
@@ -91,10 +89,10 @@ router.put('/:id', async (req, res) => {
 
       res.status(204).send(null);
     } catch (err) {
-      res.status(400).json(err);
+      res.status(500).json(err);
     }
   } else {
-    res.status(400).send('No user found in database.');
+    res.status(404).send('No user found in database.');
   }
 });
 
@@ -116,10 +114,10 @@ router.delete('/:id', async (req, res) => {
       if (deletedIngredient.deletedCount === 1) {
         res.status(204).send(null);
       } else {
-        res.status(400).json('Ingredient deletion failed.');
+        res.status(500).json('Ingredient deletion failed.');
       }
     } catch (err) {
-      res.status(400).json(err);
+      res.status(500).json(err);
     }
   } else {
     res.status(404).send('No user found in database.');
