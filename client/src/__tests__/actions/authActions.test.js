@@ -48,8 +48,8 @@ describe('registerUser function', () => {
 
     server.use(
       rest.post('/api/auth/register', (req, res, ctx) => {
-        // Respond with "400 Bad Request" status for this test.
-        return res(ctx.status(400), ctx.json(errorMessage));
+        // Respond with "500 Internal Server Error" status for this test.
+        return res(ctx.status(500), ctx.json(errorMessage));
       })
     );
 

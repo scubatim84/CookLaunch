@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
     if (foundIngredients) {
       res.status(200).json(foundIngredients);
     } else {
-      res.status(404).json('Ingredients not found.');
+      res.status(400).json('Ingredients not found.');
     }
   } catch (err) {
     res.status(500).json(err);
@@ -92,7 +92,7 @@ router.put('/:id', async (req, res) => {
       res.status(500).json(err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(400).send('No user found in database.');
   }
 });
 
@@ -120,7 +120,7 @@ router.delete('/:id', async (req, res) => {
       res.status(500).json(err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(400).send('No user found in database.');
   }
 });
 

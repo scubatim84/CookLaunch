@@ -58,7 +58,7 @@ router.post('/register', async (req, res) => {
     try {
       res.status(201).json(newUser);
     } catch (err) {
-      res.status(400).json(err);
+      res.status(500).json(err);
     }
   }
 });
@@ -83,7 +83,7 @@ router.post('/login', async (req, res) => {
 
   // Check if user exists
   if (!foundUser) {
-    return res.status(404).json('Email not found');
+    return res.status(400).json('Email not found');
   }
 
   // Check password
@@ -129,7 +129,7 @@ router.post('/forgotpassword', async (req, res) => {
   const foundUser = await User.findOne({ email });
 
   if (isEmpty(foundUser)) {
-    res.status(404).json(null);
+    res.status(400).json(null);
   } else {
     // Add reset password token to user account and set to expire in 1 hour
     foundUser.resetPasswordToken = token;
@@ -167,7 +167,7 @@ router.get('/validateresetpasswordtoken', async (req, res) => {
   const currentTime = new Date();
 
   if (isEmpty(foundUser)) {
-    res.status(404).json('User not found.');
+    res.status(400).json('User not found.');
   } else if (foundUser.resetPasswordExpires >= currentTime) {
     res.status(200).json(foundUser.email);
   } else {
@@ -195,7 +195,7 @@ router.put('/resetpassword', async (req, res) => {
       res.status(500).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(404).json('No user found in database.');
+    res.status(400).json('No user found in database.');
   }
 });
 
