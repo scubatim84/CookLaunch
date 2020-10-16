@@ -10,4 +10,7 @@ export const ingredientQuantityTypes = [
   'Liters',
   'Ounces',
   'Pounds',
+  'Pints',
+  'Tbsps',
+  'Tsps',
 ];
