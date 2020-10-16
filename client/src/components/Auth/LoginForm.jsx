@@ -47,7 +47,7 @@ function LoginForm(props) {
       props.handleLoggedIn(true);
     } else {
       setError({
-        errorMessage: loginResponse.data,
+        errorMessage: loginResponse,
       });
     }
   };

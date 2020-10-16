@@ -53,12 +53,12 @@ function RegisterForm(props) {
         props.handleLoggedIn(true);
       } else {
         setError({
-          errorMessage: loginResponse.data,
+          errorMessage: loginResponse,
         });
       }
     } else {
       setError({
-        errorMessage: registerResponse.data,
+        errorMessage: registerResponse,
       });
     }
   };
