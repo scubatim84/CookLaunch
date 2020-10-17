@@ -37,6 +37,7 @@ function GroceryList(props) {
 
   const [groceryList, setGroceryList] = useState(null);
   const [updateNeeded, setUpdateNeeded] = useState(false);
+  const [confirmTripDialog, setConfirmTripDialog] = useState(false);
   const [groceryComplete, setGroceryComplete] = useState(false);
   const [error, setError] = useState({
     errorMessage: '',
@@ -102,6 +103,8 @@ function GroceryList(props) {
   };
 
   const handleAddGroceryListToPantry = async () => {
+    setUpdateNeeded(true);
+
     for (const groceryIngredient of groceryList.data) {
       if (groceryIngredient.groceryExtra) {
         await deleteIngredientFromGroceries(groceryIngredient._id);
@@ -171,8 +174,18 @@ function GroceryList(props) {
       }
     }
 
+    setUpdateNeeded(false);
+
     // Show alert that complete shopping trip function succeeded
     setGroceryComplete(true);
+  };
+
+  const handleOpenConfirmDialog = () => {
+    setConfirmTripDialog(true);
+  };
+
+  const handleCloseConfirmDialog = () => {
+    setConfirmTripDialog(false);
   };
 
   const reloadGroceryList = async () => {
@@ -225,13 +238,44 @@ function GroceryList(props) {
                 <Grid item xs={12}>
                   <Button
                     fullWidth
-                    onClick={handleAddGroceryListToPantry}
+                    onClick={handleOpenConfirmDialog}
                     type='submit'
                     variant='contained'
                     color='primary'
                   >
                     Complete Shopping Trip
                   </Button>
+                  <Dialog
+                    open={confirmTripDialog}
+                    onClose={handleCloseConfirmDialog}
+                    aria-labelledby='alert-dialog-title'
+                    aria-describedby='alert-dialog-description'
+                  >
+                    <DialogTitle id='alert-dialog-title'>
+                      {'Complete Shopping Trip?'}
+                    </DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id='alert-dialog-description'>
+                        This will remove all extras from your shopping list and
+                        complete your shopping trip. Are you sure?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={handleAddGroceryListToPantry}
+                        color='primary'
+                      >
+                        Complete Trip
+                      </Button>
+                      <Button
+                        onClick={handleCloseConfirmDialog}
+                        color='primary'
+                        autoFocus
+                      >
+                        Still Shopping
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                   <Dialog
                     open={groceryComplete}
                     onClose={reloadGroceryList}
