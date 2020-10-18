@@ -11,16 +11,26 @@ const router = express.Router();
 // @desc Get all ingredients
 // @access Private
 router.get('/', async (req, res) => {
-  try {
-    const foundIngredients = await Ingredient.find({});
+  // Obtain user from request
+  const foundUser = req.user;
 
-    if (foundIngredients) {
-      res.status(200).json(foundIngredients);
-    } else {
-      res.status(400).json('Ingredients not found.');
+  // Once user is found, retrieve list of all ingredients created by that user as well as admin ingredients
+  if (foundUser) {
+    try {
+      const ingredients = await Ingredient.find({
+        $or: [{ createdBy: foundUser._id }, { createdBy: 'admin' }],
+      });
+
+      if (ingredients) {
+        res.status(200).json(ingredients);
+      } else {
+        res.status(500).json('Ingredients not found.');
+      }
+    } catch (err) {
+      res.status(500).json(err);
     }
-  } catch (err) {
-    res.status(500).json(err);
+  } else {
+    res.status(500).json('No user found in database.');
   }
 });
 
@@ -57,12 +67,27 @@ router.post('/', async (req, res) => {
 // @desc Get one ingredient by id
 // @access Private
 router.get('/:id', async (req, res) => {
-  try {
-    const foundIngredient = await Ingredient.findOne({ _id: req.params.id });
+  // Obtain user from request
+  const foundUser = req.user;
 
-    res.status(200).json(foundIngredient);
-  } catch (err) {
-    res.status(500).json(err);
+  // Once user is found, get ingredient if created by user or ingredient is admin
+  if (foundUser) {
+    try {
+      const ingredient = await Ingredient.findOne({
+        _id: req.params.id,
+        $or: [{ createdBy: foundUser._id }, { createdBy: 'admin' }],
+      });
+
+      if (ingredient) {
+        res.status(200).json(ingredient);
+      } else {
+        res.status(400).json('You can only get ingredients that you added.');
+      }
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  } else {
+    res.status(500).send('No user found in database.');
   }
 });
 
@@ -92,7 +117,7 @@ router.put('/:id', async (req, res) => {
       res.status(500).json(err);
     }
   } else {
-    res.status(400).send('No user found in database.');
+    res.status(500).send('No user found in database.');
   }
 });
 
@@ -120,7 +145,7 @@ router.delete('/:id', async (req, res) => {
       res.status(500).json(err);
     }
   } else {
-    res.status(400).send('No user found in database.');
+    res.status(500).send('No user found in database.');
   }
 });
 
