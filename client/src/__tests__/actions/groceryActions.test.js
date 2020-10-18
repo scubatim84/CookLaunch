@@ -4,6 +4,7 @@ import { setupServer } from 'msw/node';
 import {
   addIngredientToGroceries,
   updateIngredientInGroceries,
+  deleteIngredientFromGroceries,
 } from '../../actions/groceryActions';
 
 const server = setupServer();
@@ -104,6 +105,53 @@ describe('updateIngredientInGroceries function', () => {
     );
 
     const response = await updateIngredientInGroceries(ingredientData);
+
+    expect(response).toEqual(errorMessage);
+  });
+});
+
+describe('deleteIngredientFromGroceries function', () => {
+  const ingredientData = {
+    id: '',
+    name: 'test ingredient',
+    quantity: 1,
+    quantityType: 'Ounces',
+    checked: false,
+    groceryExtra: false,
+  };
+
+  it('Tests error handling for deleting ingredient from grocery list', async () => {
+    const response = await deleteIngredientFromGroceries(ingredientData.id);
+
+    expect(response.data).toBe('An error has occurred. Please try again.');
+  });
+
+  it('Tests successful API post request for deleting ingredient from grocery list', async () => {
+    ingredientData.id = 'testid';
+
+    server.use(
+      rest.delete(`/api/groceries/${ingredientData.id}`, (req, res, ctx) => {
+        return res(ctx.status(204), ctx.json(null));
+      })
+    );
+
+    const response = await deleteIngredientFromGroceries(ingredientData.id);
+
+    expect(response.status).toBe(204);
+    expect(response.data).toBe(null);
+  });
+
+  it('Tests failed API post request for deleting ingredient from grocery list', async () => {
+    ingredientData.id = 'testid';
+    const errorMessage = 'An error message';
+
+    server.use(
+      rest.delete(`/api/groceries/${ingredientData.id}`, (req, res, ctx) => {
+        return res(ctx.status(500), ctx.json(errorMessage));
+      })
+    );
+
+    const response = await deleteIngredientFromGroceries(ingredientData.id);
 
     expect(response).toEqual(errorMessage);
   });

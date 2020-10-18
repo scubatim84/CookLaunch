@@ -110,10 +110,10 @@ router.delete('/:id', async (req, res) => {
 
       res.status(204).json(null);
     } catch (err) {
-      res.status(400).json('An error has occurred. ' + err);
+      res.status(500).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(400).json('No user found in database.');
+    res.status(500).json('No user found in database.');
   }
 });
 
