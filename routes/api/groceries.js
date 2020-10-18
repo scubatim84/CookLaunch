@@ -55,10 +55,10 @@ router.post('/', async (req, res) => {
         payload: foundUser.groceries,
       });
     } catch (err) {
-      res.status(400).json('An error has occurred. ' + err);
+      res.status(500).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(404).json('No user found in database.');
+    res.status(500).json('No user found in database.');
   }
 });
 
