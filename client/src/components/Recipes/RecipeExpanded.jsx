@@ -410,6 +410,13 @@ function RecipeExpanded(props) {
           <Card className={classes.card}>
             <div className={classes.paper}>
               <Grid container spacing={2}>
+                <Grid item xs={12} align='center'>
+                  <RecipeName
+                    name={recipe?.name}
+                    editMode={editMode}
+                    handleChange={handleChange}
+                  />
+                </Grid>
                 <Grid item xs={12} md={6}>
                   {editMode && (
                     <ImageController
@@ -438,14 +445,12 @@ function RecipeExpanded(props) {
                 </Grid>
                 <Grid item xs={12} md={6} className={classes.recipeDetails}>
                   <Grid container spacing={0}>
-                    <Grid item xs={12} align='center'>
-                      <RecipeName
-                        name={recipe?.name}
-                        editMode={editMode}
-                        handleChange={handleChange}
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
+                    <Grid
+                      item
+                      xs={12}
+                      align='center'
+                      className={classes.ingredientTitle}
+                    >
                       <CardTitle title='Recipe Ingredients' />
                     </Grid>
                     <Grid item xs={4} sm={4}>
@@ -656,6 +661,9 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     marginTop: theme.spacing(1),
+  },
+  ingredientTitle: {
+    marginBottom: theme.spacing(2),
   },
   list: {
     width: '100%',
