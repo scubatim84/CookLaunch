@@ -45,7 +45,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "test-coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --coverage --watchAll",
-    "test-ci": "CI=true react-scripts test",
+    "test-ci": "CI=true react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:5000",
