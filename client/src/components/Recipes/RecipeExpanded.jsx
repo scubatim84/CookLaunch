@@ -176,6 +176,10 @@ function RecipeExpanded(props) {
     for (const ingredient of recipe.ingredients) {
       const { quantityNeeded } = getHaveNeedQuantities(ingredient);
 
+      if (quantityNeeded <= 0) {
+        continue;
+      }
+
       const ingredientData = {
         name: ingredient.name,
         quantity: quantityNeeded,
