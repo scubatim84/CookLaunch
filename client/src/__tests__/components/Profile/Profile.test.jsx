@@ -1,10 +1,25 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
+import { render, waitFor, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
 import { shallow } from 'enzyme';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import Profile from '../../../components/Profile/Profile';
+import { REQUEST_SUCCESS, REQUEST_FAIL } from '../../../actions/types';
+
+const server = setupServer();
+
+// Enable API mocking before tests.
+beforeAll(() => server.listen());
+
+// Reset any runtime request handlers we may add during the tests.
+afterEach(() => server.resetHandlers());
+
+// Disable API mocking after the tests are done.
+afterAll(() => server.close());
 
 describe('Profile', () => {
   it('Renders component without crashing', () => {
@@ -119,5 +134,40 @@ describe('Profile', () => {
 
     UserEvent.type(lastNameInput, 'runner');
     expect(lastNameInput.value).toBe('Runnerrunner');
+  });
+
+  it('Profile save button saves changes if successful', async () => {
+    const testResponse = {
+      authResponseType: REQUEST_SUCCESS,
+      authResponsePayload: 'data',
+    };
+
+    const getUserPayload = jest.fn();
+
+    server.use(
+      rest.put('/api/user/profile', (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(testResponse));
+      })
+    );
+
+    const firstName = 'Test';
+    const lastName = 'Runner';
+    const email = 'test@runner.com';
+
+    const { queryByTestId } = render(
+      <Profile
+        isLoggedIn
+        firstName={firstName}
+        lastName={lastName}
+        email={email}
+        handleSave={getUserPayload}
+        getUserPayload={getUserPayload}
+      />
+    );
+
+    UserEvent.click(queryByTestId('edit-button'));
+    UserEvent.click(queryByTestId('save-button'));
+
+    await waitFor(() => expect(getUserPayload).toHaveBeenCalledTimes(1));
   });
 });

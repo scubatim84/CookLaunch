@@ -43,9 +43,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test-coverage": "react-scripts test --coverage --watchAll",
-    "test-ci": "CI=true react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test-coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --coverage --watchAll",
+    "test-ci": "CI=true react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:5000",
@@ -66,6 +66,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^11.0.4",
-    "@testing-library/user-event": "^12.1.7"
+    "@testing-library/user-event": "^12.1.7",
+    "jest-environment-jsdom-sixteen": "^1.0.3"
   }
 }
