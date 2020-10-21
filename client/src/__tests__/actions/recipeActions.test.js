@@ -1,7 +1,7 @@
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { getAllRecipes } from '../../actions/recipeActions';
+import { addRecipe, getAllRecipes } from '../../actions/recipeActions';
 
 const server = setupServer();
 
@@ -41,5 +41,61 @@ describe('getAllRecipes function', () => {
     const response = await getAllRecipes();
 
     expect(response.response.data).toEqual(errorMessage);
+  });
+});
+
+describe('addRecipe function', () => {
+  const testRecipe = {
+    name: '',
+    ingredients: ['ingredientOne', 'ingredientTwo'],
+    imageUrl: '',
+    imageKey: '',
+  };
+
+  it('Tests function when name is empty', async () => {
+    const response = await addRecipe(testRecipe);
+
+    expect(response).toEqual('Please enter a recipe name.');
+  });
+
+  it('Tests function when ingredients are empty', async () => {
+    testRecipe.name = 'test';
+    testRecipe.ingredients = [];
+
+    const response = await addRecipe(testRecipe);
+
+    expect(response).toEqual('Please add one or more ingredients.');
+  });
+
+  it('Tests successful API post request for adding recipe', async () => {
+    testRecipe.name = 'test';
+    testRecipe.ingredients = ['ingredientOne', 'ingredientTwo'];
+
+    server.use(
+      rest.post(`/api/recipes/`, (req, res, ctx) => {
+        return res(ctx.status(201), ctx.json(testRecipe));
+      })
+    );
+
+    const response = await addRecipe(testRecipe);
+
+    expect(response.status).toBe(201);
+    expect(response.data).toEqual(testRecipe);
+  });
+
+  it('Tests failed API post request for adding recipe', async () => {
+    testRecipe.name = 'test';
+    testRecipe.ingredients = ['ingredientOne', 'ingredientTwo'];
+    const errorMessage = 'An error message';
+
+    server.use(
+      rest.post(`/api/recipes/`, (req, res, ctx) => {
+        return res(ctx.status(500), ctx.json(errorMessage));
+      })
+    );
+
+    const response = await addRecipe(testRecipe);
+
+    expect(response).toEqual(errorMessage);
   });
 });
