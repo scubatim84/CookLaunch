@@ -21,10 +21,10 @@ router.get('/', async (req, res) => {
     try {
       res.status(200).json(recipes);
     } catch (err) {
-      res.status(400).json('An error has occurred. ' + err);
+      res.status(500).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(400).json('No user found in database.');
+    res.status(500).json('No user found in database.');
   }
 });
 
@@ -66,12 +66,10 @@ router.post('/', async (req, res) => {
         res.status(201).json(createdRecipe);
       }
     } catch (err) {
-      console.log(err);
-
-      res.status(400).json(err);
+      res.status(500).json(err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(500).send('No user found in database.');
   }
 });
 
@@ -96,10 +94,10 @@ router.get('/:id', async (req, res) => {
         res.status(400).send('That recipe was not created by this user.');
       }
     } catch (err) {
-      res.status(400).json(err);
+      res.status(500).json(err);
     }
   } else {
-    res.status(400).send('No user found in database.');
+    res.status(500).send('No user found in database.');
   }
 });
 
@@ -138,10 +136,10 @@ router.put('/:id', async (req, res) => {
         res.status(400).json('fail');
       }
     } catch (err) {
-      res.status(400).json(err);
+      res.status(500).json(err);
     }
   } else {
-    res.status(400).json('No user found in database.');
+    res.status(500).json('No user found in database.');
   }
 });
 
@@ -166,10 +164,10 @@ router.delete('/:id', async (req, res) => {
         res.status(400).json('fail');
       }
     } catch (err) {
-      res.status(400).json('An error has occurred. ' + err);
+      res.status(500).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(400).json('No user found in database.');
+    res.status(500).json('No user found in database.');
   }
 });
 
