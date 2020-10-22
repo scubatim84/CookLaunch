@@ -6,6 +6,7 @@ import {
   deleteRecipe,
   getAllRecipes,
   getOneRecipe,
+  updateRecipe,
 } from '../../actions/recipeActions';
 
 const server = setupServer();
@@ -139,6 +140,59 @@ describe('getOneRecipe function', () => {
     const response = await getOneRecipe(recipeId);
 
     expect(response.response.data).toEqual(errorMessage);
+  });
+});
+
+describe('updateRecipe function', () => {
+  const recipeData = {
+    _id: 'testid',
+    name: '',
+    ingredients: ['ingredientone', 'ingredienttwo'],
+  };
+
+  it('Tests function when name is empty', async () => {
+    const response = await updateRecipe(recipeData);
+
+    expect(response.data).toEqual('Please enter a name.');
+  });
+
+  it('Tests function when ingredient list is empty', async () => {
+    recipeData.name = 'test';
+    recipeData.ingredients = [];
+
+    const response = await updateRecipe(recipeData);
+
+    expect(response.data).toEqual('Please add one or more ingredients.');
+  });
+
+  it('Tests successful API get request to update one recipe owned by user', async () => {
+    recipeData.name = 'test';
+    recipeData.ingredients = ['ingredientone', 'ingredienttwo'];
+
+    server.use(
+      rest.put(`/api/recipes/${recipeData._id}`, (req, res, ctx) => {
+        return res(ctx.status(204), ctx.json(null));
+      })
+    );
+
+    const response = await updateRecipe(recipeData);
+
+    expect(response.status).toBe(204);
+    expect(response.data).toEqual(null);
+  });
+
+  it('Tests failed API get request to update one recipe owned by user', async () => {
+    const errorMessage = 'An error message';
+
+    server.use(
+      rest.put(`/api/recipes/${recipeData._id}`, (req, res, ctx) => {
+        return res(ctx.status(500), ctx.json(errorMessage));
+      })
+    );
+
+    const response = await updateRecipe(recipeData);
+
+    expect(response).toEqual(errorMessage);
   });
 });
 
