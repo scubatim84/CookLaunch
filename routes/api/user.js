@@ -17,15 +17,12 @@ router.get('/profile', async (req, res) => {
   // Once user is found, send user data
   if (foundUser) {
     try {
-      res.status(200).send({
-        message: 'success',
-        payload: foundUser,
-      });
+      res.status(200).json(foundUser);
     } catch (err) {
-      res.status(400).send('An error has occurred. ' + err);
+      res.status(500).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(404).send('No user found in database.');
+    res.status(500).json('No user found in database.');
   }
 });
 
@@ -55,10 +52,10 @@ router.put('/profile', async (req, res) => {
 
       res.status(200).json(foundUser);
     } catch (err) {
-      res.status(400).send('An error has occurred. ' + err);
+      res.status(500).send('An error has occurred. ' + err);
     }
   } else {
-    return res.status(404).json('User not found');
+    return res.status(500).json('User not found');
   }
 });
 
@@ -82,10 +79,10 @@ router.delete('/:id', async (req, res) => {
         res.status(400).json('User deletion failed.');
       }
     } catch (err) {
-      res.status(400).json('An error has occurred. ' + err);
+      res.status(500).json('An error has occurred. ' + err);
     }
   } else {
-    res.status(400).json('No user found in database.');
+    res.status(500).json('No user found in database.');
   }
 });
 
