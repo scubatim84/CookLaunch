@@ -1,34 +1,19 @@
 import axios from 'axios';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
-import {REQUEST_SUCCESS, REQUEST_FAIL} from './types';
+import { REQUEST_SUCCESS, REQUEST_FAIL } from './types';
 
 // Get user profile
 export const getUserData = async () => {
   try {
     const token = cookies.get('user');
-    const response = await axios.get('/api/user/profile', {
+    return await axios.get('/api/user/profile', {
       headers: {
         Authorization: token,
       },
     });
-
-    if (response.data.message === REQUEST_SUCCESS) {
-      return {
-        authResponseType: REQUEST_SUCCESS,
-        authResponsePayload: response.data.payload,
-      };
-    } else {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: response.data.message,
-      };
-    }
   } catch (err) {
-    return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: err,
-    };
+    return err.response.data;
   }
 };
 
