@@ -6,7 +6,7 @@
 <img src="client/public/assets/images/screenshot1.png" alt="Screenshot of user interface">
 <p>Once logged in, users can click their profile in the right part of the navbar at the top to see possible actions. The dashboard will display the user's recipes, which they can view to see in more detail.</p>
 <img src="client/public/assets/images/screenshot2.png" alt="Screenshot of user interface">
-<p>The first step is to add ingredients that the user wishes to track in recipes. Users have access to ingredients added by other users but they will not be able to edit or delete those ingredients.</p>
+<p>The first step is to add ingredients that the user wishes to track in recipes. Users have access to common ingredients added by default but they will not be able to edit or delete those ingredients.</p>
 <img src="client/public/assets/images/screenshot3.png" alt="Screenshot of user interface" width="35%" height="auto">
 <p>Once the recipe's necessary ingredients are added, or otherwise available in the ingredient list, the user can add a new recipe using the "Add New Recipe" option. Once in the expanded recipe view, users can see the recipe name, recipe image, the list of ingredients needed for the recipe, the quantity and quantity type of each recipe ingredient, how much of that ingredient the user already has in their pantry, and how much they need to purchase to cook the recipe. If needed, the user may edit or delete the recipe.</p>
 <img src="client/public/assets/images/screenshot4.png" alt="Screenshot of user interface">
