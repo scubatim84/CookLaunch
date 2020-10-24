@@ -64,16 +64,18 @@ function App() {
   }, []);
 
   const getUserPayload = useCallback(async () => {
-    const requestResponse = await getUserData();
+    const response = await getUserData();
 
-    setUser({
-      id: requestResponse.authResponsePayload._id,
-      email: requestResponse.authResponsePayload.email,
-      firstName: requestResponse.authResponsePayload.firstName,
-      lastName: requestResponse.authResponsePayload.lastName,
-      pantry: requestResponse.authResponsePayload.pantry,
-      groceries: requestResponse.authResponsePayload.groceries,
-    });
+    if (response.status === 200) {
+      setUser({
+        id: response.data._id,
+        email: response.data.email,
+        firstName: response.data.firstName,
+        lastName: response.data.lastName,
+        pantry: response.data.pantry,
+        groceries: response.data.groceries,
+      });
+    }
   }, []);
 
   useEffect(() => {
