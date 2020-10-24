@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import UserEvent from '@testing-library/user-event';
+import { render } from '@testing-library/react';
 import { shallow } from 'enzyme';
 import IngredientItem from '../../../components/Ingredients/IngredientItem';
 
@@ -41,5 +42,9 @@ describe('IngredientItem', () => {
 
     expect(queryByTestId('edit-icon')).toBeTruthy();
     expect(queryByTestId('delete-icon')).toBeTruthy();
+    expect(queryByTestId('delete-dialog')).toBeNull();
+
+    UserEvent.click(queryByTestId('delete-icon'));
+    expect(queryByTestId('delete-dialog')).toBeTruthy();
   });
 });
