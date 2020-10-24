@@ -1,12 +1,12 @@
 import React from 'react';
-import {Typography} from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
-function CardTitle(props) {
+const CardTitle = (props) => {
   return (
     <Typography id='Title' component='h1' variant='h5'>
       {props.title}
     </Typography>
   );
-}
+};
 
 export default CardTitle;

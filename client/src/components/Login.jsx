@@ -1,9 +1,10 @@
 import React from 'react';
-import LoginForm from './Auth/LoginForm';
-import {CardMedia, Grid} from '@material-ui/core';
-import {useStylesMain} from '../Styles';
+import { CardMedia, Grid } from '@material-ui/core';
 
-function Login(props) {
+import LoginForm from './Auth/LoginForm';
+import { useStylesMain } from '../Styles';
+
+const Login = (props) => {
   const classes = useStylesMain();
 
   return (
@@ -12,7 +13,7 @@ function Login(props) {
         container
         alignItems='center'
         justify='center'
-        style={{minHeight: '100vh'}}
+        style={{ minHeight: '100vh' }}
       >
         <Grid item xs={12} sm={6}>
           <LoginForm
@@ -24,6 +25,6 @@ function Login(props) {
       </Grid>
     </CardMedia>
   );
-}
+};
 
 export default Login;

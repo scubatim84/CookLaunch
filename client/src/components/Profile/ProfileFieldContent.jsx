@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField, Typography } from '@material-ui/core';
 
-function ProfileFieldContent(props) {
+const ProfileFieldContent = (props) => {
   if (props.editMode) {
     return (
       <TextField
@@ -14,13 +14,13 @@ function ProfileFieldContent(props) {
         size='small'
       />
     );
-  } else {
-    return (
-      <Typography variant='subtitle1' data-testid={'view-' + props.label}>
-        {props.content}
-      </Typography>
-    );
   }
-}
+
+  return (
+    <Typography variant='subtitle1' data-testid={'view-' + props.label}>
+      {props.content}
+    </Typography>
+  );
+};
 
 export default ProfileFieldContent;

@@ -1,7 +1,7 @@
 import React from 'react';
-import {Link, Typography} from '@material-ui/core';
+import { Link, Typography } from '@material-ui/core';
 
-function Copyright() {
+const Copyright = () => {
   return (
     <Typography variant='body2' color='textSecondary'>
       {'Copyright © '}
@@ -12,6 +12,6 @@ function Copyright() {
       {'.'}
     </Typography>
   );
-}
+};
 
 export default Copyright;

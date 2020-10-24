@@ -1,7 +1,8 @@
 import React from 'react';
+import { Backdrop, CircularProgress } from '@material-ui/core';
+
 import { useStylesMain } from '../Styles';
 import { themeMain } from '../Theme';
-import { Backdrop, CircularProgress } from '@material-ui/core';
 
 const Loader = (props) => {
   const classes = useStylesMain(themeMain);

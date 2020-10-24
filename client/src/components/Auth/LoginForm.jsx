@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import isEmpty from 'is-empty';
-import FormSubmitMessage from '../FormSubmitMessage';
-import { loginUser } from '../../actions/authActions';
-import { useStylesMain } from '../../Styles';
-import { themeMain } from '../../Theme';
 import {
   Button,
   Card,
@@ -13,9 +9,14 @@ import {
   Link,
   TextField,
 } from '@material-ui/core';
+
+import FormSubmitMessage from '../FormSubmitMessage';
+import { loginUser } from '../../actions/authActions';
+import { useStylesMain } from '../../Styles';
+import { themeMain } from '../../Theme';
 import CardTitle from '../CardTitle';
 
-function LoginForm(props) {
+const LoginForm = (props) => {
   const classes = useStylesMain(themeMain);
 
   const [login, setLogin] = useState({
@@ -54,81 +55,81 @@ function LoginForm(props) {
 
   if (props.isLoggedIn) {
     return <Redirect to='/dashboard' />;
-  } else {
-    return (
-      <Container component='main' maxWidth='xs'>
-        <Card>
-          <Grid className={classes.paper}>
-            <form noValidate>
-              <Grid container spacing={2}>
-                <Grid item xs={12} align='center'>
-                  <CardTitle title='Sign In Here' />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    inputProps={{ 'data-testid': 'email' }}
-                    onChange={handleChange}
-                    value={login.email}
-                    variant='outlined'
-                    required
-                    fullWidth
-                    id='email'
-                    label='Email Address'
-                    name='email'
-                    autoComplete='email'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    inputProps={{ 'data-testid': 'password' }}
-                    onChange={handleChange}
-                    value={login.password}
-                    variant='outlined'
-                    required
-                    fullWidth
-                    name='password'
-                    label='Password'
-                    type='password'
-                    id='password'
-                    autoComplete='password'
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <Button
-                    onClick={handleSubmit}
-                    fullWidth
-                    type='submit'
-                    variant='contained'
-                    color='primary'
-                    className={classes.buttonMargin}
-                  >
-                    Login
-                  </Button>
-                </Grid>
-              </Grid>
-              <Grid container justify='space-between'>
-                <Grid item>
-                  <Link href='/forgotpassword' variant='body2'>
-                    Forgot Password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href='/' variant='body2'>
-                    Don't have an account? Register
-                  </Link>
-                </Grid>
+  }
+
+  return (
+    <Container component='main' maxWidth='xs'>
+      <Card>
+        <Grid className={classes.paper}>
+          <form noValidate>
+            <Grid container spacing={2}>
+              <Grid item xs={12} align='center'>
+                <CardTitle title='Sign In Here' />
               </Grid>
               <Grid item xs={12}>
-                {!isEmpty(error.errorMessage) && (
-                  <FormSubmitMessage submitMessage={error.errorMessage} />
-                )}
+                <TextField
+                  inputProps={{ 'data-testid': 'email' }}
+                  onChange={handleChange}
+                  value={login.email}
+                  variant='outlined'
+                  required
+                  fullWidth
+                  id='email'
+                  label='Email Address'
+                  name='email'
+                  autoComplete='email'
+                />
               </Grid>
-            </form>
-          </Grid>
-        </Card>
-      </Container>
-    );
-  }
-}
+              <Grid item xs={12}>
+                <TextField
+                  inputProps={{ 'data-testid': 'password' }}
+                  onChange={handleChange}
+                  value={login.password}
+                  variant='outlined'
+                  required
+                  fullWidth
+                  name='password'
+                  label='Password'
+                  type='password'
+                  id='password'
+                  autoComplete='password'
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  onClick={handleSubmit}
+                  fullWidth
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                  className={classes.buttonMargin}
+                >
+                  Login
+                </Button>
+              </Grid>
+            </Grid>
+            <Grid container justify='space-between'>
+              <Grid item>
+                <Link href='/forgotpassword' variant='body2'>
+                  Forgot Password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href='/' variant='body2'>
+                  Don't have an account? Register
+                </Link>
+              </Grid>
+            </Grid>
+            <Grid item xs={12}>
+              {!isEmpty(error.errorMessage) && (
+                <FormSubmitMessage submitMessage={error.errorMessage} />
+              )}
+            </Grid>
+          </form>
+        </Grid>
+      </Card>
+    </Container>
+  );
+};
 
 export default LoginForm;
