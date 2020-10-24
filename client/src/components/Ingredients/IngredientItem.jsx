@@ -308,10 +308,18 @@ function IngredientItem(props) {
         <IngredientText>{quantityType}</IngredientText>
       </Grid>
       <Grid item xs={1}>
-        <Edit onClick={handleEdit} className={classes.icon} />
+        <Edit
+          data-testid='edit-icon'
+          onClick={handleEdit}
+          className={classes.icon}
+        />
       </Grid>
       <Grid item xs={1}>
-        <Delete onClick={handleClickOpen} className={classes.icon} />
+        <Delete
+          data-testid='delete-icon'
+          onClick={handleClickOpen}
+          className={classes.icon}
+        />
         <IngredientDeleteDialog
           open={open}
           close={handleClose}
