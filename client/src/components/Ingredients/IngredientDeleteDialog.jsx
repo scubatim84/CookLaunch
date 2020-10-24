@@ -8,9 +8,10 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 
-function IngredientDeleteDialog(props) {
+const IngredientDeleteDialog = (props) => {
   return (
     <Dialog
+      data-testid='delete-dialog'
       open={props.open}
       onClose={props.close}
       aria-labelledby='alert-dialog-title'
@@ -24,15 +25,24 @@ function IngredientDeleteDialog(props) {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.delete} color='primary'>
+        <Button
+          data-testid='delete-dialog-delete'
+          onClick={props.delete}
+          color='primary'
+        >
           Delete
         </Button>
-        <Button onClick={props.close} color='primary' autoFocus>
+        <Button
+          data-testid='delete-dialog-cancel'
+          onClick={props.close}
+          color='primary'
+          autoFocus
+        >
           Cancel
         </Button>
       </DialogActions>
     </Dialog>
   );
-}
+};
 
 export default IngredientDeleteDialog;
