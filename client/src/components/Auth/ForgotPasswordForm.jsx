@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { Button, Card, Container, Grid, TextField } from '@material-ui/core';
+
 import FormSubmitMessage from '../FormSubmitMessage';
-import {sendPasswordResetEmail} from '../../actions/authActions';
-import {useStylesMain} from '../../Styles';
-import {themeMain} from '../../Theme';
-import {Button, Card, Container, Grid, TextField} from '@material-ui/core';
+import { sendPasswordResetEmail } from '../../actions/authActions';
+import { useStylesMain } from '../../Styles';
+import { themeMain } from '../../Theme';
 import CardTitle from '../CardTitle';
 
-function ForgotPasswordForm() {
+const ForgotPasswordForm = () => {
   const classes = useStylesMain(themeMain);
 
   const [forgotUser, setForgotUser] = useState({
@@ -24,7 +25,7 @@ function ForgotPasswordForm() {
       submitMessage: '',
     });
 
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setForgotUser((prevValue) => {
       return {
@@ -105,6 +106,6 @@ function ForgotPasswordForm() {
       </Card>
     </Container>
   );
-}
+};
 
 export default ForgotPasswordForm;

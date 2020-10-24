@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Grid } from '@material-ui/core';
 
-function ProfileButtons(props) {
+const ProfileButtons = (props) => {
   if (props.editMode) {
     return (
       <Grid container spacing={1}>
@@ -31,20 +31,20 @@ function ProfileButtons(props) {
         </Grid>
       </Grid>
     );
-  } else {
-    return (
-      <Button
-        data-testid='edit-button'
-        onClick={props.handleEdit}
-        id='Edit'
-        type='submit'
-        variant='contained'
-        color='primary'
-      >
-        Edit Profile
-      </Button>
-    );
   }
-}
+
+  return (
+    <Button
+      data-testid='edit-button'
+      onClick={props.handleEdit}
+      id='Edit'
+      type='submit'
+      variant='contained'
+      color='primary'
+    >
+      Edit Profile
+    </Button>
+  );
+};
 
 export default ProfileButtons;

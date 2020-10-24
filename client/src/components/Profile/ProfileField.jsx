@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
+
 import ProfileFieldLabel from './ProfileFieldLabel';
 import ProfileFieldContent from './ProfileFieldContent';
 

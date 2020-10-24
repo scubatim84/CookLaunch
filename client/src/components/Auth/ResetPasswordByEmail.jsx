@@ -1,9 +1,10 @@
 import React from 'react';
-import ResetPasswordByEmailForm from './ResetPasswordByEmailForm';
-import {useStylesMain} from '../../Styles';
-import {CardMedia, Grid} from '@material-ui/core';
+import { CardMedia, Grid } from '@material-ui/core';
 
-function ResetPassword(props) {
+import ResetPasswordByEmailForm from './ResetPasswordByEmailForm';
+import { useStylesMain } from '../../Styles';
+
+const ResetPassword = (props) => {
   const classes = useStylesMain();
 
   return (
@@ -12,7 +13,7 @@ function ResetPassword(props) {
         container
         alignItems='center'
         justify='center'
-        style={{minHeight: '100vh'}}
+        style={{ minHeight: '100vh' }}
       >
         <Grid item xs={12} sm={6}>
           <ResetPasswordByEmailForm
@@ -24,6 +25,6 @@ function ResetPassword(props) {
       </Grid>
     </CardMedia>
   );
-}
+};
 
 export default ResetPassword;

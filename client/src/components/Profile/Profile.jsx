@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
+import { Card, Grid } from '@material-ui/core';
 import isEmpty from 'is-empty';
+
 import { REQUEST_SUCCESS } from '../../actions/types';
 import { updateUserProfile } from '../../actions/userActions';
 import ProfileField from './ProfileField';
@@ -8,11 +10,10 @@ import ProfileButtons from './ProfileButtons';
 import FormSubmitMessage from '../FormSubmitMessage';
 import { useStylesMain } from '../../Styles';
 import { themeMain } from '../../Theme';
-import { Card, Grid } from '@material-ui/core';
 import CardTitle from '../CardTitle';
 import Loader from '../Loader';
 
-function Profile(props) {
+const Profile = (props) => {
   const { email, firstName, lastName } = props;
 
   const classes = useStylesMain(themeMain);
@@ -139,6 +140,6 @@ function Profile(props) {
       </div>
     </div>
   );
-}
+};
 
 export default Profile;

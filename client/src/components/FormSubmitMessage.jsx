@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
-function FormSubmitMessage(props) {
+const FormSubmitMessage = (props) => {
   const classes = useStyles();
 
   return (
@@ -10,7 +10,7 @@ function FormSubmitMessage(props) {
       {props.submitMessage}
     </Typography>
   );
-}
+};
 
 const useStyles = makeStyles(() => ({
   formSubmitMessage: {

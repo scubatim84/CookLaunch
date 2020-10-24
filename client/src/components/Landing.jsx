@@ -1,14 +1,15 @@
 import React from 'react';
-import RegisterForm from './Auth/RegisterForm';
-import {useStylesMain} from '../Styles';
-import {CardMedia, Grid} from '@material-ui/core';
+import { CardMedia, Grid } from '@material-ui/core';
 
-function Landing(props) {
+import RegisterForm from './Auth/RegisterForm';
+import { useStylesMain } from '../Styles';
+
+const Landing = (props) => {
   const classes = useStylesMain();
 
   return (
     <CardMedia className={classes.landingBackground}>
-      <Grid container style={{minHeight: '100vh'}}>
+      <Grid container style={{ minHeight: '100vh' }}>
         <Grid
           item
           xs={10}
@@ -25,6 +26,6 @@ function Landing(props) {
       </Grid>
     </CardMedia>
   );
-}
+};
 
 export default Landing;

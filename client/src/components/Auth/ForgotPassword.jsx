@@ -1,9 +1,10 @@
 import React from 'react';
-import ForgotPasswordForm from './ForgotPasswordForm';
-import {CardMedia, Grid} from '@material-ui/core';
-import {useStylesMain} from '../../Styles';
+import { CardMedia, Grid } from '@material-ui/core';
 
-function ForgotPassword() {
+import ForgotPasswordForm from './ForgotPasswordForm';
+import { useStylesMain } from '../../Styles';
+
+const ForgotPassword = () => {
   const classes = useStylesMain();
 
   return (
@@ -12,7 +13,7 @@ function ForgotPassword() {
         container
         alignItems='center'
         justify='center'
-        style={{minHeight: '100vh'}}
+        style={{ minHeight: '100vh' }}
       >
         <Grid item xs={12} sm={6}>
           <ForgotPasswordForm />
@@ -20,6 +21,6 @@ function ForgotPassword() {
       </Grid>
     </CardMedia>
   );
-}
+};
 
 export default ForgotPassword;
