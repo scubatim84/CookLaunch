@@ -1,5 +1,5 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import { shallow } from 'enzyme';
 import IngredientText from '../../../components/Ingredients/IngredientText';
 
 describe('IngredientText', () => {
@@ -8,7 +8,7 @@ describe('IngredientText', () => {
   });
 
   it('Renders checked typography correctly', () => {
-    const wrapper = shallow(<IngredientText checked={true} />);
+    const wrapper = shallow(<IngredientText checked />);
 
     expect(wrapper.find('#Checked')).toHaveLength(1);
   });
