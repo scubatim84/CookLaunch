@@ -240,89 +240,56 @@ function IngredientItem(props) {
   }
 
   if (groceryIngredient) {
-    if (editIngredient.checked) {
-      return (
-        <Grid container alignItems='center'>
-          <Grid item xs={2}>
-            <Checkbox
-              data-testid='grocery-checkbox-checked'
-              checked={editIngredient.checked}
-              onChange={handleCheck}
-              color='primary'
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <IngredientText checked={true}>{name}</IngredientText>
-          </Grid>
-          <Grid item xs={2}>
-            <IngredientText checked={true}>{quantity}</IngredientText>
-          </Grid>
-          <Grid item xs={3}>
-            <IngredientText checked={true}>{quantityType}</IngredientText>
-          </Grid>
-          <Grid item xs={1}>
-            <Edit
-              data-testid='edit-icon'
-              onClick={handleEdit}
-              className={classes.icon}
-            />
-          </Grid>
-          <Grid item xs={1}>
-            <Delete
-              data-testid='delete-icon'
-              onClick={handleClickOpen}
-              className={classes.icon}
-            />
-            <IngredientDeleteDialog
-              open={open}
-              close={handleClose}
-              delete={handleDelete}
-            />
-          </Grid>
+    return (
+      <Grid container alignItems='center'>
+        <Grid item xs={2}>
+          <Checkbox
+            data-testid={
+              editIngredient.checked
+                ? 'grocery-checkbox-checked'
+                : 'grocery-checkbox-unchecked'
+            }
+            checked={editIngredient.checked}
+            onChange={handleCheck}
+            color='primary'
+          />
         </Grid>
-      );
-    } else {
-      return (
-        <Grid container alignItems='center'>
-          <Grid item xs={2}>
-            <Checkbox
-              data-testid='grocery-checkbox-unchecked'
-              checked={editIngredient.checked}
-              onChange={handleCheck}
-              color='primary'
-            />
-          </Grid>
-          <Grid item xs={3}>
-            <IngredientText>{name}</IngredientText>
-          </Grid>
-          <Grid item xs={2}>
-            <IngredientText>{quantity}</IngredientText>
-          </Grid>
-          <Grid item xs={3}>
-            <IngredientText>{quantityType}</IngredientText>
-          </Grid>
-          <Grid item xs={1}>
-            <Edit
-              data-testid='edit-icon'
-              onClick={handleEdit}
-              className={classes.icon}
-            />
-          </Grid>
-          <Grid item xs={1}>
-            <Delete
-              data-testid='delete-icon'
-              onClick={handleClickOpen}
-              className={classes.icon}
-            />
-            <IngredientDeleteDialog
-              open={open}
-              close={handleClose}
-              delete={handleDelete}
-            />
-          </Grid>
+        <Grid item xs={3}>
+          <IngredientText checked={editIngredient.checked}>
+            {name}
+          </IngredientText>
         </Grid>
-      );
-    }
+        <Grid item xs={2}>
+          <IngredientText checked={editIngredient.checked}>
+            {quantity}
+          </IngredientText>
+        </Grid>
+        <Grid item xs={3}>
+          <IngredientText checked={editIngredient.checked}>
+            {quantityType}
+          </IngredientText>
+        </Grid>
+        <Grid item xs={1}>
+          <Edit
+            data-testid='edit-icon'
+            onClick={handleEdit}
+            className={classes.icon}
+          />
+        </Grid>
+        <Grid item xs={1}>
+          <Delete
+            data-testid='delete-icon'
+            onClick={handleClickOpen}
+            className={classes.icon}
+          />
+          <IngredientDeleteDialog
+            open={open}
+            close={handleClose}
+            delete={handleDelete}
+          />
+        </Grid>
+      </Grid>
+    );
   }
 
   return (
