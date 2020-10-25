@@ -99,7 +99,7 @@ describe('IngredientItem', () => {
     expect(queryByTestId('delete-icon')).toBeNull();
   });
 
-  it('Renders edit mode version of ingredient item and transitions back to non-edit mode', async () => {
+  it('Renders edit mode version of ingredient item, cancel transitions back to non-edit mode', async () => {
     const { queryByTestId } = render(
       <IngredientItem
         id={testIngredient.id}
@@ -202,5 +202,29 @@ describe('IngredientItem', () => {
     expect(queryByTestId('checked-ingredientname')).toBeNull();
     expect(queryByTestId('checked-3')).toBeNull();
     expect(queryByTestId('checked-Ounces')).toBeNull();
+  });
+
+  it('Clicking done icon executes handleSubmit function', async () => {
+    const handleUpdateIngredient = jest.fn((testIngredient) => null);
+
+    const { queryByTestId } = render(
+      <IngredientItem
+        id={testIngredient.id}
+        name={testIngredient.name}
+        quantity={testIngredient.quantity}
+        quantityType={testIngredient.quantityType}
+        checked={testIngredient.checked}
+        groceryIngredient
+        groceryExtra={testIngredient.groceryExtra}
+        handleDelete={handleDelete}
+        handleUpdateIngredient={handleUpdateIngredient}
+      />
+    );
+
+    UserEvent.click(queryByTestId('edit-icon'));
+    await waitFor(() => expect(queryByTestId('edit-icon')).toBeNull());
+
+    UserEvent.click(queryByTestId('done-icon'));
+    expect(handleUpdateIngredient).toHaveBeenCalledTimes(1);
   });
 });
