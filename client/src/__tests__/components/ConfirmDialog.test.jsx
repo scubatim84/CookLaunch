@@ -3,11 +3,11 @@ import UserEvent from '@testing-library/user-event';
 import { render, waitFor } from '@testing-library/react';
 import { shallow } from 'enzyme';
 
-import IngredientDeleteDialog from '../../../components/Ingredients/IngredientDeleteDialog';
+import ConfirmDialog from '../../components/ConfirmDialog';
 
-describe('IngredientDeleteDialog', () => {
+describe('ConfirmDialog', () => {
   it('Renders component without crashing', () => {
-    shallow(<IngredientDeleteDialog />);
+    shallow(<ConfirmDialog />);
   });
 
   it('Dialog is open and buttons execute prop functions when open prop is true', async () => {
@@ -15,19 +15,15 @@ describe('IngredientDeleteDialog', () => {
     const handleDelete = jest.fn();
 
     const { queryByTestId } = render(
-      <IngredientDeleteDialog
-        open={true}
-        close={handleClose}
-        delete={handleDelete}
-      />
+      <ConfirmDialog open={true} close={handleClose} delete={handleDelete} />
     );
 
-    expect(queryByTestId('delete-dialog')).toBeTruthy();
+    expect(queryByTestId('confirm-dialog')).toBeTruthy();
 
-    UserEvent.click(queryByTestId('delete-dialog-cancel'));
+    UserEvent.click(queryByTestId('confirm-dialog-button-right'));
     await waitFor(() => expect(handleClose).toHaveBeenCalledTimes(1));
 
-    UserEvent.click(queryByTestId('delete-dialog-delete'));
+    UserEvent.click(queryByTestId('confirm-dialog-button-left'));
     await waitFor(() => expect(handleDelete).toHaveBeenCalledTimes(1));
   });
 });

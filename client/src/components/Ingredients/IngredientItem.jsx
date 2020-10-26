@@ -154,6 +154,14 @@ function IngredientItem(props) {
     }
   };
 
+  const ingredientDialog = {
+    title: 'Delete ingredient?',
+    text:
+      'This action cannot be reversed. Are you sure you want to delete this ingredient?',
+    leftButtonLabel: 'Delete',
+    rightButtonLabel: 'Cancel',
+  };
+
   if (editMode) {
     return (
       <Grid container alignItems='center'>
@@ -269,7 +277,7 @@ function IngredientItem(props) {
           />
         </Grid>
         <Grid item xs={1}>
-          <DeleteButton handleDelete={handleDelete} />
+          <DeleteButton dialog={ingredientDialog} handleDelete={handleDelete} />
         </Grid>
       </Grid>
     );
@@ -294,7 +302,7 @@ function IngredientItem(props) {
         />
       </Grid>
       <Grid item xs={1}>
-        <DeleteButton handleDelete={handleDelete} />
+        <DeleteButton dialog={ingredientDialog} handleDelete={handleDelete} />
       </Grid>
     </Grid>
   );

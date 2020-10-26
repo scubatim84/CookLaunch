@@ -49,7 +49,15 @@ describe('IngredientItem', () => {
   });
 
   it('IngredientDeleteDialog component functions correctly', async () => {
-    const { queryByTestId } = render(
+    const confirmDialogInput = {
+      title: 'Delete ingredient?',
+      text:
+        'This action cannot be reversed. Are you sure you want to delete this ingredient?',
+      leftButtonLabel: 'Delete',
+      rightButtonLabel: 'Cancel',
+    };
+
+    const { queryByTestId, queryByText } = render(
       <IngredientItem
         id={testIngredient.id}
         name={testIngredient.name}
@@ -61,14 +69,24 @@ describe('IngredientItem', () => {
       />
     );
 
-    UserEvent.click(queryByTestId('delete-icon'));
-    expect(queryByTestId('delete-dialog')).toBeTruthy();
+    expect(queryByText(confirmDialogInput.title)).toBeNull();
+    expect(queryByText(confirmDialogInput.text)).toBeNull();
+    expect(queryByText(confirmDialogInput.leftButtonLabel)).toBeNull();
+    expect(queryByText(confirmDialogInput.rightButtonLabel)).toBeNull();
 
-    UserEvent.click(queryByTestId('delete-dialog-cancel'));
+    UserEvent.click(queryByTestId('delete-icon'));
+    expect(queryByTestId('confirm-dialog')).toBeTruthy();
+
+    expect(queryByText(confirmDialogInput.title)).toBeTruthy();
+    expect(queryByText(confirmDialogInput.text)).toBeTruthy();
+    expect(queryByText(confirmDialogInput.leftButtonLabel)).toBeTruthy();
+    expect(queryByText(confirmDialogInput.rightButtonLabel)).toBeTruthy();
+
+    UserEvent.click(queryByTestId('confirm-dialog-button-right'));
     await waitFor(() => expect(queryByTestId('delete-dialog')).toBeNull());
 
     UserEvent.click(queryByTestId('delete-icon'));
-    UserEvent.click(queryByTestId('delete-dialog-delete'));
+    UserEvent.click(queryByTestId('confirm-dialog-button-left'));
     await waitFor(() => expect(handleDelete).toHaveBeenCalledTimes(1));
   });
 
