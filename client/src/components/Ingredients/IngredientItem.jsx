@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import isEmpty from 'is-empty';
 import { makeStyles } from '@material-ui/core/styles';
-import { Cancel, Edit, Delete, Done } from '@material-ui/icons';
+import { Cancel, Edit, Done } from '@material-ui/icons';
 import {
   Checkbox,
   FormControl,
@@ -16,7 +16,7 @@ import { themeMain } from '../../Theme';
 import FormSubmitMessage from '../FormSubmitMessage';
 import { convert_units } from '../../actions/unitConversions';
 import IngredientText from './IngredientText';
-import IngredientDeleteDialog from './IngredientDeleteDialog';
+import DeleteButton from '../DeleteButton';
 
 function IngredientItem(props) {
   const { id, name, quantity, quantityType, checked, groceryExtra } = props;
@@ -32,7 +32,6 @@ function IngredientItem(props) {
     groceryExtra: false,
   });
   const [editMode, setEditMode] = useState(false);
-  const [open, setOpen] = useState(false);
   const [updateRequired, setUpdateRequired] = useState(false);
   const [groceryIngredient, setGroceryIngredient] = React.useState(false);
   const [error, setError] = useState({
@@ -79,14 +78,6 @@ function IngredientItem(props) {
       };
     }
   }, [editIngredient, updateRequired, props]);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleDelete = async () => {
     const response = await props.handleDelete(id);
@@ -278,16 +269,7 @@ function IngredientItem(props) {
           />
         </Grid>
         <Grid item xs={1}>
-          <Delete
-            data-testid='delete-icon'
-            onClick={handleClickOpen}
-            className={classes.icon}
-          />
-          <IngredientDeleteDialog
-            open={open}
-            close={handleClose}
-            delete={handleDelete}
-          />
+          <DeleteButton handleDelete={handleDelete} />
         </Grid>
       </Grid>
     );
@@ -312,16 +294,7 @@ function IngredientItem(props) {
         />
       </Grid>
       <Grid item xs={1}>
-        <Delete
-          data-testid='delete-icon'
-          onClick={handleClickOpen}
-          className={classes.icon}
-        />
-        <IngredientDeleteDialog
-          open={open}
-          close={handleClose}
-          delete={handleDelete}
-        />
+        <DeleteButton handleDelete={handleDelete} />
       </Grid>
     </Grid>
   );
