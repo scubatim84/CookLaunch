@@ -204,6 +204,28 @@ describe('IngredientItem', () => {
     expect(queryByTestId('checked-Ounces')).toBeNull();
   });
 
+  it('Typing into TextField changes value of ingredient field', async () => {
+    const { queryByTestId } = render(
+      <IngredientItem
+        id={testIngredient.id}
+        name={testIngredient.name}
+        quantity={testIngredient.quantity}
+        quantityType={testIngredient.quantityType}
+        checked={testIngredient.checked}
+        groceryExtra={testIngredient.groceryExtra}
+        handleDelete={handleDelete}
+      />
+    );
+
+    UserEvent.click(queryByTestId('edit-icon'));
+    await waitFor(() => expect(queryByTestId('edit-icon')).toBeNull());
+
+    const quantityInput = screen.getByTestId('grocery-edit-quantity');
+    expect(quantityInput.value).toBe(testIngredient.quantity);
+    UserEvent.type(quantityInput, '2');
+    expect(quantityInput.value).toBe('32');
+  });
+
   it('Clicking done icon executes handleSubmit function', async () => {
     const handleUpdateIngredient = jest.fn((testIngredient) => null);
 
@@ -226,5 +248,35 @@ describe('IngredientItem', () => {
 
     UserEvent.click(queryByTestId('done-icon'));
     expect(handleUpdateIngredient).toHaveBeenCalledTimes(1);
+  });
+
+  it('Error during editing ingredient is rendered in error message to user', async () => {
+    const errorMessage = 'An error message';
+    const handleUpdateIngredient = jest.fn((testIngredient) => errorMessage);
+
+    const { queryByTestId } = render(
+      <IngredientItem
+        id={testIngredient.id}
+        name={testIngredient.name}
+        quantity={testIngredient.quantity}
+        quantityType={testIngredient.quantityType}
+        checked={testIngredient.checked}
+        groceryIngredient
+        groceryExtra={testIngredient.groceryExtra}
+        handleDelete={handleDelete}
+        handleUpdateIngredient={handleUpdateIngredient}
+      />
+    );
+
+    UserEvent.click(queryByTestId('edit-icon'));
+    await waitFor(() => expect(queryByTestId('edit-icon')).toBeNull());
+
+    UserEvent.click(queryByTestId('done-icon'));
+    expect(handleUpdateIngredient).toHaveBeenCalledTimes(1);
+
+    await waitFor(() =>
+      expect(queryByTestId('form-submit-message')).toBeTruthy()
+    );
+    expect(queryByTestId('form-submit-message').innerHTML).toBe(errorMessage);
   });
 });

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { ingredientQuantityTypes } from '../../actions/types';
+import isEmpty from 'is-empty';
 import { makeStyles } from '@material-ui/core/styles';
-import { themeMain } from '../../Theme';
+import { Cancel, Edit, Delete, Done } from '@material-ui/icons';
 import {
   Checkbox,
   FormControl,
@@ -10,8 +10,9 @@ import {
   Select,
   TextField,
 } from '@material-ui/core';
-import { Cancel, Edit, Delete, Done } from '@material-ui/icons';
-import isEmpty from 'is-empty';
+
+import { ingredientQuantityTypes } from '../../actions/types';
+import { themeMain } from '../../Theme';
 import FormSubmitMessage from '../FormSubmitMessage';
 import { convert_units } from '../../actions/unitConversions';
 import IngredientText from './IngredientText';
