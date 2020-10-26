@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Delete } from '@material-ui/icons';
 
 import { themeMain } from '../Theme';
-import IngredientDeleteDialog from './Ingredients/IngredientDeleteDialog';
+import ConfirmDialog from './ConfirmDialog';
 
 const DeleteButton = (props) => {
   const classes = useStyles(themeMain);
@@ -25,7 +25,8 @@ const DeleteButton = (props) => {
         onClick={handleOpen}
         className={classes.icon}
       />
-      <IngredientDeleteDialog
+      <ConfirmDialog
+        dialog={props.dialog}
         open={open}
         close={handleClose}
         delete={props.handleDelete}
