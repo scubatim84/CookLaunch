@@ -47,17 +47,11 @@ function IngredientItem(props) {
       checked: checked,
       groceryExtra: groceryExtra,
     });
+  }, [id, name, quantity, quantityType, checked, groceryExtra]);
 
+  useEffect(() => {
     setGroceryIngredient(props.groceryIngredient);
-  }, [
-    id,
-    name,
-    quantity,
-    quantityType,
-    checked,
-    groceryExtra,
-    props.groceryIngredient,
-  ]);
+  }, [props.groceryIngredient]);
 
   useEffect(() => {
     const updateCheckIngredient = async () => {
@@ -127,19 +121,13 @@ function IngredientItem(props) {
 
     const newQuantity = convert_units(editIngredient.quantity, oldValue, value);
 
-    if (isNaN(newQuantity)) {
-      setError({
-        errorMessage: `You cannot convert ${oldValue} to ${value}.`,
-      });
-    } else {
-      setEditIngredient((prevValue) => {
-        return {
-          ...prevValue,
-          quantity: newQuantity,
-          quantityType: value,
-        };
-      });
-    }
+    setEditIngredient((prevValue) => {
+      return {
+        ...prevValue,
+        quantity: newQuantity,
+        quantityType: value,
+      };
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -184,7 +172,7 @@ function IngredientItem(props) {
         </Grid>
         <Grid item xs={2}>
           <TextField
-            inputProps={{ 'data-testid': 'grocery-edit-quantity' }}
+            inputProps={{ 'data-testid': 'edit-quantity' }}
             onChange={handleChange}
             variant='outlined'
             required
@@ -198,7 +186,9 @@ function IngredientItem(props) {
         <Grid item xs={4}>
           <FormControl>
             <Select
-              data-testid='select-quantity-type'
+              inputProps={{
+                'data-testid': 'select-quantity-type',
+              }}
               labelId='quantityType'
               id='quantityType'
               required

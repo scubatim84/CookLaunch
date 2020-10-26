@@ -22,6 +22,6 @@ export const convert_units = (quantity, type_one, type_two) => {
   } else {
     const convertKey = `${type_one}To${type_two}`;
 
-    return conversionAmounts[convertKey] * quantity.toFixed(2);
+    return conversionAmounts[convertKey] * Number(quantity).toFixed(2);
   }
 };
