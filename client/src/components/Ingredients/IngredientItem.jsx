@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import isEmpty from 'is-empty';
 import { makeStyles } from '@material-ui/core/styles';
 import { Edit } from '@material-ui/icons';
-import { Checkbox, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 import { themeMain } from '../../Theme';
 import { convert_units } from '../../actions/unitConversions';
 import IngredientItemEdit from './IngredientItemEdit';
+import IngredientItemGrocery from './IngredientItemGrocery';
 import IngredientText from './IngredientText';
 import DeleteButton from '../DeleteButton';
 
@@ -25,9 +26,9 @@ const IngredientItem = (props) => {
   });
   const [editMode, setEditMode] = useState(false);
   const [updateRequired, setUpdateRequired] = useState(false);
-  const [groceryIngredient, setGroceryIngredient] = React.useState(false);
+  const [groceryIngredient, setGroceryIngredient] = useState(false);
   const [error, setError] = useState({
-    errorMessage: '',
+    message: '',
   });
 
   useEffect(() => {
@@ -51,7 +52,7 @@ const IngredientItem = (props) => {
 
       if (!isEmpty(response)) {
         setError({
-          errorMessage: response,
+          message: response,
         });
       }
     };
@@ -70,7 +71,7 @@ const IngredientItem = (props) => {
 
     if (!isEmpty(response)) {
       setError({
-        errorMessage: response,
+        message: response,
       });
     }
   };
@@ -129,7 +130,7 @@ const IngredientItem = (props) => {
 
     if (!isEmpty(response)) {
       setError({
-        errorMessage: response,
+        message: response,
       });
     }
   };
@@ -158,45 +159,16 @@ const IngredientItem = (props) => {
 
   if (groceryIngredient) {
     return (
-      <Grid container alignItems='center'>
-        <Grid item xs={2}>
-          <Checkbox
-            data-testid={
-              editIngredient.checked
-                ? 'grocery-checkbox-checked'
-                : 'grocery-checkbox-unchecked'
-            }
-            checked={editIngredient.checked}
-            onChange={handleCheck}
-            color='primary'
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <IngredientText checked={editIngredient.checked}>
-            {name}
-          </IngredientText>
-        </Grid>
-        <Grid item xs={2}>
-          <IngredientText checked={editIngredient.checked}>
-            {quantity}
-          </IngredientText>
-        </Grid>
-        <Grid item xs={3}>
-          <IngredientText checked={editIngredient.checked}>
-            {quantityType}
-          </IngredientText>
-        </Grid>
-        <Grid item xs={1}>
-          <Edit
-            data-testid='edit-icon'
-            onClick={handleEdit}
-            className={classes.icon}
-          />
-        </Grid>
-        <Grid item xs={1}>
-          <DeleteButton dialog={ingredientDialog} handleDelete={handleDelete} />
-        </Grid>
-      </Grid>
+      <IngredientItemGrocery
+        editIngredient={editIngredient}
+        handleCheck={handleCheck}
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+        name={name}
+        quantity={quantity}
+        quantityType={quantityType}
+        ingredientDialog={ingredientDialog}
+      />
     );
   }
 

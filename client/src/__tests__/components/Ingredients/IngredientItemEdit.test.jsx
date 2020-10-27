@@ -13,7 +13,7 @@ const testIngredient = {
 };
 
 const error = {
-  errorMessage: '',
+  message: '',
 };
 
 const name = 'testname';
