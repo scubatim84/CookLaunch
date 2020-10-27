@@ -88,8 +88,8 @@ const IngredientItemEdit = (props) => {
         />
       </Grid>
       <Grid item xs={12}>
-        {!isEmpty(props.error.errorMessage) && (
-          <FormSubmitMessage submitMessage={props.error.errorMessage} />
+        {!isEmpty(props.error.message) && (
+          <FormSubmitMessage submitMessage={props.error.message} />
         )}
       </Grid>
     </Grid>

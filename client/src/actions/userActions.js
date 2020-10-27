@@ -65,17 +65,12 @@ export const updateUserProfile = async (userData) => {
           authResponsePayload: response.data,
         };
       } else {
-        return {
-          authResponseType: REQUEST_FAIL,
-          authResponsePayload: response.data,
-        };
+        throw new Error('An error has occurred during update.');
       }
     } catch (err) {
       return {
         authResponseType: REQUEST_FAIL,
-        authResponsePayload: isEmpty(err.response.data)
-          ? 'An error has occurred. Please try again.'
-          : err.response.data,
+        authResponsePayload: err.response.data,
       };
     }
   }
