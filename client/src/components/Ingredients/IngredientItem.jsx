@@ -63,7 +63,7 @@ const IngredientItem = (props) => {
         setUpdateRequired(false);
       };
     }
-  }, [editIngredient, updateRequired, props.handleUpdateIngredient]);
+  }, [editIngredient, updateRequired, props]);
 
   const handleDelete = async () => {
     const response = await props.handleDelete(id);
