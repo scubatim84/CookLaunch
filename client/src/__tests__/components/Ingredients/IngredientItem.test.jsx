@@ -17,6 +17,7 @@ const testIngredient = {
 
 config.disabled = true;
 const handleDelete = jest.fn((id) => id);
+const handleUpdateIngredient = jest.fn((testIngredient) => null);
 
 describe('IngredientItem renders correctly', () => {
   it('Renders component without crashing', () => {
@@ -185,6 +186,28 @@ describe('IngredientItem renders correctly', () => {
 });
 
 describe('IngredientItem buttons function correctly', () => {
+  it('Clicking on checkbox toggles whether checkbox is checked or not', async () => {
+    const { queryByRole } = render(
+      <IngredientItem
+        id={testIngredient.id}
+        name={testIngredient.name}
+        quantity={testIngredient.quantity}
+        quantityType={testIngredient.quantityType}
+        groceryIngredient
+        groceryExtra={testIngredient.groceryExtra}
+        checked={testIngredient.checked}
+        handleDelete={handleDelete}
+        handleUpdateIngredient={handleUpdateIngredient}
+      />
+    );
+
+    expect(queryByRole('checkbox').checked).toEqual(false);
+
+    UserEvent.click(queryByRole('checkbox'));
+
+    await waitFor(() => expect(queryByRole('checkbox').checked).toEqual(true));
+  });
+
   it('IngredientItem dialog pops up and disappears', async () => {
     const confirmDialogInput = {
       title: 'Delete ingredient?',
@@ -250,8 +273,6 @@ describe('IngredientItem buttons function correctly', () => {
   });
 
   it('Clicking done icon executes handleSubmit function', async () => {
-    const handleUpdateIngredient = jest.fn((testIngredient) => null);
-
     const { queryByTestId } = render(
       <IngredientItem
         id={testIngredient.id}
@@ -270,7 +291,7 @@ describe('IngredientItem buttons function correctly', () => {
     await waitFor(() => expect(queryByTestId('edit-icon')).toBeNull());
 
     UserEvent.click(queryByTestId('done-icon'));
-    expect(handleUpdateIngredient).toHaveBeenCalledTimes(1);
+    expect(handleUpdateIngredient).toHaveBeenCalledTimes(2);
   });
 
   it('Error during editing ingredient is rendered in error message to user', async () => {
