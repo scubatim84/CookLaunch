@@ -296,7 +296,9 @@ describe('IngredientItem buttons function correctly', () => {
 
   it('Error during editing ingredient is rendered in error message to user', async () => {
     const errorMessage = 'An error message';
-    const handleUpdateIngredient = jest.fn((testIngredient) => errorMessage);
+    const handleUpdateIngredientFail = jest.fn(
+      (testIngredient) => errorMessage
+    );
 
     const { queryByTestId } = render(
       <IngredientItem
@@ -308,7 +310,7 @@ describe('IngredientItem buttons function correctly', () => {
         groceryIngredient
         groceryExtra={testIngredient.groceryExtra}
         handleDelete={handleDelete}
-        handleUpdateIngredient={handleUpdateIngredient}
+        handleUpdateIngredient={handleUpdateIngredientFail}
       />
     );
 
@@ -316,7 +318,7 @@ describe('IngredientItem buttons function correctly', () => {
     await waitFor(() => expect(queryByTestId('edit-icon')).toBeNull());
 
     UserEvent.click(queryByTestId('done-icon'));
-    expect(handleUpdateIngredient).toHaveBeenCalledTimes(1);
+    expect(handleUpdateIngredientFail).toHaveBeenCalledTimes(1);
 
     await waitFor(() =>
       expect(queryByTestId('form-submit-message')).toBeTruthy()

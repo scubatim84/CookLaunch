@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import isEmpty from 'is-empty';
 import { makeStyles } from '@material-ui/core/styles';
-import { Cancel, Edit, Done } from '@material-ui/icons';
-import {
-  Checkbox,
-  FormControl,
-  Grid,
-  MenuItem,
-  Select,
-  TextField,
-} from '@material-ui/core';
+import { Edit } from '@material-ui/icons';
+import { Checkbox, Grid } from '@material-ui/core';
 
-import { ingredientQuantityTypes } from '../../actions/types';
 import { themeMain } from '../../Theme';
-import FormSubmitMessage from '../FormSubmitMessage';
 import { convert_units } from '../../actions/unitConversions';
+import IngredientItemEdit from './IngredientItemEdit';
 import IngredientText from './IngredientText';
 import DeleteButton from '../DeleteButton';
 
-function IngredientItem(props) {
+const IngredientItem = (props) => {
   const { id, name, quantity, quantityType, checked, groceryExtra } = props;
 
   const classes = useStyles(themeMain);
@@ -152,80 +144,15 @@ function IngredientItem(props) {
 
   if (editMode) {
     return (
-      <Grid container alignItems='center'>
-        <Grid item xs={4}>
-          {editIngredient.groceryExtra ? (
-            <TextField
-              inputProps={{ 'data-testid': 'grocery-edit-name' }}
-              onChange={handleChange}
-              variant='outlined'
-              required
-              placeholder={editIngredient.name}
-              value={editIngredient.name}
-              id='name'
-              name='name'
-              autoComplete='name'
-            />
-          ) : (
-            <IngredientText>{name}</IngredientText>
-          )}
-        </Grid>
-        <Grid item xs={2}>
-          <TextField
-            inputProps={{ 'data-testid': 'edit-quantity' }}
-            onChange={handleChange}
-            variant='outlined'
-            required
-            placeholder={editIngredient.quantity.toString()}
-            value={editIngredient.quantity}
-            id='quantity'
-            name='quantity'
-            autoComplete='quantity'
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <FormControl>
-            <Select
-              inputProps={{
-                'data-testid': 'select-quantity-type',
-              }}
-              labelId='quantityType'
-              id='quantityType'
-              required
-              placeholder={editIngredient.quantityType}
-              value={editIngredient.quantityType}
-              onChange={handleSelect}
-            >
-              {ingredientQuantityTypes.map((quantityType, index) => {
-                return (
-                  <MenuItem key={index} value={quantityType}>
-                    {quantityType}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={1}>
-          <Done
-            data-testid='done-icon'
-            onClick={handleSubmit}
-            className={classes.icon}
-          />
-        </Grid>
-        <Grid item xs={1}>
-          <Cancel
-            data-testid='cancel-icon'
-            onClick={handleCancel}
-            className={classes.icon}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          {!isEmpty(error.errorMessage) && (
-            <FormSubmitMessage submitMessage={error.errorMessage} />
-          )}
-        </Grid>
-      </Grid>
+      <IngredientItemEdit
+        editIngredient={editIngredient}
+        handleChange={handleChange}
+        handleSelect={handleSelect}
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
+        error={error}
+        name={name}
+      />
     );
   }
 
@@ -296,7 +223,7 @@ function IngredientItem(props) {
       </Grid>
     </Grid>
   );
-}
+};
 
 const useStyles = makeStyles((theme) => ({
   icon: {
