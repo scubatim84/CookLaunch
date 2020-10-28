@@ -1,6 +1,5 @@
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { REQUEST_SUCCESS, REQUEST_FAIL } from '../../actions/types';
 
 import { getUserData, updateUserProfile } from '../../actions/userActions';
 
@@ -40,7 +39,7 @@ describe('getUserData function', () => {
 
     const response = await getUserData();
 
-    expect(response).toEqual(errorMessage);
+    expect(response.data).toEqual(errorMessage);
   });
 });
 
@@ -54,8 +53,7 @@ describe('updateUserProfile function', () => {
   it('Empty first name returns error', async () => {
     const response = await updateUserProfile(userData);
 
-    expect(response.authResponseType).toBe(REQUEST_FAIL);
-    expect(response.authResponsePayload).toEqual('Please enter a first name.');
+    expect(response.data).toBe('Please enter a first name.');
   });
 
   it('Empty last name returns error', async () => {
@@ -64,8 +62,7 @@ describe('updateUserProfile function', () => {
 
     const response = await updateUserProfile(userData);
 
-    expect(response.authResponseType).toBe(REQUEST_FAIL);
-    expect(response.authResponsePayload).toEqual('Please enter a last name.');
+    expect(response.data).toBe('Please enter a last name.');
   });
 
   it('Empty email returns error', async () => {
@@ -74,8 +71,7 @@ describe('updateUserProfile function', () => {
 
     const response = await updateUserProfile(userData);
 
-    expect(response.authResponseType).toBe(REQUEST_FAIL);
-    expect(response.authResponsePayload).toEqual('Please enter an email.');
+    expect(response.data).toBe('Please enter an email.');
   });
 
   it('Tests successful API put request to update user profile', async () => {
@@ -89,8 +85,8 @@ describe('updateUserProfile function', () => {
 
     const response = await updateUserProfile(userData);
 
-    expect(response.authResponseType).toBe(REQUEST_SUCCESS);
-    expect(response.authResponsePayload).toEqual(userData);
+    expect(response.status).toBe(200);
+    expect(response.data).toEqual(userData);
   });
 
   it('Tests failed API put request to update user profile', async () => {
@@ -104,7 +100,6 @@ describe('updateUserProfile function', () => {
 
     const response = await updateUserProfile(userData);
 
-    expect(response.authResponseType).toBe(REQUEST_FAIL);
-    expect(response.authResponsePayload).toEqual(errorMessage);
+    expect(response.data).toBe(errorMessage);
   });
 });

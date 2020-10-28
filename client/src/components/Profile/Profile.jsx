@@ -3,13 +3,12 @@ import { Redirect } from 'react-router-dom';
 import { Card, Grid } from '@material-ui/core';
 import isEmpty from 'is-empty';
 
-import { REQUEST_SUCCESS } from '../../actions/types';
+import { useStylesMain } from '../../Styles';
+import { themeMain } from '../../Theme';
 import { updateUserProfile } from '../../actions/userActions';
 import ProfileField from './ProfileField';
 import ProfileButtons from './ProfileButtons';
 import FormSubmitMessage from '../FormSubmitMessage';
-import { useStylesMain } from '../../Styles';
-import { themeMain } from '../../Theme';
 import CardTitle from '../CardTitle';
 import Loader from '../Loader';
 
@@ -21,7 +20,7 @@ const Profile = (props) => {
   const [profileData, setProfileData] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState({
-    errorMessage: '',
+    message: '',
   });
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const Profile = (props) => {
     setEditMode(false);
 
     setError({
-      errorMessage: '',
+      message: '',
     });
   }, [email, firstName, lastName]);
 
@@ -54,13 +53,13 @@ const Profile = (props) => {
   };
 
   const handleSave = async () => {
-    const requestResponse = await updateUserProfile(profileData);
+    const response = await updateUserProfile(profileData);
 
-    if (requestResponse.authResponseType === REQUEST_SUCCESS) {
+    if (response.status === 200) {
       props.getUserPayload();
     } else {
       setError({
-        errorMessage: requestResponse.authResponsePayload,
+        message: response.data,
       });
     }
   };
@@ -129,8 +128,8 @@ const Profile = (props) => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  {!isEmpty(error.errorMessage) && (
-                    <FormSubmitMessage submitMessage={error.errorMessage} />
+                  {!isEmpty(error.message) && (
+                    <FormSubmitMessage submitMessage={error.message} />
                   )}
                 </Grid>
               </Grid>

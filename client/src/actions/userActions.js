@@ -1,7 +1,6 @@
 import axios from 'axios';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
-import { REQUEST_SUCCESS, REQUEST_FAIL } from './types';
 
 // Get user profile
 export const getUserData = async () => {
@@ -13,7 +12,7 @@ export const getUserData = async () => {
       },
     });
   } catch (err) {
-    return err.response.data;
+    return err.response;
   }
 };
 
@@ -47,31 +46,18 @@ export const updateUserProfile = async (userData) => {
 
   if (!isEmpty(error)) {
     return {
-      authResponseType: REQUEST_FAIL,
-      authResponsePayload: error,
+      data: error,
     };
   } else {
     try {
       const token = cookies.get('user');
-      const response = await axios.put('/api/user/profile', userData, {
+      return await axios.put('/api/user/profile', userData, {
         headers: {
           Authorization: token,
         },
       });
-
-      if (response.status === 200) {
-        return {
-          authResponseType: REQUEST_SUCCESS,
-          authResponsePayload: response.data,
-        };
-      } else {
-        throw new Error('An error has occurred during update.');
-      }
     } catch (err) {
-      return {
-        authResponseType: REQUEST_FAIL,
-        authResponsePayload: err.response.data,
-      };
+      return err.response;
     }
   }
 };
