@@ -9,7 +9,7 @@ it('tests conversion when units are the same', () => {
     (type) => type === 'Cups'
   );
 
-  expect(convert_units(5, quantityTypeFrom, quantityTypeTo)).toEqual(5);
+  expect(convert_units(5, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(5);
 });
 
 it('tests cups to liters conversion', () => {
@@ -20,7 +20,7 @@ it('tests cups to liters conversion', () => {
     (type) => type === 'Liters'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(0.24);
+  expect(convert_units(2, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(0.48);
 });
 
 it('tests cups to ounces conversion', () => {
@@ -31,7 +31,7 @@ it('tests cups to ounces conversion', () => {
     (type) => type === 'Ounces'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(8);
+  expect(convert_units(4, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(32);
 });
 
 it('tests grams to ounces conversion', () => {
@@ -42,7 +42,9 @@ it('tests grams to ounces conversion', () => {
     (type) => type === 'Ounces'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(0.035274);
+  expect(convert_units(15, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(
+    0.52911
+  );
 });
 
 it('tests liters to cups conversion', () => {
@@ -53,7 +55,9 @@ it('tests liters to cups conversion', () => {
     (type) => type === 'Cups'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(4.22675);
+  expect(convert_units(3, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(
+    12.68025
+  );
 });
 
 it('tests ounces to cups conversion', () => {
@@ -64,7 +68,7 @@ it('tests ounces to cups conversion', () => {
     (type) => type === 'Cups'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(0.125);
+  expect(convert_units(4, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(0.5);
 });
 
 it('tests ounces to grams conversion', () => {
@@ -75,7 +79,9 @@ it('tests ounces to grams conversion', () => {
     (type) => type === 'Grams'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(28.3495);
+  expect(convert_units(5, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(
+    141.7475
+  );
 });
 
 it('tests ounces to pounds conversion', () => {
@@ -86,7 +92,7 @@ it('tests ounces to pounds conversion', () => {
     (type) => type === 'Pounds'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(0.0625);
+  expect(convert_units(6, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(0.375);
 });
 
 it('tests ounces to tablespoons conversion', () => {
@@ -97,7 +103,7 @@ it('tests ounces to tablespoons conversion', () => {
     (type) => type === 'Tbsps'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(2);
+  expect(convert_units(5, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(10);
 });
 
 it('tests ounces to teaspoons conversion', () => {
@@ -108,7 +114,7 @@ it('tests ounces to teaspoons conversion', () => {
     (type) => type === 'Tsps'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(6);
+  expect(convert_units(6, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(36);
 });
 
 it('tests ounces to pints conversion', () => {
@@ -119,7 +125,7 @@ it('tests ounces to pints conversion', () => {
     (type) => type === 'Pints'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(0.0625);
+  expect(convert_units(6, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(0.375);
 });
 
 it('tests pounds to ounces conversion', () => {
@@ -130,7 +136,7 @@ it('tests pounds to ounces conversion', () => {
     (type) => type === 'Ounces'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(16);
+  expect(convert_units(3, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(48);
 });
 
 it('tests pints to ounces conversion', () => {
@@ -141,7 +147,7 @@ it('tests pints to ounces conversion', () => {
     (type) => type === 'Ounces'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(16);
+  expect(convert_units(4, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(64);
 });
 
 it('tests pounds to grams conversion', () => {
@@ -152,7 +158,9 @@ it('tests pounds to grams conversion', () => {
     (type) => type === 'Grams'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(453.592);
+  expect(convert_units(3, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(
+    1360.776
+  );
 });
 
 it('tests tablespoons to ounces conversion', () => {
@@ -163,7 +171,7 @@ it('tests tablespoons to ounces conversion', () => {
     (type) => type === 'Ounces'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(0.5);
+  expect(convert_units(3, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(1.5);
 });
 
 it('tests teaspoons to ounces conversion', () => {
@@ -174,5 +182,7 @@ it('tests teaspoons to ounces conversion', () => {
     (type) => type === 'Ounces'
   );
 
-  expect(convert_units(1, quantityTypeFrom, quantityTypeTo)).toEqual(0.166667);
+  expect(convert_units(5, quantityTypeFrom, quantityTypeTo)).toBeCloseTo(
+    0.833335
+  );
 });

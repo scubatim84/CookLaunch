@@ -18,10 +18,10 @@ conversionAmounts['TspsToOunces'] = 0.166667;
 
 export const convert_units = (quantity, type_one, type_two) => {
   if (type_one === type_two) {
-    return quantity;
+    return Number(quantity);
   } else {
     const convertKey = `${type_one}To${type_two}`;
 
-    return conversionAmounts[convertKey] * Number(quantity).toFixed(2);
+    return conversionAmounts[convertKey] * Number(quantity).toFixed(10);
   }
 };
