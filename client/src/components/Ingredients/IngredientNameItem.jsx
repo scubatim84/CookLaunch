@@ -1,4 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import isEmpty from 'is-empty';
+import { Cancel, Delete, Done, Edit } from '@material-ui/icons';
 import {
   Button,
   Dialog,
@@ -11,12 +13,11 @@ import {
   ListItemText,
   TextField,
 } from '@material-ui/core';
-import {Cancel, Delete, Done, Edit} from '@material-ui/icons';
-import isEmpty from 'is-empty';
-import FormSubmitMessage from '../FormSubmitMessage';
-import {updateIngredient} from '../../actions/ingredientActions';
 
-function IngredientNameItem(props) {
+import FormSubmitMessage from '../FormSubmitMessage';
+import { updateIngredient } from '../../actions/ingredientActions';
+
+const IngredientNameItem = (props) => {
   const [editIngredient, setEditIngredient] = useState({
     id: props.id,
     name: props.name,
@@ -55,7 +56,7 @@ function IngredientNameItem(props) {
   };
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setEditIngredient((prevValue) => {
       return {
@@ -85,6 +86,7 @@ function IngredientNameItem(props) {
       <Grid container alignItems='center'>
         <Grid item xs={10}>
           <TextField
+            inputProps={{ 'data-testid': 'ingredient-name-edit' }}
             onChange={handleChange}
             variant='outlined'
             required
@@ -95,10 +97,18 @@ function IngredientNameItem(props) {
           />
         </Grid>
         <Grid item xs={1}>
-          <Done onClick={handleSubmit} className='icon' />
+          <Done
+            data-testid='done-icon'
+            onClick={handleSubmit}
+            className='icon'
+          />
         </Grid>
         <Grid item xs={1}>
-          <Cancel onClick={handleCancel} className='icon' />
+          <Cancel
+            data-testid='cancel-icon'
+            onClick={handleCancel}
+            className='icon'
+          />
         </Grid>
         <Grid item xs={12}>
           {!isEmpty(error.errorMessage) && (
@@ -107,53 +117,61 @@ function IngredientNameItem(props) {
         </Grid>
       </Grid>
     );
-  } else {
-    return (
-      <Grid container alignItems='center'>
-        <Grid item xs={10}>
-          <ListItem dense={true} alignItems='flex-start'>
-            <ListItemText primary={props.name} />
-          </ListItem>
-        </Grid>
-        {props.userId === props.createdBy && (
-          <Grid item xs={2}>
-            <Grid container>
-              <Grid item xs={6}>
-                <Edit onClick={handleEdit} className='icon' />
-              </Grid>
-              <Grid item xs={6}>
-                <Delete onClick={handleClickOpen} className='icon' />
-                <Dialog
-                  open={open}
-                  onClose={handleClose}
-                  aria-labelledby='alert-dialog-title'
-                  aria-describedby='alert-dialog-description'
-                >
-                  <DialogTitle id='alert-dialog-title'>
-                    {'Delete ingredient?'}
-                  </DialogTitle>
-                  <DialogContent>
-                    <DialogContentText id='alert-dialog-description'>
-                      This action cannot be reversed. Are you sure you want to
-                      delete this ingredient?
-                    </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={handleDelete} color='primary'>
-                      Delete
-                    </Button>
-                    <Button onClick={handleClose} color='primary' autoFocus>
-                      Cancel
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </Grid>
+  }
+
+  return (
+    <Grid container alignItems='center'>
+      <Grid item xs={10}>
+        <ListItem dense={true} alignItems='flex-start'>
+          <ListItemText primary={props.name} />
+        </ListItem>
+      </Grid>
+      {props.userId === props.createdBy && (
+        <Grid item xs={2}>
+          <Grid container>
+            <Grid item xs={6}>
+              <Edit
+                data-testid='edit-icon'
+                onClick={handleEdit}
+                className='icon'
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <Delete
+                data-testid='delete-icon'
+                onClick={handleClickOpen}
+                className='icon'
+              />
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby='alert-dialog-title'
+                aria-describedby='alert-dialog-description'
+              >
+                <DialogTitle id='alert-dialog-title'>
+                  {'Delete ingredient?'}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id='alert-dialog-description'>
+                    This action cannot be reversed. Are you sure you want to
+                    delete this ingredient?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleDelete} color='primary'>
+                    Delete
+                  </Button>
+                  <Button onClick={handleClose} color='primary' autoFocus>
+                    Cancel
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </Grid>
           </Grid>
-        )}
-      </Grid>
-    );
-  }
-}
+        </Grid>
+      )}
+    </Grid>
+  );
+};
 
 export default IngredientNameItem;
