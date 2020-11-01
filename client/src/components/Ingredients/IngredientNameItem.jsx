@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import isEmpty from 'is-empty';
-import { Cancel, Delete, Done, Edit } from '@material-ui/icons';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  ListItem,
-  ListItemText,
-  TextField,
-} from '@material-ui/core';
+import { Cancel, Done, Edit } from '@material-ui/icons';
+import { Grid, ListItem, ListItemText, TextField } from '@material-ui/core';
 
-import FormSubmitMessage from '../FormSubmitMessage';
 import { updateIngredient } from '../../actions/ingredientActions';
+import FormSubmitMessage from '../FormSubmitMessage';
+import DeleteButton from '../DeleteButton';
 
 const IngredientNameItem = (props) => {
   const [editIngredient, setEditIngredient] = useState({
@@ -23,7 +13,6 @@ const IngredientNameItem = (props) => {
     name: props.name,
   });
   const [editMode, setEditMode] = useState(false);
-  const [open, setOpen] = useState(false);
   const [error, setError] = useState({
     errorMessage: '',
   });
@@ -33,19 +22,7 @@ const IngredientNameItem = (props) => {
       id: props.id,
       name: props.name,
     });
-  }, [props]);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleDelete = async () => {
-    await props.handleDelete(props.id);
-  };
+  }, [props.id, props.name]);
 
   const handleEdit = () => {
     setEditMode(true);
@@ -79,6 +56,14 @@ const IngredientNameItem = (props) => {
         errorMessage: response.data,
       });
     }
+  };
+
+  const ingredientDialog = {
+    title: 'Delete ingredient?',
+    text:
+      'This action cannot be reversed. Are you sure you want to delete this ingredient?',
+    leftButtonLabel: 'Delete',
+    rightButtonLabel: 'Cancel',
   };
 
   if (editMode) {
@@ -137,35 +122,10 @@ const IngredientNameItem = (props) => {
               />
             </Grid>
             <Grid item xs={6}>
-              <Delete
-                data-testid='delete-icon'
-                onClick={handleClickOpen}
-                className='icon'
+              <DeleteButton
+                dialog={ingredientDialog}
+                handleDelete={props.handleDelete}
               />
-              <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby='alert-dialog-title'
-                aria-describedby='alert-dialog-description'
-              >
-                <DialogTitle id='alert-dialog-title'>
-                  {'Delete ingredient?'}
-                </DialogTitle>
-                <DialogContent>
-                  <DialogContentText id='alert-dialog-description'>
-                    This action cannot be reversed. Are you sure you want to
-                    delete this ingredient?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={handleDelete} color='primary'>
-                    Delete
-                  </Button>
-                  <Button onClick={handleClose} color='primary' autoFocus>
-                    Cancel
-                  </Button>
-                </DialogActions>
-              </Dialog>
             </Grid>
           </Grid>
         </Grid>

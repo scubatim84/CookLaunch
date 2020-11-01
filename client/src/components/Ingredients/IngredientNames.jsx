@@ -1,11 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {Redirect} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import isEmpty from 'is-empty';
 import _ from 'lodash';
 import FormSubmitMessage from '../FormSubmitMessage';
-import {addIngredient, deleteIngredient} from '../../actions/ingredientActions';
-import {useStylesMain} from '../../Styles';
-import {themeMain} from '../../Theme';
+import {
+  addIngredient,
+  deleteIngredient,
+} from '../../actions/ingredientActions';
+import { useStylesMain } from '../../Styles';
+import { themeMain } from '../../Theme';
 import {
   Button,
   Card,
@@ -44,14 +47,14 @@ function IngredientNames(props) {
         return a.name.localeCompare(b.name);
       });
 
-      setIngredientList({data: sortedIngredients});
+      setIngredientList({ data: sortedIngredients });
     } else if (props.ingredients) {
-      setIngredientList({data: []});
+      setIngredientList({ data: [] });
     }
   }, [props.id, props.ingredients]);
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
     setIngredient((prevValue) => {
       return {

@@ -4,18 +4,18 @@ import { render, waitFor } from '@testing-library/react';
 
 import IngredientNameItem from '../../../components/Ingredients/IngredientNameItem';
 
-describe('IngredientNameItem', () => {
-  const ingredient = {
-    createdBy: 'testUser',
-    userId: 'userTestId',
-    id: 'testId',
-    name: 'test ingredient',
-    dateLastChanged: new Date(),
-  };
+const ingredient = {
+  createdBy: 'testUser',
+  userId: 'userTestId',
+  id: 'testId',
+  name: 'test ingredient',
+  dateLastChanged: new Date(),
+};
 
-  const getIngredientData = jest.fn();
-  const handleDelete = jest.fn();
+const getIngredientData = jest.fn();
+const handleDelete = jest.fn();
 
+describe('IngredientNameItem renders correctly', () => {
   it('Renders component without crashing', () => {
     render(<IngredientNameItem />);
   });
@@ -80,5 +80,49 @@ describe('IngredientNameItem', () => {
 
     expect(queryByTestId('edit-icon')).toBeNull();
     expect(queryByTestId('delete-icon')).toBeNull();
+  });
+});
+
+describe('IngredientNameItem buttons function correctly', () => {
+  it('IngredientNameItem dialog pops up and disappears', async () => {
+    const confirmDialogInput = {
+      title: 'Delete ingredient?',
+      text:
+        'This action cannot be reversed. Are you sure you want to delete this ingredient?',
+      leftButtonLabel: 'Delete',
+      rightButtonLabel: 'Cancel',
+    };
+
+    const { queryByTestId, queryByText } = render(
+      <IngredientNameItem
+        key={ingredient.name + ingredient.dateLastChanged}
+        createdBy={ingredient.createdBy}
+        userId={ingredient.userId}
+        id={ingredient.id}
+        name={ingredient.name}
+        getIngredientData={getIngredientData}
+        handleDelete={handleDelete}
+      />
+    );
+
+    expect(queryByText(confirmDialogInput.title)).toBeNull();
+    expect(queryByText(confirmDialogInput.text)).toBeNull();
+    expect(queryByText(confirmDialogInput.leftButtonLabel)).toBeNull();
+    expect(queryByText(confirmDialogInput.rightButtonLabel)).toBeNull();
+
+    UserEvent.click(queryByTestId('delete-icon'));
+    expect(queryByTestId('confirm-dialog')).toBeTruthy();
+
+    expect(queryByText(confirmDialogInput.title)).toBeTruthy();
+    expect(queryByText(confirmDialogInput.text)).toBeTruthy();
+    expect(queryByText(confirmDialogInput.leftButtonLabel)).toBeTruthy();
+    expect(queryByText(confirmDialogInput.rightButtonLabel)).toBeTruthy();
+
+    UserEvent.click(queryByTestId('confirm-dialog-button-right'));
+    await waitFor(() => expect(queryByTestId('delete-dialog')).toBeNull());
+
+    UserEvent.click(queryByTestId('delete-icon'));
+    UserEvent.click(queryByTestId('confirm-dialog-button-left'));
+    await waitFor(() => expect(handleDelete).toHaveBeenCalledTimes(1));
   });
 });
