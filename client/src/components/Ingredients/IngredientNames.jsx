@@ -96,14 +96,6 @@ function IngredientNames(props) {
     }
   };
 
-  const ingredientDialog = {
-    title: 'Delete ingredient?',
-    text:
-      'This action cannot be reversed. Are you sure you want to delete this ingredient?',
-    leftButtonLabel: 'Delete',
-    rightButtonLabel: 'Cancel',
-  };
-
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
   } else if (!ingredientList || !props.id) {
@@ -136,7 +128,6 @@ function IngredientNames(props) {
                           name={formatName}
                           getIngredientData={props.getIngredientData}
                           handleDelete={handleDelete}
-                          ingredientDialog={ingredientDialog}
                         />
                       </Grid>
                     );

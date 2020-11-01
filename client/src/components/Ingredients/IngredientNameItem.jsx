@@ -58,6 +58,14 @@ const IngredientNameItem = (props) => {
     }
   };
 
+  const ingredientDialog = {
+    title: 'Delete ingredient?',
+    text:
+      'This action cannot be reversed. Are you sure you want to delete this ingredient?',
+    leftButtonLabel: 'Delete',
+    rightButtonLabel: 'Cancel',
+  };
+
   if (editMode) {
     return (
       <Grid container alignItems='center'>
@@ -115,7 +123,7 @@ const IngredientNameItem = (props) => {
             </Grid>
             <Grid item xs={6}>
               <DeleteButton
-                dialog={props.ingredientDialog}
+                dialog={ingredientDialog}
                 handleDelete={props.handleDelete}
               />
             </Grid>
