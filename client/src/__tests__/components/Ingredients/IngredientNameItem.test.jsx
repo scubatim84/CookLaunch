@@ -1,9 +1,8 @@
 import React from 'react';
 import UserEvent from '@testing-library/user-event';
-import { act, render, waitFor, screen } from '@testing-library/react';
+import { render, waitFor, screen } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { config } from 'react-transition-group';
 
 import IngredientNameItem from '../../../components/Ingredients/IngredientNameItem';
 
@@ -26,7 +25,6 @@ const ingredient = {
   dateLastChanged: new Date(),
 };
 
-config.disabled = true;
 const getIngredientData = jest.fn();
 const handleDelete = jest.fn();
 
