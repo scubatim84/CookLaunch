@@ -27,3 +27,5 @@ export const ingredientData = [
     __v: 0,
   },
 ];
+
+it.skip('empty test to avoid error on test run', () => {});
