@@ -6,7 +6,11 @@
       "!<rootDir>/node_modules/",
       "!<rootDir>/path/to/dir/",
       "!<rootDir>/src/serviceWorker.js",
-      "!<rootDir>/src/index.js"
+      "!<rootDir>/src/index.js",
+      "!<rootDir>/src/__tests__/testData.js"
+    ],
+    "watchPathIgnorePatterns": [
+      "<rootDir>/src/__tests__/testData.js"
     ],
     "coverageThreshold": {
       "global": {
