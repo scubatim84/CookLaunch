@@ -1,14 +1,12 @@
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { render, waitFor, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
-import { shallow } from 'enzyme';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import Profile from '../../../components/Profile/Profile';
-import { REQUEST_SUCCESS, REQUEST_FAIL } from '../../../actions/types';
+import { REQUEST_SUCCESS } from '../../../actions/types';
 
 const server = setupServer();
 
@@ -22,10 +20,6 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('Profile', () => {
-  it('Renders component without crashing', () => {
-    shallow(<Profile />);
-  });
-
   it('Redirects user to login component if not logged in', () => {
     render(
       <Router>

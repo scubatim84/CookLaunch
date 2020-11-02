@@ -1,9 +1,10 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import { render } from '@testing-library/react';
+
 import ProfileField from '../../../components/Profile/ProfileField';
 
 describe('ProfileField', () => {
   it('Renders component without crashing', () => {
-    shallow(<ProfileField />);
+    render(<ProfileField />);
   });
 });

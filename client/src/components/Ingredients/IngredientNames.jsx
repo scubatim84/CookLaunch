@@ -99,7 +99,7 @@ function IngredientNames(props) {
   if (!props.isLoggedIn) {
     return <Redirect to='/login' />;
   } else if (!ingredientList || !props.id) {
-    return <Loader />;
+    return <Loader data-testid='loader' />;
   } else {
     return (
       <Container component='main' maxWidth='xs'>
