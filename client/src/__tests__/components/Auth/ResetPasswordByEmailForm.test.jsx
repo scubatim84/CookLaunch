@@ -1,5 +1,6 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import { render } from '@testing-library/react';
+
 import ResetPasswordByEmailForm from '../../../components/Auth/ResetPasswordByEmailForm';
 
 // Create mock of useParams to pass in token to component
@@ -8,11 +9,11 @@ jest.mock('react-router-dom', () => ({
   useParams: () => ({
     token: 'test',
   }),
-  useRouteMatch: () => ({url: '/reset/:token'}),
+  useRouteMatch: () => ({ url: '/reset/:token' }),
 }));
 
 describe('ResetPasswordByEmailForm', () => {
   it('Renders component without crashing', () => {
-    shallow(<ResetPasswordByEmailForm />);
+    render(<ResetPasswordByEmailForm />);
   });
 });

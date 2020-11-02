@@ -108,7 +108,10 @@ const IngredientNameItem = (props) => {
     <Grid container alignItems='center'>
       <Grid item xs={10}>
         <ListItem dense={true} alignItems='flex-start'>
-          <ListItemText primary={props.name} />
+          <ListItemText
+            data-testid={`list-item-${props.name}`}
+            primary={props.name}
+          />
         </ListItem>
       </Grid>
       {props.userId === props.createdBy && (
