@@ -1,23 +1,22 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 
 import ProfileButtons from '../../../components/Profile/ProfileButtons';
 
 describe('ProfileButtons', () => {
-  it('Renders component without crashing', () => {
-    shallow(<ProfileButtons />);
-  });
-
   it('Renders component when in edit mode', () => {
-    const wrapper = shallow(<ProfileButtons editMode={true} />);
+    const { queryByTestId } = render(<ProfileButtons editMode />);
 
-    expect(wrapper.find('#Save')).toHaveLength(1);
-    expect(wrapper.find('#Cancel')).toHaveLength(1);
+    expect(queryByTestId('save-button')).toBeTruthy();
+    expect(queryByTestId('cancel-button')).toBeTruthy();
+    expect(queryByTestId('edit-button')).toBeNull();
   });
 
   it('Renders component when not in edit mode', () => {
-    const wrapper = shallow(<ProfileButtons />);
+    const { queryByTestId } = render(<ProfileButtons />);
 
-    expect(wrapper.find('#Edit')).toHaveLength(1);
+    expect(queryByTestId('edit-button')).toBeTruthy();
+    expect(queryByTestId('save-button')).toBeNull();
+    expect(queryByTestId('cancel-button')).toBeNull();
   });
 });

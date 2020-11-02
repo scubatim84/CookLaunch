@@ -1,16 +1,12 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import { render } from '@testing-library/react';
+
 import ProfileFieldLabel from '../../../components/Profile/ProfileFieldLabel';
-import {Typography} from '@material-ui/core';
 
 describe('ProfileFieldLabel', () => {
-  it('Renders component without crashing', () => {
-    shallow(<ProfileFieldLabel />);
-  });
-
   it('Renders title passed as prop to component', () => {
-    const wrapper = shallow(<ProfileFieldLabel label='Test label' />);
+    const { queryByText } = render(<ProfileFieldLabel label='Test label' />);
 
-    expect(wrapper.find(Typography).equals('Test label'));
+    expect(queryByText('Test label')).toBeTruthy();
   });
 });

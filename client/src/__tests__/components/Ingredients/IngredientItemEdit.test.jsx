@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 
 import IngredientItemEdit from '../../../components/Ingredients/IngredientItemEdit';
 
@@ -20,7 +20,7 @@ const name = 'testname';
 
 describe('IngredientItemEdit renders correctly', () => {
   it('Renders component without crashing', () => {
-    shallow(
+    render(
       <IngredientItemEdit
         editIngredient={testIngredient}
         error={error}

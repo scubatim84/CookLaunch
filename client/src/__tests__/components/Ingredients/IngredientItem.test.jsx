@@ -1,7 +1,6 @@
 import React from 'react';
 import UserEvent from '@testing-library/user-event';
 import { render, waitFor, screen } from '@testing-library/react';
-import { shallow } from 'enzyme';
 import { config } from 'react-transition-group';
 
 import IngredientItem from '../../../components/Ingredients/IngredientItem';
@@ -20,10 +19,6 @@ const handleDelete = jest.fn((id) => id);
 const handleUpdateIngredient = jest.fn((testIngredient) => null);
 
 describe('IngredientItem renders correctly', () => {
-  it('Renders component without crashing', () => {
-    shallow(<IngredientItem />);
-  });
-
   it('Renders ingredient item when unchecked and not a grocery ingredient', () => {
     const { queryByTestId } = render(
       <IngredientItem
