@@ -1,15 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
-import { shallow } from 'enzyme';
 
 import LoginForm from '../../../components/Auth/LoginForm';
 
 describe('LoginForm', () => {
-  it('Renders component without crashing', () => {
-    shallow(<LoginForm />);
-  });
-
   it('Email input field stores input in hook', () => {
     render(<LoginForm />);
 

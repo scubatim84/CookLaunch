@@ -1,15 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import UserEvent from '@testing-library/user-event';
-import { shallow } from 'enzyme';
 
 import RegisterForm from '../../../components/Auth/RegisterForm';
 
 describe('RegisterForm', () => {
-  it('Renders component without crashing', () => {
-    shallow(<RegisterForm />);
-  });
-
   it('First name input field stores input in hook', () => {
     render(<RegisterForm />);
 
