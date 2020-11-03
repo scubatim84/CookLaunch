@@ -7,7 +7,7 @@ const FormSubmitMessage = (props) => {
 
   return (
     <Typography
-      data-testid={'form-submit-message'}
+      data-testid='form-submit-message'
       id='Message'
       className={classes.formSubmitMessage}
     >
