@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
 import { themeMain } from '../../Theme';
 import defaultImage from '../../images/defaultrecipeimage.jpg';
 
