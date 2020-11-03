@@ -1,12 +1,13 @@
 import React from 'react';
-import {Button, Grid} from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 
-function RecipeButton(props) {
+const RecipeButton = (props) => {
   if (props.editMode) {
     return (
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Button
+            data-testid='submit-button'
             fullWidth
             variant='contained'
             color='primary'
@@ -17,6 +18,7 @@ function RecipeButton(props) {
         </Grid>
         <Grid item xs={12}>
           <Button
+            data-testid='cancel-button'
             fullWidth
             variant='contained'
             color='primary'
@@ -27,19 +29,20 @@ function RecipeButton(props) {
         </Grid>
       </Grid>
     );
-  } else {
-    return (
-      <Button
-        type='submit'
-        fullWidth
-        variant='outlined'
-        color='primary'
-        onClick={props.handleEdit}
-      >
-        Edit Recipe
-      </Button>
-    );
   }
-}
+
+  return (
+    <Button
+      data-testid='edit-button'
+      type='submit'
+      fullWidth
+      variant='outlined'
+      color='primary'
+      onClick={props.handleEdit}
+    >
+      Edit Recipe
+    </Button>
+  );
+};
 
 export default RecipeButton;
