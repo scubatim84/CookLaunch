@@ -1,9 +1,14 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import { shallow } from 'enzyme';
 import Welcome from '../../components/Welcome';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Loader from '../../components/Loader';
-import {Backdrop, CircularProgress, Grid, Typography} from '@material-ui/core';
+import {
+  Backdrop,
+  CircularProgress,
+  Grid,
+  Typography,
+} from '@material-ui/core';
 
 describe('Welcome', () => {
   it('Renders component without crashing', () => {

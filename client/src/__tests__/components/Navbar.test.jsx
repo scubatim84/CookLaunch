@@ -1,9 +1,10 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import { render } from '@testing-library/react';
+
 import Navbar from '../../components/Navbar';
 
 describe('Navbar', () => {
   it('Renders component without crashing', () => {
-    shallow(<Navbar />);
+    render(<Navbar />);
   });
 });

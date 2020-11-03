@@ -1,15 +1,10 @@
 import React from 'react';
 import UserEvent from '@testing-library/user-event';
 import { render, waitFor } from '@testing-library/react';
-import { shallow } from 'enzyme';
 
 import ConfirmDialog from '../../components/ConfirmDialog';
 
 describe('ConfirmDialog', () => {
-  it('Renders component without crashing', () => {
-    shallow(<ConfirmDialog />);
-  });
-
   it('Dialog is open and buttons execute prop functions when open prop is true', async () => {
     const handleClose = jest.fn();
     const handleDelete = jest.fn();
