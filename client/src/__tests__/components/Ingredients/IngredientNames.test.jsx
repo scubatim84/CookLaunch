@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { render } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import UserEvent from '@testing-library/user-event';
 
 import IngredientNames from '../../../components/Ingredients/IngredientNames';
 import { ingredientData } from '../../testData';
@@ -44,5 +45,17 @@ describe('IngredientNames renders correctly', () => {
     expect(queryByText('Ingredient Two')).toBeTruthy();
     expect(queryByTestId('list-item-Ingredient Three')).toBeTruthy();
     expect(queryByText('Ingredient Three')).toBeTruthy();
+  });
+});
+
+describe('IngredientNames buttons function correctly', () => {
+  it('User can type in ingredient to add to list', async () => {
+    render(
+      <IngredientNames isLoggedIn id='testId' ingredients={ingredientData} />
+    );
+
+    const ingredientInput = screen.getByTestId('ingredient-name-entry');
+    UserEvent.type(ingredientInput, 'test ingredient');
+    expect(ingredientInput.value).toBe('test ingredient');
   });
 });

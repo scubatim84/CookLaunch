@@ -1,9 +1,10 @@
 import React from 'react';
-import {shallow} from 'enzyme';
+import { render } from '@testing-library/react';
+
 import Footer from '../../components/Footer';
 
 describe('Footer', () => {
   it('Renders component without crashing', () => {
-    shallow(<Footer />);
+    render(<Footer />);
   });
 });
