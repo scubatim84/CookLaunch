@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import isEmpty from 'is-empty';
-import _ from 'lodash';
-import {
-  Button,
-  Card,
-  Container,
-  Grid,
-  List,
-  TextField,
-} from '@material-ui/core';
+import { Button, Card, Container, Grid, TextField } from '@material-ui/core';
 
 import {
   addIngredient,
@@ -17,7 +9,7 @@ import {
 } from '../../actions/ingredientActions';
 import { useStylesMain } from '../../Styles';
 import { themeMain } from '../../Theme';
-import IngredientNameItem from './IngredientNameItem';
+import IngredientNameList from './IngredientNameList';
 import CardTitle from '../CardTitle';
 import Loader from '../Loader';
 import FormSubmitMessage from '../FormSubmitMessage';
@@ -114,29 +106,12 @@ const IngredientNames = (props) => {
               <Grid item xs={12} align='center'>
                 <CardTitle title='Ingredients For Recipes' />
               </Grid>
-              <List className={classes.list}>
-                {ingredientList.data.map((ingredient) => {
-                  const formatName = _.startCase(_.toLower(ingredient.name));
-
-                  return (
-                    <Grid
-                      item
-                      xs={12}
-                      key={ingredient.name + ingredient.dateLastChanged}
-                    >
-                      <IngredientNameItem
-                        key={ingredient.name + ingredient.dateLastChanged}
-                        createdBy={ingredient.createdBy}
-                        userId={props.id}
-                        id={ingredient._id}
-                        name={formatName}
-                        getIngredientData={props.getIngredientData}
-                        handleDelete={handleDelete}
-                      />
-                    </Grid>
-                  );
-                })}
-              </List>
+              <IngredientNameList
+                ingredientList={ingredientList}
+                handleDelete={handleDelete}
+                getIngredientData={props.getIngredientData}
+                userId={props.id}
+              />
               <Grid item xs={12}>
                 <TextField
                   inputProps={{ 'data-testid': 'ingredient-name-entry' }}
