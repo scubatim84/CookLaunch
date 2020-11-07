@@ -126,6 +126,7 @@ const IngredientNameItem = (props) => {
             </Grid>
             <Grid item xs={6}>
               <DeleteButton
+                id={props.id}
                 dialog={ingredientDialog}
                 handleDelete={props.handleDelete}
               />
