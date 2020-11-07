@@ -48,6 +48,7 @@ const IngredientItemGrocery = (props) => {
       </Grid>
       <Grid item xs={1}>
         <DeleteButton
+          id={props.id}
           dialog={props.ingredientDialog}
           handleDelete={props.handleDelete}
         />

@@ -58,10 +58,16 @@ const IngredientNames = (props) => {
   };
 
   const handleDelete = async (ingredientId) => {
-    await deleteIngredient(ingredientId);
+    const response = await deleteIngredient(ingredientId);
 
-    // Update ingredient list to re-render ingredients
-    await props.getIngredientData();
+    if (response.status === 204) {
+      // Update ingredient list to re-render ingredients
+      await props.getIngredientData();
+    } else {
+      setError({
+        errorMessage: response.data,
+      });
+    }
   };
 
   const handleSubmit = async (e) => {

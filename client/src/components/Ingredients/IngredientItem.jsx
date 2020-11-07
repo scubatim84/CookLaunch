@@ -139,6 +139,7 @@ const IngredientItem = (props) => {
   if (editMode) {
     return (
       <IngredientItemEdit
+        id={id}
         editIngredient={editIngredient}
         handleChange={handleChange}
         handleSelect={handleSelect}
@@ -153,6 +154,7 @@ const IngredientItem = (props) => {
   if (groceryIngredient) {
     return (
       <IngredientItemGrocery
+        id={id}
         editIngredient={editIngredient}
         handleCheck={handleCheck}
         handleEdit={handleEdit}
@@ -167,6 +169,7 @@ const IngredientItem = (props) => {
 
   return (
     <IngredientItemView
+      id={id}
       handleEdit={handleEdit}
       handleDelete={handleDelete}
       name={name}

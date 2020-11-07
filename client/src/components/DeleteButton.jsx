@@ -8,6 +8,8 @@ import ConfirmDialog from './ConfirmDialog';
 const DeleteButton = (props) => {
   const classes = useStyles(themeMain);
 
+  const { id } = props;
+
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
@@ -16,6 +18,10 @@ const DeleteButton = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleDelete = () => {
+    props.handleDelete(id);
   };
 
   return (
@@ -29,7 +35,7 @@ const DeleteButton = (props) => {
         dialog={props.dialog}
         open={open}
         close={handleClose}
-        delete={props.handleDelete}
+        delete={handleDelete}
       />
     </div>
   );
