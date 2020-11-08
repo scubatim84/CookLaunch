@@ -25,6 +25,7 @@ import IngredientNames from './components/Ingredients/IngredientNames';
 import RecipeExpanded from './components/Recipes/RecipeExpanded';
 import GroceryList from './components/GroceryList';
 import Welcome from './components/Welcome';
+import UserTour from './components/UserTour';
 
 function App() {
   const classes = useStylesMain(themeMain);
@@ -285,6 +286,10 @@ function App() {
     );
   };
 
+  const renderTour = () => {
+    return <UserTour handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
+  };
+
   return (
     <ThemeProvider theme={themeMain}>
       <CssBaseline />
@@ -296,6 +301,7 @@ function App() {
       <Router>
         <div className='App'>
           <Route exact path='/' render={renderLanding} />
+          <Route exact path='/tour' render={renderTour} />
           <Route exact path='/login' render={renderLogin} />
           <Route exact path='/dashboard' render={renderDashboard} />
           <Route exact path='/welcome' render={renderWelcome} />
