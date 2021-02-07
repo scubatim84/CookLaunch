@@ -34,7 +34,6 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
     "enzyme-to-json": "^3.5.0",
-    "is-empty": "^1.2.0",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.19",
@@ -43,15 +42,14 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
-    "react-test-renderer": "^16.13.1",
-    "validator": "^13.5.2"
+    "react-test-renderer": "^16.13.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "test-coverage": "react-scripts test --env=jest-environment-jsdom-sixteen --coverage --watchAll",
-    "test-ci": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test-ci": "CI=true react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:5000",
