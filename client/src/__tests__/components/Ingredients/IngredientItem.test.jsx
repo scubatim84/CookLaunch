@@ -286,7 +286,7 @@ describe('IngredientItem buttons function correctly', () => {
     await waitFor(() => expect(queryByTestId('edit-icon')).toBeNull());
 
     UserEvent.click(queryByTestId('done-icon'));
-    expect(handleUpdateIngredient).toHaveBeenCalledTimes(2);
+    expect(handleUpdateIngredient).toHaveBeenCalledTimes(1);
   });
 
   it('Error during editing ingredient is rendered in error message to user', async () => {
