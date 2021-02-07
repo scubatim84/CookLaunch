@@ -13,8 +13,7 @@
     "test-server": "./node_modules/.bin/jest --config=jest.config.json --forceExit --coverage",
     "test-client": "cd .. && cd client && npm run test-ci",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "cd client/ && npm install && npm run build",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "build": "cd .. && cd client && npm install && npm run build"
   },
   "author": "",
   "license": "MIT",
