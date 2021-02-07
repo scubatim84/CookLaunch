@@ -9,7 +9,6 @@ before_script:
   - npm install --prefix client
 script:
   - npm run build
-  - npm run test-server
   - npm run test-client
 deploy:
   provider: heroku
