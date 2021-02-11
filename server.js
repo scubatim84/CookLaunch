@@ -9,13 +9,13 @@ import path from 'path';
 import { authJwt } from './config/passport.js';
 
 // API Routes
-import authRoutes from './routes/api/auth.js';
-import userRoutes from './routes/api/user.js';
-import pantryRoutes from './routes/api/pantry.js';
-import groceriesRoutes from './routes/api/groceries.js';
-import recipeRoutes from './routes/api/recipes.js';
-import ingredientRoutes from './routes/api/ingredients.js';
-import fileUploadRoute from './routes/api/files.js';
+import authRoutes from './api/routes/auth.js';
+import userRoutes from './api/routes/user.js';
+import pantryRoutes from './api/routes/pantry.js';
+import groceriesRoutes from './api/routes/groceries.js';
+import recipeRoutes from './api/routes/recipes.js';
+import ingredientRoutes from './api/routes/ingredients.js';
+import fileUploadRoute from './api/routes/files.js';
 
 // Set up Express server
 const app = express();
