@@ -1,6 +1,9 @@
 <h2>Cook Launch</h2>
 <p>This web application is meant to make cooking at home easier by allowing users to store recipes, and ingredients they have at home in a pantry, and generate ingredients required to cook recipes. The app will subtract ingredients in the user's pantry from the grocery list, to allow the user to only obtain the ingredients needed for the desired recipes, and the grocery list is then provided to the user. Additional features will be added later as shown below.</p>
 
+<h2>Next Planned Upgrade</h2>
+<p>MongoDB will be replaced with PostgresSQL for data persistence.</p>
+
 <h2>Features</h2>
 <p>Users can create accounts to store their profile information, ingredients, recipes, etc.</p>
 <img src="client/public/assets/images/screenshot1.png" alt="Screenshot of user interface">
@@ -21,10 +24,9 @@
     <li>React
     <li>Material UI
     <li>Node
-    <li>Jira
     <li>Heroku
     <li>Travis CI
-      <li>AWS S3
+    <li>AWS S3
   </ul>
 
 <h2>Authors</h2>
