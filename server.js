@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import sslRedirect from 'heroku-ssl-redirect';
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
@@ -26,6 +27,7 @@ dotenv.config();
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(sslRedirect());
 
 // DB Config
 const db = process.env.MONGO_URI;
@@ -55,13 +57,6 @@ app.use('/files', authJwt, fileUploadRoute);
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets
   app.use(express.static('client/build'));
-
-  // Redirect HTTP traffic to HTTPS
-  app.use((req, res, next) => {
-    if (req.header('x-forwarded-proto') !== 'https')
-      res.redirect(`https://${req.header('host')}${req.url}`);
-    else next();
-  });
 
   // Express will serve up index.html file if it doesn't recognize route
   const __dirname = path.resolve();
