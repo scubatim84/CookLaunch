@@ -23,6 +23,9 @@ const app = express();
 // Set up environment variable support
 dotenv.config();
 
+// Set up port
+const port = process.env.PORT || 5000;
+
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -41,6 +44,26 @@ try {
 // Passport middleware
 app.use(passport.initialize());
 
+// Production settings
+if (process.env.NODE_ENV === 'production') {
+  // Express will serve up production assets
+  app.use(express.static('client/build'));
+
+  // Redirect HTTP to HTTPS
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https')
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    else next();
+  });
+
+  // Express will serve up index.html file if it doesn't recognize route
+  const __dirname = path.resolve();
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/ingredients', authJwt, ingredientRoutes);
@@ -51,19 +74,6 @@ app.use('/api/recipes', authJwt, recipeRoutes);
 
 // Other route
 app.use('/files', authJwt, fileUploadRoute);
-
-if (process.env.NODE_ENV === 'production') {
-  // Express will serve up production assets
-  app.use(express.static('client/build'));
-
-  // Express will serve up index.html file if it doesn't recognize route
-  const __dirname = path.resolve();
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
-
-const port = process.env.PORT || 5000;
 
 try {
   // This will execute for unit and integration tests only
