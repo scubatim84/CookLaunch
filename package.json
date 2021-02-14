@@ -9,7 +9,8 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "test": "npm run test-client",
+    "test": "npm run test-server && npm run test-client",
+    "test-server": "mocha __tests__/**/*.js",
     "test-client": "cd client && npm run test-ci",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd client/ && npm install && npm run build",
@@ -28,31 +29,32 @@
     "express": "^4.17.1",
     "file-type": "^15.0.1",
     "fs": "0.0.1-security",
-    "husky": "^4.2.5",
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
-    "lint-staged": "^10.3.0",
     "mongoose": ">=5.11.5",
     "multiparty": "^4.2.2",
     "nodemailer": "^6.4.10",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
-    "prettier": "^2.1.1",
     "validator": "^13.1.0"
-  },
-  "lint-staged": {
-    "./**/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write"
-    ]
   },
   "devDependencies": {
     "@babel/preset-env": "^7.11.5",
+    "chai": "^4.3.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.3.0",
+    "mocha": "^8.3.0",
     "nodemon": "^2.0.4",
-    "supertest": "^4.0.2"
+    "prettier": "^2.1.1"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "./**/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   }
 }
