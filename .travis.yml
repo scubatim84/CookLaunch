@@ -9,7 +9,7 @@ before_script:
   - npm install --prefix client
 script:
   - npm run build
-  - npm run test-client
+  - npm run test
 deploy:
   provider: heroku
   app: cook-launch

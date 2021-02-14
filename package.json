@@ -9,12 +9,16 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "test": "npm run test-client",
+    "test": "npm run test-server && npm run test-client",
+    "test-server": "mocha __tests__/**/*.js",
     "test-client": "cd client && npm run test-ci",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd client/ && npm install && npm run build",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
+  "keywords": [
+    "mocha"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -47,6 +51,8 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.11.5",
+    "chai": "^4.3.0",
+    "mocha": "^8.3.0",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
   },

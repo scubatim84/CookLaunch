@@ -1,52 +1,54 @@
-//TODO: Replace Jest with Mocha so server tests do not conflict with CRA Jest
-// import validateLoginInput from '../../validation/login.js';
+import chai from 'chai';
+import validateLoginInput from '../../validation/login.js';
 
-// describe('Test validateLoginInput function', () => {
-//   test('Returns error and invalid if email empty', async () => {
-//     const mockData = {
-//       email: '',
-//       password: 'tester',
-//     };
+const expect = chai.expect;
 
-//     const res = await validateLoginInput(mockData);
+describe('Test validateLoginInput function', () => {
+  it('Returns error and invalid if email empty', async () => {
+    const mockData = {
+      email: '',
+      password: 'tester',
+    };
 
-//     expect(res.error).toBe('Email field is required');
-//     expect(res.isValid).toBe(false);
-//   });
+    const res = await validateLoginInput(mockData);
 
-//   test('Returns error and invalid if password empty', async () => {
-//     const mockData = {
-//       email: 'test@runner.com',
-//       password: '',
-//     };
+    expect(res.error).to.equal('Email field is required');
+    expect(res.isValid).to.equal(false);
+  });
 
-//     const res = await validateLoginInput(mockData);
+  it('Returns error and invalid if password empty', async () => {
+    const mockData = {
+      email: 'test@runner.com',
+      password: '',
+    };
 
-//     expect(res.error).toBe('Password field is required');
-//     expect(res.isValid).toBe(false);
-//   });
+    const res = await validateLoginInput(mockData);
 
-//   test('Returns error and invalid if email is invalid', async () => {
-//     const mockData = {
-//       email: 'testrunner.com',
-//       password: 'tester',
-//     };
+    expect(res.error).to.equal('Password field is required');
+    expect(res.isValid).to.equal(false);
+  });
 
-//     const res = await validateLoginInput(mockData);
+  it('Returns error and invalid if email is invalid', async () => {
+    const mockData = {
+      email: 'testrunner.com',
+      password: 'tester',
+    };
 
-//     expect(res.error).toBe('Email is invalid');
-//     expect(res.isValid).toBe(false);
-//   });
+    const res = await validateLoginInput(mockData);
 
-//   test('Returns no error and valid if email and password not empty', async () => {
-//     const mockData = {
-//       email: 'test@runner.com',
-//       password: 'tester',
-//     };
+    expect(res.error).to.equal('Email is invalid');
+    expect(res.isValid).to.equal(false);
+  });
 
-//     const res = await validateLoginInput(mockData);
+  it('Returns no error and valid if email and password not empty', async () => {
+    const mockData = {
+      email: 'test@runner.com',
+      password: 'tester',
+    };
 
-//     expect(res.error).toHaveLength(0);
-//     expect(res.isValid).toBe(true);
-//   });
-// });
+    const res = await validateLoginInput(mockData);
+
+    expect(res.error).to.have.lengthOf(0);
+    expect(res.isValid).to.equal(true);
+  });
+});
