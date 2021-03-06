@@ -12,6 +12,7 @@ const extractJwT = passportJwT.ExtractJwt;
 
 // Define options for strategy
 const options = {
+  algorithms: ['HS256'],
   jwtFromRequest: extractJwT.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.SECRET_OR_KEY,
 };
