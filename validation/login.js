@@ -2,21 +2,23 @@ import validator from 'validator';
 import isEmpty from 'is-empty';
 
 const validateLoginInput = async (data) => {
-  let response = {
+  const response = {
     error: '',
     isValid: false,
   };
 
   // Convert empty fields to an empty string so we can use validator functions
-  data.email = !isEmpty(data.email) ? data.email : '';
-  data.password = !isEmpty(data.password) ? data.password : '';
+  const dataToValidate = {
+    email: !isEmpty(data.email) ? data.email : '',
+    password: !isEmpty(data.password) ? data.password : '',
+  };
 
   // Input checks
-  if (validator.isEmpty(data.email)) {
+  if (validator.isEmpty(dataToValidate.email)) {
     response.error = 'Email field is required';
-  } else if (!validator.isEmail(data.email)) {
+  } else if (!validator.isEmail(dataToValidate.email)) {
     response.error = 'Email is invalid';
-  } else if (validator.isEmpty(data.password)) {
+  } else if (validator.isEmpty(dataToValidate.password)) {
     response.error = 'Password field is required';
   } else {
     response.isValid = true;

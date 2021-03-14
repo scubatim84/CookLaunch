@@ -11,7 +11,7 @@
     "client": "npm start --prefix client",
     "pretest": "./node_modules/.bin/eslint --ignore-path .gitignore . --fix",
     "test": "npm run test-server && npm run test-client",
-    "test-server": "mocha __tests__/**/*.js",
+    "test-server": "mocha --es-module-specifier-resolution=node __tests__/**/*.js",
     "test-client": "cd client && npm run test-ci",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd client/ && npm install && npm run build",

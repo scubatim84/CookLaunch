@@ -23,9 +23,9 @@ const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
 // Abstracts function to upload a file which returns a promise
 const uploadFile = (buffer, imageKey, type, folder) => {
-  const fileType = type.mime.split('/')[0];
+  const uploadFileType = type.mime.split('/')[0];
 
-  if (fileType !== 'image') {
+  if (uploadFileType !== 'image') {
     throw new Error();
   }
 
@@ -34,7 +34,7 @@ const uploadFile = (buffer, imageKey, type, folder) => {
     Body: buffer,
     Bucket: process.env.S3_BUCKET,
     ContentType: type.mime,
-    Key: folder + '/' + imageKey,
+    Key: `${folder}/${imageKey}`,
   };
 
   return s3.upload(uploadParams).promise();
@@ -43,6 +43,7 @@ const uploadFile = (buffer, imageKey, type, folder) => {
 // @route POST files/:folder/:key
 // @desc Upload image
 // @access Private
+// eslint-disable-next-line consistent-return
 router.post('/:folder/:key', (req, res) => {
   const form = new multiparty.Form();
 
@@ -51,16 +52,15 @@ router.post('/:folder/:key', (req, res) => {
       if (error) throw new Error(error);
 
       try {
-        const key = req.params.key;
-        const path = files.file[0].path;
+        const { folder, key } = req.params;
+        const { path } = files.file[0];
         const buffer = fs.readFileSync(path);
         const type = await fileType.fromBuffer(buffer);
-        const folder = req.params.folder;
         const data = await uploadFile(buffer, key, type, folder);
 
         return res.status(200).json(data);
-      } catch (error) {
-        return res.status(500).json(error);
+      } catch (err) {
+        return res.status(500).json(err);
       }
     });
   } catch (err) {
@@ -74,11 +74,11 @@ router.post('/:folder/:key', (req, res) => {
 router.delete('/:folder/:name', async (req, res) => {
   const deleteParams = {
     Bucket: process.env.S3_BUCKET,
-    Key: req.params.folder + '/' + req.params.name,
+    Key: `${req.params.folder}/${req.params.name}`,
   };
 
   try {
-    s3.deleteObject(deleteParams, (err, data) => {
+    s3.deleteObject(deleteParams, (err) => {
       if (err) {
         res.status(400).json(err);
       }

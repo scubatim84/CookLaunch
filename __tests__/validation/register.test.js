@@ -1,7 +1,7 @@
 import chai from 'chai';
-import validateRegisterInput from '../../validation/register.js';
+import validateRegisterInput from '../../validation/register';
 
-const expect = chai.expect;
+const { expect } = chai;
 
 describe('Test validateRegisterInput function', () => {
   it('Returns error and invalid if first name empty', async () => {

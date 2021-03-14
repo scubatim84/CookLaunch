@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { IngredientSchema } from './Ingredient.js';
+import IngredientSchema from './Ingredient';
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 // Create Schema
 const RecipeSchema = new Schema({
@@ -31,7 +31,7 @@ const RecipeSchema = new Schema({
   },
 });
 
-export const Recipe = mongoose.model('recipe', RecipeSchema);
+const Recipe = mongoose.model('recipe', RecipeSchema);
 
 export default {
   Recipe,

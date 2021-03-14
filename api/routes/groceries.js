@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
         payload: foundUser.groceries,
       });
     } catch (err) {
-      res.status(400).json('An error has occurred. ' + err);
+      res.status(400).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(404).json('No user found in database.');
@@ -37,8 +37,7 @@ router.post('/', async (req, res) => {
     try {
       // Check to see if ingredient is already in list
       const foundIngredient = foundUser.groceries.find(
-        (ingredient) =>
-          ingredient.name.toUpperCase() === req.body.name.toUpperCase()
+        (ingredient) => ingredient.name.toUpperCase() === req.body.name.toUpperCase(),
       );
 
       // If ingredient is already in list, add to quantity vs. add ingredient
@@ -55,7 +54,7 @@ router.post('/', async (req, res) => {
         payload: foundUser.groceries,
       });
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(500).json('No user found in database.');
@@ -88,7 +87,7 @@ router.put('/:id', async (req, res) => {
 
       res.status(204).json(null);
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(500).json('No user found in database.');
@@ -110,7 +109,7 @@ router.delete('/:id', async (req, res) => {
 
       res.status(204).json(null);
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(500).json('No user found in database.');

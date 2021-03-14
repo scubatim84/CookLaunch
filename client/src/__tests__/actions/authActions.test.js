@@ -10,7 +10,7 @@ import {
   validatePassword,
   logoutUser,
 } from '../../actions/authActions';
-import { REQUEST_FAIL, REQUEST_SUCCESS } from '../../actions/types';
+import { REQUEST_SUCCESS } from '../../actions/types';
 
 const server = setupServer();
 
@@ -68,14 +68,14 @@ describe('loginUser function', () => {
   it('Tests successful API post request for login', async () => {
     server.use(
       rest.post('/api/auth/login', (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json('Bearer ' + 'testtoken'));
+        return res(ctx.status(200), ctx.json(`Bearer testtoken`));
       })
     );
 
     const response = await loginUser(existingUser);
 
     expect(response.status).toBe(200);
-    expect(response.data).toEqual('Bearer ' + 'testtoken');
+    expect(response.data).toEqual(`Bearer testtoken`);
   });
 
   it('Tests failed API post request for login', async () => {

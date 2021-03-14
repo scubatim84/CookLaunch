@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 // Create Schema
-export const IngredientSchema = new Schema({
+const IngredientSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -31,7 +31,7 @@ export const IngredientSchema = new Schema({
   },
 });
 
-export const Ingredient = mongoose.model('ingredient', IngredientSchema);
+const Ingredient = mongoose.model('ingredient', IngredientSchema);
 
 export default {
   Ingredient,

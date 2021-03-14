@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
         payload: foundUser.pantry,
       });
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(500).json('No user found in database.');
@@ -44,7 +44,7 @@ router.post('/', (req, res) => {
         payload: foundUser.pantry,
       });
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(500).json('No user found in database.');
@@ -75,7 +75,7 @@ router.put('/:id', (req, res) => {
 
       res.status(204).json(null);
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(500).json('No user found in database.');
@@ -97,7 +97,7 @@ router.delete('/:id', (req, res) => {
 
       res.status(204).json(null);
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(500).json('No user found in database.');

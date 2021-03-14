@@ -1,7 +1,7 @@
 import chai from 'chai';
-import validateLoginInput from '../../validation/login.js';
+import validateLoginInput from '../../validation/login';
 
-const expect = chai.expect;
+const { expect } = chai;
 
 describe('Test validateLoginInput function', () => {
   it('Returns error and invalid if email empty', async () => {
