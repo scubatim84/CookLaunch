@@ -20,8 +20,8 @@ export const getIngredients = async () => {
 export const addIngredient = async (ingredientData) => {
   let error;
 
-  let name = ingredientData.name;
-  let createdBy = ingredientData.createdBy;
+  let { name } = ingredientData;
+  let { createdBy } = ingredientData;
 
   // Check to see if values are empty, and if so, convert them to empty strings
   name = !isEmpty(name) ? name : '';
@@ -41,17 +41,16 @@ export const addIngredient = async (ingredientData) => {
     return {
       data: error,
     };
-  } else {
-    try {
-      const token = cookies.get('user');
-      return await axios.post('/api/ingredients/', ingredientData, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (err) {
-      return err.response.data;
-    }
+  }
+  try {
+    const token = cookies.get('user');
+    return await axios.post('/api/ingredients/', ingredientData, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  } catch (err) {
+    return err.response.data;
   }
 };
 
@@ -59,7 +58,7 @@ export const addIngredient = async (ingredientData) => {
 export const updateIngredient = async (ingredientData) => {
   let error;
 
-  let name = ingredientData.name;
+  let { name } = ingredientData;
 
   // Check to see if values are empty, and if so, convert them to empty strings
   name = !isEmpty(name) ? name : '';
@@ -73,21 +72,20 @@ export const updateIngredient = async (ingredientData) => {
     return {
       data: error,
     };
-  } else {
-    try {
-      const token = cookies.get('user');
-      return await axios.put(
-        `/api/ingredients/${ingredientData.id}`,
-        ingredientData,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-    } catch (err) {
-      return err.response.data;
-    }
+  }
+  try {
+    const token = cookies.get('user');
+    return await axios.put(
+      `/api/ingredients/${ingredientData.id}`,
+      ingredientData,
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    );
+  } catch (err) {
+    return err.response.data;
   }
 };
 
@@ -96,10 +94,10 @@ export const deleteIngredient = async (ingredientId) => {
   let error;
 
   // Check to see if values are empty, and if so, convert them to empty strings
-  ingredientId = !isEmpty(ingredientId) ? ingredientId : '';
+  const idToValidate = !isEmpty(ingredientId) ? ingredientId : '';
 
   // Check for valid ingredient ID
-  if (isEmpty(ingredientId)) {
+  if (isEmpty(idToValidate)) {
     error = 'An error has occurred. Please try again.';
   }
 
@@ -107,16 +105,15 @@ export const deleteIngredient = async (ingredientId) => {
     return {
       data: error,
     };
-  } else {
-    try {
-      const token = cookies.get('user');
-      return await axios.delete(`/api/ingredients/${ingredientId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (err) {
-      return err.response.data;
-    }
+  }
+  try {
+    const token = cookies.get('user');
+    return await axios.delete(`/api/ingredients/${ingredientId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  } catch (err) {
+    return err.response.data;
   }
 };

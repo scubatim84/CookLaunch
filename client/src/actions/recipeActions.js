@@ -20,8 +20,8 @@ export const getAllRecipes = async () => {
 export const addRecipe = async (recipeData) => {
   let error;
 
-  let name = recipeData.name;
-  let ingredients = recipeData.ingredients;
+  let { name } = recipeData;
+  const { ingredients } = recipeData;
 
   // Check to see if values are empty, and if so, convert them to empty strings
   name = !isEmpty(name) ? name : '';
@@ -38,17 +38,16 @@ export const addRecipe = async (recipeData) => {
 
   if (!isEmpty(error)) {
     return error;
-  } else {
-    try {
-      const token = cookies.get('user');
-      return await axios.post('/api/recipes/', recipeData, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (err) {
-      return err.response.data;
-    }
+  }
+  try {
+    const token = cookies.get('user');
+    return await axios.post('/api/recipes/', recipeData, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  } catch (err) {
+    return err.response.data;
   }
 };
 
@@ -57,10 +56,10 @@ export const getOneRecipe = async (recipeId) => {
   let error;
 
   // Check to see if values are empty, and if so, convert them to empty strings
-  recipeId = !isEmpty(recipeId) ? recipeId : '';
+  const idToValidate = !isEmpty(recipeId) ? recipeId : '';
 
   // Check for valid recipe ID
-  if (isEmpty(recipeId)) {
+  if (isEmpty(idToValidate)) {
     error = 'An error has occurred. Please try again.';
   }
 
@@ -68,17 +67,16 @@ export const getOneRecipe = async (recipeId) => {
     return {
       data: error,
     };
-  } else {
-    try {
-      const token = cookies.get('user');
-      return await axios.get(`/api/recipes/${recipeId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (err) {
-      return err;
-    }
+  }
+  try {
+    const token = cookies.get('user');
+    return await axios.get(`/api/recipes/${recipeId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  } catch (err) {
+    return err;
   }
 };
 
@@ -86,8 +84,8 @@ export const getOneRecipe = async (recipeId) => {
 export const updateRecipe = async (recipeData) => {
   let error;
 
-  let name = recipeData.name;
-  let ingredients = recipeData.ingredients;
+  let { name } = recipeData;
+  let { ingredients } = recipeData;
 
   // Check to see if values are empty, and if so, convert them to empty strings
   name = !isEmpty(name) ? name : '';
@@ -107,17 +105,16 @@ export const updateRecipe = async (recipeData) => {
     return {
       data: error,
     };
-  } else {
-    try {
-      const token = cookies.get('user');
-      return await axios.put(`/api/recipes/${recipeData._id}`, recipeData, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (err) {
-      return err.response.data;
-    }
+  }
+  try {
+    const token = cookies.get('user');
+    return await axios.put(`/api/recipes/${recipeData._id}`, recipeData, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  } catch (err) {
+    return err.response.data;
   }
 };
 
@@ -126,10 +123,10 @@ export const deleteRecipe = async (recipeId) => {
   let error;
 
   // Check to see if values are empty, and if so, convert them to empty strings
-  recipeId = !isEmpty(recipeId) ? recipeId : '';
+  const idToValidate = !isEmpty(recipeId) ? recipeId : '';
 
   // Check for valid recipe ID
-  if (isEmpty(recipeId)) {
+  if (isEmpty(idToValidate)) {
     error = 'An error has occurred. Please try again.';
   }
 
@@ -137,16 +134,15 @@ export const deleteRecipe = async (recipeId) => {
     return {
       data: error,
     };
-  } else {
-    try {
-      const token = cookies.get('user');
-      return await axios.delete(`/api/recipes/${recipeId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (err) {
-      return err.response.data;
-    }
+  }
+  try {
+    const token = cookies.get('user');
+    return await axios.delete(`/api/recipes/${recipeId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  } catch (err) {
+    return err.response.data;
   }
 };

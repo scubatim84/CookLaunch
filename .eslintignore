@@ -1,2 +1,4 @@
-# Ignore build folders
 build
+client/build
+client/src/serviceWorker.js
+client/setupTests.js

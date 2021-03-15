@@ -1,11 +1,6 @@
 const toTitleCase = (name) => {
   const words = name.split(' ');
-  const formattedWords = [];
-
-  for (var word of words) {
-    const newWord = word[0].toUpperCase() + word.slice(1).toLowerCase();
-    formattedWords.push(newWord);
-  }
+  const formattedWords = words.map((word) => word[0].toUpperCase() + word.slice(1).toLowerCase());
 
   return formattedWords.join(' ');
 };

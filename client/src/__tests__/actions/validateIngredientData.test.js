@@ -1,4 +1,4 @@
-import {validateIngredientData} from '../../actions/validateIngredientData';
+import validateIngredientData from '../../actions/validateIngredientData';
 
 test('tests validateIngredientData function when name is missing', () => {
   const sampleIngredient = {
@@ -8,7 +8,7 @@ test('tests validateIngredientData function when name is missing', () => {
   };
 
   expect(validateIngredientData(sampleIngredient)).toBe(
-    'Please enter an ingredient name.'
+    'Please enter an ingredient name.',
   );
 });
 
@@ -20,7 +20,7 @@ test('tests validateIngredientData function when quantity type is missing', () =
   };
 
   expect(validateIngredientData(sampleIngredient)).toBe(
-    'Please enter a quantity type.'
+    'Please enter a quantity type.',
   );
 });
 
@@ -32,6 +32,6 @@ test('tests validateIngredientData function when quantity is missing', () => {
   };
 
   expect(validateIngredientData(sampleIngredient)).toBe(
-    'Please enter a quantity.'
+    'Please enter a quantity.',
   );
 });

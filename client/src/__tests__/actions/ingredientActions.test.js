@@ -22,9 +22,7 @@ afterAll(() => server.close());
 describe('getIngredients function', () => {
   it('Tests successful API get request for getting ingredients', async () => {
     server.use(
-      rest.get('/api/ingredients/', (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json('test'));
-      })
+      rest.get('/api/ingredients/', (req, res, ctx) => res(ctx.status(200), ctx.json('test'))),
     );
 
     const response = await getIngredients();
@@ -36,11 +34,9 @@ describe('getIngredients function', () => {
   it('Tests failed API get request for getting ingredients', async () => {
     const errorMessage = 'An error message';
 
+    // Respond with "400 Bad Request" status for this test.
     server.use(
-      rest.get('/api/ingredients/', (req, res, ctx) => {
-        // Respond with "400 Bad Request" status for this test.
-        return res(ctx.status(400), ctx.json(errorMessage));
-      })
+      rest.get('/api/ingredients/', (req, res, ctx) => res(ctx.status(400), ctx.json(errorMessage))),
     );
 
     const response = await getIngredients();
@@ -79,9 +75,7 @@ describe('addIngredients function', () => {
     };
 
     server.use(
-      rest.post('/api/ingredients/', (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json('test'));
-      })
+      rest.post('/api/ingredients/', (req, res, ctx) => res(ctx.status(200), ctx.json('test'))),
     );
 
     const response = await addIngredient(testIngredient);
@@ -97,11 +91,9 @@ describe('addIngredients function', () => {
     };
     const errorMessage = 'An error message';
 
+    // Respond with "400 Bad Request" status for this test.
     server.use(
-      rest.post('/api/ingredients/', (req, res, ctx) => {
-        // Respond with "400 Bad Request" status for this test.
-        return res(ctx.status(400), ctx.json(errorMessage));
-      })
+      rest.post('/api/ingredients/', (req, res, ctx) => res(ctx.status(400), ctx.json(errorMessage))),
     );
 
     const response = await addIngredient(testIngredient);
@@ -130,9 +122,7 @@ describe('updateIngredient function', () => {
     };
 
     server.use(
-      rest.put(`/api/ingredients/${testIngredient.id}`, (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.put(`/api/ingredients/${testIngredient.id}`, (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const response = await updateIngredient(testIngredient);
@@ -150,9 +140,7 @@ describe('updateIngredient function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.put(`/api/ingredients/${testIngredient.id}`, (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.put(`/api/ingredients/${testIngredient.id}`, (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await updateIngredient(testIngredient);
@@ -174,9 +162,7 @@ describe('deleteIngredient function', () => {
     const testIngredientId = 'testid';
 
     server.use(
-      rest.delete(`/api/ingredients/${testIngredientId}`, (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.delete(`/api/ingredients/${testIngredientId}`, (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const response = await deleteIngredient(testIngredientId);
@@ -190,9 +176,7 @@ describe('deleteIngredient function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.delete(`/api/ingredients/${testIngredientId}`, (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.delete(`/api/ingredients/${testIngredientId}`, (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await deleteIngredient(testIngredientId);

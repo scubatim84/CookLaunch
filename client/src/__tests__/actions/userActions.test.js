@@ -17,9 +17,7 @@ afterAll(() => server.close());
 describe('getUserData function', () => {
   it('Tests successful API get request to obtain user data', async () => {
     server.use(
-      rest.get('/api/user/profile', (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json('test'));
-      })
+      rest.get('/api/user/profile', (req, res, ctx) => res(ctx.status(200), ctx.json('test'))),
     );
 
     const response = await getUserData();
@@ -32,9 +30,7 @@ describe('getUserData function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.get('/api/user/profile', (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.get('/api/user/profile', (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await getUserData();
@@ -78,9 +74,7 @@ describe('updateUserProfile function', () => {
     userData.email = 'test@runner.com';
 
     server.use(
-      rest.put('/api/user/profile', (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json(userData));
-      })
+      rest.put('/api/user/profile', (req, res, ctx) => res(ctx.status(200), ctx.json(userData))),
     );
 
     const response = await updateUserProfile(userData);
@@ -93,9 +87,7 @@ describe('updateUserProfile function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.put('/api/user/profile', (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.put('/api/user/profile', (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await updateUserProfile(userData);
