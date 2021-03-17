@@ -12,7 +12,7 @@ import {
 
 import FormSubmitMessage from '../FormSubmitMessage';
 import { loginUser } from '../../actions/authActions';
-import { useStylesMain } from '../../Styles';
+import useStylesMain from '../../Styles';
 import { themeMain } from '../../Theme';
 import CardTitle from '../CardTitle';
 
@@ -30,12 +30,10 @@ const LoginForm = (props) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setLogin((prevValue) => {
-      return {
-        ...prevValue,
-        [name]: value,
-      };
-    });
+    setLogin((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -54,30 +52,30 @@ const LoginForm = (props) => {
   };
 
   if (props.isLoggedIn) {
-    return <Redirect to='/dashboard' />;
+    return <Redirect to="/dashboard" />;
   }
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container component="main" maxWidth="xs">
       <Card>
         <Grid className={classes.paper}>
           <form noValidate>
             <Grid container spacing={2}>
-              <Grid item xs={12} align='center'>
-                <CardTitle title='Sign In Here' />
+              <Grid item xs={12} align="center">
+                <CardTitle title="Sign In Here" />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   inputProps={{ 'data-testid': 'email' }}
                   onChange={handleChange}
                   value={login.email}
-                  variant='outlined'
+                  variant="outlined"
                   required
                   fullWidth
-                  id='email'
-                  label='Email Address'
-                  name='email'
-                  autoComplete='email'
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -85,38 +83,38 @@ const LoginForm = (props) => {
                   inputProps={{ 'data-testid': 'password' }}
                   onChange={handleChange}
                   value={login.password}
-                  variant='outlined'
+                  variant="outlined"
                   required
                   fullWidth
-                  name='password'
-                  label='Password'
-                  type='password'
-                  id='password'
-                  autoComplete='password'
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="password"
                 />
               </Grid>
               <Grid item xs={12}>
                 <Button
                   onClick={handleSubmit}
                   fullWidth
-                  type='submit'
-                  variant='contained'
-                  color='primary'
+                  type="submit"
+                  variant="contained"
+                  color="primary"
                   className={classes.buttonMargin}
                 >
                   Login
                 </Button>
               </Grid>
             </Grid>
-            <Grid container justify='space-between'>
+            <Grid container justify="space-between">
               <Grid item>
-                <Link href='/forgotpassword' variant='body2'>
+                <Link href="/forgotpassword" variant="body2">
                   Forgot Password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href='/' variant='body2'>
-                  Don't have an account? Register
+                <Link href="/" variant="body2">
+                  Don&apos;t have an account? Register
                 </Link>
               </Grid>
             </Grid>

@@ -2,7 +2,7 @@ import React from 'react';
 import { CardMedia, Grid } from '@material-ui/core';
 
 import ResetPasswordByEmailForm from './ResetPasswordByEmailForm';
-import { useStylesMain } from '../../Styles';
+import useStylesMain from '../../Styles';
 
 const ResetPassword = (props) => {
   const classes = useStylesMain();
@@ -11,8 +11,8 @@ const ResetPassword = (props) => {
     <CardMedia className={classes.loginBackground}>
       <Grid
         container
-        alignItems='center'
-        justify='center'
+        alignItems="center"
+        justify="center"
         style={{ minHeight: '100vh' }}
       >
         <Grid item xs={12} sm={6}>

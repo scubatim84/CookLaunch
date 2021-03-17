@@ -7,12 +7,12 @@ import Loader from './Loader';
 const UserTour = (props) => {
   const [isLoading, setIsLoading] = useState(true);
 
-  const userTourLogin = {
-    email: 'user@tour.com',
-    password: 'usertour',
-  };
-
   const loginTourUser = useCallback(async () => {
+    const userTourLogin = {
+      email: 'user@tour.com',
+      password: 'usertour',
+    };
+
     if (!props.isLoggedIn) {
       const loginResponse = await loginUser(userTourLogin);
 
@@ -23,21 +23,21 @@ const UserTour = (props) => {
     }
 
     setIsLoading(false);
-  }, [props, userTourLogin]);
+  }, [props]);
 
   useEffect(() => {
     loginTourUser();
   }, [loginTourUser]);
 
   if (props.isLoggedIn) {
-    return <Redirect to='/dashboard' />;
+    return <Redirect to="/dashboard" />;
   }
 
   if (isLoading) {
-    return <Loader data-testid='loader' />;
+    return <Loader data-testid="loader" />;
   }
 
-  return <Redirect to='/' />;
+  return <Redirect to="/" />;
 };
 
 export default UserTour;

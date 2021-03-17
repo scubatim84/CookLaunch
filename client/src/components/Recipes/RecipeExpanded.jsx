@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-await-in-loop */
 import React, { useCallback, useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import _ from 'lodash';
@@ -26,8 +28,8 @@ import {
   updateRecipe,
 } from '../../actions/recipeActions';
 import { addIngredientToGroceries } from '../../actions/groceryActions';
-import { convert_units } from '../../actions/unitConversions';
-import { validateIngredientData } from '../../actions/validateIngredientData';
+import convertUnits from '../../actions/unitConversions';
+import validateIngredientData from '../../actions/validateIngredientData';
 import {
   deleteIngredientFromPantry,
   updateIngredientInPantry,
@@ -42,6 +44,48 @@ import RecipeIngredientAdd from './RecipeIngredientAdd';
 import Loader from '../Loader';
 import ImageController from '../ImageController';
 import defaultImage from '../../images/defaultrecipeimage.jpg';
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    marginTop: theme.spacing(2),
+  },
+  card: {
+    marginTop: theme.spacing(1),
+  },
+  ingredientTitle: {
+    marginBottom: theme.spacing(2),
+  },
+  list: {
+    width: '100%',
+    maxHeight: 300,
+    overflow: 'auto',
+    marginBottom: theme.spacing(1),
+  },
+  image: {
+    height: '100%',
+    width: 'auto',
+    paddingTop: '56.25%', // 16:9
+  },
+  pageContainer: {
+    direction: 'row',
+    justifyContent: 'center',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    minHeight: '100vh',
+  },
+  paper: {
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  recipeDetails: {
+    alignItems: 'flex-end',
+  },
+}));
 
 function RecipeExpanded(props) {
   const { recipeId, userId } = props;
@@ -128,57 +172,82 @@ function RecipeExpanded(props) {
   };
 
   const handleDeleteIngredient = (ingredientId) => {
-    setRecipe((prevValue) => {
-      return {
-        ...prevValue,
-        ingredients: recipe.ingredients.filter(
-          (ingredient) => ingredient._id !== ingredientId
-        ),
-      };
-    });
+    setRecipe((prevValue) => ({
+      ...prevValue,
+      ingredients: recipe.ingredients.filter(
+        (ingredient) => ingredient._id !== ingredientId,
+      ),
+    }));
   };
 
   const handleUpdateIngredient = (updateIngredient) => {
     // Filter out updated ingredient from list to remove old version
     const updatedIngredientList = recipe.ingredients.filter(
-      (ingredient) => ingredient._id !== updateIngredient._id
+      (ingredient) => ingredient._id !== updateIngredient._id,
     );
 
     // Push new updated ingredient into updated array
     updatedIngredientList.push(updateIngredient);
 
-    setRecipe((prevValue) => {
-      return {
-        ...prevValue,
-        ingredients: updatedIngredientList,
-      };
-    });
+    setRecipe((prevValue) => ({
+      ...prevValue,
+      ingredients: updatedIngredientList,
+    }));
   };
 
   const addIngredientToRecipe = (ingredient) => {
-    const error = validateIngredientData(ingredient);
+    const validateError = validateIngredientData(ingredient);
 
-    if (!error) {
-      setRecipe((prevValue) => {
-        return {
-          ...prevValue,
-          ingredients: [...recipe.ingredients, ingredient],
-        };
-      });
+    if (!validateError) {
+      setRecipe((prevValue) => ({
+        ...prevValue,
+        ingredients: [...recipe.ingredients, ingredient],
+      }));
     } else {
       setError({
-        errorMessage: error,
+        errorMessage: validateError,
       });
     }
   };
 
-  const addToGroceryList = async () => {
-    for (const ingredient of recipe.ingredients) {
-      const { quantityNeeded } = getHaveNeedQuantities(ingredient);
+  const getHaveNeedQuantities = (ingredient) => {
+    const foundIngredient = props.pantry.find(
+      (pantryIngredient) => ingredient.name.toUpperCase() === pantryIngredient.name.toUpperCase(),
+    );
+    let quantityNeeded;
+    let quantityHave = 0;
 
-      if (quantityNeeded <= 0) {
-        continue;
+    if (foundIngredient) {
+      /* If user has some of the ingredient needed, deduct it after converting to same quantity
+         type, but if pantry quantity > ingredient quantity then just show 0 as the amount needed */
+      quantityHave = foundIngredient.quantity;
+
+      if (foundIngredient.quantityType !== ingredient.quantityType) {
+        quantityHave = Math.round(
+          convertUnits(
+            foundIngredient.quantity,
+            foundIngredient.quantityType,
+            ingredient.quantityType,
+          ),
+        );
       }
+
+      quantityNeeded = Math.max(ingredient.quantity - quantityHave, 0);
+    } else {
+      quantityNeeded = ingredient.quantity;
+    }
+
+    return {
+      quantityNeeded,
+      quantityHave,
+    };
+  };
+
+  const addToGroceryList = async () => {
+    const ingredientsNeeded = recipe.ingredients.map((ingredient) => ingredient.quantityNeeded > 0);
+
+    for (const ingredient of ingredientsNeeded) {
+      const { quantityNeeded } = getHaveNeedQuantities(ingredient);
 
       const ingredientData = {
         name: ingredient.name,
@@ -221,11 +290,11 @@ function RecipeExpanded(props) {
           'You cannot cook a recipe if you are missing ingredients!',
       });
     } else {
+      // eslint-disable-next-line no-restricted-syntax
       for (const ingredient of recipe.ingredients) {
         const foundIngredient = props.pantry.find(
-          (pantryIngredient) =>
-            ingredient.name.toUpperCase() ===
-            pantryIngredient.name.toUpperCase()
+          (pantryIngredient) => ingredient.name.toUpperCase()
+            === pantryIngredient.name.toUpperCase(),
         );
 
         if (foundIngredient) {
@@ -271,49 +340,52 @@ function RecipeExpanded(props) {
     setGroceryAddAlert(false);
   };
 
-  const getHaveNeedQuantities = (ingredient) => {
-    const foundIngredient = props.pantry.find(
-      (pantryIngredient) =>
-        ingredient.name.toUpperCase() === pantryIngredient.name.toUpperCase()
-    );
-    let quantityNeeded;
-    let quantityHave = 0;
-
-    if (foundIngredient) {
-      /* If user has some of the ingredient needed, deduct it after converting to same quantity
-         type, but if pantry quantity > ingredient quantity then just show 0 as the amount needed */
-      quantityHave = foundIngredient.quantity;
-
-      if (foundIngredient.quantityType !== ingredient.quantityType) {
-        quantityHave = Math.round(
-          convert_units(
-            foundIngredient.quantity,
-            foundIngredient.quantityType,
-            ingredient.quantityType
-          )
-        );
-      }
-
-      quantityNeeded = Math.max(ingredient.quantity - quantityHave, 0);
-    } else {
-      quantityNeeded = ingredient.quantity;
-    }
-
-    return {
-      quantityNeeded: quantityNeeded,
-      quantityHave: quantityHave,
-    };
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setRecipe((prevValue) => {
-      return {
-        ...prevValue,
-        [name]: value,
-      };
-    });
+    setRecipe((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
+  };
+
+  const handleDeleteImage = async () => {
+    setImageKeyToDelete(recipe.imageKey);
+
+    setRecipe((prevValue) => ({
+      ...prevValue,
+      imageUrl: '',
+      imageKey: '',
+    }));
+  };
+
+  const handleChangeImage = async () => {
+    const formData = new FormData();
+    const fileName = updateImage.file.image.name;
+    const imageKey = `${userId}_${fileName}`;
+
+    formData.append(
+      'file',
+      updateImage.file.image,
+      updateImage.file.image.name,
+    );
+
+    const response = await addImage('recipe', imageKey, formData);
+
+    try {
+      if (recipe.imageKey && imageKey !== recipe.imageKey.split('/')[1]) {
+        await handleDeleteImage(recipe.imageKey);
+      }
+    } catch (err) {
+      setError({
+        errorMessage: err,
+      });
+    }
+
+    return {
+      imageKey: response.data.Key,
+      imageUrl: response.data.Location,
+    };
   };
 
   const handleSubmit = async () => {
@@ -347,49 +419,8 @@ function RecipeExpanded(props) {
     }
   };
 
-  const handleChangeImage = async () => {
-    const formData = new FormData();
-    const fileName = updateImage.file.image.name;
-    const imageKey = userId + '_' + fileName;
-
-    formData.append(
-      'file',
-      updateImage.file.image,
-      updateImage.file.image.name
-    );
-
-    const response = await addImage('recipe', imageKey, formData);
-
-    try {
-      if (recipe.imageKey && imageKey !== recipe.imageKey.split('/')[1]) {
-        await handleDeleteImage(recipe.imageKey);
-      }
-    } catch (err) {
-      setError({
-        errorMessage: err,
-      });
-    }
-
-    return {
-      imageKey: response.data.Key,
-      imageUrl: response.data.Location,
-    };
-  };
-
-  const handleDeleteImage = async () => {
-    setImageKeyToDelete(recipe.imageKey);
-
-    setRecipe((prevValue) => {
-      return {
-        ...prevValue,
-        imageUrl: '',
-        imageKey: '',
-      };
-    });
-  };
-
   if (!props.isLoggedIn) {
-    return <Redirect to='/login' />;
+    return <Redirect to="/login" />;
   }
 
   if (!recipe?._id || isLoading) {
@@ -397,15 +428,15 @@ function RecipeExpanded(props) {
   }
 
   return (
-    <Container component='main' maxWidth='lg'>
+    <Container component="main" maxWidth="lg">
       <Grid container spacing={0}>
         <Grid item xs={12} sm={6} className={classes.button}>
           <Link
-            href={'/'}
-            color='textPrimary'
+            href="/"
+            color="textPrimary"
             style={{ textDecoration: 'none' }}
           >
-            <Button type='submit' fullWidth variant='contained' color='primary'>
+            <Button type="submit" fullWidth variant="contained" color="primary">
               Return To Dashboard
             </Button>
           </Link>
@@ -414,7 +445,7 @@ function RecipeExpanded(props) {
           <Card className={classes.card}>
             <div className={classes.paper}>
               <Grid container spacing={2}>
-                <Grid item xs={12} align='center'>
+                <Grid item xs={12} align="center">
                   <RecipeName
                     name={recipe?.name}
                     editMode={editMode}
@@ -430,7 +461,7 @@ function RecipeExpanded(props) {
                           ? 'Replace Recipe Image'
                           : 'Add Recipe Image'
                       }
-                      cardTitle='Recipe Image'
+                      cardTitle="Recipe Image"
                       setImage={setUpdateImage}
                       deleteImage={handleDeleteImage}
                     />
@@ -452,10 +483,10 @@ function RecipeExpanded(props) {
                     <Grid
                       item
                       xs={12}
-                      align='center'
+                      align="center"
                       className={classes.ingredientTitle}
                     >
-                      <CardTitle title='Recipe Ingredients' />
+                      <CardTitle title="Recipe Ingredients" />
                     </Grid>
                     <Grid item xs={4} sm={4}>
                       <Typography>Name</Typography>
@@ -480,10 +511,10 @@ function RecipeExpanded(props) {
                       <List className={classes.list}>
                         {recipe.ingredients.map((ingredient) => {
                           const formatName = _.startCase(
-                            _.toLower(ingredient.name)
+                            _.toLower(ingredient.name),
                           );
                           const formatQuantityType = _.startCase(
-                            _.toLower(ingredient.quantityType)
+                            _.toLower(ingredient.quantityType),
                           );
                           const {
                             quantityNeeded,
@@ -529,8 +560,8 @@ function RecipeExpanded(props) {
                       <Grid item xs={12} className={classes.button}>
                         <Button
                           fullWidth
-                          variant='outlined'
-                          color='primary'
+                          variant="outlined"
+                          color="primary"
                           onClick={addToGroceryList}
                         >
                           Add To Grocery List
@@ -538,20 +569,20 @@ function RecipeExpanded(props) {
                         <Dialog
                           open={groceryAddAlert}
                           onClose={reloadRecipe}
-                          aria-labelledby='alert-dialog-title'
-                          aria-describedby='alert-dialog-description'
+                          aria-labelledby="alert-dialog-title"
+                          aria-describedby="alert-dialog-description"
                         >
-                          <DialogTitle id='alert-dialog-title'>
-                            {'Grocery List Updated!'}
+                          <DialogTitle id="alert-dialog-title">
+                            Grocery List Updated!
                           </DialogTitle>
                           <DialogContent>
-                            <DialogContentText id='alert-dialog-description'>
+                            <DialogContentText id="alert-dialog-description">
                               The recipe ingredients have been added to your
                               your grocery list.
                             </DialogContentText>
                           </DialogContent>
                           <DialogActions>
-                            <Button onClick={reloadRecipe} color='primary'>
+                            <Button onClick={reloadRecipe} color="primary">
                               Ok
                             </Button>
                           </DialogActions>
@@ -571,8 +602,8 @@ function RecipeExpanded(props) {
                       <Grid item xs={12} className={classes.button}>
                         <Button
                           fullWidth
-                          variant='outlined'
-                          color='primary'
+                          variant="outlined"
+                          color="primary"
                           onClick={deductFromPantry}
                         >
                           Cook Recipe
@@ -580,14 +611,14 @@ function RecipeExpanded(props) {
                         <Dialog
                           open={cookAlert}
                           onClose={reloadRecipeIngredients}
-                          aria-labelledby='alert-dialog-title'
-                          aria-describedby='alert-dialog-description'
+                          aria-labelledby="alert-dialog-title"
+                          aria-describedby="alert-dialog-description"
                         >
-                          <DialogTitle id='alert-dialog-title'>
-                            {'Recipe Cooked!'}
+                          <DialogTitle id="alert-dialog-title">
+                            Recipe Cooked!
                           </DialogTitle>
                           <DialogContent>
-                            <DialogContentText id='alert-dialog-description'>
+                            <DialogContentText id="alert-dialog-description">
                               The recipe ingredients have been deducted from
                               your pantry.
                             </DialogContentText>
@@ -595,7 +626,7 @@ function RecipeExpanded(props) {
                           <DialogActions>
                             <Button
                               onClick={reloadRecipeIngredients}
-                              color='primary'
+                              color="primary"
                             >
                               Ok
                             </Button>
@@ -607,8 +638,8 @@ function RecipeExpanded(props) {
                       <Grid item xs={12} className={classes.button}>
                         <Button
                           fullWidth
-                          variant='outlined'
-                          color='primary'
+                          variant="outlined"
+                          color="primary"
                           onClick={handleClickOpen}
                         >
                           Delete Recipe
@@ -616,25 +647,25 @@ function RecipeExpanded(props) {
                         <Dialog
                           open={open}
                           onClose={handleClose}
-                          aria-labelledby='alert-dialog-title'
-                          aria-describedby='alert-dialog-description'
+                          aria-labelledby="alert-dialog-title"
+                          aria-describedby="alert-dialog-description"
                         >
-                          <DialogTitle id='alert-dialog-title'>
-                            {'Delete recipe?'}
+                          <DialogTitle id="alert-dialog-title">
+                            Delete recipe?
                           </DialogTitle>
                           <DialogContent>
-                            <DialogContentText id='alert-dialog-description'>
+                            <DialogContentText id="alert-dialog-description">
                               This action cannot be reversed. Are you sure you
                               want to delete this recipe?
                             </DialogContentText>
                           </DialogContent>
                           <DialogActions>
-                            <Button onClick={handleDelete} color='primary'>
+                            <Button onClick={handleDelete} color="primary">
                               Delete
                             </Button>
                             <Button
                               onClick={handleClose}
-                              color='primary'
+                              color="primary"
                               autoFocus
                             >
                               Cancel
@@ -658,47 +689,5 @@ function RecipeExpanded(props) {
     </Container>
   );
 }
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    marginTop: theme.spacing(2),
-  },
-  card: {
-    marginTop: theme.spacing(1),
-  },
-  ingredientTitle: {
-    marginBottom: theme.spacing(2),
-  },
-  list: {
-    width: '100%',
-    maxHeight: 300,
-    overflow: 'auto',
-    marginBottom: theme.spacing(1),
-  },
-  image: {
-    height: '100%',
-    width: 'auto',
-    paddingTop: '56.25%', // 16:9
-  },
-  pageContainer: {
-    direction: 'row',
-    justifyContent: 'center',
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-    minHeight: '100vh',
-  },
-  paper: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
-  recipeDetails: {
-    alignItems: 'flex-end',
-  },
-}));
 
 export default RecipeExpanded;

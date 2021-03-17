@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextField} from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import CardTitle from '../CardTitle';
 
 function RecipeName(props) {
@@ -7,17 +7,17 @@ function RecipeName(props) {
     return (
       <TextField
         onChange={props.handleChange}
-        variant='outlined'
+        variant="outlined"
         required
         placeholder={props.name}
         value={props.name}
-        id='name'
-        name='name'
+        id="name"
+        name="name"
       />
     );
-  } else {
-    return <CardTitle title={props.name} />;
   }
+
+  return <CardTitle title={props.name} />;
 }
 
 export default RecipeName;

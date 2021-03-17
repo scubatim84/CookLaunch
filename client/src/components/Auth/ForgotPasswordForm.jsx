@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Card, Container, Grid, TextField } from '@material-ui/core';
+import {
+  Button, Card, Container, Grid, TextField,
+} from '@material-ui/core';
 
 import FormSubmitMessage from '../FormSubmitMessage';
 import { sendPasswordResetEmail } from '../../actions/authActions';
-import { useStylesMain } from '../../Styles';
+import useStylesMain from '../../Styles';
 import { themeMain } from '../../Theme';
 import CardTitle from '../CardTitle';
 
@@ -27,18 +29,16 @@ const ForgotPasswordForm = () => {
 
     const { name, value } = e.target;
 
-    setForgotUser((prevValue) => {
-      return {
-        ...prevValue,
-        [name]: value,
-      };
-    });
+    setForgotUser((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const email = forgotUser.email;
+    const { email } = forgotUser;
 
     const response = await sendPasswordResetEmail(email);
 
@@ -62,33 +62,33 @@ const ForgotPasswordForm = () => {
   };
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container component="main" maxWidth="xs">
       <Card>
         <Grid className={classes.paper}>
           <form noValidate>
             <Grid container spacing={2}>
-              <Grid item xs={12} align='center'>
-                <CardTitle title='Retrieve Password' />
+              <Grid item xs={12} align="center">
+                <CardTitle title="Retrieve Password" />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
                   value={forgotUser.email}
-                  variant='outlined'
+                  variant="outlined"
                   required
                   fullWidth
-                  label='Email Address'
-                  name='email'
-                  type='email'
+                  label="Email Address"
+                  name="email"
+                  type="email"
                 />
               </Grid>
               <Grid item xs={12}>
                 <Button
                   onClick={handleSubmit}
-                  type='submit'
+                  type="submit"
                   fullWidth
-                  variant='contained'
-                  color='primary'
+                  variant="contained"
+                  color="primary"
                 >
                   Submit
                 </Button>

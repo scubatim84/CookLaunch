@@ -169,6 +169,28 @@ describe('resetPassword function', () => {
     password: 'tester',
   };
 
+  it('Tests function when API request is successful', async () => {
+    server.use(
+      rest.put('/api/auth/resetpassword', (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
+    );
+
+    const response = await resetPassword(userData);
+
+    expect(response.status).toBe(204);
+    expect(response.data).toBe(null);
+  });
+
+  it('Tests function when API get request fails', async () => {
+    const errorMessage = 'An error message';
+
+    server.use(
+      rest.put('/api/auth/resetpassword', (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
+    );
+    const response = await resetPassword(userData);
+
+    expect(response).toBe(errorMessage);
+  });
+
   it('Tests function when userData parameter is empty', async () => {
     const response = await resetPassword({});
 
@@ -194,28 +216,6 @@ describe('resetPassword function', () => {
     const response = await resetPassword(userData);
 
     expect(response.data).toBe('Email is invalid');
-  });
-
-  it('Tests function when API request is successful', async () => {
-    server.use(
-      rest.put('/api/auth/resetpassword', (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
-    );
-
-    const response = await resetPassword(userData);
-
-    expect(response.status).toBe(204);
-    expect(response.data).toBe(null);
-  });
-
-  it('Tests function when API get request fails', async () => {
-    const errorMessage = 'An error message';
-
-    server.use(
-      rest.put('/api/auth/resetpassword', (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
-    );
-    const response = await resetPassword(userData);
-
-    expect(response).toBe(errorMessage);
   });
 });
 

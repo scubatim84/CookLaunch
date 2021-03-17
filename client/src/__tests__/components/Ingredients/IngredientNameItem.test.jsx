@@ -43,7 +43,7 @@ describe('IngredientNameItem renders correctly', () => {
         name={ingredient.name}
         getIngredientData={getIngredientData}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     expect(queryByText(ingredient.name)).toBeTruthy();
@@ -61,7 +61,7 @@ describe('IngredientNameItem renders correctly', () => {
         name={ingredient.name}
         getIngredientData={getIngredientData}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     expect(queryByText(ingredient.name)).toBeTruthy();
@@ -81,7 +81,7 @@ describe('IngredientNameItem renders correctly', () => {
         name={ingredient.name}
         getIngredientData={getIngredientData}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     UserEvent.click(queryByTestId('edit-icon'));
@@ -115,7 +115,7 @@ describe('IngredientNameItem buttons function correctly', () => {
         name={ingredient.name}
         getIngredientData={getIngredientData}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     expect(queryByText(confirmDialogInput.title)).toBeNull();
@@ -149,7 +149,7 @@ describe('IngredientNameItem buttons function correctly', () => {
         name={ingredient.name}
         getIngredientData={getIngredientData}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     UserEvent.click(queryByTestId('edit-icon'));
@@ -158,14 +158,12 @@ describe('IngredientNameItem buttons function correctly', () => {
     const nameInput = screen.getByTestId('ingredient-name-edit');
     expect(nameInput.value).toBe(ingredient.name);
     UserEvent.type(nameInput, ' morechars');
-    expect(nameInput.value).toBe(ingredient.name + ' morechars');
+    expect(nameInput.value).toBe(`${ingredient.name} morechars`);
   });
 
   it('Clicking done icon executes handleSubmit function and API call succeeds', async () => {
     server.use(
-      rest.put(`/api/ingredients/${ingredient.id}`, (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.put(`/api/ingredients/${ingredient.id}`, (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const { queryByTestId } = render(
@@ -177,7 +175,7 @@ describe('IngredientNameItem buttons function correctly', () => {
         name={ingredient.name}
         getIngredientData={getIngredientData}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     UserEvent.click(queryByTestId('edit-icon'));
@@ -197,7 +195,7 @@ describe('IngredientNameItem buttons function correctly', () => {
         name={ingredient.name}
         getIngredientData={getIngredientData}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     UserEvent.click(queryByTestId('edit-icon'));

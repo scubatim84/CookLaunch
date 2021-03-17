@@ -7,10 +7,10 @@ const RecipeButton = (props) => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Button
-            data-testid='submit-button'
+            data-testid="submit-button"
             fullWidth
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             onClick={props.handleSubmit}
           >
             Submit
@@ -18,10 +18,10 @@ const RecipeButton = (props) => {
         </Grid>
         <Grid item xs={12}>
           <Button
-            data-testid='cancel-button'
+            data-testid="cancel-button"
             fullWidth
-            variant='contained'
-            color='primary'
+            variant="contained"
+            color="primary"
             onClick={props.handleCancel}
           >
             Cancel
@@ -33,11 +33,11 @@ const RecipeButton = (props) => {
 
   return (
     <Button
-      data-testid='edit-button'
-      type='submit'
+      data-testid="edit-button"
+      type="submit"
       fullWidth
-      variant='outlined'
-      color='primary'
+      variant="outlined"
+      color="primary"
       onClick={props.handleEdit}
     >
       Edit Recipe

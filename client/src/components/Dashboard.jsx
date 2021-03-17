@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Backdrop, CircularProgress, Grid } from '@material-ui/core';
 import _ from 'lodash';
-import { useStylesMain } from '../Styles';
+import useStylesMain from '../Styles';
 import { themeMain } from '../Theme';
 import RecipeCard from './Recipes/RecipeCard';
 import Loader from './Loader';
@@ -11,16 +11,16 @@ function Dashboard(props) {
   const classes = useStylesMain(themeMain);
 
   if (!props.isLoggedIn) {
-    return <Redirect to='/login' />;
-  } else if (!props.recipes) {
+    return <Redirect to="/login" />;
+  } if (!props.recipes) {
     return <Loader />;
-  } else if (props.id && props.recipes.length === 0) {
-    return <Redirect to='/welcome' />;
-  } else if (props.recipes) {
+  } if (props.id && props.recipes.length === 0) {
+    return <Redirect to="/welcome" />;
+  } if (props.recipes) {
     return (
       <div className={classes.minHeight}>
         <Backdrop className={classes.backdrop} open={!props.recipes}>
-          <CircularProgress color='inherit' />
+          <CircularProgress color="inherit" />
         </Backdrop>
         <Grid container className={(classes.maxWidth, classes.root)}>
           {props.recipes.map((recipe) => {

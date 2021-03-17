@@ -7,11 +7,19 @@ import { themeMain } from '../../Theme';
 import IngredientText from './IngredientText';
 import DeleteButton from '../DeleteButton';
 
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    '&:hover': {
+      color: theme.palette.primary.main,
+    },
+  },
+}));
+
 const IngredientItemView = (props) => {
   const classes = useStyles(themeMain);
 
   return (
-    <Grid container spacing={1} alignItems='center'>
+    <Grid container spacing={1} alignItems="center">
       <Grid item xs={5}>
         <IngredientText>{props.name}</IngredientText>
       </Grid>
@@ -23,7 +31,7 @@ const IngredientItemView = (props) => {
       </Grid>
       <Grid item xs={1}>
         <Edit
-          data-testid='edit-icon'
+          data-testid="edit-icon"
           onClick={props.handleEdit}
           className={classes.icon}
         />
@@ -38,13 +46,5 @@ const IngredientItemView = (props) => {
     </Grid>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    '&:hover': {
-      color: theme.palette.primary.main,
-    },
-  },
-}));
 
 export default IngredientItemView;

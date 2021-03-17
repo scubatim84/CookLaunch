@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import isEmpty from 'is-empty';
-import {ingredientQuantityTypes} from '../../actions/types';
-import FormSubmitMessage from '../FormSubmitMessage';
-import {Button, Grid, TextField} from '@material-ui/core';
+import { Button, Grid, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { ingredientQuantityTypes } from '../../actions/types';
+import FormSubmitMessage from '../FormSubmitMessage';
 import CardTitle from '../CardTitle';
 
 function RecipeIngredientAdd(props) {
@@ -19,36 +19,30 @@ function RecipeIngredientAdd(props) {
 
   const handleAutocompleteName = (event, ingredient) => {
     if (!isEmpty(ingredient)) {
-      setAddIngredient((prevValue) => {
-        return {
-          ...prevValue,
-          id: ingredient._id,
-          name: ingredient.name,
-        };
-      });
+      setAddIngredient((prevValue) => ({
+        ...prevValue,
+        id: ingredient._id,
+        name: ingredient.name,
+      }));
     }
   };
 
   const handleAutocompleteQuantityType = (event, ingredientType) => {
     if (!isEmpty(ingredientType)) {
-      setAddIngredient((prevValue) => {
-        return {
-          ...prevValue,
-          quantityType: ingredientType,
-        };
-      });
+      setAddIngredient((prevValue) => ({
+        ...prevValue,
+        quantityType: ingredientType,
+      }));
     }
   };
 
   const handleChange = (e) => {
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
-    setAddIngredient((prevValue) => {
-      return {
-        ...prevValue,
-        [name]: value,
-      };
-    });
+    setAddIngredient((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -65,13 +59,13 @@ function RecipeIngredientAdd(props) {
 
   return (
     <form noValidate>
-      <Grid container spacing={2} alignItems='center'>
-        <Grid item xs={12} align='center'>
-          <CardTitle title='Add Ingredient To Recipe' />
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={12} align="center">
+          <CardTitle title="Add Ingredient To Recipe" />
         </Grid>
         <Grid item xs={12} sm={5}>
           <Autocomplete
-            id='ingredients'
+            id="ingredients"
             options={props.ingredients}
             onChange={handleAutocompleteName}
             getOptionLabel={(option) => option.name}
@@ -79,10 +73,10 @@ function RecipeIngredientAdd(props) {
               <TextField
                 {...params}
                 required
-                label='Ingredient Name'
-                variant='outlined'
-                id='name'
-                name='name'
+                label="Ingredient Name"
+                variant="outlined"
+                id="name"
+                name="name"
               />
             )}
           />
@@ -90,17 +84,17 @@ function RecipeIngredientAdd(props) {
         <Grid item xs={4} sm={3}>
           <TextField
             onChange={handleChange}
-            variant='outlined'
+            variant="outlined"
             required
             value={addIngredient.quantity}
-            label='Quantity'
-            id='quantity'
-            name='quantity'
+            label="Quantity"
+            id="quantity"
+            name="quantity"
           />
         </Grid>
         <Grid item xs={8} sm={4}>
           <Autocomplete
-            id='ingredientQuantityTypes'
+            id="ingredientQuantityTypes"
             options={ingredientQuantityTypes}
             onChange={handleAutocompleteQuantityType}
             getOptionLabel={(option) => option}
@@ -108,10 +102,10 @@ function RecipeIngredientAdd(props) {
               <TextField
                 {...params}
                 required
-                label='Quantity Type'
-                variant='outlined'
-                id='quantityType'
-                name='quantityType'
+                label="Quantity Type"
+                variant="outlined"
+                id="quantityType"
+                name="quantityType"
               />
             )}
           />
@@ -120,9 +114,9 @@ function RecipeIngredientAdd(props) {
           <Button
             onClick={handleSubmit}
             fullWidth
-            type='submit'
-            variant='outlined'
-            color='primary'
+            type="submit"
+            variant="outlined"
+            color="primary"
           >
             Add Ingredient
           </Button>

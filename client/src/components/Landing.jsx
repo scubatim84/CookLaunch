@@ -2,7 +2,7 @@ import React from 'react';
 import { CardMedia, Grid } from '@material-ui/core';
 
 import RegisterForm from './Auth/RegisterForm';
-import { useStylesMain } from '../Styles';
+import useStylesMain from '../Styles';
 
 const Landing = (props) => {
   const classes = useStylesMain();

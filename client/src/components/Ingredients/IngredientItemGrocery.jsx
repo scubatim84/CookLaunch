@@ -7,11 +7,19 @@ import { themeMain } from '../../Theme';
 import IngredientText from './IngredientText';
 import DeleteButton from '../DeleteButton';
 
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    '&:hover': {
+      color: theme.palette.primary.main,
+    },
+  },
+}));
+
 const IngredientItemGrocery = (props) => {
   const classes = useStyles(themeMain);
 
   return (
-    <Grid container alignItems='center'>
+    <Grid container alignItems="center">
       <Grid item xs={2}>
         <Checkbox
           data-testid={
@@ -21,7 +29,7 @@ const IngredientItemGrocery = (props) => {
           }
           checked={props.editIngredient.checked}
           onChange={props.handleCheck}
-          color='primary'
+          color="primary"
         />
       </Grid>
       <Grid item xs={3}>
@@ -41,7 +49,7 @@ const IngredientItemGrocery = (props) => {
       </Grid>
       <Grid item xs={1}>
         <Edit
-          data-testid='edit-icon'
+          data-testid="edit-icon"
           onClick={props.handleEdit}
           className={classes.icon}
         />
@@ -56,13 +64,5 @@ const IngredientItemGrocery = (props) => {
     </Grid>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    '&:hover': {
-      color: theme.palette.primary.main,
-    },
-  },
-}));
 
 export default IngredientItemGrocery;

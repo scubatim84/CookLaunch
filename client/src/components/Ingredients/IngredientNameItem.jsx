@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import isEmpty from 'is-empty';
 import { Cancel, Done, Edit } from '@material-ui/icons';
-import { Grid, ListItem, ListItemText, TextField } from '@material-ui/core';
+import {
+  Grid, ListItem, ListItemText, TextField,
+} from '@material-ui/core';
 
 import { updateIngredient } from '../../actions/ingredientActions';
 import FormSubmitMessage from '../FormSubmitMessage';
@@ -35,12 +37,10 @@ const IngredientNameItem = (props) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setEditIngredient((prevValue) => {
-      return {
-        ...prevValue,
-        [name]: value,
-      };
-    });
+    setEditIngredient((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -68,31 +68,31 @@ const IngredientNameItem = (props) => {
 
   if (editMode) {
     return (
-      <Grid container alignItems='center'>
+      <Grid container alignItems="center">
         <Grid item xs={10}>
           <TextField
             inputProps={{ 'data-testid': 'ingredient-name-edit' }}
             onChange={handleChange}
-            variant='outlined'
+            variant="outlined"
             required
             placeholder={editIngredient.name}
             value={editIngredient.name}
-            id='name'
-            name='name'
+            id="name"
+            name="name"
           />
         </Grid>
         <Grid item xs={1}>
           <Done
-            data-testid='done-icon'
+            data-testid="done-icon"
             onClick={handleSubmit}
-            className='icon'
+            className="icon"
           />
         </Grid>
         <Grid item xs={1}>
           <Cancel
-            data-testid='cancel-icon'
+            data-testid="cancel-icon"
             onClick={handleCancel}
-            className='icon'
+            className="icon"
           />
         </Grid>
         <Grid item xs={12}>
@@ -105,9 +105,9 @@ const IngredientNameItem = (props) => {
   }
 
   return (
-    <Grid container alignItems='center'>
+    <Grid container alignItems="center">
       <Grid item xs={10}>
-        <ListItem dense={true} alignItems='flex-start'>
+        <ListItem dense alignItems="flex-start">
           <ListItemText
             data-testid={`list-item-${props.name}`}
             primary={props.name}
@@ -119,9 +119,9 @@ const IngredientNameItem = (props) => {
           <Grid container>
             <Grid item xs={6}>
               <Edit
-                data-testid='edit-icon'
+                data-testid="edit-icon"
                 onClick={handleEdit}
-                className='icon'
+                className="icon"
               />
             </Grid>
             <Grid item xs={6}>
