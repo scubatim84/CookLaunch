@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import passport from 'passport';
 import passportJwT from 'passport-jwt';
-import User from '../models/User.js';
+import User from '../models/User';
 
 // Set up environment variable support
 dotenv.config();
@@ -17,21 +17,23 @@ const options = {
   secretOrKey: process.env.SECRET_OR_KEY,
 };
 
-const jwtStrategy = new JwTStrategy(options, (jwt_payload, done) => {
-  User.findById(jwt_payload.id, (err, user) => {
+const jwtStrategy = new JwTStrategy(options, (jwtPayload, done) => {
+  User.findById(jwtPayload.id, (err, user) => {
     if (err) {
       return done(err, false);
     }
     if (user) {
       return done(null, user);
-    } else {
-      return done(null, false);
     }
+
+    return done(null, false);
   });
 });
 
 passport.use(jwtStrategy);
 
-export const authJwt = passport.authenticate('jwt', {
+const authJwt = passport.authenticate('jwt', {
   session: false,
 });
+
+export default authJwt;

@@ -5,19 +5,19 @@ const ProfileFieldContent = (props) => {
   if (props.editMode) {
     return (
       <TextField
-        inputProps={{ 'data-testid': 'edit-' + props.label }}
+        inputProps={{ 'data-testid': `edit-${props.label}` }}
         onChange={props.handleChange}
         value={props.content}
-        variant='outlined'
+        variant="outlined"
         label={props.label}
         name={props.name}
-        size='small'
+        size="small"
       />
     );
   }
 
   return (
-    <Typography variant='subtitle1' data-testid={'view-' + props.label}>
+    <Typography variant="subtitle1" data-testid={`view-${props.label}`}>
       {props.content}
     </Typography>
   );

@@ -3,6 +3,17 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
 import _ from 'lodash';
+
+import { ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import useStylesMain from './Styles';
+import { themeMain } from './Theme';
+
+import { getUserData } from './actions/userActions';
+import { getIngredients } from './actions/ingredientActions';
+import { getAllRecipes } from './actions/recipeActions';
+
 import Dashboard from './components/Dashboard';
 import Pantry from './components/Pantry';
 import Profile from './components/Profile/Profile';
@@ -12,15 +23,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import ResetPasswordByEmail from './components/Auth/ResetPasswordByEmail';
-import { getUserData } from './actions/userActions';
-import { getIngredients } from './actions/ingredientActions';
-import { useStylesMain } from './Styles';
-import { themeMain } from './Theme';
-import { ThemeProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { getAllRecipes } from './actions/recipeActions';
 import RecipeAdd from './components/Recipes/RecipeAdd';
-import Grid from '@material-ui/core/Grid';
 import IngredientNames from './components/Ingredients/IngredientNames';
 import RecipeExpanded from './components/Recipes/RecipeExpanded';
 import GroceryList from './components/GroceryList';
@@ -48,14 +51,12 @@ function App() {
   const getIngredientData = useCallback(async () => {
     const response = await getIngredients();
 
-    const ingredients = response.data.map((ingredient) => {
-      return {
-        ...ingredient,
-        name: _.startCase(_.toLower(ingredient.name)),
-      };
-    });
+    const ingredientList = response.data.map((ingredient) => ({
+      ...ingredient,
+      name: _.startCase(_.toLower(ingredient.name)),
+    }));
 
-    setIngredients({ data: ingredients });
+    setIngredients({ data: ingredientList });
   }, []);
 
   const getRecipeData = useCallback(async () => {
@@ -95,200 +96,178 @@ function App() {
     }
   };
 
-  const renderDashboard = () => {
-    return (
-      <Dashboard
-        key={isLoggedIn}
-        id={user.id}
-        email={user.email}
-        firstName={user.firstName}
-        lastName={user.lastName}
-        recipes={recipes}
-        handleLoggedIn={handleLoggedIn}
-        isLoggedIn={isLoggedIn}
-        className={classes.root}
-      />
-    );
-  };
+  const renderDashboard = () => (
+    <Dashboard
+      key={isLoggedIn}
+      id={user.id}
+      email={user.email}
+      firstName={user.firstName}
+      lastName={user.lastName}
+      recipes={recipes}
+      handleLoggedIn={handleLoggedIn}
+      isLoggedIn={isLoggedIn}
+      className={classes.root}
+    />
+  );
 
-  const renderRecipeAdd = () => {
-    return (
-      <Grid
-        container
-        style={{ minHeight: '100vh' }}
-        className={classes.ingredientMargin}
-      >
-        <Grid item xs={12} align='center'>
-          <RecipeAdd
-            key={recipes}
-            userId={user.id}
-            getRecipeData={getRecipeData}
-            ingredients={ingredients.data}
-            isLoggedIn={isLoggedIn}
-          />
-        </Grid>
-      </Grid>
-    );
-  };
-
-  const renderRecipeView = ({ match }) => {
-    if (recipes) {
-      const foundRecipe = recipes.filter((recipe) => {
-        return recipe._id === match.params.id;
-      });
-
-      return (
-        <RecipeExpanded
-          key={foundRecipe[0]?._id + foundRecipe[0]?.dateLastChanged}
+  const renderRecipeAdd = () => (
+    <Grid
+      container
+      style={{ minHeight: '100vh' }}
+      className={classes.ingredientMargin}
+    >
+      <Grid item xs={12} align="center">
+        <RecipeAdd
+          key={recipes}
           userId={user.id}
-          recipeId={foundRecipe[0]?._id}
-          isLoggedIn={isLoggedIn}
-          imageUrl={foundRecipe[0]?.imageUrl}
           getRecipeData={getRecipeData}
           ingredients={ingredients.data}
+          isLoggedIn={isLoggedIn}
+        />
+      </Grid>
+    </Grid>
+  );
+
+  const renderRecipeView = ({ match }) => {
+    if (!recipes) {
+      return null;
+    }
+
+    const foundRecipe = recipes.filter((recipe) => recipe._id === match.params.id);
+
+    return (
+      <RecipeExpanded
+        key={foundRecipe[0]?._id + foundRecipe[0]?.dateLastChanged}
+        userId={user.id}
+        recipeId={foundRecipe[0]?._id}
+        isLoggedIn={isLoggedIn}
+        imageUrl={foundRecipe[0]?.imageUrl}
+        getRecipeData={getRecipeData}
+        ingredients={ingredients.data}
+        groceries={user.groceries}
+        pantry={user.pantry}
+        getUserPayload={getUserPayload}
+      />
+    );
+  };
+
+  const renderIngredients = () => (
+    <Grid
+      container
+      style={{ minHeight: '100vh' }}
+      className={classes.ingredientMargin}
+    >
+      <Grid item xs={12} align="center">
+        <IngredientNames
+          key={ingredients.data}
+          pantry={user.pantry}
+          getIngredientData={getIngredientData}
+          ingredients={ingredients.data}
+          id={user.id}
+          email={user.email}
+          firstName={user.firstName}
+          lastName={user.lastName}
+          handleLoggedIn={handleLoggedIn}
+          isLoggedIn={isLoggedIn}
+        />
+      </Grid>
+    </Grid>
+  );
+
+  const renderLanding = () => (
+    <Landing
+      handleLoggedIn={handleLoggedIn}
+      isLoggedIn={isLoggedIn}
+      className={classes.root}
+    />
+  );
+
+  const renderWelcome = () => (
+    <Welcome
+      key={isLoggedIn}
+      firstName={user.firstName}
+      handleLoggedIn={handleLoggedIn}
+      isLoggedIn={isLoggedIn}
+    />
+  );
+
+  const renderLogin = () => (
+    <Login
+      handleLoggedIn={handleLoggedIn}
+      isLoggedIn={isLoggedIn}
+      className={classes.root}
+    />
+  );
+
+  const renderPantry = () => (
+    <Grid
+      container
+      style={{ minHeight: '100vh' }}
+      className={classes.ingredientMargin}
+    >
+      <Grid item xs={12} align="center">
+        <Pantry
+          key={user.pantry}
+          pantry={user.pantry}
+          ingredients={ingredients.data}
+          getUserPayload={getUserPayload}
+          getIngredientData={getIngredientData}
+          email={user.email}
+          firstName={user.firstName}
+          lastName={user.lastName}
+          handleLoggedIn={handleLoggedIn}
+          isLoggedIn={isLoggedIn}
+          className={classes.root}
+        />
+      </Grid>
+    </Grid>
+  );
+
+  const renderGroceries = () => (
+    <Grid
+      container
+      style={{ minHeight: '100vh' }}
+      className={classes.ingredientMargin}
+    >
+      <Grid item xs={12} align="center">
+        <GroceryList
+          key={user.groceries}
           groceries={user.groceries}
           pantry={user.pantry}
+          ingredients={ingredients.data}
           getUserPayload={getUserPayload}
+          getIngredientData={getIngredientData}
+          email={user.email}
+          firstName={user.firstName}
+          lastName={user.lastName}
+          handleLoggedIn={handleLoggedIn}
+          isLoggedIn={isLoggedIn}
         />
-      );
-    }
-  };
-
-  const renderIngredients = () => {
-    return (
-      <Grid
-        container
-        style={{ minHeight: '100vh' }}
-        className={classes.ingredientMargin}
-      >
-        <Grid item xs={12} align='center'>
-          <IngredientNames
-            key={ingredients.data}
-            pantry={user.pantry}
-            getIngredientData={getIngredientData}
-            ingredients={ingredients.data}
-            id={user.id}
-            email={user.email}
-            firstName={user.firstName}
-            lastName={user.lastName}
-            handleLoggedIn={handleLoggedIn}
-            isLoggedIn={isLoggedIn}
-          />
-        </Grid>
       </Grid>
-    );
-  };
+    </Grid>
+  );
 
-  const renderLanding = () => {
-    return (
-      <Landing
-        handleLoggedIn={handleLoggedIn}
-        isLoggedIn={isLoggedIn}
-        className={classes.root}
-      />
-    );
-  };
+  const renderResetPassword = () => (
+    <ResetPasswordByEmail
+      handleLoggedIn={handleLoggedIn}
+      isLoggedIn={isLoggedIn}
+      className={classes.root}
+    />
+  );
 
-  const renderWelcome = () => {
-    return (
-      <Welcome
-        key={isLoggedIn}
-        firstName={user.firstName}
-        handleLoggedIn={handleLoggedIn}
-        isLoggedIn={isLoggedIn}
-      />
-    );
-  };
+  const renderProfile = () => (
+    <Profile
+      key={user.email}
+      getUserPayload={getUserPayload}
+      email={user.email}
+      firstName={user.firstName}
+      lastName={user.lastName}
+      isLoggedIn={isLoggedIn}
+      className={classes.root}
+    />
+  );
 
-  const renderLogin = () => {
-    return (
-      <Login
-        handleLoggedIn={handleLoggedIn}
-        isLoggedIn={isLoggedIn}
-        className={classes.root}
-      />
-    );
-  };
-
-  const renderPantry = () => {
-    return (
-      <Grid
-        container
-        style={{ minHeight: '100vh' }}
-        className={classes.ingredientMargin}
-      >
-        <Grid item xs={12} align='center'>
-          <Pantry
-            key={user.pantry}
-            pantry={user.pantry}
-            ingredients={ingredients.data}
-            getUserPayload={getUserPayload}
-            getIngredientData={getIngredientData}
-            email={user.email}
-            firstName={user.firstName}
-            lastName={user.lastName}
-            handleLoggedIn={handleLoggedIn}
-            isLoggedIn={isLoggedIn}
-            className={classes.root}
-          />
-        </Grid>
-      </Grid>
-    );
-  };
-
-  const renderGroceries = () => {
-    return (
-      <Grid
-        container
-        style={{ minHeight: '100vh' }}
-        className={classes.ingredientMargin}
-      >
-        <Grid item xs={12} align='center'>
-          <GroceryList
-            key={user.groceries}
-            groceries={user.groceries}
-            pantry={user.pantry}
-            ingredients={ingredients.data}
-            getUserPayload={getUserPayload}
-            getIngredientData={getIngredientData}
-            email={user.email}
-            firstName={user.firstName}
-            lastName={user.lastName}
-            handleLoggedIn={handleLoggedIn}
-            isLoggedIn={isLoggedIn}
-          />
-        </Grid>
-      </Grid>
-    );
-  };
-
-  const renderResetPassword = () => {
-    return (
-      <ResetPasswordByEmail
-        handleLoggedIn={handleLoggedIn}
-        isLoggedIn={isLoggedIn}
-        className={classes.root}
-      />
-    );
-  };
-
-  const renderProfile = () => {
-    return (
-      <Profile
-        key={user.email}
-        getUserPayload={getUserPayload}
-        email={user.email}
-        firstName={user.firstName}
-        lastName={user.lastName}
-        isLoggedIn={isLoggedIn}
-        className={classes.root}
-      />
-    );
-  };
-
-  const renderTour = () => {
-    return <UserTour handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
-  };
+  const renderTour = () => <UserTour handleLoggedIn={handleLoggedIn} isLoggedIn={isLoggedIn} />;
 
   return (
     <ThemeProvider theme={themeMain}>
@@ -299,20 +278,20 @@ function App() {
         className={classes.root}
       />
       <Router>
-        <div className='App'>
-          <Route exact path='/' render={renderLanding} />
-          <Route exact path='/tour' render={renderTour} />
-          <Route exact path='/login' render={renderLogin} />
-          <Route exact path='/dashboard' render={renderDashboard} />
-          <Route exact path='/welcome' render={renderWelcome} />
-          <Route exact path='/ingredients' render={renderIngredients} />
-          <Route exact path='/recipes/add' render={renderRecipeAdd} />
-          <Route exact path='/recipes/view/:id' render={renderRecipeView} />
-          <Route exact path='/dashboard/groceries' render={renderGroceries} />
-          <Route exact path='/dashboard/pantry' render={renderPantry} />
-          <Route exact path='/forgotpassword' component={ForgotPassword} />
-          <Route exact path='/profile' render={renderProfile} />
-          <Route path='/reset/:token' render={renderResetPassword} />
+        <div className="App">
+          <Route exact path="/" render={renderLanding} />
+          <Route exact path="/tour" render={renderTour} />
+          <Route exact path="/login" render={renderLogin} />
+          <Route exact path="/dashboard" render={renderDashboard} />
+          <Route exact path="/welcome" render={renderWelcome} />
+          <Route exact path="/ingredients" render={renderIngredients} />
+          <Route exact path="/recipes/add" render={renderRecipeAdd} />
+          <Route exact path="/recipes/view/:id" render={renderRecipeView} />
+          <Route exact path="/dashboard/groceries" render={renderGroceries} />
+          <Route exact path="/dashboard/pantry" render={renderPantry} />
+          <Route exact path="/forgotpassword" component={ForgotPassword} />
+          <Route exact path="/profile" render={renderProfile} />
+          <Route path="/reset/:token" render={renderResetPassword} />
         </div>
       </Router>
       <Footer className={classes.root} />

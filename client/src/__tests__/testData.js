@@ -1,4 +1,4 @@
-export const ingredientData = [
+const ingredientData = [
   {
     _id: 'testIngredientId1',
     dateLastChanged: new Date(),
@@ -29,3 +29,5 @@ export const ingredientData = [
 ];
 
 it.skip('empty test to avoid error on test run', () => {});
+
+export default ingredientData;

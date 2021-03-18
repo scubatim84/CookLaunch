@@ -37,9 +37,7 @@ describe('addIngredientToPantry function', () => {
     testIngredient.quantityType = 'Ounces';
 
     server.use(
-      rest.post('/api/pantry', (req, res, ctx) => {
-        return res(ctx.status(201), ctx.json('test'));
-      })
+      rest.post('/api/pantry', (req, res, ctx) => res(ctx.status(201), ctx.json('test'))),
     );
 
     const response = await addIngredientToPantry(testIngredient);
@@ -52,11 +50,9 @@ describe('addIngredientToPantry function', () => {
     testIngredient.quantityType = 'Ounces';
     const errorMessage = 'An error message';
 
+    // Respond with "500 Internal Server Error" status for this test.
     server.use(
-      rest.post('/api/pantry', (req, res, ctx) => {
-        // Respond with "500 Internal Server Error" status for this test.
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.post('/api/pantry', (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await addIngredientToPantry(testIngredient);
@@ -84,9 +80,7 @@ describe('updateIngredientInPantry function', () => {
     testIngredient.quantityType = 'Ounces';
 
     server.use(
-      rest.put(`/api/pantry/${testIngredient.id}`, (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.put(`/api/pantry/${testIngredient.id}`, (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const response = await updateIngredientInPantry(testIngredient);
@@ -99,11 +93,9 @@ describe('updateIngredientInPantry function', () => {
     testIngredient.quantityType = 'Ounces';
     const errorMessage = 'An error message';
 
+    // Respond with "500 Internal Server Error" status for this test.
     server.use(
-      rest.put(`/api/pantry/${testIngredient.id}`, (req, res, ctx) => {
-        // Respond with "500 Internal Server Error" status for this test.
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.put(`/api/pantry/${testIngredient.id}`, (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await updateIngredientInPantry(testIngredient);
@@ -125,9 +117,7 @@ describe('deleteIngredientFromPantry function', () => {
     testIngredientId = 'testid';
 
     server.use(
-      rest.delete(`/api/pantry/${testIngredientId}`, (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.delete(`/api/pantry/${testIngredientId}`, (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const response = await deleteIngredientFromPantry(testIngredientId);
@@ -140,11 +130,9 @@ describe('deleteIngredientFromPantry function', () => {
     testIngredientId = 'testid';
     const errorMessage = 'An error message';
 
+    // Respond with "500 Internal Server Error" status for this test.
     server.use(
-      rest.delete(`/api/pantry/${testIngredientId}`, (req, res, ctx) => {
-        // Respond with "500 Internal Server Error" status for this test.
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.delete(`/api/pantry/${testIngredientId}`, (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await deleteIngredientFromPantry(testIngredientId);

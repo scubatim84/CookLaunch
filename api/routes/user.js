@@ -2,7 +2,7 @@ import express from 'express';
 import isEmpty from 'is-empty';
 
 // Load User model
-import User from '../../models/User.js';
+import User from '../../models/User';
 
 // Set up Express router
 const router = express.Router();
@@ -19,7 +19,7 @@ router.get('/profile', async (req, res) => {
     try {
       res.status(200).json(foundUser);
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(500).json('No user found in database.');
@@ -50,9 +50,9 @@ router.put('/profile', async (req, res) => {
 
       await foundUser.save();
 
-      res.status(200).json(foundUser);
+      return res.status(200).json(foundUser);
     } catch (err) {
-      res.status(500).send('An error has occurred. ' + err);
+      return res.status(500).send(`An error has occurred. ${err}`);
     }
   } else {
     return res.status(500).json('User not found');
@@ -79,7 +79,7 @@ router.delete('/:id', async (req, res) => {
         res.status(400).json('User deletion failed.');
       }
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(500).json('No user found in database.');

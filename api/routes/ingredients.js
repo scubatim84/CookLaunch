@@ -2,7 +2,7 @@ import express from 'express';
 import isEmpty from 'is-empty';
 
 // Load Ingredient model
-import { Ingredient } from '../../models/Ingredient.js';
+import Ingredient from '../../models/Ingredient';
 
 // Set up Express router
 const router = express.Router();
@@ -14,7 +14,8 @@ router.get('/', async (req, res) => {
   // Obtain user from request
   const foundUser = req.user;
 
-  // Once user is found, retrieve list of all ingredients created by that user as well as admin ingredients
+  // Once user is found, retrieve list of all ingredients created by that user
+  // as well as admin ingredients
   if (foundUser) {
     try {
       const ingredients = await Ingredient.find({

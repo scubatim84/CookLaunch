@@ -16,7 +16,7 @@ const testIngredient = {
 
 config.disabled = true;
 const handleDelete = jest.fn((id) => id);
-const handleUpdateIngredient = jest.fn((testIngredient) => null);
+const handleUpdateIngredient = jest.fn(() => null);
 
 describe('IngredientItem renders correctly', () => {
   it('Renders ingredient item when unchecked and not a grocery ingredient', () => {
@@ -29,17 +29,17 @@ describe('IngredientItem renders correctly', () => {
         checked={testIngredient.checked}
         groceryExtra={testIngredient.groceryExtra}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     expect(queryByTestId('unchecked-ingredientname').innerHTML).toBe(
-      testIngredient.name
+      testIngredient.name,
     );
     expect(queryByTestId('unchecked-3').innerHTML).toBe(
-      testIngredient.quantity
+      testIngredient.quantity,
     );
     expect(queryByTestId('unchecked-Ounces').innerHTML).toBe(
-      testIngredient.quantityType
+      testIngredient.quantityType,
     );
 
     expect(queryByTestId('edit-icon')).toBeTruthy();
@@ -57,7 +57,7 @@ describe('IngredientItem renders correctly', () => {
         checked={testIngredient.checked}
         groceryExtra={testIngredient.groceryExtra}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     UserEvent.click(queryByTestId('edit-icon'));
@@ -84,7 +84,7 @@ describe('IngredientItem renders correctly', () => {
         checked={testIngredient.checked}
         groceryExtra={testIngredient.groceryExtra}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     UserEvent.click(queryByTestId('edit-icon'));
@@ -115,7 +115,7 @@ describe('IngredientItem renders correctly', () => {
         checked={testIngredient.checked}
         groceryExtra
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     UserEvent.click(queryByTestId('edit-icon'));
@@ -136,7 +136,7 @@ describe('IngredientItem renders correctly', () => {
         groceryIngredient
         groceryExtra={testIngredient.groceryExtra}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     expect(queryByTestId('grocery-checkbox-checked')).toBeTruthy();
@@ -163,7 +163,7 @@ describe('IngredientItem renders correctly', () => {
         groceryIngredient
         groceryExtra={testIngredient.groceryExtra}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     expect(queryByTestId('grocery-checkbox-unchecked')).toBeTruthy();
@@ -193,7 +193,7 @@ describe('IngredientItem buttons function correctly', () => {
         checked={testIngredient.checked}
         handleDelete={handleDelete}
         handleUpdateIngredient={handleUpdateIngredient}
-      />
+      />,
     );
 
     expect(queryByRole('checkbox').checked).toEqual(false);
@@ -221,7 +221,7 @@ describe('IngredientItem buttons function correctly', () => {
         checked={testIngredient.checked}
         groceryExtra={testIngredient.groceryExtra}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     expect(queryByText(confirmDialogInput.title)).toBeNull();
@@ -255,7 +255,7 @@ describe('IngredientItem buttons function correctly', () => {
         checked={testIngredient.checked}
         groceryExtra={testIngredient.groceryExtra}
         handleDelete={handleDelete}
-      />
+      />,
     );
 
     UserEvent.click(queryByTestId('edit-icon'));
@@ -279,7 +279,7 @@ describe('IngredientItem buttons function correctly', () => {
         groceryExtra={testIngredient.groceryExtra}
         handleDelete={handleDelete}
         handleUpdateIngredient={handleUpdateIngredient}
-      />
+      />,
     );
 
     UserEvent.click(queryByTestId('edit-icon'));
@@ -291,9 +291,7 @@ describe('IngredientItem buttons function correctly', () => {
 
   it('Error during editing ingredient is rendered in error message to user', async () => {
     const errorMessage = 'An error message';
-    const handleUpdateIngredientFail = jest.fn(
-      (testIngredient) => errorMessage
-    );
+    const handleUpdateIngredientFail = jest.fn(() => errorMessage);
 
     const { queryByTestId } = render(
       <IngredientItem
@@ -306,7 +304,7 @@ describe('IngredientItem buttons function correctly', () => {
         groceryExtra={testIngredient.groceryExtra}
         handleDelete={handleDelete}
         handleUpdateIngredient={handleUpdateIngredientFail}
-      />
+      />,
     );
 
     UserEvent.click(queryByTestId('edit-icon'));
@@ -315,9 +313,7 @@ describe('IngredientItem buttons function correctly', () => {
     UserEvent.click(queryByTestId('done-icon'));
     expect(handleUpdateIngredientFail).toHaveBeenCalledTimes(1);
 
-    await waitFor(() =>
-      expect(queryByTestId('form-submit-message')).toBeTruthy()
-    );
+    await waitFor(() => expect(queryByTestId('form-submit-message')).toBeTruthy());
     expect(queryByTestId('form-submit-message').innerHTML).toBe(errorMessage);
   });
 
@@ -330,7 +326,7 @@ describe('IngredientItem buttons function correctly', () => {
         quantityType={testIngredient.quantityType}
         checked={testIngredient.checked}
         groceryExtra={testIngredient.groceryExtra}
-      />
+      />,
     );
 
     UserEvent.click(queryByTestId('edit-icon'));

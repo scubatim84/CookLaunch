@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import LandingImage from './images/landing-bg.jpg';
 import LoginImage from './images/login-bg.jpg';
 
-export const useStylesMain = makeStyles((theme) => ({
+const useStylesMain = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: '#fff',
@@ -108,3 +108,5 @@ export const useStylesMain = makeStyles((theme) => ({
     flexGrow: 1,
   },
 }));
+
+export default useStylesMain;

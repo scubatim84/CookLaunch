@@ -20,9 +20,7 @@ export const getUserData = async () => {
 export const updateUserProfile = async (userData) => {
   let error;
 
-  let firstName = userData.firstName;
-  let lastName = userData.lastName;
-  let email = userData.email;
+  let { firstName, lastName, email } = userData;
 
   // Check to see if values are empty, and if so, convert them to empty strings
   firstName = !isEmpty(firstName) ? firstName : '';
@@ -48,16 +46,15 @@ export const updateUserProfile = async (userData) => {
     return {
       data: error,
     };
-  } else {
-    try {
-      const token = cookies.get('user');
-      return await axios.put('/api/user/profile', userData, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (err) {
-      return err.response;
-    }
+  }
+  try {
+    const token = cookies.get('user');
+    return await axios.put('/api/user/profile', userData, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  } catch (err) {
+    return err.response;
   }
 };

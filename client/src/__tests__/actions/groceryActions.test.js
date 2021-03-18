@@ -36,9 +36,7 @@ describe('addIngredientToGroceries function', () => {
     ingredientData.name = 'test ingredient';
 
     server.use(
-      rest.post('/api/groceries', (req, res, ctx) => {
-        return res(ctx.status(201), ctx.json('test payload'));
-      })
+      rest.post('/api/groceries', (req, res, ctx) => res(ctx.status(201), ctx.json('test payload'))),
     );
 
     const response = await addIngredientToGroceries(ingredientData);
@@ -52,9 +50,7 @@ describe('addIngredientToGroceries function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.post('/api/groceries', (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.post('/api/groceries', (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await addIngredientToGroceries(ingredientData);
@@ -83,9 +79,7 @@ describe('updateIngredientInGroceries function', () => {
     ingredientData.name = 'test ingredient';
 
     server.use(
-      rest.put(`/api/groceries/${ingredientData.id}`, (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.put(`/api/groceries/${ingredientData.id}`, (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const response = await updateIngredientInGroceries(ingredientData);
@@ -99,9 +93,7 @@ describe('updateIngredientInGroceries function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.put(`/api/groceries/${ingredientData.id}`, (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.put(`/api/groceries/${ingredientData.id}`, (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await updateIngredientInGroceries(ingredientData);
@@ -130,9 +122,7 @@ describe('deleteIngredientFromGroceries function', () => {
     ingredientData.id = 'testid';
 
     server.use(
-      rest.delete(`/api/groceries/${ingredientData.id}`, (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.delete(`/api/groceries/${ingredientData.id}`, (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const response = await deleteIngredientFromGroceries(ingredientData.id);
@@ -146,9 +136,7 @@ describe('deleteIngredientFromGroceries function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.delete(`/api/groceries/${ingredientData.id}`, (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.delete(`/api/groceries/${ingredientData.id}`, (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await deleteIngredientFromGroceries(ingredientData.id);

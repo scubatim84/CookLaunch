@@ -2,22 +2,24 @@ import React, { useState } from 'react';
 import { Redirect, useParams } from 'react-router-dom';
 import isEmpty from 'is-empty';
 import {
+  Button, Card, Container, Grid, TextField,
+} from '@material-ui/core';
+import {
   checkResetPasswordToken,
   loginUser,
   validatePassword,
   resetPassword,
 } from '../../actions/authActions';
-import { Button, Card, Container, Grid, TextField } from '@material-ui/core';
 
 import FormSubmitMessage from '../FormSubmitMessage';
-import { useStylesMain } from '../../Styles';
+import useStylesMain from '../../Styles';
 import { themeMain } from '../../Theme';
 import CardTitle from '../CardTitle';
 
 const ResetPasswordByEmailForm = (props) => {
   const classes = useStylesMain(themeMain);
 
-  const token = useParams().token;
+  const { token } = useParams();
 
   const [password, setPassword] = useState({
     password: '',
@@ -30,12 +32,10 @@ const ResetPasswordByEmailForm = (props) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setPassword((prevValue) => {
-      return {
-        ...prevValue,
-        [name]: value,
-      };
-    });
+    setPassword((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -43,7 +43,7 @@ const ResetPasswordByEmailForm = (props) => {
 
     const passwordCheck = await validatePassword(
       password.password,
-      password.password2
+      password.password2,
     );
 
     if (passwordCheck.isValid) {
@@ -86,49 +86,49 @@ const ResetPasswordByEmailForm = (props) => {
   };
 
   if (props.isLoggedIn) {
-    return <Redirect to='/dashboard' />;
+    return <Redirect to="/dashboard" />;
   }
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container component="main" maxWidth="xs">
       <Card>
         <Grid className={classes.paper}>
           <form noValidate>
             <Grid container spacing={2}>
-              <Grid item xs={12} align='center'>
-                <CardTitle title='Reset Your Password' />
+              <Grid item xs={12} align="center">
+                <CardTitle title="Reset Your Password" />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
                   value={password.password}
-                  variant='outlined'
+                  variant="outlined"
                   required
                   fullWidth
-                  label='Password'
-                  type='password'
-                  name='password'
+                  label="Password"
+                  type="password"
+                  name="password"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   onChange={handleChange}
                   value={password.password2}
-                  variant='outlined'
+                  variant="outlined"
                   required
                   fullWidth
-                  label='Confirm password'
-                  type='password'
-                  name='password2'
+                  label="Confirm password"
+                  type="password"
+                  name="password2"
                 />
               </Grid>
               <Grid item xs={12}>
                 <Button
                   onClick={handleSubmit}
                   fullWidth
-                  type='submit'
-                  variant='contained'
-                  color='primary'
+                  type="submit"
+                  variant="contained"
+                  color="primary"
                   className={classes.buttonMargin}
                 >
                   Submit

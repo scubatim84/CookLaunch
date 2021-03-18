@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import isEmpty from 'is-empty';
-import { Button, Card, Container, Grid, TextField } from '@material-ui/core';
+import {
+  Button, Card, Container, Grid, TextField,
+} from '@material-ui/core';
 
 import {
   addIngredient,
   deleteIngredient,
 } from '../../actions/ingredientActions';
-import { useStylesMain } from '../../Styles';
+import useStylesMain from '../../Styles';
 import { themeMain } from '../../Theme';
 import IngredientNameList from './IngredientNameList';
 import CardTitle from '../CardTitle';
@@ -27,18 +29,14 @@ const IngredientNames = (props) => {
   });
 
   useEffect(() => {
-    setIngredient((prevValue) => {
-      return {
-        ...prevValue,
-        createdBy: props.id,
-      };
-    });
+    setIngredient((prevValue) => ({
+      ...prevValue,
+      createdBy: props.id,
+    }));
 
     if (props.ingredients && props.ingredients.length > 0) {
-      let rawIngredientList = props.ingredients;
-      let sortedIngredients = rawIngredientList.sort((a, b) => {
-        return a.name.localeCompare(b.name);
-      });
+      const rawIngredientList = props.ingredients;
+      const sortedIngredients = rawIngredientList.sort((a, b) => a.name.localeCompare(b.name));
 
       setIngredientList({ data: sortedIngredients });
     } else if (props.ingredients) {
@@ -49,12 +47,10 @@ const IngredientNames = (props) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setIngredient((prevValue) => {
-      return {
-        ...prevValue,
-        [name]: value,
-      };
-    });
+    setIngredient((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
   };
 
   const handleDelete = async (ingredientId) => {
@@ -74,7 +70,7 @@ const IngredientNames = (props) => {
     e.preventDefault();
 
     const foundIngredient = props.pantry.find(
-      (pantryIngredient) => pantryIngredient.name === ingredient.name
+      (pantryIngredient) => pantryIngredient.name === ingredient.name,
     );
 
     if (foundIngredient) {
@@ -96,21 +92,21 @@ const IngredientNames = (props) => {
   };
 
   if (!props.isLoggedIn) {
-    return <Redirect to='/login' />;
+    return <Redirect to="/login" />;
   }
 
   if (!ingredientList || !props.id) {
-    return <Loader data-testid='loader' />;
+    return <Loader data-testid="loader" />;
   }
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container component="main" maxWidth="xs">
       <Card>
         <Grid className={classes.paper}>
           <form noValidate>
             <Grid container spacing={2}>
-              <Grid item xs={12} align='center'>
-                <CardTitle title='Ingredients For Recipes' />
+              <Grid item xs={12} align="center">
+                <CardTitle title="Ingredients For Recipes" />
               </Grid>
               <IngredientNameList
                 ingredientList={ingredientList}
@@ -123,23 +119,23 @@ const IngredientNames = (props) => {
                   inputProps={{ 'data-testid': 'ingredient-name-entry' }}
                   onChange={handleChange}
                   value={ingredient.name}
-                  variant='outlined'
+                  variant="outlined"
                   required
                   fullWidth
-                  id='name'
-                  label='Ingredient Name'
-                  name='name'
-                  autoComplete='name'
+                  id="name"
+                  label="Ingredient Name"
+                  name="name"
+                  autoComplete="name"
                 />
               </Grid>
-              <Grid item xs={12} align='center'>
+              <Grid item xs={12} align="center">
                 <Button
-                  data-testid='add-ingredient-button'
+                  data-testid="add-ingredient-button"
                   onClick={handleSubmit}
                   fullWidth
-                  type='submit'
-                  variant='contained'
-                  color='primary'
+                  type="submit"
+                  variant="contained"
+                  color="primary"
                 >
                   Add Ingredient
                 </Button>

@@ -7,12 +7,12 @@ import isEmpty from 'is-empty';
 import * as dateFns from 'date-fns';
 
 // Load input validation
-import validateRegisterInput from '../../validation/register.js';
-import validateLoginInput from '../../validation/login.js';
-import getForgotPasswordEmail from '../../templates/emails.js';
+import validateRegisterInput from '../../validation/register';
+import validateLoginInput from '../../validation/login';
+import getForgotPasswordEmail from '../../templates/emails';
 
 // Load User model
-import User from '../../models/User.js';
+import User from '../../models/User';
 
 // Set up Express router
 const router = express.Router();
@@ -22,7 +22,7 @@ const hashPassword = async (password) => {
   try {
     return await bcrypt.hash(password, 10);
   } catch (err) {
-    console.log(err);
+    return err;
   }
 };
 
@@ -33,7 +33,7 @@ router.post('/register', async (req, res) => {
   // Form validation
   const { error, isValid } = await validateRegisterInput(req.body);
 
-  //Check validation
+  // Check validation
   if (!isValid) {
     return res.status(400).json(error);
   }
@@ -44,22 +44,22 @@ router.post('/register', async (req, res) => {
   // If user exists, return error, otherwise create new user
   if (foundUser) {
     return res.status(400).json('Email already exists');
-  } else {
-    const newUser = new User({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-    });
+  }
 
-    // Hash password before saving in database
-    newUser.password = await hashPassword(req.body.password);
-    newUser.save();
+  const newUser = new User({
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+  });
 
-    try {
-      res.status(201).json(newUser);
-    } catch (err) {
-      res.status(500).json(err);
-    }
+  // Hash password before saving in database
+  newUser.password = await hashPassword(req.body.password);
+  newUser.save();
+
+  try {
+    return res.status(201).json(newUser);
+  } catch (err) {
+    return res.status(500).json(err);
   }
 });
 
@@ -75,8 +75,7 @@ router.post('/login', async (req, res) => {
     return res.status(400).json(error);
   }
 
-  const email = req.body.email;
-  const password = req.body.password;
+  const { email, password } = req.body;
 
   // Find user by email
   const foundUser = await User.findOne({ email });
@@ -100,27 +99,25 @@ router.post('/login', async (req, res) => {
       pantry: foundUser.pantry,
     };
 
-    //Sign token
-    jwt.sign(
-      payload,
-      process.env.SECRET_OR_KEY,
+    // Sign token
+    let token;
+    jwt.sign(payload, process.env.SECRET_OR_KEY,
       {
         expiresIn: 1209600, // 14 days in seconds
       },
-      (err, jwtToken) => {
-        res.status(200).json('Bearer ' + jwtToken);
-      }
-    );
-  } else {
-    return res.status(400).json('Password incorrect');
+      (err, jwtToken) => { token = jwtToken; });
+
+    return res.status(200).json(`Bearer ${token}`);
   }
+
+  return res.status(400).json('Password incorrect');
 });
 
 // @route POST api/auth/forgotpassword
 // @desc Reset password by sending E-mail to user
 // @access Public
 router.post('/forgotpassword', async (req, res) => {
-  const email = req.body.email;
+  const { email } = req.body;
 
   // Create reset password token
   const token = crypto.randomBytes(20).toString('hex');
@@ -146,7 +143,7 @@ router.post('/forgotpassword', async (req, res) => {
 
     const mailOptions = await getForgotPasswordEmail(foundUser.email, token);
 
-    await transporter.sendMail(mailOptions, (err, response) => {
+    await transporter.sendMail(mailOptions, (err) => {
       if (err) {
         res.status(500).json(err);
       } else {
@@ -192,7 +189,7 @@ router.put('/resetpassword', async (req, res) => {
 
       res.status(204).json(null);
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(400).json('No user found in database.');

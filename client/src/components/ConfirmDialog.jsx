@@ -29,35 +29,35 @@ const ConfirmDialog = (props) => {
 
   return (
     <Dialog
-      data-testid='confirm-dialog'
+      data-testid="confirm-dialog"
       open={props.open}
       onClose={props.close}
-      aria-labelledby='alert-dialog-title'
-      aria-describedby='alert-dialog-description'
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
     >
-      <DialogTitle data-testid='confirm-dialog-title' id='alert-dialog-title'>
+      <DialogTitle data-testid="confirm-dialog-title" id="alert-dialog-title">
         {dialog.title}
       </DialogTitle>
       <DialogContent>
         <DialogContentText
-          data-testid='confirm-dialog-text'
-          id='alert-dialog-description'
+          data-testid="confirm-dialog-text"
+          id="alert-dialog-description"
         >
           {dialog.text}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button
-          data-testid='confirm-dialog-button-left'
+          data-testid="confirm-dialog-button-left"
           onClick={props.delete}
-          color='primary'
+          color="primary"
         >
           {dialog.leftButtonLabel}
         </Button>
         <Button
-          data-testid='confirm-dialog-button-right'
+          data-testid="confirm-dialog-button-right"
           onClick={props.close}
-          color='primary'
+          color="primary"
           autoFocus
         >
           {dialog.rightButtonLabel}

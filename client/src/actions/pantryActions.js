@@ -1,7 +1,8 @@
 import axios from 'axios';
 import isEmpty from 'is-empty';
 import cookies from 'js-cookie';
-import {validateIngredientData} from './validateIngredientData';
+
+import validateIngredientData from './validateIngredientData';
 
 // Add ingredient to pantry
 export const addIngredientToPantry = async (ingredientData) => {
@@ -11,17 +12,16 @@ export const addIngredientToPantry = async (ingredientData) => {
     return {
       data: error,
     };
-  } else {
-    try {
-      const token = cookies.get('user');
-      return await axios.post('/api/pantry', ingredientData, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (err) {
-      return err.response.data;
-    }
+  }
+  try {
+    const token = cookies.get('user');
+    return await axios.post('/api/pantry', ingredientData, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  } catch (err) {
+    return err.response.data;
   }
 };
 
@@ -33,21 +33,20 @@ export const updateIngredientInPantry = async (ingredientData) => {
     return {
       data: error,
     };
-  } else {
-    try {
-      const token = cookies.get('user');
-      return await axios.put(
-        `/api/pantry/${ingredientData.id}`,
-        ingredientData,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-    } catch (err) {
-      return err.response.data;
-    }
+  }
+  try {
+    const token = cookies.get('user');
+    return await axios.put(
+      `/api/pantry/${ingredientData.id}`,
+      ingredientData,
+      {
+        headers: {
+          Authorization: token,
+        },
+      },
+    );
+  } catch (err) {
+    return err.response.data;
   }
 };
 
@@ -56,10 +55,10 @@ export const deleteIngredientFromPantry = async (ingredientId) => {
   let error;
 
   // Check to see if values are empty, and if so, convert them to empty strings
-  ingredientId = !isEmpty(ingredientId) ? ingredientId : '';
+  const idToValidate = !isEmpty(ingredientId) ? ingredientId : '';
 
   // Check for valid ingredient name
-  if (isEmpty(ingredientId)) {
+  if (isEmpty(idToValidate)) {
     error = 'An error has occurred. Please try again.';
   }
 
@@ -67,16 +66,15 @@ export const deleteIngredientFromPantry = async (ingredientId) => {
     return {
       data: error,
     };
-  } else {
-    try {
-      const token = cookies.get('user');
-      return await axios.delete(`/api/pantry/${ingredientId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-    } catch (err) {
-      return err.response.data;
-    }
+  }
+  try {
+    const token = cookies.get('user');
+    return await axios.delete(`/api/pantry/${ingredientId}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  } catch (err) {
+    return err.response.data;
   }
 };

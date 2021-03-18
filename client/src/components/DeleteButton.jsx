@@ -5,6 +5,14 @@ import { Delete } from '@material-ui/icons';
 import { themeMain } from '../Theme';
 import ConfirmDialog from './ConfirmDialog';
 
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    '&:hover': {
+      color: theme.palette.primary.main,
+    },
+  },
+}));
+
 const DeleteButton = (props) => {
   const classes = useStyles(themeMain);
 
@@ -27,7 +35,7 @@ const DeleteButton = (props) => {
   return (
     <div>
       <Delete
-        data-testid='delete-icon'
+        data-testid="delete-icon"
         onClick={handleOpen}
         className={classes.icon}
       />
@@ -40,13 +48,5 @@ const DeleteButton = (props) => {
     </div>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    '&:hover': {
-      color: theme.palette.primary.main,
-    },
-  },
-}));
 
 export default DeleteButton;

@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import IngredientNameList from '../../../components/Ingredients/IngredientNameList';
-import { ingredientData } from '../../testData';
+import ingredientData from '../../testData';
 
 describe('IngredientNameList renders correctly', () => {
   it('Renders list of ingredient names', () => {
@@ -11,7 +11,7 @@ describe('IngredientNameList renders correctly', () => {
     };
 
     const { queryByTestId, queryByText } = render(
-      <IngredientNameList userId='testUser' ingredientList={ingredientList} />
+      <IngredientNameList userId="testUser" ingredientList={ingredientList} />,
     );
 
     expect(queryByTestId('list-item-Ingredient One')).toBeTruthy();

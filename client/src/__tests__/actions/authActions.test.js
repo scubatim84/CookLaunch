@@ -10,7 +10,7 @@ import {
   validatePassword,
   logoutUser,
 } from '../../actions/authActions';
-import { REQUEST_FAIL, REQUEST_SUCCESS } from '../../actions/types';
+import { REQUEST_SUCCESS } from '../../actions/types';
 
 const server = setupServer();
 
@@ -32,9 +32,7 @@ describe('registerUser function', () => {
 
   it('Tests successful API post request for registration', async () => {
     server.use(
-      rest.post('/api/auth/register', (req, res, ctx) => {
-        return res(ctx.status(201), ctx.json(newUser));
-      })
+      rest.post('/api/auth/register', (req, res, ctx) => res(ctx.status(201), ctx.json(newUser))),
     );
 
     const response = await registerUser(newUser);
@@ -46,11 +44,9 @@ describe('registerUser function', () => {
   it('Tests failed API post request for registration', async () => {
     const errorMessage = 'An error message';
 
+    // Respond with "500 Internal Server Error" status for this test.
     server.use(
-      rest.post('/api/auth/register', (req, res, ctx) => {
-        // Respond with "500 Internal Server Error" status for this test.
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.post('/api/auth/register', (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await registerUser(newUser);
@@ -67,25 +63,21 @@ describe('loginUser function', () => {
 
   it('Tests successful API post request for login', async () => {
     server.use(
-      rest.post('/api/auth/login', (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json('Bearer ' + 'testtoken'));
-      })
+      rest.post('/api/auth/login', (req, res, ctx) => res(ctx.status(200), ctx.json('Bearer testtoken'))),
     );
 
     const response = await loginUser(existingUser);
 
     expect(response.status).toBe(200);
-    expect(response.data).toEqual('Bearer ' + 'testtoken');
+    expect(response.data).toEqual('Bearer testtoken');
   });
 
   it('Tests failed API post request for login', async () => {
     const errorMessage = 'An error message';
 
+    // Respond with "400 Bad Request" status for this test.
     server.use(
-      rest.post('/api/auth/login', (req, res, ctx) => {
-        // Respond with "400 Bad Request" status for this test.
-        return res(ctx.status(400), ctx.json(errorMessage));
-      })
+      rest.post('/api/auth/login', (req, res, ctx) => res(ctx.status(400), ctx.json(errorMessage))),
     );
 
     const response = await loginUser(existingUser);
@@ -120,9 +112,7 @@ describe('sendPasswordResetEmail function', () => {
 
   it('Tests successful API post request for sending email', async () => {
     server.use(
-      rest.post('/api/auth/forgotpassword', (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.post('/api/auth/forgotpassword', (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const response = await sendPasswordResetEmail(testEmail);
@@ -134,11 +124,9 @@ describe('sendPasswordResetEmail function', () => {
   it('Tests failed API post request for sending email', async () => {
     const errorMessage = 'An error message';
 
+    // Respond with "500 Internal Server Error" status for this test.
     server.use(
-      rest.post('/api/auth/forgotpassword', (req, res, ctx) => {
-        // Respond with "500 Internal Server Error" status for this test.
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.post('/api/auth/forgotpassword', (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await sendPasswordResetEmail(testEmail);
@@ -156,9 +144,7 @@ describe('checkResetPasswordToken function', () => {
 
   it('Tests function when API get request is successful', async () => {
     server.use(
-      rest.get('/api/auth/validateresetpasswordtoken', (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json('test@runner.com'));
-      })
+      rest.get('/api/auth/validateresetpasswordtoken', (req, res, ctx) => res(ctx.status(200), ctx.json('test@runner.com'))),
     );
 
     const response = await checkResetPasswordToken('testtoken');
@@ -169,9 +155,7 @@ describe('checkResetPasswordToken function', () => {
 
   it('Tests function when API get request fails', async () => {
     server.use(
-      rest.get('/api/auth/validateresetpasswordtoken', (req, res, ctx) => {
-        return res(ctx.status(403), ctx.json('User not found.'));
-      })
+      rest.get('/api/auth/validateresetpasswordtoken', (req, res, ctx) => res(ctx.status(403), ctx.json('User not found.'))),
     );
     const response = await checkResetPasswordToken('testtoken');
 
@@ -185,38 +169,9 @@ describe('resetPassword function', () => {
     password: 'tester',
   };
 
-  it('Tests function when userData parameter is empty', async () => {
-    const response = await resetPassword({});
-
-    expect(response.data).toBe('Password field is required');
-  });
-
-  it('Tests function when password is missing', async () => {
-    const userData = { email: 'test@runner.com' };
-    const response = await resetPassword(userData);
-
-    expect(response.data).toBe('Password field is required');
-  });
-
-  it('Tests function when email is missing', async () => {
-    const userData = { password: 'tester' };
-    const response = await resetPassword(userData);
-
-    expect(response.data).toBe('Email field is required');
-  });
-
-  it('Tests function when email is invalid', async () => {
-    const userData = { email: 'notanemail', password: 'tester' };
-    const response = await resetPassword(userData);
-
-    expect(response.data).toBe('Email is invalid');
-  });
-
   it('Tests function when API request is successful', async () => {
     server.use(
-      rest.put('/api/auth/resetpassword', (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.put('/api/auth/resetpassword', (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const response = await resetPassword(userData);
@@ -229,13 +184,38 @@ describe('resetPassword function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.put('/api/auth/resetpassword', (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.put('/api/auth/resetpassword', (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
     const response = await resetPassword(userData);
 
     expect(response).toBe(errorMessage);
+  });
+
+  it('Tests function when userData parameter is empty', async () => {
+    const response = await resetPassword({});
+
+    expect(response.data).toBe('Password field is required');
+  });
+
+  it('Tests function when password is missing', async () => {
+    userData = { email: 'test@runner.com' };
+    const response = await resetPassword(userData);
+
+    expect(response.data).toBe('Password field is required');
+  });
+
+  it('Tests function when email is missing', async () => {
+    userData = { password: 'tester' };
+    const response = await resetPassword(userData);
+
+    expect(response.data).toBe('Email field is required');
+  });
+
+  it('Tests function when email is invalid', async () => {
+    userData = { email: 'notanemail', password: 'tester' };
+    const response = await resetPassword(userData);
+
+    expect(response.data).toBe('Email is invalid');
   });
 });
 

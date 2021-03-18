@@ -6,7 +6,7 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import IngredientNames from '../../../components/Ingredients/IngredientNames';
-import { ingredientData } from '../../testData';
+import ingredientData from '../../testData';
 
 const server = setupServer();
 
@@ -24,13 +24,13 @@ describe('IngredientNames renders correctly', () => {
     render(
       <Router>
         <IngredientNames />
-      </Router>
+      </Router>,
     );
   });
 
   it('Renders loader if props have an id but no ingredient list', async () => {
     const { queryByTestId } = render(
-      <IngredientNames isLoggedIn id='testId' />
+      <IngredientNames isLoggedIn id="testId" />,
     );
 
     expect(queryByTestId('loader')).toBeTruthy();
@@ -38,7 +38,7 @@ describe('IngredientNames renders correctly', () => {
 
   it('Renders loader if props have an ingredient list but no id', async () => {
     const { queryByTestId } = render(
-      <IngredientNames isLoggedIn ingredients={ingredientData} />
+      <IngredientNames isLoggedIn ingredients={ingredientData} />,
     );
 
     expect(queryByTestId('loader')).toBeTruthy();
@@ -46,7 +46,7 @@ describe('IngredientNames renders correctly', () => {
 
   it('Renders list of ingredient names', () => {
     const { queryByTestId, queryByText } = render(
-      <IngredientNames isLoggedIn id='testId' ingredients={ingredientData} />
+      <IngredientNames isLoggedIn id="testId" ingredients={ingredientData} />,
     );
 
     expect(queryByText('Ingredients For Recipes')).toBeTruthy();
@@ -64,7 +64,7 @@ describe('IngredientNames renders correctly', () => {
 describe('IngredientNames buttons function correctly', () => {
   it('User can type in ingredient to add to list', async () => {
     render(
-      <IngredientNames isLoggedIn id='testId' ingredients={ingredientData} />
+      <IngredientNames isLoggedIn id="testId" ingredients={ingredientData} />,
     );
 
     const ingredientInput = screen.getByTestId('ingredient-name-entry');
@@ -76,18 +76,16 @@ describe('IngredientNames buttons function correctly', () => {
     const getIngredientData = jest.fn();
 
     server.use(
-      rest.delete(`/api/ingredients/testIngredientId1`, (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.delete('/api/ingredients/testIngredientId1', (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const { queryByTestId, queryAllByTestId } = render(
       <IngredientNames
         isLoggedIn
-        id='testUser'
+        id="testUser"
         ingredients={ingredientData}
         getIngredientData={getIngredientData}
-      />
+      />,
     );
 
     UserEvent.click(queryAllByTestId('delete-icon')[0]);

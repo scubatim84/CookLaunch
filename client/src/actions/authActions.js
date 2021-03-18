@@ -42,9 +42,8 @@ export const logoutUser = async () => {
 
   if (isEmpty(userCookie)) {
     return REQUEST_SUCCESS;
-  } else {
-    return REQUEST_FAIL;
   }
+  return REQUEST_FAIL;
 };
 
 // Send password reset E-mail from forgot password form
@@ -52,25 +51,24 @@ export const sendPasswordResetEmail = async (userEmail) => {
   let error;
 
   // Check to see if email submitted is empty, and if so, convert to empty string
-  userEmail = !isEmpty(userEmail) ? userEmail : '';
+  const emailToValidate = !isEmpty(userEmail) ? userEmail : '';
 
   // Email check
-  if (validator.isEmpty(userEmail)) {
+  if (validator.isEmpty(emailToValidate)) {
     error = 'Email field is required';
-  } else if (!validator.isEmail(userEmail)) {
+  } else if (!validator.isEmail(emailToValidate)) {
     error = 'Email is invalid';
   }
 
   if (!isEmpty(error)) {
     return error;
-  } else {
-    try {
-      return await axios.post('/api/auth/forgotpassword', {
-        email: userEmail,
-      });
-    } catch (err) {
-      return err.response.data;
-    }
+  }
+  try {
+    return await axios.post('/api/auth/forgotpassword', {
+      email: userEmail,
+    });
+  } catch (err) {
+    return err.response.data;
   }
 };
 
@@ -79,10 +77,10 @@ export const checkResetPasswordToken = async (token) => {
   let error;
 
   // Check to see if token is empty, and if so, convert to empty string
-  token = !isEmpty(token) ? token : '';
+  const tokenToValidate = !isEmpty(token) ? token : '';
 
   // Token check
-  if (isEmpty(token)) {
+  if (isEmpty(tokenToValidate)) {
     error = 'An error has occurred. Please try again.';
   }
 
@@ -108,18 +106,18 @@ export const resetPassword = async (userData) => {
   let error;
 
   // Check to see if parameters are empty, and if so, convert to empty string
-  userData.email = !isEmpty(userData.email) ? userData.email : '';
-  userData.password = !isEmpty(userData.password) ? userData.password : '';
+  const emailToValidate = !isEmpty(userData.email) ? userData.email : '';
+  const passwordToValidate = !isEmpty(userData.password) ? userData.password : '';
 
   // Email checks
-  if (validator.isEmpty(userData.email)) {
+  if (validator.isEmpty(emailToValidate)) {
     error = 'Email field is required';
-  } else if (!validator.isEmail(userData.email)) {
+  } else if (!validator.isEmail(emailToValidate)) {
     error = 'Email is invalid';
   }
 
   // Password checks
-  if (validator.isEmpty(userData.password)) {
+  if (validator.isEmpty(passwordToValidate)) {
     error = 'Password field is required';
   }
 
@@ -137,32 +135,32 @@ export const resetPassword = async (userData) => {
 };
 
 // Check password against confirm password to verify if same or not
-export const validatePassword = async (password, password2) => {
+export const validatePassword = async (password, confirmPassword) => {
   let error;
 
-  password = !isEmpty(password) ? password : '';
-  password2 = !isEmpty(password2) ? password2 : '';
+  const passwordToValidate = !isEmpty(password) ? password : '';
+  const confirmPasswordToValidate = !isEmpty(confirmPassword) ? confirmPassword : '';
 
   // Password checks
-  if (validator.isEmpty(password)) {
+  if (validator.isEmpty(passwordToValidate)) {
     error = 'Password field is required';
   }
 
-  if (!validator.isEmpty(password) && validator.isEmpty(password2)) {
+  if (!validator.isEmpty(passwordToValidate) && validator.isEmpty(confirmPasswordToValidate)) {
     error = 'Confirm password field is required';
   }
 
   if (
-    !validator.isEmpty(password) &&
-    !validator.isLength(password, { min: 6, max: 30 })
+    !validator.isEmpty(passwordToValidate)
+    && !validator.isLength(passwordToValidate, { min: 6, max: 30 })
   ) {
     error = 'Password must be at least 6 characters';
   }
 
   if (
-    !validator.isEmpty(password) &&
-    !validator.isEmpty(password2) &&
-    !validator.equals(password, password2)
+    !validator.isEmpty(passwordToValidate)
+    && !validator.isEmpty(confirmPasswordToValidate)
+    && !validator.equals(passwordToValidate, confirmPasswordToValidate)
   ) {
     error = 'Passwords must match';
   }

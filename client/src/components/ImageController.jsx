@@ -8,24 +8,34 @@ import CardTitle from './CardTitle';
 import FormSubmitMessage from './FormSubmitMessage';
 import Loader from './Loader';
 
+const useStyles = makeStyles((theme) => ({
+  media: {
+    height: 'auto',
+    width: '100%',
+    paddingTop: '56.25%', // 16:9
+  },
+  title: {
+    marginBottom: theme.spacing(1),
+    flexGrow: 1,
+  },
+}));
+
 function ImageController(props) {
   const classes = useStyles(themeMain);
 
   const [isLoading, setIsLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState(
-    props.imageUrl ? { URL: props.imageUrl } : undefined
+    props.imageUrl ? { URL: props.imageUrl } : undefined,
   );
   const [error, setError] = useState({
     errorMessage: '',
   });
 
   useEffect(() => {
-    setImagePreview((prevValue) => {
-      return {
-        ...prevValue,
-        URL: props.imageUrl,
-      };
-    });
+    setImagePreview((prevValue) => ({
+      ...prevValue,
+      URL: props.imageUrl,
+    }));
   }, [props.imageUrl]);
 
   const handleFileUpload = (event) => {
@@ -44,7 +54,7 @@ function ImageController(props) {
           'Your image is too large! Please upload an image 10MB or less in size.',
       });
     } else {
-      new Compressor(image, {
+      Compressor(image, {
         quality: 0.6,
         convertSize: 500000,
         success(result) {
@@ -74,25 +84,25 @@ function ImageController(props) {
 
   return (
     <Grid container spacing={1}>
-      <Grid item xs={12} align='center' className={classes.title}>
+      <Grid item xs={12} align="center" className={classes.title}>
         <CardTitle title={props.cardTitle} />
       </Grid>
-      <Grid item xs={12} align='center'>
-        <Grid container spacing={1} justify='center'>
+      <Grid item xs={12} align="center">
+        <Grid container spacing={1} justify="center">
           <Grid item xs={12} sm={6}>
             <input
-              id='raised-button-file'
-              accept='image/*'
+              id="raised-button-file"
+              accept="image/*"
               style={{ display: 'none' }}
-              type='file'
+              type="file"
               onChange={handleFileUpload}
             />
-            <label htmlFor='raised-button-file'>
+            <label htmlFor="raised-button-file">
               <Button
                 fullWidth
-                type='submit'
-                variant='outlined'
-                component='span'
+                type="submit"
+                variant="outlined"
+                component="span"
               >
                 {props.buttonCaption}
               </Button>
@@ -102,12 +112,12 @@ function ImageController(props) {
             <Grid item xs={12} sm={6}>
               <Button
                 fullWidth
-                type='submit'
-                variant='outlined'
-                component='span'
+                type="submit"
+                variant="outlined"
+                component="span"
                 onClick={props.deleteImage}
               >
-                {'Delete Image'}
+                Delete Image
               </Button>
             </Grid>
           )}
@@ -130,17 +140,5 @@ function ImageController(props) {
     </Grid>
   );
 }
-
-const useStyles = makeStyles((theme) => ({
-  media: {
-    height: 'auto',
-    width: '100%',
-    paddingTop: '56.25%', // 16:9
-  },
-  title: {
-    marginBottom: theme.spacing(1),
-    flexGrow: 1,
-  },
-}));
 
 export default ImageController;

@@ -23,9 +23,7 @@ afterAll(() => server.close());
 describe('getAllRecipes function', () => {
   it('Tests successful API get request to obtain all recipes owned by user', async () => {
     server.use(
-      rest.get('/api/recipes/', (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json('test'));
-      })
+      rest.get('/api/recipes/', (req, res, ctx) => res(ctx.status(200), ctx.json('test'))),
     );
 
     const response = await getAllRecipes();
@@ -38,9 +36,7 @@ describe('getAllRecipes function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.get('/api/recipes/', (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.get('/api/recipes/', (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await getAllRecipes();
@@ -77,9 +73,7 @@ describe('addRecipe function', () => {
     testRecipe.ingredients = ['ingredientOne', 'ingredientTwo'];
 
     server.use(
-      rest.post(`/api/recipes/`, (req, res, ctx) => {
-        return res(ctx.status(201), ctx.json(testRecipe));
-      })
+      rest.post('/api/recipes/', (req, res, ctx) => res(ctx.status(201), ctx.json(testRecipe))),
     );
 
     const response = await addRecipe(testRecipe);
@@ -94,9 +88,7 @@ describe('addRecipe function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.post(`/api/recipes/`, (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.post('/api/recipes/', (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await addRecipe(testRecipe);
@@ -117,9 +109,7 @@ describe('getOneRecipe function', () => {
 
   it('Tests successful API get request to obtain one recipe owned by user', async () => {
     server.use(
-      rest.get(`/api/recipes/${recipeId}`, (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json('test'));
-      })
+      rest.get(`/api/recipes/${recipeId}`, (req, res, ctx) => res(ctx.status(200), ctx.json('test'))),
     );
 
     const response = await getOneRecipe(recipeId);
@@ -132,9 +122,7 @@ describe('getOneRecipe function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.get(`/api/recipes/${recipeId}`, (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.get(`/api/recipes/${recipeId}`, (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await getOneRecipe(recipeId);
@@ -170,9 +158,7 @@ describe('updateRecipe function', () => {
     recipeData.ingredients = ['ingredientone', 'ingredienttwo'];
 
     server.use(
-      rest.put(`/api/recipes/${recipeData._id}`, (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.put(`/api/recipes/${recipeData._id}`, (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const response = await updateRecipe(recipeData);
@@ -185,9 +171,7 @@ describe('updateRecipe function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.put(`/api/recipes/${recipeData._id}`, (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.put(`/api/recipes/${recipeData._id}`, (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await updateRecipe(recipeData);
@@ -208,9 +192,7 @@ describe('deleteRecipe function', () => {
 
   it('Tests successful API get request to delete one recipe owned by user', async () => {
     server.use(
-      rest.delete(`/api/recipes/${recipeId}`, (req, res, ctx) => {
-        return res(ctx.status(204), ctx.json(null));
-      })
+      rest.delete(`/api/recipes/${recipeId}`, (req, res, ctx) => res(ctx.status(204), ctx.json(null))),
     );
 
     const response = await deleteRecipe(recipeId);
@@ -223,9 +205,7 @@ describe('deleteRecipe function', () => {
     const errorMessage = 'An error message';
 
     server.use(
-      rest.delete(`/api/recipes/${recipeId}`, (req, res, ctx) => {
-        return res(ctx.status(500), ctx.json(errorMessage));
-      })
+      rest.delete(`/api/recipes/${recipeId}`, (req, res, ctx) => res(ctx.status(500), ctx.json(errorMessage))),
     );
 
     const response = await deleteRecipe(recipeId);

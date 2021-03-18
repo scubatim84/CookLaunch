@@ -29,7 +29,7 @@ describe('IngredientItemGrocery renders correctly', () => {
         quantity={testIngredient.quantity}
         quantityType={testIngredient.quantityType}
         ingredientDialog={ingredientDialog}
-      />
+      />,
     );
   });
 });

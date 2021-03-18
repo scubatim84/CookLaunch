@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import isEmpty from 'is-empty';
 
-import { convert_units } from '../../actions/unitConversions';
+import convertUnits from '../../actions/unitConversions';
 import IngredientItemEdit from './IngredientItemEdit';
 import IngredientItemGrocery from './IngredientItemGrocery';
 import IngredientItemView from './IngredientItemView';
 
 const IngredientItem = (props) => {
-  const { id, name, quantity, quantityType, checked, groceryExtra } = props;
+  const {
+    id, name, quantity, quantityType, checked, groceryExtra,
+  } = props;
 
   const [editIngredient, setEditIngredient] = useState({
-    id: id,
-    name: name,
-    quantity: quantity,
-    quantityType: quantityType,
-    checked: checked,
+    id,
+    name,
+    quantity,
+    quantityType,
+    checked,
     groceryExtra: false,
   });
   const [editMode, setEditMode] = useState(false);
@@ -26,12 +28,12 @@ const IngredientItem = (props) => {
 
   useEffect(() => {
     setEditIngredient({
-      id: id,
-      name: name,
-      quantity: quantity,
-      quantityType: quantityType,
-      checked: checked,
-      groceryExtra: groceryExtra,
+      id,
+      name,
+      quantity,
+      quantityType,
+      checked,
+      groceryExtra,
     });
   }, [id, name, quantity, quantityType, checked, groceryExtra]);
 
@@ -52,11 +54,11 @@ const IngredientItem = (props) => {
 
     if (updateRequired) {
       updateCheckIngredient();
-
-      return function cleanup() {
-        setUpdateRequired(false);
-      };
     }
+
+    return function cleanup() {
+      setUpdateRequired(false);
+    };
   }, [editIngredient, updateRequired, props]);
 
   const handleDelete = async () => {
@@ -78,42 +80,37 @@ const IngredientItem = (props) => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const targetName = e.target.name;
+    const { value } = e.target;
 
-    setEditIngredient((prevValue) => {
-      return {
-        ...prevValue,
-        [name]: value,
-      };
-    });
+    setEditIngredient((prevValue) => ({
+      ...prevValue,
+      [targetName]: value,
+    }));
   };
 
   const handleCheck = (event) => {
     const isChecked = event.target.checked;
 
-    setEditIngredient((prevValue) => {
-      return {
-        ...prevValue,
-        checked: isChecked,
-      };
-    });
+    setEditIngredient((prevValue) => ({
+      ...prevValue,
+      checked: isChecked,
+    }));
 
     setUpdateRequired(true);
   };
 
   const handleSelect = (e) => {
-    const value = e.target.value;
+    const { value } = e.target;
     const oldValue = editIngredient.quantityType;
 
-    const newQuantity = convert_units(editIngredient.quantity, oldValue, value);
+    const newQuantity = convertUnits(editIngredient.quantity, oldValue, value);
 
-    setEditIngredient((prevValue) => {
-      return {
-        ...prevValue,
-        quantity: newQuantity,
-        quantityType: value,
-      };
-    });
+    setEditIngredient((prevValue) => ({
+      ...prevValue,
+      quantity: newQuantity,
+      quantityType: value,
+    }));
   };
 
   const handleSubmit = async (e) => {

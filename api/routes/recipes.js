@@ -2,7 +2,7 @@ import express from 'express';
 import isEmpty from 'is-empty';
 
 // Load Recipe model
-import { Recipe } from '../../models/Recipe.js';
+import Recipe from '../../models/Recipe';
 
 // Set up Express router
 const router = express.Router();
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
     try {
       res.status(200).json(recipes);
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(500).json('No user found in database.');
@@ -164,7 +164,7 @@ router.delete('/:id', async (req, res) => {
         res.status(400).json('fail');
       }
     } catch (err) {
-      res.status(500).json('An error has occurred. ' + err);
+      res.status(500).json(`An error has occurred. ${err}`);
     }
   } else {
     res.status(500).json('No user found in database.');

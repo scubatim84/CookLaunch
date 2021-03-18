@@ -25,7 +25,7 @@ describe('IngredientItemEdit renders correctly', () => {
         editIngredient={testIngredient}
         error={error}
         name={name}
-      />
+      />,
     );
   });
 });

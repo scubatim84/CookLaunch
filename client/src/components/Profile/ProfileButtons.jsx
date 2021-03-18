@@ -7,24 +7,24 @@ const ProfileButtons = (props) => {
       <Grid container spacing={1}>
         <Grid item xs={3} sm={2} md={1}>
           <Button
-            data-testid='save-button'
+            data-testid="save-button"
             onClick={props.handleSave}
-            id='Save'
-            type='submit'
-            variant='contained'
-            color='primary'
+            id="Save"
+            type="submit"
+            variant="contained"
+            color="primary"
           >
             Save
           </Button>
         </Grid>
         <Grid item xs={3} sm={2} md={1}>
           <Button
-            data-testid='cancel-button'
+            data-testid="cancel-button"
             onClick={props.handleCancel}
-            id='Cancel'
-            type='submit'
-            variant='contained'
-            color='primary'
+            id="Cancel"
+            type="submit"
+            variant="contained"
+            color="primary"
           >
             Cancel
           </Button>
@@ -35,12 +35,12 @@ const ProfileButtons = (props) => {
 
   return (
     <Button
-      data-testid='edit-button'
+      data-testid="edit-button"
       onClick={props.handleEdit}
-      id='Edit'
-      type='submit'
-      variant='contained'
-      color='primary'
+      id="Edit"
+      type="submit"
+      variant="contained"
+      color="primary"
     >
       Edit Profile
     </Button>

@@ -1,11 +1,11 @@
 import isEmpty from 'is-empty';
 
-export const validateIngredientData = (ingredientData) => {
+const validateIngredientData = (ingredientData) => {
   let error;
 
-  let name = ingredientData.name;
-  let quantity = ingredientData.quantity;
-  let quantityType = ingredientData.quantityType;
+  let { name } = ingredientData;
+  let { quantity } = ingredientData;
+  let { quantityType } = ingredientData;
 
   // Check to see if values are empty, and if so, convert them to empty strings
   name = !isEmpty(name) ? name : '';
@@ -29,3 +29,5 @@ export const validateIngredientData = (ingredientData) => {
 
   return error;
 };
+
+export default validateIngredientData;

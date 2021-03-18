@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { Card, Grid } from '@material-ui/core';
 import isEmpty from 'is-empty';
 
-import { useStylesMain } from '../../Styles';
+import useStylesMain from '../../Styles';
 import { themeMain } from '../../Theme';
 import { updateUserProfile } from '../../actions/userActions';
 import ProfileField from './ProfileField';
@@ -25,9 +25,9 @@ const Profile = (props) => {
 
   useEffect(() => {
     setProfileData({
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
+      email,
+      firstName,
+      lastName,
     });
 
     setEditMode(false);
@@ -40,12 +40,10 @@ const Profile = (props) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setProfileData((prevValue) => {
-      return {
-        ...prevValue,
-        [name]: value,
-      };
-    });
+    setProfileData((prevValue) => ({
+      ...prevValue,
+      [name]: value,
+    }));
   };
 
   const handleEdit = () => {
@@ -66,24 +64,24 @@ const Profile = (props) => {
 
   const handleCancel = () => {
     setProfileData({
-      email: email,
-      firstName: firstName,
-      lastName: lastName,
+      email,
+      firstName,
+      lastName,
     });
 
     setEditMode(false);
   };
 
   if (!props.isLoggedIn) {
-    return <Redirect to='/login' />;
+    return <Redirect to="/login" />;
   }
 
   if (!profileData?.email) {
-    return <Loader data-testid='loader' />;
+    return <Loader data-testid="loader" />;
   }
 
   return (
-    <div className={classes.minHeight} data-testid='top-profile-div'>
+    <div className={classes.minHeight} data-testid="top-profile-div">
       <div className={classes.pageMargin}>
         <Grid container>
           <Grid item xs={12} className={classes.buttonMargin}>
@@ -98,13 +96,13 @@ const Profile = (props) => {
             <div className={classes.paper}>
               <Grid container spacing={1}>
                 <Grid item xs={12} className={classes.title}>
-                  <CardTitle title='My Profile' />
+                  <CardTitle title="My Profile" />
                 </Grid>
                 <Grid item xs={12}>
                   <ProfileField
                     editMode={editMode}
-                    label='Email'
-                    name='email'
+                    label="Email"
+                    name="email"
                     handleChange={handleChange}
                     content={profileData.email}
                   />
@@ -112,8 +110,8 @@ const Profile = (props) => {
                 <Grid item xs={12}>
                   <ProfileField
                     editMode={editMode}
-                    label='First Name'
-                    name='firstName'
+                    label="First Name"
+                    name="firstName"
                     handleChange={handleChange}
                     content={profileData.firstName}
                   />
@@ -121,8 +119,8 @@ const Profile = (props) => {
                 <Grid item xs={12}>
                   <ProfileField
                     editMode={editMode}
-                    label='Last Name'
-                    name='lastName'
+                    label="Last Name"
+                    name="lastName"
                     handleChange={handleChange}
                     content={profileData.lastName}
                   />
