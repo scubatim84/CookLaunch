@@ -119,7 +119,3 @@ dist
 
 # Exclude VS Code settings
 .vscode*
-
-# Exclude package-lock.json
-package-lock.json
-/client/package-lock.json
