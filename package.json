@@ -2,9 +2,13 @@
   "name": "cook-launch",
   "type": "module",
   "version": "1.0.0",
+  "engines": {
+    "node": "13.x"
+  },
   "description": "Full stack web application to simplify cooking",
   "main": "server.js",
   "scripts": {
+    "client-install": "npm install --prefix client",
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
@@ -13,7 +17,8 @@
     "test-server": "mocha --es-module-specifier-resolution=node __tests__/**/*.js",
     "test-client": "cd client && npm run test-ci",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm run build --prefix client"
+    "build": "cd client/ && npm install && npm run build",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "",
   "license": "MIT",
