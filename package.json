@@ -2,6 +2,9 @@
   "name": "cook-launch",
   "type": "module",
   "version": "1.0.0",
+  "engines": {
+    "node": "13.x"
+  },
   "description": "Full stack web application to simplify cooking",
   "main": "server.js",
   "scripts": {
