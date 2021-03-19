@@ -1,15 +1,12 @@
 language: node_js
 node_js:
-  - '13'
-cache:
-  directories:
-    - node_modules
+  - "13"
 before_script:
   - npm install
   - npm install --prefix client
 script:
-  - npm run build
   - npm run test
+  - npm run build
 deploy:
   provider: heroku
   app: cook-launch
