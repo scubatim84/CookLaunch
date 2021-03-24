@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import IngredientSchema from './Ingredient';
+import Ingredient from './Ingredient.js';
 
 const { Schema } = mongoose;
 
@@ -26,10 +26,10 @@ const UserSchema = new Schema({
     default: new Date(),
   },
   pantry: {
-    type: [IngredientSchema],
+    type: [Ingredient.Schema],
   },
   groceries: {
-    type: [IngredientSchema],
+    type: [Ingredient.Schema],
   },
   resetPasswordToken: {
     type: String,

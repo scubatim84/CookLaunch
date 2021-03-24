@@ -2,7 +2,7 @@ import express from 'express';
 import isEmpty from 'is-empty';
 
 // Load User model
-import User from '../../models/User';
+import User from '../../models/User.js';
 
 // Set up Express router
 const router = express.Router();

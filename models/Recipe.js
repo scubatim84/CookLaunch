@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import IngredientSchema from './Ingredient';
+import Ingredient from './Ingredient.js';
 
 const { Schema } = mongoose;
 
@@ -10,7 +10,7 @@ const RecipeSchema = new Schema({
     required: true,
   },
   ingredients: {
-    type: [IngredientSchema],
+    type: [Ingredient.Schema],
     required: true,
   },
   createdBy: {
@@ -33,7 +33,4 @@ const RecipeSchema = new Schema({
 
 const Recipe = mongoose.model('recipe', RecipeSchema);
 
-export default {
-  Recipe,
-  RecipeSchema,
-};
+export default Recipe;

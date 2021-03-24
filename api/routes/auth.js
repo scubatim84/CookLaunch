@@ -7,9 +7,9 @@ import isEmpty from 'is-empty';
 import * as dateFns from 'date-fns';
 
 // Load input validation
-import validateRegisterInput from '../../validation/register';
-import validateLoginInput from '../../validation/login';
-import getForgotPasswordEmail from '../../templates/emails';
+import validateRegisterInput from '../../validation/register.js';
+import validateLoginInput from '../../validation/login.js';
+import getForgotPasswordEmail from '../../templates/emails.js';
 
 // Load User model
 import User from '../../models/User';

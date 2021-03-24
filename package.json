@@ -1,16 +1,16 @@
 {
   "name": "cook-launch",
-  "type": "module",
   "version": "1.0.0",
   "engines": {
-    "node": "14.x"
+    "node": "13.x"
   },
+  "type": "module",
   "description": "Full stack web application to simplify cooking",
   "main": "server.js",
   "scripts": {
     "client-install": "npm install --prefix client",
-    "start": "node server.js",
-    "server": "nodemon server.js",
+    "start": "node --experimental-modules --es-module-specifier-resolution=node",
+    "server": "nodemon --experimental-modules --es-module-specifier-resolution=node server.js",
     "client": "npm start --prefix client",
     "pretest": "./node_modules/.bin/eslint --fix .",
     "test": "npm run test-server && npm run test-client",

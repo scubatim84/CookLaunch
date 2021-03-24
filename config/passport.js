@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import passport from 'passport';
 import passportJwT from 'passport-jwt';
-import User from '../models/User';
+import User from '../models/User.js';
 
 // Set up environment variable support
 dotenv.config();
