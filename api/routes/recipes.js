@@ -2,7 +2,7 @@ import express from 'express';
 import isEmpty from 'is-empty';
 
 // Load Recipe model
-import Recipe from '../../models/Recipe';
+import Recipe from '../../models/Recipe.js';
 
 // Set up Express router
 const router = express.Router();

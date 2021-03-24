@@ -2,7 +2,7 @@ import express from 'express';
 import isEmpty from 'is-empty';
 
 // Load Ingredient model
-import Ingredient from '../../models/Ingredient';
+import Ingredient from '../../models/Ingredient.js';
 
 // Set up Express router
 const router = express.Router();

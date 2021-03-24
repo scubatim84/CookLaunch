@@ -33,7 +33,4 @@ const IngredientSchema = new Schema({
 
 const Ingredient = mongoose.model('ingredient', IngredientSchema);
 
-export default {
-  Ingredient,
-  IngredientSchema,
-};
+export default Ingredient;

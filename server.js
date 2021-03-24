@@ -1,21 +1,22 @@
+/* eslint-disable import/extensions */
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import passport from 'passport';
 import path from 'path';
+import passport from 'passport';
 
 // Authentication strategy
-import authJwt from './config/passport';
+import authJwt from './config/passport.js';
 
 // API Routes
-import authRoutes from './api/routes/auth';
-import userRoutes from './api/routes/user';
-import pantryRoutes from './api/routes/pantry';
-import groceriesRoutes from './api/routes/groceries';
-import recipeRoutes from './api/routes/recipes';
-import ingredientRoutes from './api/routes/ingredients';
-import fileUploadRoute from './api/routes/files';
+import authRoutes from './api/routes/auth.js';
+import userRoutes from './api/routes/user.js';
+import pantryRoutes from './api/routes/pantry.js';
+import groceriesRoutes from './api/routes/groceries.js';
+import recipeRoutes from './api/routes/recipes.js';
+import ingredientRoutes from './api/routes/ingredients.js';
+import fileUploadRoute from './api/routes/files.js';
 
 // Set up Express server
 const app = express();
