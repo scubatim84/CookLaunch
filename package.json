@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0",
   "engines": {
-    "node": "13.x"
+    "node": "14.x"
   },
   "description": "Full stack web application to simplify cooking",
   "main": "server.js",
@@ -29,6 +29,9 @@
     "concurrently": "^5.2.0",
     "date-fns": "^2.16.1",
     "dotenv": "^8.2.0",
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
     "express": "^4.17.1",
     "file-type": "^15.0.1",
     "fs": "0.0.1-security",
@@ -44,9 +47,6 @@
   "devDependencies": {
     "@babel/preset-env": "^7.11.5",
     "chai": "^4.3.0",
-    "eslint": "^7.22.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.3.0",
     "mocha": "^8.3.0",
