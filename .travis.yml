@@ -1,12 +1,9 @@
 language: node_js
 node_js:
-  - "13"
-before_script:
-  - npm install
-  - npm install --prefix client
+  - "14"
 script:
-  - npm run test
   - npm run build
+  - npm run test
 deploy:
   provider: heroku
   app: cook-launch
