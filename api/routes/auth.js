@@ -12,7 +12,7 @@ import validateLoginInput from '../../validation/login.js';
 import getForgotPasswordEmail from '../../templates/emails.js';
 
 // Load User model
-import User from '../../models/User';
+import User from '../../models/User.js';
 
 // Set up Express router
 const router = express.Router();
