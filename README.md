@@ -7,7 +7,7 @@
 <p>All code changes are merged from dev into QA, and tested first, prior to merging QA into production to avoid downtime from breaking changes.</p>
 
 <h2>Next Planned Upgrade</h2>
-<p>MongoDB will be replaced with PostgresSQL for data persistence.</p>
+<p>The backend will be refactored to implement TypeScript and Redis caching.</p>
 
 <h2>Demo</h2>
 
